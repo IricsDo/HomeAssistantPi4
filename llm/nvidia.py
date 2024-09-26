@@ -1,8 +1,8 @@
-from python_lib import *
-from prompt_template import SYSTEM_PROMPT
+from packagelib import *
+from utilities.prompt_template import SYSTEM_PROMPT
 
 class VoiceAssistant:
-    def __init__(self):
+    def __init__(self) -> None:
         # Define chat model and prompt
         self.__CHAT = ChatNVIDIA(
             model="meta/llama3-8b-instruct",

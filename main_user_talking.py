@@ -1,5 +1,5 @@
 from llm.nvidia import VoiceAssistant
-from python_lib import *
+from packagelib import *
 
 if __name__ == '__main__':
     # Define LLM model
