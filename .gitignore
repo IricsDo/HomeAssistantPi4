@@ -162,3 +162,12 @@ cython_debug/
 # Custom
 test_code/*.*
 client_secret_507758175100-idpj8q65rbj81udear405sc2levksls6.apps.googleusercontent.com.json
+
+# Smoke detection project artifacts
+projects/smoke-detection/data/raw/
+projects/smoke-detection/data/interim/
+projects/smoke-detection/data/processed/
+projects/smoke-detection/models/checkpoints/
+projects/smoke-detection/models/exported/
+projects/smoke-detection/outputs/
+projects/smoke-detection/runs/

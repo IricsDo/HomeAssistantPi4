@@ -1,0 +1,6 @@
+confidence_threshold: 0.20
+iou_threshold: 0.45
+image_size: 416
+temporal_window: 5
+minimum_positive_frames: 3
+blur_threshold: 80.0
