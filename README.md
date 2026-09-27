@@ -1,7 +1,13 @@
-# HomeAssistantPi4
- 
-This project base on two links:
-1. https://github.com/ThomasVuNguyen/chatGPT-Voice-Assistant
-2. https://github.com/arjun-krishnan/chatGPT-Voice-Assistant (forked from 1 and update some code)
+# HomeAssistantPi4 workspace
 
-Thanks for the contributions, guys. I will update it to be more suitable in my case.
+Repository này được tổ chức để chứa nhiều project liên quan đến Raspberry Pi và
+home assistant.
+
+## Projects
+
+- [Neko AI Voice Assistant](projects/ai-voice-assistant/README.md) - prototype
+  trợ lý gia đình AI bằng giọng nói trước đây. Trạng thái tại thời điểm lưu trữ
+  được ghi trong
+  [PROJECT_STATUS.md](projects/ai-voice-assistant/PROJECT_STATUS.md).
+
+Project tiếp theo sẽ được bổ sung sau khi phạm vi và yêu cầu được xác định.
