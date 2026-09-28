@@ -1,3 +1,5 @@
+# Provisional: at imgsz=640 the Phase 3 test curve gives P=0.787/R=0.858.
+# Recalibrate only on validation data after the next model iteration.
 confidence_threshold: 0.20
 iou_threshold: 0.45
 image_size: 416

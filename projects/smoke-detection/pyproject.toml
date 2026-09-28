@@ -31,6 +31,7 @@ smoke-export = "smoke_detection.export:main"
 smoke-benchmark = "smoke_detection.benchmark:main"
 smoke-prepare-home-fire = "smoke_detection.dataset:prepare_main"
 smoke-audit-dataset = "smoke_detection.dataset:audit_main"
+smoke-evaluate = "smoke_detection.evaluate:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

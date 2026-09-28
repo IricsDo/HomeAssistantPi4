@@ -17,7 +17,7 @@ không thuộc phạm vi project này.
 
 ## Trạng thái
 
-Phase 2 - chuẩn bị và kiểm định dataset smoke-only.
+Phase 3 - baseline training và đánh giá độc lập.
 
 - [x] Cấu trúc package và cấu hình smoke-only.
 - [x] Temporal confirmation và blur quality flag.
@@ -26,7 +26,8 @@ Phase 2 - chuẩn bị và kiểm định dataset smoke-only.
 - [x] Script train, export NCNN và benchmark.
 - [x] Unit test cho logic không phụ thuộc model.
 - [x] Tải, kiểm tra và chuẩn hóa Home-fire v1.0.0 (6.500 ảnh).
-- [ ] Huấn luyện checkpoint smoke đầu tiên.
+- [x] Huấn luyện và đánh giá checkpoint YOLO26n baseline đầu tiên.
+- [ ] Cải thiện test recall từ 0,823 lên >= 0,90 mà không làm precision sụt mạnh.
 - [ ] Export và benchmark trên Raspberry Pi 4.
 - [ ] Tích hợp camera.
 
@@ -85,11 +86,28 @@ trong [Phase 2 dataset report](docs/PHASE_2_DATASET.md).
 
 ```powershell
 smoke-train --config configs/train.yaml `
-  --data E:\HomeAssistantPi4\processed\smoke-home-fire-v1\dataset.yaml
+  --data E:\HomeAssistantPi4\processed\smoke-home-fire-v1\dataset.yaml `
+  --model E:\HomeAssistantPi4\models\pretrained\yolo26n.pt `
+  --project E:\HomeAssistantPi4\runs\smoke-detection `
+  --name yolo26n_baseline_640
 ```
 
-Checkpoint tốt nhất dự kiến nằm trong
-`runs/detect/smoke_yolo26n/weights/best.pt`.
+Checkpoint baseline ổn định nằm ngoài repo tại
+`E:\HomeAssistantPi4\models\checkpoints\smoke_yolo26n_homefire_v1_baseline.pt`.
+Kết quả đầy đủ và các giới hạn hiện tại nằm trong
+[Phase 3 baseline report](docs/PHASE_3_BASELINE.md).
+
+Đánh giá tái tạo được:
+
+```powershell
+python -m smoke_detection.evaluate `
+  --model E:\HomeAssistantPi4\models\checkpoints\smoke_yolo26n_homefire_v1_baseline.pt `
+  --data E:\HomeAssistantPi4\processed\smoke-home-fire-v1\dataset.yaml `
+  --split test --imgsz 640 --device 0 `
+  --project E:\HomeAssistantPi4\runs\smoke-detection\evaluation `
+  --name yolo26n_baseline_640_test `
+  --report E:\HomeAssistantPi4\reports\yolo26n_baseline_640_test.json
+```
 
 ## Inference
 
@@ -97,7 +115,7 @@ Sau khi có checkpoint smoke:
 
 ```powershell
 smoke-detect `
-  --model runs/detect/smoke_yolo26n/weights/best.pt `
+  --model E:\HomeAssistantPi4\models\checkpoints\smoke_yolo26n_homefire_v1_baseline.pt `
   --source path\to\sample.mp4 `
   --output outputs\sample-annotated.mp4
 ```

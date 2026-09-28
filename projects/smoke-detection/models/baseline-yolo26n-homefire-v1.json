@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "status": "research_baseline_not_approved_for_deployment",
+  "architecture": "YOLO26n detect",
+  "framework": {
+    "ultralytics": "8.4.163",
+    "torch": "2.14.0+cu130",
+    "python": "3.14.7"
+  },
+  "dataset": {
+    "name": "Home-fire-dataset smoke-only derivative",
+    "release": "v1.0.0",
+    "manifest_sha256": "8585d103f50430f619e464866712b850ea426525d8f0980746d60c78c2333a81"
+  },
+  "pretrained": {
+    "name": "yolo26n.pt",
+    "sha256": "9b09cc8bf347f0fc8a5f7657480587f25db09b34bf33b0652110fb03a8ad4fef"
+  },
+  "training": {
+    "epochs": 100,
+    "best_epoch": 75,
+    "image_size": 640,
+    "batch_size": 12,
+    "optimizer": "AdamW (Ultralytics auto)",
+    "amp": true,
+    "seed": 42,
+    "deterministic": true,
+    "duration_minutes": 66.31
+  },
+  "artifact": {
+    "external_path": "E:/HomeAssistantPi4/models/checkpoints/smoke_yolo26n_homefire_v1_baseline.pt",
+    "bytes": 5370757,
+    "sha256": "b0b654362ec469aa086827dc8415f2fd9028011bd283b6f63527b01efa694d3b"
+  },
+  "validation_best_epoch": {
+    "precision": 0.91718,
+    "recall": 0.89742,
+    "map50": 0.93673,
+    "map50_95": 0.60808
+  },
+  "test": {
+    "precision": 0.9086302443,
+    "recall": 0.8226981574,
+    "map50": 0.8750178481,
+    "map50_95": 0.5520408823,
+    "confidence_0_20": {
+      "precision": 0.7872579126,
+      "recall": 0.8577648766
+    },
+    "validation_calibrated_confidence_0_4004": {
+      "precision": 0.8946849197,
+      "recall": 0.8330914369
+    }
+  }
+}

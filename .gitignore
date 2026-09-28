@@ -171,3 +171,5 @@ projects/smoke-detection/models/checkpoints/
 projects/smoke-detection/models/exported/
 projects/smoke-detection/outputs/
 projects/smoke-detection/runs/
+projects/smoke-detection/*.pt
+projects/smoke-detection/weights/
