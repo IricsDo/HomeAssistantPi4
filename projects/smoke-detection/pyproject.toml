@@ -12,6 +12,7 @@ license = { text = "AGPL-3.0-only" }
 dependencies = [
   "numpy>=2.0,<3.0",
   "opencv-python>=4.10,<5.0",
+  "Pillow>=11.0,<13.0",
   "psutil>=6.0,<8.0",
   "PyYAML>=6.0,<7.0",
   "ultralytics>=8.4,<9.0",
@@ -28,6 +29,8 @@ smoke-detect = "smoke_detection.cli:main"
 smoke-train = "smoke_detection.train:main"
 smoke-export = "smoke_detection.export:main"
 smoke-benchmark = "smoke_detection.benchmark:main"
+smoke-prepare-home-fire = "smoke_detection.dataset:prepare_main"
+smoke-audit-dataset = "smoke_detection.dataset:audit_main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

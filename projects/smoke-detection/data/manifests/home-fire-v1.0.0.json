@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-09-28T14:12:06.513746+00:00",
+  "dataset": "Home-fire-dataset smoke-only derivative",
+  "source": {
+    "repository": "https://github.com/PengBo0/Home-fire-dataset",
+    "commit": "889064eaafd87f32ef6b1d7128d4c98cb31fe7a5",
+    "release": "v1.0.0",
+    "license": "CC-BY-NC-4.0",
+    "doi": "10.1109/ACCESS.2025.3566907",
+    "class_mapping": {
+      "0": "fire (discarded)",
+      "1": "smoke -> 0"
+    }
+  },
+  "archives": {
+    "train": {
+      "filename": "train.zip",
+      "bytes": 1060672433,
+      "sha256": "bf7135b0e3caf0181b5e74cb34a717e4c1b79f90ad8d62a39af04b86e8a9a36c"
+    },
+    "val": {
+      "filename": "val.zip",
+      "bytes": 352482306,
+      "sha256": "ffe0444340b3baab129e24b75f1a67ec489f072be85ea7b1c2cc4c5ce7f6ef63"
+    },
+    "test": {
+      "filename": "test.zip",
+      "bytes": 407778390,
+      "sha256": "fdc734103a2606da901d05d514623f2a874a01aee9f0cb89b5b26279017607b6"
+    }
+  },
+  "output": {
+    "class_names": ["smoke"],
+    "splits": {
+      "train": {
+        "images": 3900,
+        "source_fire_boxes": 2978,
+        "source_smoke_boxes": 1834,
+        "smoke_boxes": 1834,
+        "negative_images": 2183,
+        "positive_images": 1717
+      },
+      "val": {
+        "images": 1300,
+        "source_fire_boxes": 963,
+        "source_smoke_boxes": 617,
+        "smoke_boxes": 617,
+        "negative_images": 726,
+        "positive_images": 574
+      },
+      "test": {
+        "images": 1300,
+        "source_fire_boxes": 897,
+        "source_smoke_boxes": 689,
+        "smoke_boxes": 689,
+        "positive_images": 618,
+        "negative_images": 682
+      }
+    }
+  }
+}

@@ -17,7 +17,7 @@ không thuộc phạm vi project này.
 
 ## Trạng thái
 
-Phase 1 - project skeleton và baseline inference.
+Phase 2 - chuẩn bị và kiểm định dataset smoke-only.
 
 - [x] Cấu trúc package và cấu hình smoke-only.
 - [x] Temporal confirmation và blur quality flag.
@@ -25,7 +25,7 @@ Phase 1 - project skeleton và baseline inference.
 - [x] CLI inference ảnh/video.
 - [x] Script train, export NCNN và benchmark.
 - [x] Unit test cho logic không phụ thuộc model.
-- [ ] Tải, kiểm tra và chuẩn hóa dataset.
+- [x] Tải, kiểm tra và chuẩn hóa Home-fire v1.0.0 (6.500 ảnh).
 - [ ] Huấn luyện checkpoint smoke đầu tiên.
 - [ ] Export và benchmark trên Raspberry Pi 4.
 - [ ] Tích hợp camera.
@@ -65,7 +65,7 @@ python -c "import torch; print(torch.cuda.is_available(), torch.cuda.get_device_
 Dataset chuẩn có cấu trúc:
 
 ```text
-data/processed/smoke/
+smoke-home-fire-v1/
 |-- images/
 |   |-- train/
 |   |-- val/
@@ -77,12 +77,15 @@ data/processed/smoke/
 ```
 
 Mỗi annotation dùng YOLO format và chỉ được chứa class `0` (`smoke`). Dataset
-không được commit vào Git. Cấu hình nằm tại `configs/dataset.yaml`.
+không được commit vào Git. Dữ liệu phát triển hiện nằm tại
+`E:\HomeAssistantPi4\processed\smoke-home-fire-v1`; chi tiết tái tạo và audit nằm
+trong [Phase 2 dataset report](docs/PHASE_2_DATASET.md).
 
 ## Huấn luyện
 
 ```powershell
-smoke-train --config configs/train.yaml
+smoke-train --config configs/train.yaml `
+  --data E:\HomeAssistantPi4\processed\smoke-home-fire-v1\dataset.yaml
 ```
 
 Checkpoint tốt nhất dự kiến nằm trong

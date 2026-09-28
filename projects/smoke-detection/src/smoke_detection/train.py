@@ -12,6 +12,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--config", default="configs/train.yaml")
     parser.add_argument("--resume", action="store_true")
     parser.add_argument("--device", help="Override training device, for example 0 or cpu")
+    parser.add_argument("--data", help="Override dataset YAML (useful for data on another drive)")
     return parser
 
 
@@ -43,6 +44,8 @@ def main(argv: list[str] | None = None) -> int:
         options["project"] = str((project_root / project_path).resolve())
     if args.device is not None:
         options["device"] = args.device
+    if args.data is not None:
+        options["data"] = str(Path(args.data).resolve())
     if args.resume:
         options["resume"] = True
 

@@ -1,3 +1,5 @@
+# Template only. The Phase 2 preparation command creates a dataset.yaml containing
+# the absolute local path beside the processed dataset (E: on the Windows machine).
 path: ../data/processed/smoke
 train: images/train
 val: images/val
