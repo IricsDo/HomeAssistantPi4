@@ -9,6 +9,6 @@ home assistant.
   trợ lý gia đình AI bằng giọng nói trước đây. Trạng thái tại thời điểm lưu trữ
   được ghi trong
   [PROJECT_STATUS.md](projects/ai-voice-assistant/PROJECT_STATUS.md).
-- [Smoke Detection](projects/smoke-detection/README.md) - hệ thống phát hiện và
-  khoanh vùng khói trong nhà, phát triển trên Windows 11 và triển khai độc lập
-  trên Raspberry Pi 4.
+- [Indoor Detection](projects/indoor-detection/README.md) - một YOLO26n phát hiện
+  `smoke`, `fire`, `person` trong nhà, phát triển trên Windows 11 và export NCNN
+  cho Raspberry Pi 4.

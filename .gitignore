@@ -49,6 +49,9 @@ coverage.xml
 *.py,cover
 .hypothesis/
 .pytest_cache/
+.pytest-tmp-*/
+.test-tmp-*/
+pytest-cache-files-*/
 cover/
 
 # Translations
@@ -163,7 +166,18 @@ cython_debug/
 test_code/*.*
 client_secret_507758175100-idpj8q65rbj81udear405sc2levksls6.apps.googleusercontent.com.json
 
-# Smoke detection project artifacts
+# Indoor detection project artifacts
+projects/indoor-detection/data/raw/
+projects/indoor-detection/data/interim/
+projects/indoor-detection/data/processed/
+projects/indoor-detection/models/checkpoints/
+projects/indoor-detection/models/exported/
+projects/indoor-detection/outputs/
+projects/indoor-detection/runs/
+projects/indoor-detection/*.pt
+projects/indoor-detection/weights/
+
+# Local artifacts left by the pre-migration smoke workspace
 projects/smoke-detection/data/raw/
 projects/smoke-detection/data/interim/
 projects/smoke-detection/data/processed/

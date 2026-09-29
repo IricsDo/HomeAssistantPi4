@@ -1,0 +1,18 @@
+confidence_thresholds:
+  # Provisional until the three-class validation set is locked and calibrated.
+  smoke: 0.20
+  fire: 0.25
+  person: 0.35
+iou_threshold: 0.45
+image_size: 416
+temporal:
+  smoke:
+    window: 5
+    minimum_positive_frames: 3
+  fire:
+    window: 3
+    minimum_positive_frames: 2
+  person:
+    window: 1
+    minimum_positive_frames: 1
+blur_threshold: 80.0
