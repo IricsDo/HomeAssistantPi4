@@ -32,6 +32,9 @@ smoke-benchmark = "smoke_detection.benchmark:main"
 smoke-prepare-home-fire = "smoke_detection.dataset:prepare_main"
 smoke-audit-dataset = "smoke_detection.dataset:audit_main"
 smoke-evaluate = "smoke_detection.evaluate:main"
+smoke-analyze-errors = "smoke_detection.error_analysis:main"
+smoke-prepare-indoor-fs = "smoke_detection.indoor_fs_dataset:main"
+smoke-compose-dataset = "smoke_detection.compose_dataset:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
