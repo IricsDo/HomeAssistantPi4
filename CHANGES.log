@@ -937,3 +937,74 @@ validation state.
   - Finalized review ledger SHA-256: `bb6d0c5e2b141ff8a7e37bd9ac80adeac589a12bf4a04e45e03543b5961d1d64`.
   - Visual gate decision SHA-256: `9ff64ed7f7436e4d6f16618b39156667c61b761650b86ce0644819c5a680412d`.
   - All data gates are now satisfied with documented limitations; real baseline training is permitted through `indoor-train --config configs/train_indoor_v1.yaml`.
+
+## [2026-10-01] - Scoped validator regression fix from OpenAI Codex
+
+- **Current Task:** Diagnose the first full baseline run and make scoped inline
+  validation reliable before continuing training.
+- **Status:** IN_PROGRESS
+- **Current Owner:** OpenAI Codex
+
+- **Completed in this session:**
+  - Diagnosed `indoor_partial_joint_yolo26n_v1`: it stopped at epoch 22 because
+    the custom raw-output postprocess path reported near-zero inline metrics and
+    caused incorrect early stopping/checkpoint selection.
+  - Added scoped dataset construction to standalone validation so every
+    validation image receives its `known_classes` mask.
+  - Removed the faulty raw-output decoder branch. Scoped metrics now use the
+    standard Ultralytics postprocess followed by per-image known-class filtering.
+  - Re-evaluated the original checkpoints. `best.pt` reached precision 0.6424,
+    recall 0.4520, mAP50 0.4974 and mAP50-95 0.2420; `last.pt` reached precision
+    0.8369, recall 0.7165, mAP50 0.7991 and mAP50-95 0.5029.
+  - Ran a one-epoch regression smoke from the original `last.pt`. Inline metrics
+    were precision 0.8377, recall 0.7248, mAP50 0.8035 and mAP50-95 0.5056;
+    final validation was mAP50 0.803 and mAP50-95 0.506, confirming agreement.
+  - Kept all checkpoints, reports and smoke-run artifacts under
+    `E:\HomeAssistantPi4`; removed the temporary diagnostic script from the repo.
+
+- **Unfinished / Next Steps (CRITICAL):**
+  - [ ] Create a versioned continuation config initialized from the original v1
+    `last.pt`, using a lower explicit fine-tuning learning rate and a new run name.
+  - [ ] Start and monitor the full corrected continuation run; retain v1 unchanged
+    for traceability.
+  - [ ] Evaluate by class and source/domain, then calibrate class thresholds before
+    NCNN export.
+
+- **Known Blocks / Issues:**
+  - The v1 `best.pt` is invalid as the selected best checkpoint; use the original
+    v1 `last.pt` as the continuation seed.
+  - Filtering after standard postprocess means unknown-class detections still
+    participate in the pre-filter `max_det=300` selection. This is acceptable for
+    the current three-class validation corpus but remains a documented limitation.
+  - Raspberry Pi benchmark and camera integration remain blocked on hardware.
+
+- **Validation:**
+  - Build: NOT APPLICABLE
+  - Tests: PASS (92/92; run outside sandbox because Windows temp ACL blocks pytest)
+  - Typecheck: NOT CONFIGURED
+  - Lint: PASS (`.venv\\Scripts\\python.exe -m ruff check . --no-cache`)
+
+- **Git State:**
+  - Branch: `main`
+  - Last Commit: `3d60cb6 feat:finalize-scoped-visual-data-gate`
+  - Working Tree: DIRTY (validator fix milestone pending commit)
+
+- **Uncommitted Changes:**
+  - `CHANGES.log`
+  - `projects/indoor-detection/README.md`
+  - `projects/indoor-detection/src/indoor_detection/partial_label_training.py`
+  - `projects/indoor-detection/tests/test_partial_label_training.py`
+  - `.codex/` (pre-existing untracked directory, untouched)
+
+- **Active Files:**
+  - `projects/indoor-detection/src/indoor_detection/partial_label_training.py`
+  - `projects/indoor-detection/tests/test_partial_label_training.py`
+  - `E:\HomeAssistantPi4\runs\indoor-detection\indoor_partial_joint_yolo26n_v1\`
+  - `E:\HomeAssistantPi4\runs\indoor-detection\validator_regression_smoke\`
+  - `E:\HomeAssistantPi4\reports\indoor-partial-joint-v2-checkpoint-diagnostic-v3\`
+
+- **Notes for Next Agent:**
+  - Original v1 `last.pt` SHA-256:
+    `3b019b9bc962640c6542852e7aa0e17771571e32ad7d87c3f304e5234442887a`.
+  - Do not use v1 `best.pt` for continuation and do not overwrite the v1 run.
+  - Dataset/report artifacts stay on E:; never read or print `projects/.env`.

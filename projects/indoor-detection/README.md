@@ -156,6 +156,15 @@ indoor-train --config configs/train_indoor_v1.yaml `
   --project E:\HomeAssistantPi4\runs\indoor-detection
 ```
 
+Run baseline `indoor_partial_joint_yolo26n_v1` đã dừng sớm ở epoch 22 do một
+lỗi trong nhánh postprocess tùy chỉnh của validator inline. Vì vậy `best.pt` của
+run này không đại diện cho checkpoint tốt nhất. Khi đánh giá lại bằng validator
+đã sửa, `last.pt` đạt mAP50 0,799 và mAP50-95 0,503 trên validation set, so với
+0,497 và 0,242 của `best.pt`. Một regression smoke run một epoch cho kết quả
+inline mAP50/mAP50-95 là 0,804/0,506 và final là 0,803/0,506. Tiếp tục huấn
+luyện phải khởi tạo từ `last.pt` của v1 trong một run mới, không resume hoặc ghi
+đè run v1.
+
 ## Inference
 
 ```powershell

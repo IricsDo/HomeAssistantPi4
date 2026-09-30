@@ -10,6 +10,7 @@ from ultralytics.cfg import get_cfg
 
 from indoor_detection.partial_label_training import (
     ClassScopedDetectionTrainer,
+    ClassScopedDetectionValidator,
     ClassScopedYOLODataset,
     filter_predictions_to_known_classes,
     load_class_scopes,
@@ -162,6 +163,25 @@ def test_validation_predictions_are_filtered_by_image_scope() -> None:
 
     assert filtered[0]["cls"].tolist() == [0.0, 1.0]
     assert filtered[1]["cls"].tolist() == [2.0]
+
+
+def test_standalone_validator_builds_scoped_dataset(tmp_path: Path) -> None:
+    image_dir, manifest = _write_scoped_dataset(tmp_path)
+    validator = ClassScopedDetectionValidator(
+        args={"imgsz": 64, "batch": 2, "workers": 0, "task": "detect"}
+    )
+    validator.data = {
+        "names": {0: "smoke", 1: "fire", 2: "person"},
+        "nc": 3,
+        "path": str(tmp_path),
+        "class_scope_manifest": str(manifest),
+    }
+    validator.stride = 32
+
+    dataset = validator.build_dataset(str(image_dir), batch=2)
+
+    assert isinstance(dataset, ClassScopedYOLODataset)
+    assert dataset[0]["known_classes"].shape == (3,)
 
 
 def test_scope_manifest_rejects_unknown_class(tmp_path: Path) -> None:

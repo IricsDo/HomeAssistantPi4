@@ -173,6 +173,29 @@ def filter_predictions_to_known_classes(
 class ClassScopedDetectionValidator(DetectionValidator):
     """Detection validator that ignores predictions for unannotated classes."""
 
+    def build_dataset(
+        self, img_path: str, mode: str = "val", batch: int | None = None
+    ) -> ClassScopedYOLODataset:
+        """Build a scoped dataset for standalone and trainer-owned validation."""
+        fraction = get_split_fraction(self.args.fraction, self.args.split or "val")
+        return ClassScopedYOLODataset(
+            img_path=img_path,
+            imgsz=self.args.imgsz,
+            batch_size=batch,
+            augment=False,
+            hyp=self.args,
+            rect=True,
+            cache=self.args.cache or None,
+            single_cls=self.args.single_cls or False,
+            stride=self.stride,
+            pad=0.5,
+            prefix=f"{mode}: ",
+            task=self.args.task,
+            classes=self.args.classes,
+            data=self.data,
+            fraction=fraction,
+        )
+
     def preprocess(self, batch: dict[str, Any]) -> dict[str, Any]:
         processed = super().preprocess(batch)
         known_classes = processed.get("known_classes")
@@ -180,28 +203,6 @@ class ClassScopedDetectionValidator(DetectionValidator):
             raise ValueError("Partial-label validation batches require known_classes")
         self._batch_known_classes = known_classes
         return processed
-
-    def init_metrics(self, model: torch.nn.Module) -> None:
-        super().init_metrics(model)
-        native_model = model.model if getattr(model, "format", None) == "pt" else model
-        detection_model = getattr(native_model, "model", None)
-        self._detection_head = detection_model[-1] if detection_model else None
-
-    def postprocess(self, predictions: Any) -> list[dict[str, torch.Tensor]]:
-        raw = predictions[1] if isinstance(predictions, tuple) else None
-        head = getattr(self, "_detection_head", None)
-        known_classes = getattr(self, "_batch_known_classes", None)
-        if (
-            head is not None
-            and isinstance(raw, dict)
-            and isinstance(raw.get("one2one"), dict)
-            and isinstance(known_classes, torch.Tensor)
-        ):
-            decoded = head._inference(raw["one2one"]).permute(0, 2, 1)
-            scores = decoded[..., 4 : 4 + self.nc]
-            scores.masked_fill_(~known_classes[:, None, :], 0.0)
-            predictions = head.postprocess(decoded)
-        return super().postprocess(predictions)
 
     def update_metrics(
         self, predictions: list[dict[str, torch.Tensor]], batch: dict[str, Any]
