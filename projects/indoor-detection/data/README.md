@@ -82,6 +82,19 @@ Sau đó truyền `person-consensus-v1\candidates.jsonl` cho
 `indoor-review-person`. Nhóm `consensus_high_review` chỉ có nghĩa hai model đồng
 thuận, vẫn cần người review trước khi ghi nhãn.
 
+Với pose checkpoint, có thể yêu cầu keypoint visibility để ưu tiên review:
+
+```powershell
+indoor-verify-person `
+  --candidates E:\HomeAssistantPi4\reports\person-audit-v2\candidates.jsonl `
+  --verifier-model E:\HomeAssistantPi4\models\pretrained\yolo26m-pose.pt `
+  --output-dir E:\HomeAssistantPi4\reports\person-pose-consensus-v2 `
+  --keypoint-confidence 0.50 --min-visible-keypoints 4
+```
+
+Keypoint visibility cũng chỉ là tín hiệu sắp xếp. Thử nghiệm thực tế vẫn có
+hallucinated keypoints trên lửa, nên không được chuyển status thành quyết định.
+
 Sau khi mọi candidate row trong `decisions.tsv` đã là `accept` hoặc `reject`, tạo
 derivative mới (lệnh sẽ từ chối nếu còn ô trống hoặc có box accept trùng nhau):
 

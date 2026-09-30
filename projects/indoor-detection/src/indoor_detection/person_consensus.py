@@ -18,6 +18,26 @@ from indoor_detection.person_audit import (
 from indoor_detection.person_review import _load_records
 
 
+def _verifier_rows(
+    result: Any, person_class_id: int, keypoint_confidence: float
+) -> list[dict[str, Any]]:
+    rows = _candidate_rows(result, person_class_id)
+    keypoints = getattr(result, "keypoints", None)
+    confidences = getattr(keypoints, "conf", None)
+    if confidences is None:
+        return rows
+    confidence_rows = confidences.tolist()
+    if len(confidence_rows) != len(rows):
+        raise RuntimeError("Pose boxes and keypoint rows are not aligned")
+    for row, values in zip(rows, confidence_rows, strict=True):
+        visible = [float(value) for value in values if float(value) >= keypoint_confidence]
+        row["visible_keypoints"] = len(visible)
+        row["mean_visible_keypoint_confidence"] = (
+            round(sum(visible) / len(visible), 6) if visible else 0.0
+        )
+    return rows
+
+
 def _xywhn_to_xyxy(box: list[float]) -> tuple[float, float, float, float]:
     x_center, y_center, width, height = box
     return (
@@ -71,6 +91,16 @@ def _match_candidates(
                 "verifier_xywhn": (
                     verifier_candidate["xywhn"] if verifier_candidate is not None else None
                 ),
+                "verifier_visible_keypoints": (
+                    verifier_candidate.get("visible_keypoints")
+                    if verifier_candidate is not None
+                    else None
+                ),
+                "verifier_mean_visible_keypoint_confidence": (
+                    verifier_candidate.get("mean_visible_keypoint_confidence")
+                    if verifier_candidate is not None
+                    else None
+                ),
             }
         )
     return matched, [verifier[index] for index in sorted(unused)]
@@ -82,6 +112,7 @@ def _review_status(
     *,
     strong_iou: float,
     strong_confidence: float,
+    min_visible_keypoints: int = 0,
 ) -> str:
     strong = [
         candidate
@@ -89,6 +120,10 @@ def _review_status(
         if candidate["verifier_iou"] >= strong_iou
         and candidate["verifier_confidence"] is not None
         and candidate["verifier_confidence"] >= strong_confidence
+        and (
+            candidate.get("verifier_visible_keypoints") is None
+            or candidate["verifier_visible_keypoints"] >= min_visible_keypoints
+        )
     ]
     if matched and len(strong) == len(matched) and not verifier_only:
         return "consensus_high_review"
@@ -105,6 +140,8 @@ def verify_candidates(
     verifier_confidence: float = 0.10,
     strong_confidence: float = 0.50,
     strong_iou: float = 0.50,
+    keypoint_confidence: float = 0.50,
+    min_visible_keypoints: int = 0,
     imgsz: int = 640,
     device: str = "0",
     batch: int = 16,
@@ -119,6 +156,10 @@ def verify_candidates(
         raise ValueError("Expected 0 <= verifier_confidence <= strong_confidence <= 1")
     if not 0 <= strong_iou <= 1:
         raise ValueError("strong_iou must be in [0, 1]")
+    if not 0 <= keypoint_confidence <= 1:
+        raise ValueError("keypoint_confidence must be in [0, 1]")
+    if not 0 <= min_visible_keypoints <= 17:
+        raise ValueError("min_visible_keypoints must be in [0, 17]")
 
     records = _load_records(candidates_path)
     record_by_path = {Path(record["image"]).resolve(): record for record in records}
@@ -145,7 +186,7 @@ def verify_candidates(
         for result in results:
             image_path = Path(result.path).resolve()
             record = record_by_path[image_path]
-            verifier = _candidate_rows(result, person_class_id)
+            verifier = _verifier_rows(result, person_class_id, keypoint_confidence)
             matched, verifier_only = _match_candidates(record["person_candidates"], verifier)
             verified_records.append(
                 {
@@ -155,6 +196,7 @@ def verify_candidates(
                         verifier_only,
                         strong_iou=strong_iou,
                         strong_confidence=strong_confidence,
+                        min_visible_keypoints=min_visible_keypoints,
                     ),
                     "person_candidates": matched,
                     "verifier_only_candidates": verifier_only,
@@ -187,6 +229,8 @@ def verify_candidates(
             "verifier_confidence": verifier_confidence,
             "strong_confidence": strong_confidence,
             "strong_iou": strong_iou,
+            "keypoint_confidence": keypoint_confidence,
+            "min_visible_keypoints": min_visible_keypoints,
             "imgsz": imgsz,
             "device": device,
             "batch": batch,
@@ -212,6 +256,8 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--verifier-confidence", type=float, default=0.10)
     parser.add_argument("--strong-confidence", type=float, default=0.50)
     parser.add_argument("--strong-iou", type=float, default=0.50)
+    parser.add_argument("--keypoint-confidence", type=float, default=0.50)
+    parser.add_argument("--min-visible-keypoints", type=int, default=0)
     parser.add_argument("--imgsz", type=int, default=640)
     parser.add_argument("--device", default="0")
     parser.add_argument("--batch", type=int, default=16)
@@ -227,6 +273,8 @@ def main(argv: list[str] | None = None) -> int:
         verifier_confidence=args.verifier_confidence,
         strong_confidence=args.strong_confidence,
         strong_iou=args.strong_iou,
+        keypoint_confidence=args.keypoint_confidence,
+        min_visible_keypoints=args.min_visible_keypoints,
         imgsz=args.imgsz,
         device=args.device,
         batch=args.batch,

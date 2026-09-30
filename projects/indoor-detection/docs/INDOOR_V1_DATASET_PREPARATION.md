@@ -82,6 +82,25 @@ candidate rows. Mỗi box có `candidate_id` cùng integrity check riêng. File
 Validation gate đã được chạy trên file thật và từ chối tạo derivative vì cả 5.364
 quyết định vẫn đang trống. Không có output dở dang được tạo.
 
+## Pose verifier experiment
+
+YOLO26m-pose, SHA-256
+`2fbf16367022256a226035695c5c389384c6706e8bb8ab8fcd0e7976f05443c4`,
+được thử với keypoint confidence 0,50 và yêu cầu ít nhất 4/17 keypoints:
+
+- 657 ảnh `consensus_high_review`.
+- 441 ảnh `consensus_mixed_review`.
+- 1.262 ảnh `disagreement_review`.
+- 915 pose-only boxes.
+
+Report `E:\HomeAssistantPi4\reports\person-pose-consensus-v2\report.json` có
+SHA-256 `eb1a987d56924d347db09de090ca5ab77603c3c1aa39a14f4fb3c6e83c2b0365`.
+Candidate JSONL có SHA-256
+`b682535d5406747da7b34f9fffac55c87f1e1f2e9c00477fdc3725968fbb5587`.
+Kiểm tra contact sheet vẫn thấy pose hallucinate người/keypoints trên một số vùng
+lửa. Vì vậy kết quả này chỉ dùng để ưu tiên review, không thay thế canonical
+consensus v3 và không tự động tạo quyết định.
+
 Source labels chưa bị sửa. `indoor-v1` hiện là index kiểm kê, **chưa phải corpus
 được phép train**. Gate tiếp theo là review candidate, tạo derivative smoke/fire
 có person label, audit lại duplicate/annotation completeness, rồi compose một

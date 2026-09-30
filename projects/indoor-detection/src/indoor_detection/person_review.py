@@ -96,6 +96,11 @@ def _render_tile(record: dict[str, Any], review_id: str) -> Image.Image:
                 color="#ca8a04",
                 label=(
                     f"M {candidate['verifier_confidence']:.2f} i{candidate['verifier_iou']:.2f}"
+                    + (
+                        f" k{candidate['verifier_visible_keypoints']}"
+                        if candidate.get("verifier_visible_keypoints") is not None
+                        else ""
+                    )
                 ),
             )
     verifier_only = record.get("verifier_only_candidates", [])
@@ -168,6 +173,11 @@ def create_review_bundle(
                             if candidate.get("verifier_iou") is not None
                             else ""
                         ),
+                        "verifier_visible_keypoints": (
+                            str(candidate["verifier_visible_keypoints"])
+                            if candidate.get("verifier_visible_keypoints") is not None
+                            else ""
+                        ),
                         "decision": "",
                         "notes": "",
                         "image": record["image"],
@@ -199,6 +209,7 @@ def create_review_bundle(
         "confidence",
         "verifier_confidence",
         "verifier_iou",
+        "verifier_visible_keypoints",
         "decision",
         "notes",
         "image",
