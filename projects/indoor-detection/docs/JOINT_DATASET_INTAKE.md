@@ -160,9 +160,16 @@ triage không có auto-acceptance, không phải nhãn đã xác nhận; pseudo-
 có false positives tương quan.
 
 Kết luận: nguồn fire/smoke không an toàn để dùng trực tiếp như ảnh âm tính của
-person trong training ba lớp. Bước kỹ thuật tiếp theo là prototype per-image
-class-masked classification loss và kiểm tra trên dữ liệu tổng hợp. Nếu không
-đạt validation, cần bổ sung/curate nhãn. Chưa train baseline.
+person trong training ba lớp. Prototype per-image class-masked classification
+loss đã được cài cho Ultralytics 8.4.163: loss chỉ tính BCE của các class được
+khai báo là đã biết trên từng ảnh, và từ chối batch có ground-truth class nằm
+ngoài scope. Bảy test synthetic đạt, gồm một synthetic forward/backward trên
+YOLO26n thật; chưa dùng ảnh hoặc nhãn dataset thật.
+
+Prototype chưa được nối vào dataloader/trainer. Bước tiếp theo là tạo manifest
+scope theo ảnh, truyền mask cho cả train và validation, xác nhận augmentation
+giữ đúng scope, rồi chạy audit scope/annotation và synthetic trainer smoke test.
+Chưa train baseline; data gate vẫn FAILED.
 
 ### Gói review duplicate (2026-09-30)
 

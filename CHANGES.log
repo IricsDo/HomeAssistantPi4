@@ -695,4 +695,59 @@ validation state.
 - **Notes for Next Agent:**
   - The 390-row review ledger records 15 confirmed visible-person cases and 90 COCO rows with no obvious fire/smoke; the rest remain pending.
   - Source manifests declare annotation scope but do not independently prove exhaustive labeling.
-  - Never read or print `projects/.env`; large datasets/reports stay on E:.
+- Never read or print `projects/.env`; large datasets/reports stay on E:.
+
+## [2026-09-30 20:30 +07:00] - Class-masked loss prototype from OpenAI Codex
+
+- **Current Task:** Prototype per-image class-masked classification loss for partial-label sources.
+- **Status:** IN_PROGRESS
+- **Current Owner:** OpenAI Codex
+
+- **Completed in this session:**
+  - Created the project `.venv` and installed the versions pinned in `requirements-windows-gpu.txt`; installed the project editable without additional dependencies.
+  - Removed the mistakenly created `E:\HomeAssistantPi4\venvs\indoor-detection` environment after confirming it contained no project packages; all needed packages are in the project `.venv`.
+  - Implemented a class-masked BCE criterion compatible with the pinned Ultralytics 8.4.163 YOLO26 end-to-end criterion branches.
+  - Added validation that every ground-truth class is declared known for its image.
+  - Synthetic tests confirm unknown classes contribute zero loss/gradient; YOLO26n synthetic forward/backward produces finite losses and gradients.
+  - Updated README and dataset intake notes to distinguish criterion prototype from a train-ready data pipeline.
+
+- **Unfinished / Next Steps (CRITICAL):**
+  - [ ] Add a per-image class-scope manifest and custom dataset/trainer integration so `known_classes` reaches both training and validation batches.
+  - [ ] Confirm augmentations preserve per-image scopes, validate label/scope consistency, then run a synthetic trainer smoke test.
+  - [ ] Continue pending review of partial-label images and complete all data gates; do not train on real project data until every gate passes.
+
+- **Known Blocks / Issues:**
+  - The standard YOLO dataset/trainer does not emit the required `known_classes` tensor. The prototype is not wired to `indoor-train` and must not be used for real training yet.
+  - Data gate remains FAILED. No real dataset, labels, pretrained weights, or project model were used in validation.
+  - Dataset and report files remain on E:; never read or print `projects/.env`.
+
+- **Validation:**
+  - Build: NOT APPLICABLE
+  - Tests: PASS (78/78 full suite; 7/7 focused class-mask tests)
+  - Typecheck: NOT CONFIGURED
+  - Lint: PASS (`.venv\\Scripts\\python.exe -m ruff check . --no-cache`)
+
+- **Git State:**
+  - Branch: `main`
+  - Last Commit: `2443714 feat: add partial-label cross-class review audit`
+  - Working Tree: DIRTY
+
+- **Uncommitted Changes:**
+  - `CHANGES.log`
+  - `projects/indoor-detection/README.md`
+  - `projects/indoor-detection/docs/JOINT_DATASET_INTAKE.md`
+  - `projects/indoor-detection/src/indoor_detection/partial_label_loss.py`
+  - `projects/indoor-detection/tests/test_partial_label_loss.py`
+  - `.codex/` (pre-existing untracked directory, untouched)
+
+- **Active Files:**
+  - `CHANGES.log`
+  - `projects/indoor-detection/README.md`
+  - `projects/indoor-detection/docs/JOINT_DATASET_INTAKE.md`
+  - `projects/indoor-detection/src/indoor_detection/partial_label_loss.py`
+  - `projects/indoor-detection/tests/test_partial_label_loss.py`
+
+- **Notes for Next Agent:**
+  - Loss masking only affects classification BCE. Out-of-scope GT boxes are rejected because they would otherwise affect assignment and localization loss.
+  - Next implement scope manifest + per-image batch metadata through a custom YOLO dataset/trainer; include validation batches and augmented samples.
+  - Project `.venv` is local to `projects/indoor-detection`; `E:\HomeAssistantPi4` remains for datasets/reports/artifacts only.
