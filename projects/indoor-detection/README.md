@@ -27,9 +27,8 @@ nhiệt đạt chuẩn.
 - [x] Xác định partial-label conflict và dừng hướng vẽ lại hàng nghìn box.
 - [x] Tải, chuẩn hóa và audit structure/class/duplicate dataset v32 đã gắn đủ
   `smoke/fire/person`.
-- [ ] Gỡ blocker duplicate có annotation xung đột và tìm nguồn indoor phù hợp;
-  spot-check hiện không đạt data gate. Gói review 59 nhóm duplicate đã tạo
-  dưới `E:\HomeAssistantPi4\reports\indoor-joint-v1-audit`.
+- [x] Tạo scoped joint dataset v2, loại hai duplicate conflict khỏi index và
+  hoàn tất automated + visual data gate với các giới hạn miền được ghi rõ.
 - [ ] Train, calibrate và đánh giá checkpoint ba lớp.
 - [ ] Export NCNN và benchmark trên Pi 4.
 - [ ] Tích hợp camera thật.
@@ -104,16 +103,20 @@ Scoped derivative hiện nằm tại
 validation và 4.297 test. Nó chỉ là index cùng manifest scope trỏ tới ba nguồn
 bất biến. Audit đủ 23.498 ảnh đạt structure, label/scope, class distribution và
 exact-duplicate gate; hai duplicate conflict ở v1 đã được adjudicate và loại
-khỏi index v2, không sửa nguồn. Visual annotation/domain gate vẫn pending nên
-chưa được train.
+khỏi index v2, không sửa nguồn. Visual gate đã review 390 mẫu phân tầng và đạt
+`PASS_WITH_LIMITATIONS`: box trong scope nhìn chung hợp lý, nhưng corpus có cả
+ảnh outdoor, staged và synthetic. Artifact nằm tại
+`E:/HomeAssistantPi4/reports/indoor-partial-joint-v2-visual-gate`.
+Training được phép chỉ qua class-scoped trainer; đánh giá indoor phải được báo
+cáo riêng.
 
 `indoor-prepare-joint` hiện vẫn yêu cầu mỗi nguồn khai báo đủ ba class và mọi ảnh
 có label file. Đây là giới hạn hiện tại của tool, không còn là yêu cầu sản phẩm.
 Metadata trên E: đã có bốn ứng viên: `indoor-fs-v2` (5.000 ảnh fire/smoke),
 `indoor-home-fire-v2` (6.500 ảnh fire/smoke), `coco-person-v1` (12.000 ảnh
 person) và `indoor-joint-v1` v32 (9.749 ảnh cả ba class, nhưng indoor gate
-failed). Ba nguồn partial đã được ghép thành scoped index để audit, chưa được
-train. Bước tiếp theo là chạy toàn bộ data gate trên derivative mới. Tình trạng
+failed). Ba nguồn partial đã được ghép thành scoped index v2 và đã qua data gate
+với các giới hạn nêu trên; bước tiếp theo là train baseline thống nhất. Tình trạng
 license được ghi lại khi intake;
 thiếu metadata không tự loại nguồn khỏi khâu đánh giá, nhưng không được xem là
 quyền sử dụng đã xác nhận.
@@ -139,17 +142,17 @@ yếu là sự cố ngoài trời. **Chưa train** cho đến khi giải quyết
 
 ## Huấn luyện
 
-Config đầu tiên dành cho corpus thống nhất:
+Config đầu tiên dành cho scoped corpus thống nhất:
 
 ```powershell
-indoor-train --config configs/train_joint_v1.yaml
+indoor-train --config configs/train_indoor_v1.yaml
 ```
 
 Mặc định config đọc dữ liệu và ghi runs trên ổ E. Có thể override:
 
 ```powershell
-indoor-train --config configs/train_joint_v1.yaml `
-  --data E:\HomeAssistantPi4\processed\indoor-joint-v1\dataset.yaml `
+indoor-train --config configs/train_indoor_v1.yaml `
+  --data E:/HomeAssistantPi4/processed/indoor-partial-joint-v2/dataset.yaml `
   --project E:\HomeAssistantPi4\runs\indoor-detection
 ```
 

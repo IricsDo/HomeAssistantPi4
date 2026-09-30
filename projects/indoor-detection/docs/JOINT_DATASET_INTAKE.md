@@ -180,7 +180,16 @@ train/val/test và `class_scope_manifest.json` theo từng ảnh. Audit đầy �
 trong v1 đã được adjudicate: giữ `test_1240` thay `test_584`, giữ `test_696`
 thay `test_967`; source không bị sửa. Report nằm tại
 `E:\HomeAssistantPi4\reports\indoor-partial-joint-v2-audit\index-audit.json`.
-Visual annotation/domain gate vẫn pending. Chưa train baseline.
+Visual annotation/domain gate đã được hoàn tất trên toàn bộ 390 mẫu phân tầng.
+Ledger gốc được giữ nguyên; quyết định mới nằm trong
+`E:/HomeAssistantPi4/reports/indoor-partial-joint-v2-visual-gate` với 285
+dòng `screened_in_scope_annotation`, 90 dòng
+`screened_no_clear_fire_smoke` và 15 dòng `confirmed_partial_label`. Box trong
+scope nhìn chung hợp lý ở độ phân giải contact sheet. Gate đạt
+`PASS_WITH_LIMITATIONS` vì corpus trộn indoor/outdoor và Indoor-FS có ảnh staged
+hoặc synthetic. Automated gate và visual gate đều đạt, nên training baseline
+được phép qua class-scoped trainer đã khóa; kết quả đánh giá indoor phải được
+báo cáo riêng.
 
 ### Gói review duplicate (2026-09-30)
 

@@ -878,3 +878,62 @@ validation state.
   - v2 scope-manifest SHA-256: `3c8888d117b20dc435c5c338bd8ac23b182aadf853c1e2e6d445486411e405be`.
   - v2 audit-report SHA-256: `eaac4916d06c3b08e6da40a5add1e20a0b14b153e68bb7f861528a8743ba6177`.
   - `configs/train_indoor_v1.yaml` points to v2 but training remains blocked by the pending visual gate.
+
+## [2026-09-30 22:10 +07:00] - Scoped visual data gate from OpenAI Codex
+
+- **Current Task:** Finalize the stratified annotation/domain review for scoped joint dataset v2.
+- **Status:** COMPLETED
+- **Current Owner:** OpenAI Codex
+
+- **Completed in this session:**
+  - Reviewed all 26 contact sheets covering 390 stratified rows across Home-fire, Indoor-FS, and COCO person sources.
+  - Added `indoor-finalize-visual-gate`, which requires an already-passing automated audit and explicit review confirmation, preserves the source ledger, and writes a versioned review ledger plus gate decision.
+  - Finalized 285 pending rows as `screened_in_scope_annotation`; retained 90 `screened_no_clear_fire_smoke` and 15 `confirmed_partial_label` decisions.
+  - Recorded `PASS_WITH_LIMITATIONS`: sampled in-scope boxes are generally plausible, while the corpus includes mixed indoor/outdoor scenes and staged/synthetic Indoor-FS content.
+  - Created `E:\HomeAssistantPi4\reports\indoor-partial-joint-v2-visual-gate\review-v2.csv` and `visual-gate.json`; the automated and visual gates now allow baseline training only through the pinned class-scoped trainer.
+  - Updated the README and joint intake notes to point training at scoped dataset/config v2.
+
+- **Unfinished / Next Steps (CRITICAL):**
+  - [ ] Run a preflight on the Windows GPU and start the YOLO26n baseline with `configs/train_indoor_v1.yaml`.
+  - [ ] Evaluate metrics by source/domain, with a separate indoor-focused result; do not hide the mixed-domain limitation behind aggregate metrics.
+  - [ ] Calibrate class-specific thresholds after training, then export NCNN and benchmark when Raspberry Pi 4 hardware is available.
+
+- **Known Blocks / Issues:**
+  - The visual gate is a 390-image stratified spot-check, not exhaustive full-resolution inspection of all 23,498 images.
+  - Class masks are mandatory. Training through the stock Ultralytics trainer would treat unknown target classes as background.
+  - Raspberry Pi camera integration and hardware benchmark remain blocked until the user provides hardware.
+  - Dataset/report artifacts remain on E:; `projects/.env` was not read or printed.
+
+- **Validation:**
+  - Build: NOT APPLICABLE
+  - Tests: PASS (91/91 full suite)
+  - Typecheck: NOT CONFIGURED
+  - Lint: PASS (`.venv\\Scripts\\python.exe -m ruff check . --no-cache`; sandbox emitted a non-fatal access warning)
+
+- **Git State:**
+  - Branch: `main`
+  - Last Commit: `b1626cc feat: audit scoped joint dataset`
+  - Working Tree: DIRTY
+
+- **Uncommitted Changes:**
+  - `CHANGES.log`
+  - `projects/indoor-detection/README.md`
+  - `projects/indoor-detection/docs/JOINT_DATASET_INTAKE.md`
+  - `projects/indoor-detection/pyproject.toml`
+  - `projects/indoor-detection/src/indoor_detection/scoped_visual_gate.py`
+  - `projects/indoor-detection/tests/test_scoped_visual_gate.py`
+  - `.codex/` (pre-existing untracked directory, untouched)
+
+- **Active Files:**
+  - `projects/indoor-detection/configs/train_indoor_v1.yaml`
+  - `projects/indoor-detection/src/indoor_detection/scoped_visual_gate.py`
+  - `projects/indoor-detection/tests/test_scoped_visual_gate.py`
+  - `E:\HomeAssistantPi4\processed\indoor-partial-joint-v2\`
+  - `E:\HomeAssistantPi4\reports\indoor-partial-joint-v2-audit\index-audit.json`
+  - `E:\HomeAssistantPi4\reports\indoor-partial-joint-v2-visual-gate\`
+
+- **Notes for Next Agent:**
+  - Source review ledger SHA-256: `e9f1c60733899e2bad9024396865367695ee00afe25e4fe6abac163a1df1fe56`.
+  - Finalized review ledger SHA-256: `bb6d0c5e2b141ff8a7e37bd9ac80adeac589a12bf4a04e45e03543b5961d1d64`.
+  - Visual gate decision SHA-256: `9ff64ed7f7436e4d6f16618b39156667c61b761650b86ce0644819c5a680412d`.
+  - All data gates are now satisfied with documented limitations; real baseline training is permitted through `indoor-train --config configs/train_indoor_v1.yaml`.
