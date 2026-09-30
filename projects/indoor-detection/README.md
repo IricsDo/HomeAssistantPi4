@@ -165,6 +165,16 @@ inline mAP50/mAP50-95 là 0,804/0,506 và final là 0,803/0,506. Tiếp tục hu
 luyện phải khởi tạo từ `last.pt` của v1 trong một run mới, không resume hoặc ghi
 đè run v1.
 
+Config continuation đã sửa validator:
+
+```powershell
+indoor-train --config configs/train_indoor_v2.yaml
+```
+
+Config v2 khởi tạo trọng số từ `last.pt` của v1 nhưng tạo optimizer mới: AdamW,
+learning rate ban đầu 0,001, tối đa 40 epoch và patience 15. Output được ghi vào
+run `indoor_partial_joint_yolo26n_v2`; v1 được giữ nguyên để truy vết.
+
 ## Inference
 
 ```powershell

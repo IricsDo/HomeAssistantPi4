@@ -1008,3 +1008,59 @@ validation state.
     `3b019b9bc962640c6542852e7aa0e17771571e32ad7d87c3f304e5234442887a`.
   - Do not use v1 `best.pt` for continuation and do not overwrite the v1 run.
   - Dataset/report artifacts stay on E:; never read or print `projects/.env`.
+
+## [2026-10-01] - Corrected continuation config from OpenAI Codex
+
+- **Current Task:** Continue the unified three-class baseline from the strongest
+  v1 checkpoint with corrected scoped validation.
+- **Status:** IN_PROGRESS
+- **Current Owner:** OpenAI Codex
+
+- **Completed in this session:**
+  - Added `configs/train_indoor_v2.yaml`, initialized from the immutable original
+    v1 `last.pt` and writing to a new `indoor_partial_joint_yolo26n_v2` run.
+  - Selected AdamW with `lr0=0.001`, 40 maximum epochs and patience 15 for
+    continuation fine-tuning; all scope-safe multi-image augmentations remain off.
+  - Confirmed the source checkpoint exists, the RTX 5070 Laptop GPU is available,
+    and the v2 run directory does not yet exist.
+  - Documented the v2 invocation and optimizer policy in the project README.
+
+- **Unfinished / Next Steps (CRITICAL):**
+  - [ ] Start `indoor-train --config configs/train_indoor_v2.yaml` and verify the
+    first full inline validation metrics are consistent with the regression run.
+  - [ ] Monitor early stopping and retain the final `best.pt`/`last.pt` checksums.
+  - [ ] Evaluate the selected checkpoint by class and source/domain, then calibrate
+    class-specific thresholds before NCNN export.
+
+- **Known Blocks / Issues:**
+  - Raspberry Pi benchmark and camera integration remain blocked on hardware.
+  - Mixed indoor/outdoor and staged/synthetic source limitations remain as recorded
+    by the visual data gate.
+
+- **Validation:**
+  - Build: NOT APPLICABLE
+  - Tests: PASS (92/92)
+  - Typecheck: NOT CONFIGURED
+  - Lint: PASS (`.venv\\Scripts\\python.exe -m ruff check . --no-cache`)
+
+- **Git State:**
+  - Branch: `main`
+  - Last Commit: `f88d1eb fix:correct-scoped-validation-metrics`
+  - Working Tree: DIRTY (v2 config milestone pending commit)
+
+- **Uncommitted Changes:**
+  - `CHANGES.log`
+  - `projects/indoor-detection/README.md`
+  - `projects/indoor-detection/configs/train_indoor_v2.yaml`
+  - `.codex/` (pre-existing untracked directory, untouched)
+
+- **Active Files:**
+  - `projects/indoor-detection/configs/train_indoor_v2.yaml`
+  - `E:\HomeAssistantPi4\runs\indoor-detection\indoor_partial_joint_yolo26n_v1\weights\last.pt`
+  - `E:\HomeAssistantPi4\processed\indoor-partial-joint-v2\dataset.yaml`
+
+- **Notes for Next Agent:**
+  - This is a fresh optimizer run from v1 weights, not a resume, because the v1
+    checkpoint was stripped when training ended.
+  - Keep v1 artifacts immutable and keep all new run artifacts on E:.
+  - Never read or print `projects/.env`.
