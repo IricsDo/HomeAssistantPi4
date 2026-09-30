@@ -35,6 +35,35 @@ def _review_id(record: dict[str, Any]) -> str:
     return hashlib.sha256(payload).hexdigest()[:12]
 
 
+def _candidate_id(image: str, source: str, index: int, xywhn: list[float]) -> str:
+    payload = json.dumps(
+        {"image": image, "source": source, "index": index, "xywhn": xywhn},
+        sort_keys=True,
+        ensure_ascii=True,
+    ).encode("utf-8")
+    return hashlib.sha256(payload).hexdigest()[:12]
+
+
+def _draw_normalized_box(
+    draw: ImageDraw.ImageDraw,
+    xywhn: list[float],
+    *,
+    image_size: tuple[int, int],
+    offset: tuple[int, int],
+    color: str,
+    label: str,
+) -> None:
+    x_center, y_center, width, height = xywhn
+    image_width, image_height = image_size
+    left, top = offset
+    x1 = left + (x_center - width / 2) * image_width
+    y1 = top + (y_center - height / 2) * image_height
+    x2 = left + (x_center + width / 2) * image_width
+    y2 = top + (y_center + height / 2) * image_height
+    draw.rectangle((x1, y1, x2, y2), outline=color, width=3)
+    draw.text((x1 + 2, max(0, y1 - 12)), label, fill=color)
+
+
 def _render_tile(record: dict[str, Any], review_id: str) -> Image.Image:
     image_path = Path(record["image"])
     with Image.open(image_path) as source:
@@ -44,22 +73,47 @@ def _render_tile(record: dict[str, Any], review_id: str) -> Image.Image:
         left = (IMAGE_AREA[0] - source.width) // 2
         top = (IMAGE_AREA[1] - source.height) // 2
         tile.paste(source, (left, top))
+        image_size = source.size
 
     draw = ImageDraw.Draw(tile)
     candidates = record.get("person_candidates", [])
-    for candidate in candidates:
-        x_center, y_center, width, height = candidate["xywhn"]
-        x1 = left + (x_center - width / 2) * source.width
-        y1 = top + (y_center - height / 2) * source.height
-        x2 = left + (x_center + width / 2) * source.width
-        y2 = top + (y_center + height / 2) * source.height
-        color = "#2563eb" if candidate["confidence"] >= 0.65 else "#dc2626"
-        draw.rectangle((x1, y1, x2, y2), outline=color, width=3)
-        draw.text((x1 + 2, max(0, y1 - 12)), f"{candidate['confidence']:.2f}", fill=color)
+    for index, candidate in enumerate(candidates):
+        candidate_id = _candidate_id(record["image"], "primary", index, candidate["xywhn"])
+        _draw_normalized_box(
+            draw,
+            candidate["xywhn"],
+            image_size=image_size,
+            offset=(left, top),
+            color="#2563eb",
+            label=f"N {candidate_id[:4]} {candidate['confidence']:.2f}",
+        )
+        if candidate.get("verifier_xywhn") is not None:
+            _draw_normalized_box(
+                draw,
+                candidate["verifier_xywhn"],
+                image_size=image_size,
+                offset=(left, top),
+                color="#ca8a04",
+                label=(
+                    f"M {candidate['verifier_confidence']:.2f} i{candidate['verifier_iou']:.2f}"
+                ),
+            )
+    verifier_only = record.get("verifier_only_candidates", [])
+    for index, candidate in enumerate(verifier_only):
+        candidate_id = _candidate_id(record["image"], "verifier_only", index, candidate["xywhn"])
+        _draw_normalized_box(
+            draw,
+            candidate["xywhn"],
+            image_size=image_size,
+            offset=(left, top),
+            color="#9333ea",
+            label=f"M-only {candidate_id[:4]} {candidate['confidence']:.2f}",
+        )
     max_confidence = max((candidate["confidence"] for candidate in candidates), default=0.0)
     footer = (
         f"{review_id} | {record.get('split', '?')} | "
-        f"{record.get('status', '?')} | max={max_confidence:.2f}"
+        f"{record.get('status', '?')} | N={len(candidates)} M-only={len(verifier_only)} "
+        f"max={max_confidence:.2f}"
     )
     draw.text((5, IMAGE_AREA[1] + 5), footer, fill="black")
     draw.text((5, IMAGE_AREA[1] + 20), image_path.name[:48], fill="#374151")
@@ -87,22 +141,39 @@ def create_review_bundle(
         review_id = _review_id(record)
         status = str(record.get("status", "unknown"))
         grouped[status].append((review_id, record))
-        confidences = [
-            float(candidate["confidence"]) for candidate in record.get("person_candidates", [])
-        ]
-        decision_rows.append(
-            {
-                "review_id": review_id,
-                "split": str(record.get("split", "")),
-                "status": status,
-                "candidate_boxes": str(len(confidences)),
-                "min_confidence": f"{min(confidences):.6f}" if confidences else "",
-                "max_confidence": f"{max(confidences):.6f}" if confidences else "",
-                "decision": "",
-                "notes": "",
-                "image": record["image"],
-            }
+        candidate_groups = (
+            ("primary", record.get("person_candidates", [])),
+            ("verifier_only", record.get("verifier_only_candidates", [])),
         )
+        for source, candidates in candidate_groups:
+            for index, candidate in enumerate(candidates):
+                decision_rows.append(
+                    {
+                        "review_id": review_id,
+                        "candidate_id": _candidate_id(
+                            record["image"], source, index, candidate["xywhn"]
+                        ),
+                        "source": source,
+                        "candidate_index": str(index),
+                        "split": str(record.get("split", "")),
+                        "status": status,
+                        "confidence": f"{float(candidate['confidence']):.6f}",
+                        "verifier_confidence": (
+                            f"{float(candidate['verifier_confidence']):.6f}"
+                            if candidate.get("verifier_confidence") is not None
+                            else ""
+                        ),
+                        "verifier_iou": (
+                            f"{float(candidate['verifier_iou']):.6f}"
+                            if candidate.get("verifier_iou") is not None
+                            else ""
+                        ),
+                        "decision": "",
+                        "notes": "",
+                        "image": record["image"],
+                        "xywhn": json.dumps(candidate["xywhn"], separators=(",", ":")),
+                    }
+                )
 
     page_capacity = GRID[0] * GRID[1]
     page_counts: dict[str, int] = {}
@@ -120,14 +191,18 @@ def create_review_bundle(
 
     fields = [
         "review_id",
+        "candidate_id",
+        "source",
+        "candidate_index",
         "split",
         "status",
-        "candidate_boxes",
-        "min_confidence",
-        "max_confidence",
+        "confidence",
+        "verifier_confidence",
+        "verifier_iou",
         "decision",
         "notes",
         "image",
+        "xywhn",
     ]
     with (output_dir / "decisions.tsv").open("w", encoding="utf-8", newline="") as stream:
         writer = csv.DictWriter(stream, fieldnames=fields, delimiter="\t")
@@ -138,9 +213,13 @@ def create_review_bundle(
         "schema_version": 1,
         "candidates": candidates_path.resolve().as_posix(),
         "records": len(records),
+        "decision_rows": len(decision_rows),
         "grid": {"columns": GRID[0], "rows": GRID[1]},
         "pages": page_counts,
-        "workflow": "Set decision to accept or reject for every row; keep review_id unchanged",
+        "workflow": (
+            "Set decision to accept or reject for every candidate row; "
+            "keep review_id and candidate_id unchanged"
+        ),
     }
     (output_dir / "report.json").write_text(
         json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"

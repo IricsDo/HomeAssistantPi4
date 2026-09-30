@@ -67,5 +67,32 @@ indoor-review-person `
 
 Mở các trang JPEG theo nhóm status và điền `accept` hoặc `reject` vào cột
 `decision` của `decisions.tsv`; không thay đổi `review_id`.
+
+Có thể dùng một COCO detector mạnh hơn để ưu tiên thứ tự review, nhưng không tự
+động chấp nhận nhãn:
+
+```powershell
+indoor-verify-person `
+  --candidates E:\HomeAssistantPi4\reports\person-audit-v2\candidates.jsonl `
+  --verifier-model E:\HomeAssistantPi4\models\pretrained\yolo26m.pt `
+  --output-dir E:\HomeAssistantPi4\reports\person-consensus-v1
+```
+
+Sau đó truyền `person-consensus-v1\candidates.jsonl` cho
+`indoor-review-person`. Nhóm `consensus_high_review` chỉ có nghĩa hai model đồng
+thuận, vẫn cần người review trước khi ghi nhãn.
+
+Sau khi mọi candidate row trong `decisions.tsv` đã là `accept` hoặc `reject`, tạo
+derivative mới (lệnh sẽ từ chối nếu còn ô trống hoặc có box accept trùng nhau):
+
+```powershell
+indoor-apply-person `
+  --source-data E:\HomeAssistantPi4\interim\indoor-smoke-fire-v1\dataset.yaml `
+  --decisions E:\HomeAssistantPi4\reviews\person-consensus-v3\decisions.tsv `
+  --output-dir E:\HomeAssistantPi4\processed\indoor-smoke-fire-person-v1
+```
+
+Source images/labels không bị sửa; derivative dùng hardlink khi filesystem hỗ trợ
+và lưu checksum bảng quyết định trong manifest.
 Đường dẫn `E:` chỉ là cấu hình máy phát triển; khi đưa lên Pi 4, dùng file
 `dataset.yaml` được tạo trong thư mục processed hoặc truyền `indoor-train --data ...`.

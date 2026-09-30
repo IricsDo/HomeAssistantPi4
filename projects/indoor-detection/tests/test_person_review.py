@@ -24,11 +24,14 @@ def test_review_bundle_creates_contact_sheet_and_decision_template(tmp_path: Pat
     report = create_review_bundle(candidates_path=candidates, output_dir=tmp_path / "review")
 
     assert report["records"] == 1
+    assert report["decision_rows"] == 1
     assert report["pages"] == {"manual_review": 1}
     assert (tmp_path / "review/manual_review/page-0001.jpg").is_file()
     with (tmp_path / "review/decisions.tsv").open(encoding="utf-8", newline="") as stream:
         rows = list(csv.DictReader(stream, delimiter="\t"))
     assert rows[0]["decision"] == ""
+    assert rows[0]["source"] == "primary"
+    assert len(rows[0]["candidate_id"]) == 12
     assert rows[0]["image"] == image_path.as_posix()
 
 

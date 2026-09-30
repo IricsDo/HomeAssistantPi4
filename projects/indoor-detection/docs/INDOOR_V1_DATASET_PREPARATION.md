@@ -56,6 +56,32 @@ trang high-confidence review và 92 trang manual review, mỗi trang 16 ảnh.
 Quan sát mẫu cho thấy false positive trên bàn tay/ngọn lửa ngay cả ở nhóm
 confidence cao, vì vậy không candidate nào được tự động chấp nhận.
 
+## Cross-model consensus review
+
+YOLO26m COCO pretrained được dùng làm verifier offline trên laptop, không phải
+model deployment. Checkpoint có SHA-256
+`401cea9ab23ad19246ff7744859816bc599f350e93c9dd30367b6f0a0745d0b7`.
+Với verifier confidence 0,10, strong confidence 0,50 và IoU 0,50:
+
+- 914 ảnh thuộc `consensus_high_review`.
+- 711 ảnh thuộc `consensus_mixed_review`.
+- 735 ảnh thuộc `disagreement_review`.
+- Verifier đề xuất thêm 1.477 box không có trong candidate YOLO26n.
+
+Artifacts consensus nằm trong
+`E:\HomeAssistantPi4\reports\person-consensus-v1`; `report.json` có SHA-256
+`7ed6868f4daf0b32058d24628a76ab5784d5b80cf4d064fb309ead4f5cb0eb1e`,
+`candidates.jsonl` có SHA-256
+`f8590a84b21221d762bca948cfc2f2d5457c18f524f3f2e18e64eede6e0677d1`.
+
+Review bundle chuẩn hiện tại là
+`E:\HomeAssistantPi4\reviews\person-consensus-v3`: 149 contact sheets và 5.364
+candidate rows. Mỗi box có `candidate_id` cùng integrity check riêng. File
+`decisions.tsv` ban đầu có SHA-256
+`c7ff8515edff54cf1d44a0ed8f5d0dade4de4edd935605675fc393289c993430`.
+Validation gate đã được chạy trên file thật và từ chối tạo derivative vì cả 5.364
+quyết định vẫn đang trống. Không có output dở dang được tạo.
+
 Source labels chưa bị sửa. `indoor-v1` hiện là index kiểm kê, **chưa phải corpus
 được phép train**. Gate tiếp theo là review candidate, tạo derivative smoke/fire
 có person label, audit lại duplicate/annotation completeness, rồi compose một
