@@ -7,6 +7,7 @@ from PIL import Image
 
 from indoor_detection.dataset import DatasetValidationError
 from indoor_detection.joint_dataset import class_mapping, prepare_joint_dataset
+from scripts.audit_joint_dataset import audit_joint_dataset
 
 
 def _write_joint_source(root: Path, names: str = "[fire, human, smoke]") -> Path:
@@ -98,3 +99,27 @@ def test_joint_dataset_requires_label_for_every_image(tmp_path: Path) -> None:
         )
 
     assert not output_dir.exists()
+
+
+def test_audit_renders_side_by_side_duplicate_annotation_conflicts(tmp_path: Path) -> None:
+    dataset_root = tmp_path / "dataset"
+    report_dir = tmp_path / "report"
+    for split in ("train", "val", "test"):
+        (dataset_root / "images" / split).mkdir(parents=True)
+        (dataset_root / "labels" / split).mkdir(parents=True)
+    for name in ("copy-a.jpg", "copy-b.jpg"):
+        Image.new("RGB", (32, 32), "red").save(dataset_root / "images" / "train" / name)
+    Image.new("RGB", (32, 32), "blue").save(dataset_root / "images" / "val" / "val.jpg")
+    Image.new("RGB", (32, 32), "green").save(dataset_root / "images" / "test" / "test.jpg")
+    (dataset_root / "labels" / "train" / "copy-a.txt").write_text("0 0.5 0.5 0.2 0.2\n")
+    (dataset_root / "labels" / "train" / "copy-b.txt").write_text("1 0.5 0.5 0.3 0.3\n")
+    (dataset_root / "labels" / "val" / "val.txt").write_text("")
+    (dataset_root / "labels" / "test" / "test.txt").write_text("")
+    (dataset_root / "manifest.json").write_text('{"source": {}}')
+
+    report = audit_joint_dataset(dataset_root, report_dir)
+
+    assert report["duplicate_label_conflict_groups"] == 1
+    assert (report_dir / "duplicate-conflicts" / "duplicate-001.jpg").is_file()
+    csv_text = (report_dir / "duplicate-adjudication.csv").read_text(encoding="utf-8-sig")
+    assert "copy-a.jpg" in csv_text and "copy-b.jpg" in csv_text

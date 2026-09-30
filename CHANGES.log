@@ -220,3 +220,71 @@ validation state.
     permissions in this Windows sandbox; 68 tests passed.
   - Preserve the data gate and do not run `configs/train_joint_v1.yaml` until the
     duplicate-label conflicts and indoor-domain suitability are resolved.
+## [2026-09-30 14:51 +07:00] - Handover from OpenAI Codex
+
+- **Current Task:** Adjudicate conflicting v32 duplicates and find fully labeled
+  indoor-relevant data for the unified detector.
+- **Status:** IN_PROGRESS
+- **Current Owner:** OpenAI Codex
+
+- **Completed in this session:**
+  - Extended the joint dataset audit to render a side-by-side contact sheet for
+    every exact-duplicate group with conflicting labels and write a CSV review
+    ledger with blank decision/notes fields.
+  - Regenerated audit outputs under
+    `E:\HomeAssistantPi4\reports\indoor-joint-v1-audit`: 59 conflict sheets
+    and `duplicate-adjudication.csv`.
+  - Confirmed the audit remains structurally valid, with 100 exact duplicate
+    groups, 59 conflicting-label groups, zero cross-split exact groups, and zero
+    out-of-image boxes. The gate remains failed.
+  - Identified the Zenodo Indoor Fire Smoke Dataset as a candidate with 5,000
+    indoor images and fire/smoke boxes. Its published metadata does not list
+    person annotations, so it cannot be directly added to the three-class set.
+  - Documented the new review artifacts and candidate source. No labels were
+    changed and no model was trained.
+
+- **Unfinished / Next Steps (CRITICAL):**
+  - [ ] Review all 59 contact sheets and record label decisions/notes in the CSV;
+    apply only reviewed corrections in a new processed dataset.
+  - [ ] Inspect/license-check the Zenodo archive or find/collect an indoor source
+    with all three classes exhaustively labeled.
+  - [ ] Rebuild and rerun structure, duplicate, distribution, negative-sample
+    and stratified visual annotation gates.
+  - [ ] Train only after the full data gate passes.
+
+- **Known Blocks / Issues:**
+  - The v32 fire/smoke distribution is outdoor-heavy and fails indoor relevance.
+  - Duplicate annotation conflicts need a reviewer; the review package is
+    generated but decisions are not yet recorded.
+  - Full pytest collection could not run with the system Python because OpenCV
+    (`cv2`) is not installed; focused intake/audit tests passed.
+
+- **Validation:**
+  - Build: NOT APPLICABLE for dataset-preparation phase
+  - Tests: PASS (5 focused intake/audit tests); full collection BLOCKED by missing
+    `cv2` in system Python
+  - Typecheck: NOT CONFIGURED
+  - Lint: PASS (`python -m ruff check . --no-cache`)
+
+- **Git State:**
+  - Branch: `main`
+  - Last Commit: `5f89750 feat: audit fully labeled joint dataset intake`
+  - Working Tree: DIRTY (milestone pending commit)
+
+- **Uncommitted Changes:**
+  - `CHANGES.log`
+  - `projects/indoor-detection/README.md`
+  - `projects/indoor-detection/docs/JOINT_DATASET_INTAKE.md`
+  - `projects/indoor-detection/scripts/audit_joint_dataset.py`
+  - `projects/indoor-detection/tests/test_joint_dataset.py`
+
+- **Active Files:**
+  - `projects/indoor-detection/scripts/audit_joint_dataset.py`
+  - `projects/indoor-detection/tests/test_joint_dataset.py`
+  - `projects/indoor-detection/docs/JOINT_DATASET_INTAKE.md`
+  - `CHANGES.log`
+
+- **Notes for Next Agent:**
+  - Data artifacts stay on E: and must not be committed.
+  - `projects/.env` contains the Roboflow API key; never read, print or commit it.
+  - Keep training blocked until indoor suitability and every data gate pass.

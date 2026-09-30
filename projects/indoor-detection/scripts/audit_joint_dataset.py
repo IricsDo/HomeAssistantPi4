@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import csv
 import json
 import random
 from collections import Counter, defaultdict
@@ -135,6 +136,42 @@ def _render_group(items: list[dict[str, Any]], destination: Path) -> None:
     sheet.save(destination, quality=90)
 
 
+def _render_duplicate_conflicts(
+    dataset_root: Path,
+    groups: list[list[dict[str, str]]],
+    output_dir: Path,
+) -> list[dict[str, Any]]:
+    """Render every annotation variant side by side for manual adjudication."""
+    output_dir.mkdir(parents=True, exist_ok=True)
+    review_rows: list[dict[str, Any]] = []
+    for group_number, group in enumerate(groups, start=1):
+        items: list[dict[str, Any]] = []
+        for member in group:
+            image_path = dataset_root / "images" / member["split"] / member["file"]
+            label_path = dataset_root / "labels" / member["split"] / f"{image_path.stem}.txt"
+            rows = parse_yolo_label(label_path.read_text(encoding="utf-8-sig"), set(NAMES))
+            items.append({
+                "split": member["split"],
+                "image": image_path,
+                "boxes": [
+                    {"class_id": int(row[0]), "xywhn": [float(value) for value in row[1:]]}
+                    for row in rows
+                ],
+            })
+            review_rows.append({
+                "group": f"duplicate-{group_number:03d}",
+                "split": member["split"],
+                "image": member["file"],
+                "label_file": label_path.name,
+                "label_rows": len(rows),
+                "classes": ",".join(sorted({NAMES[int(row[0])] for row in rows})),
+                "decision": "",
+                "review_notes": "",
+            })
+        _render_group(items, output_dir / f"duplicate-{group_number:03d}.jpg")
+    return review_rows
+
+
 def audit_joint_dataset(
     dataset_root: Path,
     report_dir: Path,
@@ -149,6 +186,7 @@ def audit_joint_dataset(
     records, distributions = _records(dataset_root)
     manifest = json.loads((dataset_root / "manifest.json").read_text(encoding="utf-8"))
     duplicate_label_conflicts: list[list[str]] = []
+    conflict_groups: list[list[dict[str, str]]] = []
     for group in structure["duplicates"]["exact_duplicate_examples"]:
         signatures = {
             _label_signature(
@@ -158,6 +196,7 @@ def audit_joint_dataset(
         }
         if len(signatures) > 1:
             duplicate_label_conflicts.append([f"{item['split']}/{item['file']}" for item in group])
+            conflict_groups.append(group)
 
     split_images = {
         split: [record["image"] for record in records if record["split"] == split]
@@ -170,6 +209,16 @@ def audit_joint_dataset(
     contact_dir.mkdir(exist_ok=True)
     for group, items in samples.items():
         _render_group(items, contact_dir / f"{group}.jpg")
+    conflict_dir = report_dir / "duplicate-conflicts"
+    conflict_rows = _render_duplicate_conflicts(dataset_root, conflict_groups, conflict_dir)
+    review_csv = report_dir / "duplicate-adjudication.csv"
+    with review_csv.open("w", encoding="utf-8-sig", newline="") as stream:
+        writer = csv.DictWriter(stream, fieldnames=[
+            "group", "split", "image", "label_file", "label_rows", "classes",
+            "decision", "review_notes",
+        ])
+        writer.writeheader()
+        writer.writerows(conflict_rows)
     gate_blockers: list[str] = []
     boxes_outside_image = sum(
         split_counts.get("boxes_outside_image", 0) for split_counts in distributions.values()
@@ -202,6 +251,8 @@ def audit_joint_dataset(
         "exact_duplicates": structure["duplicates"],
         "duplicate_label_conflict_groups": len(duplicate_label_conflicts),
         "duplicate_label_conflict_examples": duplicate_label_conflicts[:30],
+        "duplicate_conflict_contact_sheets": str(conflict_dir.resolve()),
+        "duplicate_adjudication_csv": str(review_csv.resolve()),
         "roboflow_near_duplicate_exclusions": len(near_duplicate_evidence),
         "roboflow_near_duplicate_examples": near_duplicate_evidence[:100],
         "class_distribution": distributions,

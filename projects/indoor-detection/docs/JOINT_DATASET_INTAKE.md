@@ -93,3 +93,25 @@ pseudo-label trước khi có baseline.
 Không train từ dataset này. Bước tiếp theo là tìm/thu thập nguồn fully labeled
 phù hợp indoor, đồng thời adjudicate duplicate groups có nhãn khác nhau; sau đó
 tạo lại processed dataset và chạy toàn bộ gate trước khi train.
+
+### Gói review duplicate (2026-09-30)
+
+Audit tạo gói adjudication tại
+`E:\HomeAssistantPi4\reports\indoor-joint-v1-audit`:
+
+- `duplicate-conflicts/duplicate-001.jpg` đến `duplicate-059.jpg`: ảnh exact
+  duplicate đặt cạnh nhau với annotation của từng bản để soát bằng mắt.
+- `duplicate-adjudication.csv`: một dòng cho mỗi ảnh trong 59 nhóm, có cột
+  `decision` và `review_notes` để người review ghi quyết định.
+
+Không gộp hay xóa nhãn tự động. Ví dụ nhóm đầu có 7 và 9 box trên cùng ảnh;
+khác biệt này cần xem từng box để phân biệt annotation thiếu với annotation sai.
+
+### Nguồn indoor đang xem xét
+
+[Indoor Fire Smoke Dataset trên Zenodo](https://zenodo.org/records/15826133)
+mô tả 5.000 ảnh indoor và box cho `fire`/`smoke`, chia train/validation/test.
+Metadata hiện công bố không liệt kê annotation `person`, nên không được ghép vào
+dataset ba lớp cho đến khi person được rà soát và gắn đầy đủ trên toàn bộ ảnh.
+Đây mới là nguồn ứng viên để đánh giá license, nội dung archive, cấu trúc và
+chất lượng nhãn; chưa tải hoặc đưa vào processed dataset.

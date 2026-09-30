@@ -28,7 +28,8 @@ nhiệt đạt chuẩn.
 - [x] Tải, chuẩn hóa và audit structure/class/duplicate dataset v32 đã gắn đủ
   `smoke/fire/person`.
 - [ ] Gỡ blocker duplicate có annotation xung đột và tìm nguồn indoor phù hợp;
-  spot-check hiện không đạt data gate.
+  spot-check hiện không đạt data gate. Gói review 59 nhóm duplicate đã tạo
+  dưới `E:\HomeAssistantPi4\reports\indoor-joint-v1-audit`.
 - [ ] Train, calibrate và đánh giá checkpoint ba lớp.
 - [ ] Export NCNN và benchmark trên Pi 4.
 - [ ] Tích hợp camera thật.
