@@ -288,3 +288,69 @@ validation state.
   - Data artifacts stay on E: and must not be committed.
   - `projects/.env` contains the Roboflow API key; never read, print or commit it.
   - Keep training blocked until indoor suitability and every data gate pass.
+## [2026-09-30 15:30 +07:00] - Progress update from OpenAI Codex
+
+- **Current Task:** Resolve duplicate-label conflicts and identify an indoor
+  dataset with complete fire/smoke/person annotation.
+- **Status:** IN_PROGRESS
+- **Current Owner:** OpenAI Codex
+
+- **Completed in this session:**
+  - Quantified all 59 duplicate conflict groups: 22 retain equal per-class box
+    counts but different coordinates; 29 retain the same classes but have
+    different box counts; 8 differ in class presence. This confirms automatic
+    label union is unsafe.
+  - Visually sampled conflict groups 2, 8, 14, 25, and 40. All reviewed scenes
+    were outdoors, reinforcing that these examples do not solve indoor-domain
+    coverage.
+  - Recorded `exclude_group_outdoor` for those five groups in the E: review CSV;
+    54 conflict groups remain unresolved. Original images and labels are intact.
+  - Researched further three-class public datasets. Two Roboflow projects list
+    fire/smoke/human classes and CC BY 4.0 but have no published domain
+    description, so indoor relevance is unverified. A separate 5,000-image
+    research dataset is mixed-domain and only available from its author on
+    request.
+  - Rechecked the Zenodo indoor fire/smoke source; person annotation is absent
+    from its description and the rights/license field is blank, so it is not
+    ready for intake.
+  - No dataset was downloaded or modified; no labels were changed and no model
+    was trained.
+
+- **Unfinished / Next Steps (CRITICAL):**
+  - [ ] Continue visual review of the 59 duplicate conflict sheets and record
+    decisions only where labels can be confidently adjudicated; exclude unresolved
+    groups from any candidate processed corpus.
+  - [ ] Find a public, license-clear source with indoor scenes and complete
+    fire/smoke/person annotation, or plan verified person relabeling for an indoor
+    fire/smoke source.
+  - [ ] Rebuild and rerun all dataset gates before training.
+
+- **Known Blocks / Issues:**
+  - No examined source currently satisfies both the three-class annotation and
+    verified indoor-domain requirements.
+  - Full pytest remains blocked under system Python by missing OpenCV; focused
+    audit/intake tests previously passed.
+
+- **Validation:**
+  - Build: NOT APPLICABLE
+  - Tests: NOT RUN (research/docs-only update)
+  - Typecheck: NOT CONFIGURED
+  - Lint: NOT RUN (research/docs-only update)
+
+- **Git State:**
+  - Branch: `main`
+  - Last Commit: `4fb09a3 feat: generate duplicate annotation review package`
+  - Working Tree: DIRTY (progress update pending commit)
+
+- **Uncommitted Changes:**
+  - `CHANGES.log`
+  - `projects/indoor-detection/docs/JOINT_DATASET_INTAKE.md`
+
+- **Active Files:**
+  - `CHANGES.log`
+  - `projects/indoor-detection/docs/JOINT_DATASET_INTAKE.md`
+
+- **Notes for Next Agent:**
+  - Keep all dataset outputs under `E:\HomeAssistantPi4`.
+  - Do not expose or commit `projects/.env`.
+  - Keep model training blocked until all required data gates pass.

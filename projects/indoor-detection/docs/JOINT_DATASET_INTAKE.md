@@ -113,5 +113,31 @@ khác biệt này cần xem từng box để phân biệt annotation thiếu v�
 mô tả 5.000 ảnh indoor và box cho `fire`/`smoke`, chia train/validation/test.
 Metadata hiện công bố không liệt kê annotation `person`, nên không được ghép vào
 dataset ba lớp cho đến khi person được rà soát và gắn đầy đủ trên toàn bộ ảnh.
-Đây mới là nguồn ứng viên để đánh giá license, nội dung archive, cấu trúc và
-chất lượng nhãn; chưa tải hoặc đưa vào processed dataset.
+Trang Zenodo đang để trống trường rights/license; cần làm rõ quyền sử dụng trước
+khi tải để dùng trong project. Chưa đưa vào processed dataset.
+
+### Tiếp tục rà soát nguồn và duplicate (2026-09-30)
+
+Phân tích đủ 59 nhóm conflict cho thấy:
+
+- 22 nhóm có cùng số box theo class nhưng khác tọa độ.
+- 29 nhóm có cùng class hiện diện nhưng số box khác nhau.
+- 8 nhóm còn khác cả class hiện diện.
+
+Vì vậy không thể giải quyết bằng quy tắc gộp tự động. Contact sheets cho thấy
+các nhóm 2, 8, 14, 25 và 40 là ảnh ngoài trời; quyết định
+`exclude_group_outdoor` đã được ghi vào CSV cho 5 nhóm này. 54 nhóm còn lại chưa
+được adjudicate. Ảnh/nhãn nguồn không bị sửa.
+
+Đã kiểm tra thêm hai dataset Roboflow có đủ ba class: [fire-person-dataset
+(Yolo Training)](https://universe.roboflow.com/yolo-training-8hmw2/fire-person-dataset)
+và [Person-Fire-Smoke-New](https://universe.roboflow.com/whales-workspace-weuke/person-fire-smoke-new).
+Cả hai công bố CC BY 4.0, nhưng không có mô tả chứng minh indoor relevance.
+Dataset thứ nhất còn có một version ghi 23.882 ảnh do augmentation tạo ra; cần
+loại trừ augmentation/duplicate leakage khi đánh giá. Chưa tải vì metadata hiện
+chưa đủ để xác nhận phù hợp.
+
+Một bài báo mô tả dataset 5.000 ảnh với fire/smoke/person, nhưng nói ảnh lấy từ
+nhiều miền (forest, industrial, urban, indoor, vehicle) và data chỉ được cấp từ
+tác giả tương ứng theo yêu cầu. Không có archive công khai để kiểm tra trực tiếp;
+không thể dùng làm nguồn đã xác minh.
