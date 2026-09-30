@@ -642,3 +642,57 @@ validation state.
   - User prefers labeled candidates over requiring one perfect source/license; still record provenance and do not assume unclear license means permission.
   - Preserve one YOLO26n model with `smoke`, `fire`, and `person`; training remains blocked until unknown labels are handled safely.
   - Dataset and report artifacts remain on E:; never inspect or print `projects/.env`.
+
+## [2026-09-30 18:10 +07:00] - Cross-class sample review from OpenAI Codex
+
+- **Current Task:** Estimate missing cross-class labels in the existing partial-label sources.
+- **Status:** IN_PROGRESS
+- **Current Owner:** OpenAI Codex
+
+- **Completed in this session:**
+  - Added a reusable partial-label review bundle generator with deterministic stratification by split and in-scope class presence.
+  - Created 390-image review bundle on E: across Indoor-FS (120), Home-fire (180), and COCO person (90); source images and labels were not modified.
+  - Visually confirmed 15 images with people but no person scope/boxes (13 Home-fire, 2 Indoor-FS); left 285 other fire/smoke rows pending.
+  - Found no obvious fire/smoke in the 90 sampled COCO person rows at contact-sheet resolution; recorded this as screening only.
+  - Matched the sample to prior person-detector triage: 58/300 sample images had candidates. Prior full-source scan had candidates in 2,360/11,500 images; not treated as verified labels.
+  - Documented findings and next technical step: prototype per-image class-masked classification loss, or curate/annotate missing classes.
+
+- **Unfinished / Next Steps (CRITICAL):**
+  - [ ] Prototype class-masked loss for the installed YOLO26 trainer and validate on synthetic data before full training.
+  - [ ] Finish pending image-level visual review if source curation is selected; inspect COCO images beyond the sample before treating them as fire/smoke negatives.
+  - [ ] Run complete structural/duplicate/domain gates on any selected source combination; do not train until all pass.
+
+- **Known Blocks / Issues:**
+  - Standard YOLO labels currently treat absent class rows as negative; the existing joint prep tool does not support unknown class masks.
+  - Contact-sheet sampling is stratified and intentionally non-proportional; visible-positive counts are lower bounds, not prevalence estimates.
+  - Person detector candidates can be false positives and are not accepted automatically.
+  - `.codex/` remains an untracked directory and was not modified or committed.
+
+- **Validation:**
+  - Build: NOT APPLICABLE
+  - Tests: PASS (8 focused partial-label/joint/compose tests)
+  - Typecheck: NOT CONFIGURED
+  - Lint: PASS (`python -m ruff check . --no-cache`)
+
+- **Git State:**
+  - Branch: `main`
+  - Last Commit: `38642b1 docs: revise partial-label dataset intake gates`
+  - Working Tree: DIRTY
+
+- **Uncommitted Changes:**
+  - `CHANGES.log`
+  - `projects/indoor-detection/docs/JOINT_DATASET_INTAKE.md`
+  - `projects/indoor-detection/src/indoor_detection/partial_label_review.py`
+  - `projects/indoor-detection/tests/test_partial_label_review.py`
+
+- **Active Files:**
+  - `CHANGES.log`
+  - `projects/indoor-detection/docs/JOINT_DATASET_INTAKE.md`
+  - `projects/indoor-detection/src/indoor_detection/partial_label_review.py`
+  - `projects/indoor-detection/tests/test_partial_label_review.py`
+  - `E:\HomeAssistantPi4\reports\partial-label-audit-v1\`
+
+- **Notes for Next Agent:**
+  - The 390-row review ledger records 15 confirmed visible-person cases and 90 COCO rows with no obvious fire/smoke; the rest remain pending.
+  - Source manifests declare annotation scope but do not independently prove exhaustive labeling.
+  - Never read or print `projects/.env`; large datasets/reports stay on E:.

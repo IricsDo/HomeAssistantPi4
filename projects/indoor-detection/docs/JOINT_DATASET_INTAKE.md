@@ -138,6 +138,32 @@ class và mức đại diện indoor. Gate nhãn được đánh giá theo class
 ảnh/nguồn, không theo điều kiện mọi nguồn phải có cùng danh sách class. Gate
 này chưa đạt cho đến khi pipeline có cách xử lý nhãn partial an toàn.
 
+### Sàng lọc thiếu nhãn chéo (2026-09-30)
+
+Đã tạo sample phân tầng 390 ảnh trên E: tại
+`E:\HomeAssistantPi4\reports\partial-label-audit-v1`: 120 Indoor-FS, 180
+Home-fire và 90 COCO person. Mẫu lấy seed 42, tối đa 15 ảnh cho mỗi nhóm nhãn
+đã biết trong từng split. Contact sheets, `review.csv`, số population/sample
+theo stratum và ghi chú review nằm trong cùng thư mục.
+
+Đã xác nhận bằng mắt 15 ảnh có người nhưng không có person label (13 Home-fire,
+2 Indoor-FS); các ảnh này đến từ fire-only, smoke-only và một số ảnh rỗng nhãn
+fire/smoke. 285 dòng fire/smoke còn lại giữ pending, vì thumbnail screening
+không đủ để tuyên bố từng ảnh không có người. Trong 90 ảnh COCO person, không
+thấy fire/smoke rõ ở contact-sheet resolution; đây chỉ là screening, không
+chứng minh toàn bộ 12.000 ảnh không có hai lớp đó.
+
+Đối chiếu sample với person-audit-v2 cũ cho thấy detector có candidate trên
+58/300 ảnh fire/smoke sample (39/180 Home-fire; 19/120 Indoor-FS). Audit cũ
+quét đủ 11.500 ảnh fire/smoke và có candidate ở 2.360 ảnh / 3.887 box. Đây là
+triage không có auto-acceptance, không phải nhãn đã xác nhận; pseudo-label từng
+có false positives tương quan.
+
+Kết luận: nguồn fire/smoke không an toàn để dùng trực tiếp như ảnh âm tính của
+person trong training ba lớp. Bước kỹ thuật tiếp theo là prototype per-image
+class-masked classification loss và kiểm tra trên dữ liệu tổng hợp. Nếu không
+đạt validation, cần bổ sung/curate nhãn. Chưa train baseline.
+
 ### Gói review duplicate (2026-09-30)
 
 Audit tạo gói adjudication tại
