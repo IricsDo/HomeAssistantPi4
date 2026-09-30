@@ -124,10 +124,11 @@ Phân tích đủ 59 nhóm conflict cho thấy:
 - 29 nhóm có cùng class hiện diện nhưng số box khác nhau.
 - 8 nhóm còn khác cả class hiện diện.
 
-Vì vậy không thể giải quyết bằng quy tắc gộp tự động. Contact sheets cho thấy
-các nhóm 2, 8, 14, 25 và 40 là ảnh ngoài trời; quyết định
-`exclude_group_outdoor` đã được ghi vào CSV cho 5 nhóm này. 54 nhóm còn lại chưa
-được adjudicate. Ảnh/nhãn nguồn không bị sửa.
+Vì vậy không thể giải quyết bằng quy tắc gộp tự động. Đã rà soát cả 59 contact
+sheets: 49 nhóm là cảnh ngoài trời/ngoại thất và được ghi
+`exclude_group_outdoor` vào CSV. Mười nhóm còn lại có bối cảnh trong nhà hoặc
+chưa đủ rõ để phân loại (`018`, `019`, `022`, `023`, `030`, `031`, `048`, `050`,
+`051`, `054`); cần soát annotation kỹ hơn. Ảnh/nhãn nguồn không bị sửa.
 
 Đã kiểm tra thêm hai dataset Roboflow có đủ ba class: [fire-person-dataset
 (Yolo Training)](https://universe.roboflow.com/yolo-training-8hmw2/fire-person-dataset)

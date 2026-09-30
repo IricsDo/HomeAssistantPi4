@@ -354,3 +354,55 @@ validation state.
   - Keep all dataset outputs under `E:\HomeAssistantPi4`.
   - Do not expose or commit `projects/.env`.
   - Keep model training blocked until all required data gates pass.
+
+## [2026-09-30 15:37 +07:00] - Adjudication progress from OpenAI Codex
+
+- **Current Task:** Review conflicting duplicate labels and identify a complete
+  indoor fire/smoke/person data source.
+- **Status:** IN_PROGRESS
+- **Current Owner:** OpenAI Codex
+
+- **Completed in this session:**
+  - Visually reviewed all 59 duplicate conflict contact sheets. Recorded
+    `exclude_group_outdoor` for 49 clear outdoor/exterior groups in the E: CSV.
+    Ten indoor-or-uncertain groups remain for closer annotation adjudication.
+  - Preserved source images and labels; exclusion decisions currently affect only
+    the review ledger.
+  - No public source found yet that proves both complete three-class labels and
+    indoor relevance. Research notes are in the joint dataset intake document.
+
+- **Unfinished / Next Steps (CRITICAL):**
+  - [ ] Closely inspect the 10 remaining groups and record annotation decisions
+    only when supported by the image.
+  - [ ] Continue source search or plan verified person labeling on indoor
+    fire/smoke imagery; retain license and complete-label gates.
+  - [ ] Create a clean derivative and rerun all data gates before any training.
+
+- **Known Blocks / Issues:**
+  - Ten conflicting duplicate groups remain indoor-or-uncertain; the source v32
+    dataset also fails overall indoor relevance.
+  - No validated public indoor source has all three target classes labeled.
+
+- **Validation:**
+  - Build: NOT APPLICABLE
+  - Tests: PASS (5 focused intake/audit tests)
+  - Typecheck: NOT CONFIGURED
+  - Lint: PASS (`python -m ruff check . --no-cache`)
+
+- **Git State:**
+  - Branch: `main`
+  - Last Commit: `7d4e757 docs: record indoor dataset source review progress`
+  - Working Tree: DIRTY (adjudication progress pending commit)
+
+- **Uncommitted Changes:**
+  - `CHANGES.log`
+  - `projects/indoor-detection/docs/JOINT_DATASET_INTAKE.md`
+
+- **Active Files:**
+  - `CHANGES.log`
+  - `projects/indoor-detection/docs/JOINT_DATASET_INTAKE.md`
+
+- **Notes for Next Agent:**
+  - Review decisions are in `E:\HomeAssistantPi4\reports\indoor-joint-v1-audit\duplicate-adjudication.csv`.
+  - Keep all raw, processed and report data on E: and never expose `projects/.env`.
+  - Do not train until every data gate passes.
