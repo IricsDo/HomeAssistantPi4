@@ -61,7 +61,12 @@ def _resolve_split(dataset_yaml: Path, split: str) -> list[Path]:
 
 
 def _roboflow_base_id(path: Path) -> str:
-    return path.name.split(".rf.", 1)[0]
+    name = path.name
+    # Joint intake prefixes a short hash of the full source path to avoid name
+    # collisions; strip that prefix before grouping Roboflow augmentation IDs.
+    if len(name) > 13 and name[12] == "_" and all(c in "0123456789abcdef" for c in name[:12]):
+        name = name[13:]
+    return name.split(".rf.", 1)[0]
 
 
 def _dhash(path: Path) -> int:

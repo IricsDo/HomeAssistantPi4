@@ -25,8 +25,10 @@ nhiệt đạt chuẩn.
 - [x] Tạo và audit COCO person subset; dựng index `indoor-v1` ba lớp.
 - [x] Quét person candidate trên toàn bộ corpus smoke/fire.
 - [x] Xác định partial-label conflict và dừng hướng vẽ lại hàng nghìn box.
-- [ ] Tải, chuẩn hóa và audit dataset đã gắn đủ `smoke/fire/person`.
-- [ ] Spot-check annotation và mức độ phù hợp với bối cảnh indoor.
+- [x] Tải, chuẩn hóa và audit structure/class/duplicate dataset v32 đã gắn đủ
+  `smoke/fire/person`.
+- [ ] Gỡ blocker duplicate có annotation xung đột và tìm nguồn indoor phù hợp;
+  spot-check hiện không đạt data gate.
 - [ ] Train, calibrate và đánh giá checkpoint ba lớp.
 - [ ] Export NCNN và benchmark trên Pi 4.
 - [ ] Tích hợp camera thật.
@@ -91,15 +93,20 @@ Sau khi tải một dataset YOLO đã gắn đủ ba lớp, chuẩn hóa thứ t
 
 ```powershell
 indoor-prepare-joint `
-  --dataset-yaml E:\HomeAssistantPi4\raw\fire-smoke-human-v32\data.yaml `
+  --dataset-yaml E:\HomeAssistantPi4\raw\fire-smoke-human-v32-clean\data.yaml `
   --output-dir E:\HomeAssistantPi4\processed\indoor-joint-v1 `
   --source-url https://universe.roboflow.com/spyrobot/fire-smoke-and-human-detector/dataset/32 `
   --source-version v32 `
-  --source-license "CC BY 4.0"
+  --source-license "CC BY 4.0" `
+  --source-sha256 052078BD4677C6FF4B1D4AF9321B891E0A79AE16F899CED6E45F4BD3A67168A2
 ```
 
 Tool từ chối dataset không khai báo chính xác ba lớp, yêu cầu label file cho mọi
 ảnh, remap `human/person` về `person=2` và ghi provenance vào manifest.
+Dataset v32 hiện nằm tại `E:\HomeAssistantPi4\processed\indoor-joint-v1`; audit
+cho thấy 100 nhóm ảnh trùng trong cùng split (59 nhóm có label xung đột), dù
+không có duplicate xuyên split. Contact sheet cũng cho thấy ảnh fire/smoke chủ
+yếu là sự cố ngoài trời. **Chưa train** cho đến khi giải quyết các blocker này.
 
 ## Huấn luyện
 

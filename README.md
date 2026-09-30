@@ -31,11 +31,16 @@ dataset YOLO đã gắn đủ cả ba lớp. Dataset Roboflow
   `052078BD4677C6FF4B1D4AF9321B891E0A79AE16F899CED6E45F4BD3A67168A2`
 - Raw extraction hoàn chỉnh:
   `E:\HomeAssistantPi4\raw\fire-smoke-human-v32-clean`
-- Processed dataset `E:\HomeAssistantPi4\processed\indoor-joint-v1` chưa được tạo.
+- Processed dataset:
+  `E:\HomeAssistantPi4\processed\indoor-joint-v1`
+- Audit reports/contact sheets:
+  `E:\HomeAssistantPi4\reports\indoor-joint-v1-audit`
 
-Bước tiếp theo là chuẩn hóa split paths trong `data.yaml`, chạy joint intake,
-audit duplicate/class distribution/negative samples, rồi spot-check annotation.
-Chưa bắt đầu train checkpoint ba lớp. Xem `CHANGES.log` để có handover mới nhất.
+Data gate hiện **chưa đạt**: audit thấy 100 nhóm ảnh trùng chính xác cùng split,
+59 nhóm có annotation khác nhau, và spot-check cho thấy ảnh fire/smoke chủ yếu
+là sự cố ngoài trời/cháy rừng, chưa đủ phù hợp miền indoor. Chưa train checkpoint
+ba lớp. Chi tiết và bước tiếp theo nằm trong `CHANGES.log` và
+`projects/indoor-detection/docs/JOINT_DATASET_INTAKE.md`.
 
 ## AI Agent Collaboration
 

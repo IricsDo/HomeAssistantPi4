@@ -134,3 +134,89 @@ validation state.
   - Do not start training until the raw v32 dataset has passed all intake gates.
   - Smoke recall remains important and blurred frames must not be rejected solely
     because of blur.
+
+## [2026-09-30 14:31 +07:00] - Handover from OpenAI Codex
+
+- **Current Task:** Complete Roboflow v32 intake and determine whether the fully
+  labeled joint dataset passes the pre-training data gate.
+- **Status:** IN_PROGRESS
+- **Current Owner:** OpenAI Codex
+
+- **Completed in this session:**
+  - Finalized the Roboflow downloader so its success result uses stable CLI
+    metadata rather than SDK return-object attributes; added regression coverage
+    for SDK errors and API-key masking using a synthetic test key.
+  - Normalized `data.yaml` under the raw v32 extraction so every split resolves
+    within that extraction root.
+  - Created `E:\HomeAssistantPi4\processed\indoor-joint-v1` with canonical
+    `smoke=0`, `fire=1`, `person=2` labels, source URL/version/license and archive
+    SHA-256 in the manifest. One valid segmentation polygon was converted to its
+    enclosing detection box and recorded in provenance.
+  - Added a repeatable audit/contact-sheet script. Structural validation passed
+    for all 9,749 images and labels; no corrupt images, missing pairs, invalid
+    rows, out-of-image boxes, exact cross-split duplicates, or Roboflow
+    near-duplicate exclusions.
+  - Exact duplicate audit found 100 groups within splits. Label comparison found
+    differing annotations in 59 of those groups; these cannot be automatically
+    deduplicated safely.
+  - Reviewed stratified fire/smoke/person, negative and multi-class contact
+    sheets across train/validation/test. Fire/smoke samples are dominated by
+    outdoor incidents and forest fires, so indoor relevance did not pass.
+  - Training was not started.
+
+- **Unfinished / Next Steps (CRITICAL):**
+  - [ ] Adjudicate same-split exact duplicate groups with conflicting labels;
+    do not discard either annotation without review.
+  - [ ] Find or collect a fully labeled indoor-relevant source for the unified
+    classes, or establish that a revised sampling strategy meets the target use.
+  - [ ] Recreate the processed dataset and rerun structure, duplicate,
+    distribution, negative-sample and stratified annotation gates.
+  - [ ] Train only after the full data gate passes.
+
+- **Known Blocks / Issues:**
+  - `E:\HomeAssistantPi4\reports\indoor-joint-v1-audit\joint-audit.json` records
+    `data_gate_passed: false` due to the 100 duplicate groups, 59 label conflicts,
+    and failed indoor-relevance spot-check.
+  - Source archive SHA-256:
+    `052078BD4677C6FF4B1D4AF9321B891E0A79AE16F899CED6E45F4BD3A67168A2`.
+  - Never read, print or commit `projects/.env`.
+
+- **Validation:**
+  - Build: NOT APPLICABLE for dataset-preparation phase
+  - Tests: PASS (68/68)
+  - Typecheck: NOT CONFIGURED
+  - Lint: PASS (`ruff check .`)
+
+- **Git State:**
+  - Branch: `main`
+  - Last Commit before this milestone: `b6f9c77 docs: add cross-agent project handover`
+  - Working Tree: DIRTY (milestone changes pending commit)
+
+- **Uncommitted Changes:**
+  - `CHANGES.log`
+  - `README.md`
+  - `projects/indoor-detection/README.md`
+  - `projects/indoor-detection/docs/JOINT_DATASET_INTAKE.md`
+  - `projects/indoor-detection/scripts/download_roboflow_dataset.py`
+  - `projects/indoor-detection/scripts/audit_joint_dataset.py`
+  - `projects/indoor-detection/src/indoor_detection/compose_dataset.py`
+  - `projects/indoor-detection/src/indoor_detection/joint_dataset.py`
+  - `projects/indoor-detection/tests/test_download_roboflow_dataset.py`
+  - `projects/indoor-detection/tests/test_joint_dataset.py`
+
+- **Active Files:**
+  - `projects/indoor-detection/scripts/download_roboflow_dataset.py`
+  - `projects/indoor-detection/scripts/audit_joint_dataset.py`
+  - `projects/indoor-detection/src/indoor_detection/joint_dataset.py`
+  - `projects/indoor-detection/src/indoor_detection/compose_dataset.py`
+  - `projects/indoor-detection/tests/test_download_roboflow_dataset.py`
+  - `projects/indoor-detection/tests/test_joint_dataset.py`
+  - `projects/indoor-detection/docs/JOINT_DATASET_INTAKE.md`
+
+- **Notes for Next Agent:**
+  - Dataset, manifests, audit JSON and contact sheets are outside Git under
+    `E:\HomeAssistantPi4`.
+  - Pytest needed an explicit writable `--basetemp` with normal filesystem
+    permissions in this Windows sandbox; 68 tests passed.
+  - Preserve the data gate and do not run `configs/train_joint_v1.yaml` until the
+    duplicate-label conflicts and indoor-domain suitability are resolved.

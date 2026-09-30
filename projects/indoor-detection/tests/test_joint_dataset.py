@@ -36,20 +36,44 @@ def test_prepare_joint_dataset_remaps_all_classes(tmp_path: Path) -> None:
         source_url="https://example.test/dataset",
         source_version="v1",
         source_license="CC BY 4.0",
+        source_sha256="abc123",
     )
 
     assert manifest["source"]["class_mapping"] == {"0": 1, "1": 2, "2": 0}
     assert manifest["output"]["annotation_scope"] == ["smoke", "fire", "person"]
     assert manifest["output"]["manual_box_annotation_required"] is False
+    assert manifest["source"]["archive_sha256"] == "abc123"
     assert manifest["output"]["splits"]["train"] == {
         "images": 1,
         "smoke_boxes": 1,
         "fire_boxes": 1,
         "person_boxes": 1,
+        "polygons_converted_to_boxes": 0,
         "positive_images": 1,
     }
     label = next((tmp_path / "output" / "labels" / "train").glob("*.txt"))
     assert [line.split()[0] for line in label.read_text().splitlines()] == ["1", "2", "0"]
+
+
+def test_prepare_joint_dataset_converts_polygon_to_enclosing_box(tmp_path: Path) -> None:
+    dataset_yaml = _write_joint_source(tmp_path / "source")
+    train_label = tmp_path / "source" / "train" / "labels" / "train.txt"
+    train_label.write_text(train_label.read_text() + "2 0.1 0.2 0.7 0.2 0.7 0.8 0.1 0.8\n")
+
+    manifest = prepare_joint_dataset(
+        dataset_yaml=dataset_yaml,
+        output_dir=tmp_path / "output",
+        source_url="https://example.test/dataset",
+        source_version="v1",
+        source_license="CC BY 4.0",
+    )
+
+    assert manifest["output"]["annotation_conversion"]["polygon_rows_converted"] == 1
+    label = next((tmp_path / "output" / "labels" / "train").glob("*.txt"))
+    rows = label.read_text().splitlines()
+    polygon_box = rows[-1].split()
+    assert polygon_box[0] == "0"
+    assert [float(value) for value in polygon_box[1:]] == pytest.approx([0.4, 0.5, 0.6, 0.6])
 
 
 def test_joint_dataset_rejects_incomplete_class_scope(tmp_path: Path) -> None:

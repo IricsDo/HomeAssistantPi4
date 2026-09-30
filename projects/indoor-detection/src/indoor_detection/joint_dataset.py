@@ -89,15 +89,64 @@ def _link_or_copy(source: Path, destination: Path) -> str:
         return "copy"
 
 
-def _convert_label(label_path: Path, mapping: dict[int, int]) -> tuple[str, Counter[int]]:
-    rows = parse_yolo_label(label_path.read_text(encoding="utf-8-sig"), set(mapping))
+def _convert_label(
+    label_path: Path, mapping: dict[int, int]
+) -> tuple[str, Counter[int], int]:
     counts: Counter[int] = Counter()
     converted: list[str] = []
-    for fields in rows:
+    polygon_count = 0
+    for line_number, raw_line in enumerate(
+        label_path.read_text(encoding="utf-8-sig").splitlines(), start=1
+    ):
+        line = raw_line.strip()
+        if not line:
+            continue
+        fields = line.split()
+        if len(fields) == 5:
+            rows = parse_yolo_label(line, set(mapping))
+            fields = rows[0]
+        else:
+            # Roboflow can export an occasional segmentation polygon in an
+            # otherwise detection dataset. Convert it to its enclosing box so
+            # the object remains supervised in the bbox-only training pipeline.
+            try:
+                source_id = int(fields[0])
+                coordinates = [float(value) for value in fields[1:]]
+            except (ValueError, IndexError) as exc:
+                raise DatasetValidationError(
+                    f"{label_path}: line {line_number}: invalid polygon values"
+                ) from exc
+            if source_id not in mapping:
+                raise DatasetValidationError(
+                    f"{label_path}: line {line_number}: unexpected class {source_id}"
+                )
+            if len(coordinates) < 6 or len(coordinates) % 2:
+                raise DatasetValidationError(
+                    f"{label_path}: line {line_number}: polygon needs at least 3 xy points"
+                )
+            if not all(0 <= value <= 1 for value in coordinates):
+                raise DatasetValidationError(
+                    f"{label_path}: line {line_number}: polygon coordinate outside [0, 1]"
+                )
+            xs, ys = coordinates[::2], coordinates[1::2]
+            x_min, x_max = min(xs), max(xs)
+            y_min, y_max = min(ys), max(ys)
+            if x_min == x_max or y_min == y_max:
+                raise DatasetValidationError(
+                    f"{label_path}: line {line_number}: polygon has zero area"
+                )
+            fields = [
+                str(source_id),
+                str((x_min + x_max) / 2),
+                str((y_min + y_max) / 2),
+                str(x_max - x_min),
+                str(y_max - y_min),
+            ]
+            polygon_count += 1
         target_id = mapping[int(fields[0])]
         counts[target_id] += 1
         converted.append(" ".join([str(target_id), *fields[1:]]))
-    return ("\n".join(converted) + ("\n" if converted else ""), counts)
+    return ("\n".join(converted) + ("\n" if converted else ""), counts, polygon_count)
 
 
 def prepare_joint_dataset(
@@ -107,6 +156,7 @@ def prepare_joint_dataset(
     source_url: str,
     source_version: str,
     source_license: str,
+    source_sha256: str | None = None,
 ) -> dict[str, Any]:
     """Create an immutable unified-class derivative from a complete joint dataset."""
     dataset_yaml = dataset_yaml.resolve()
@@ -138,7 +188,7 @@ def prepare_joint_dataset(
                 if not label_path.is_file():
                     raise DatasetValidationError(f"Missing label for {image_path}: {label_path}")
 
-                label_text, class_counts = _convert_label(label_path, mapping)
+                label_text, class_counts, polygon_count = _convert_label(label_path, mapping)
                 output_stem = _output_stem(image_path)
                 image_destination = images_out / f"{output_stem}{image_path.suffix.lower()}"
                 transfer_counts[_link_or_copy(image_path, image_destination)] += 1
@@ -148,6 +198,7 @@ def prepare_joint_dataset(
                 stats["smoke_boxes"] += class_counts[0]
                 stats["fire_boxes"] += class_counts[1]
                 stats["person_boxes"] += class_counts[2]
+                stats["polygons_converted_to_boxes"] += polygon_count
                 if class_counts:
                     stats["positive_images"] += 1
                 else:
@@ -169,6 +220,7 @@ def prepare_joint_dataset(
                 "url": source_url,
                 "version": source_version,
                 "license": source_license,
+                "archive_sha256": source_sha256,
                 "class_mapping": {str(key): value for key, value in sorted(mapping.items())},
             },
             "output": {
@@ -177,6 +229,13 @@ def prepare_joint_dataset(
                 "manual_box_annotation_required": False,
                 "splits": split_reports,
                 "image_transfer": dict(transfer_counts),
+                "annotation_conversion": {
+                    "segmentation_polygons": "Converted to enclosing YOLO bounding boxes",
+                    "polygon_rows_converted": sum(
+                        split_reports[split].get("polygons_converted_to_boxes", 0)
+                        for split in SPLITS
+                    ),
+                },
             },
         }
         (output_dir / "manifest.json").write_text(
@@ -196,6 +255,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--source-url", required=True)
     parser.add_argument("--source-version", required=True)
     parser.add_argument("--source-license", required=True)
+    parser.add_argument("--source-sha256")
     return parser
 
 
@@ -207,6 +267,7 @@ def main(argv: list[str] | None = None) -> int:
         source_url=args.source_url,
         source_version=args.source_version,
         source_license=args.source_license,
+        source_sha256=args.source_sha256,
     )
     print(json.dumps(manifest["output"], indent=2))
     return 0

@@ -62,3 +62,34 @@ Nó là lựa chọn thứ hai hoặc nguồn bổ sung sau baseline v32.
 Manual annotation chỉ quay lại cho một tập nhỏ các lỗi có giá trị cao hoặc dữ
 liệu indoor riêng của camera thật. Không yêu cầu người dùng duyệt toàn bộ 5.364
 pseudo-label trước khi có baseline.
+
+## Kết quả audit v32 (2026-09-30)
+
+- Processed dataset:
+  `E:\HomeAssistantPi4\processed\indoor-joint-v1`
+- Audit report và contact sheets:
+  `E:\HomeAssistantPi4\reports\indoor-joint-v1-audit`
+- Structural audit: PASS. Có đủ image/label cho cả ba split; không có ảnh hỏng,
+  label thiếu/thừa, box row sai định dạng hoặc box vượt biên ảnh.
+- Exact duplicate: 100 nhóm trong cùng split; không có nhóm exact duplicate
+  xuyên split. So sánh label theo từng nhóm cho thấy 59 nhóm có annotation khác
+  nhau, nên không được tự động bỏ một bản sao.
+- Roboflow near-duplicate cross-split exclusions: 0.
+- Class totals:
+
+| Split | Images | Smoke boxes | Fire boxes | Person boxes | Negative images |
+|---|---:|---:|---:|---:|---:|
+| train | 8,001 | 6,032 | 9,439 | 4,436 | 819 |
+| validation | 1,017 | 800 | 1,627 | 455 | 74 |
+| test | 731 | 611 | 954 | 370 | 3 |
+
+- Polygon conversion: một segmentation polygon được đổi thành enclosing YOLO
+  bounding box; manifest ghi nhận phép đổi này.
+- Visual spot-check theo class và split cho thấy annotation thường phủ đúng vùng
+  target, nhưng phần lớn ảnh fire/smoke là cháy rừng hoặc sự cố ngoài trời. Data
+  gate **FAILED** về mức phù hợp với môi trường indoor; duplicate có label xung
+  đột cũng chưa được giải quyết.
+
+Không train từ dataset này. Bước tiếp theo là tìm/thu thập nguồn fully labeled
+phù hợp indoor, đồng thời adjudicate duplicate groups có nhãn khác nhau; sau đó
+tạo lại processed dataset và chạy toàn bộ gate trước khi train.
