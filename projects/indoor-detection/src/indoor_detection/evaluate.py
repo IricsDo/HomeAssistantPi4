@@ -20,6 +20,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--project", type=Path, required=True)
     parser.add_argument("--name", required=True)
     parser.add_argument("--report", type=Path, required=True)
+    parser.add_argument("--class-name", choices=("smoke", "fire", "person"), default="smoke")
     threshold_group = parser.add_mutually_exclusive_group()
     threshold_group.add_argument(
         "--target-recall",
@@ -55,6 +56,7 @@ def _select_operating_point(
     *,
     target_recall: float | None = None,
     threshold: float | None = None,
+    class_index: int = 0,
 ) -> dict[str, Any] | None:
     if target_recall is None and threshold is None:
         return None
@@ -68,10 +70,12 @@ def _select_operating_point(
         if str(x_label).lower() != "confidence":
             continue
         ndim = getattr(y_values, "ndim", None)
-        is_nested = ndim > 1 if ndim is not None else bool(y_values) and isinstance(
-            y_values[0], (list, tuple)
+        is_nested = (
+            ndim > 1
+            if ndim is not None
+            else bool(y_values) and isinstance(y_values[0], (list, tuple))
         )
-        class_values = y_values[0] if is_nested else y_values
+        class_values = y_values[class_index] if is_nested else y_values
         confidence_curves[str(y_label).lower()] = (
             [float(value) for value in x_values],
             [float(value) for value in class_values],
@@ -100,6 +104,44 @@ def _select_operating_point(
     }
 
 
+def _dataset_class_id(data_path: Path, class_name: str) -> int:
+    import yaml
+
+    config = yaml.safe_load(data_path.read_text(encoding="utf-8"))
+    if not isinstance(config, dict):
+        raise ValueError("Dataset YAML must be a mapping")
+    names = config.get("names")
+    normalized = dict(enumerate(names)) if isinstance(names, list) else names
+    if not isinstance(normalized, dict):
+        raise ValueError("Dataset YAML must define class names")
+    matches = [
+        int(class_id)
+        for class_id, name in normalized.items()
+        if str(name).strip().lower() == class_name
+    ]
+    if len(matches) != 1:
+        raise ValueError(f"Dataset must define class '{class_name}' exactly once")
+    return matches[0]
+
+
+def _per_class_metrics(metrics: Any) -> dict[str, dict[str, float]]:
+    names = dict(metrics.names)
+    box = metrics.box
+    arrays = {
+        "precision": list(box.p),
+        "recall": list(box.r),
+        "map50": list(box.ap50),
+        "map50_95": list(box.ap),
+    }
+    return {
+        str(names[class_id]): {
+            metric_name: float(values[class_id]) for metric_name, values in arrays.items()
+        }
+        for class_id in sorted(names)
+        if all(class_id < len(values) for values in arrays.values())
+    }
+
+
 def evaluate(
     *,
     model_path: Path,
@@ -112,6 +154,7 @@ def evaluate(
     report_path: Path,
     target_recall: float | None = None,
     operating_threshold: float | None = None,
+    class_name: str = "smoke",
 ) -> dict[str, Any]:
     if not model_path.is_file():
         raise FileNotFoundError(f"Model checkpoint not found: {model_path}")
@@ -120,6 +163,7 @@ def evaluate(
 
     from ultralytics import YOLO
 
+    class_id = _dataset_class_id(data_path, class_name)
     model = YOLO(str(model_path.resolve()))
     metrics = model.val(
         data=str(data_path.resolve()),
@@ -142,12 +186,15 @@ def evaluate(
         "split": split,
         "imgsz": imgsz,
         "metrics": _json_value(metrics.results_dict),
+        "per_class_metrics": _per_class_metrics(metrics),
         "speed_ms_per_image": _json_value(metrics.speed),
         "operating_point": _select_operating_point(
             metrics.curves_results,
             target_recall=target_recall,
             threshold=operating_threshold,
+            class_index=class_id,
         ),
+        "operating_point_class": {"id": class_id, "name": class_name},
     }
     report_path.parent.mkdir(parents=True, exist_ok=True)
     report_path.write_text(
@@ -169,6 +216,7 @@ def main(argv: list[str] | None = None) -> int:
         report_path=args.report,
         target_recall=args.target_recall,
         operating_threshold=args.operating_threshold,
+        class_name=args.class_name,
     )
     print(json.dumps(report, indent=2))
     return 0

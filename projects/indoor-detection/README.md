@@ -22,6 +22,8 @@ nhiệt đạt chuẩn.
 - [x] Package, domain, detector và event schema đã generalize cho ba lớp.
 - [x] Dataset converters giữ lại cả smoke và fire.
 - [x] Class-specific confidence/temporal policy.
+- [x] Tạo và audit COCO person subset; dựng index `indoor-v1` ba lớp.
+- [x] Quét person candidate trên toàn bộ corpus smoke/fire.
 - [ ] Bổ sung và audit annotation person trên toàn bộ training corpus.
 - [ ] Train, calibrate và đánh giá checkpoint ba lớp.
 - [ ] Export NCNN và benchmark trên Pi 4.
@@ -30,6 +32,8 @@ nhiệt đạt chuẩn.
 Các tài liệu và config `smoke` cũ được giữ làm baseline lịch sử, không phải model
 deployment cuối cùng. Kết quả khóa nằm trong
 [Smoke baseline snapshot](docs/SMOKE_BASELINE_SNAPSHOT.md).
+Trạng thái chuẩn bị corpus ba lớp nằm trong
+[Indoor v1 dataset preparation](docs/INDOOR_V1_DATASET_PREPARATION.md).
 
 ## Cài đặt trên Windows 11
 

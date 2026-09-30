@@ -4,6 +4,7 @@ Không commit ảnh, label hay archive dataset vào Git. Trên máy phát triể
 liệu nặng được lưu tại `E:\HomeAssistantPi4`:
 
 - `raw/Home-fire-dataset/v1.0.0/`: archive tải từ GitHub Release, giữ nguyên.
+- `raw/COCO2017/`: annotation chính thức và cache chỉ các ảnh person đã chọn.
 - `processed/indoor-home-fire-v2/`: derivative giữ cả smoke và fire.
 - `datasets/indoor-v1/`: index cuối cho smoke, fire và person sau annotation audit.
 - `manifests/`: checksum, nguồn, license và thống kê chuyển đổi.
@@ -25,5 +26,35 @@ Chuẩn bị và audit dữ liệu:
 Mapping Home-fire: `0=fire -> 1=fire`, `1=smoke -> 0=smoke`; class đích
 `2=person` dành cho corpus person và annotation enrichment. Không train corpus
 thống nhất nếu ảnh fire/smoke có người chưa được gán box.
+
+Tạo COCO-person subset sau khi tải `annotations_trainval2017.zip` chính thức:
+
+```powershell
+indoor-prepare-coco-person `
+  --train-annotations E:\HomeAssistantPi4\raw\COCO2017\annotations\instances_train2017.json `
+  --train-images E:\HomeAssistantPi4\raw\COCO2017\images\train2017 `
+  --val-annotations E:\HomeAssistantPi4\raw\COCO2017\annotations\instances_val2017.json `
+  --val-images E:\HomeAssistantPi4\raw\COCO2017\images\val2017 `
+  --output-dir E:\HomeAssistantPi4\processed\coco-person-v1 `
+  --manifest E:\HomeAssistantPi4\manifests\coco-person-v1.json `
+  --download-missing
+```
+
+Mặc định chỉ chọn 6.000 positive + 1.000 negative từ train2017. Toàn bộ ảnh hợp
+lệ của val2017 được chia cố định 50/50 thành validation và test; crowd-only images
+bị loại để không trở thành false negative.
+
+Quét các corpus smoke/fire để tìm người chưa được gán nhãn:
+
+```powershell
+indoor-audit-person `
+  --data E:\HomeAssistantPi4\interim\indoor-smoke-fire-v1\dataset.yaml `
+  --model E:\HomeAssistantPi4\models\pretrained\yolo26n.pt `
+  --output-dir E:\HomeAssistantPi4\reports\person-audit-v1
+```
+
+Lệnh chỉ tạo `candidates.jsonl` và báo cáo; không sửa label nguồn. Candidate dưới
+ngưỡng auto-accept phải được review, và mọi pseudo-label được chấp nhận phải nằm
+trong một derivative mới trước khi compose dataset dùng để train.
 Đường dẫn `E:` chỉ là cấu hình máy phát triển; khi đưa lên Pi 4, dùng file
 `dataset.yaml` được tạo trong thư mục processed hoặc truyền `indoor-train --data ...`.
