@@ -553,3 +553,44 @@ validation state.
   - Test and lint commands passed after updating docs and ledger.
   - The remaining duplicate groups require annotation adjudication/repair, not blind deduplication.
   - Never expose or commit `projects/.env`; datasets and reports stay on E:.
+
+## [2026-09-30 16:40 +07:00] - Milestone commit and push from OpenAI Codex
+
+- **Current Task:** Continue indoor dataset review and preserve a clean handover.
+- **Status:** IN_PROGRESS
+- **Current Owner:** OpenAI Codex
+
+- **Completed in this session:**
+  - Committed the review documentation as `942f662` (`docs: continue indoor duplicate and source review`).
+  - Pushed `main` to `origin/main`; local branch is synchronized.
+
+- **Unfinished / Next Steps (CRITICAL):**
+  - [ ] Obtain or create a license-verified indoor dataset with reviewed labels for fire, smoke, and person.
+  - [ ] Resolve groups 050 and 051, rebuild processed data, and pass every data gate before any training.
+
+- **Known Blocks / Issues:**
+  - Existing v32 still fails the indoor-domain and annotation gates.
+
+- **Validation:**
+  - Build: NOT APPLICABLE
+  - Tests: PASS (5 focused intake/audit tests)
+  - Typecheck: NOT CONFIGURED
+  - Lint: PASS (`python -m ruff check . --no-cache`)
+
+- **Git State:**
+  - Branch: `main`, synchronized with `origin/main`
+  - Last Commit: `942f662 docs: continue indoor duplicate and source review`
+  - Working Tree: CLEAN before this handover entry
+
+- **Uncommitted Changes:**
+  - `CHANGES.log` (this handover entry)
+
+- **Active Files:**
+  - `CHANGES.log`
+  - `projects/indoor-detection/docs/JOINT_DATASET_INTAKE.md`
+  - `E:\HomeAssistantPi4\reports\indoor-joint-v1-audit\duplicate-adjudication.csv`
+
+- **Notes for Next Agent:**
+  - Ledger on E: marks group 019's tighter second annotation as selected, with 050 and 051 pending.
+  - Do not train until indoor relevance, class completeness, annotations, structure, duplicates, and distributions pass.
+  - Never expose `projects/.env`.
