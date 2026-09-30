@@ -37,6 +37,7 @@ indoor-prepare-indoor-fs = "indoor_detection.indoor_fs_dataset:main"
 indoor-compose-dataset = "indoor_detection.compose_dataset:main"
 indoor-prepare-coco-person = "indoor_detection.coco_person_dataset:main"
 indoor-audit-person = "indoor_detection.person_audit:main"
+indoor-review-person = "indoor_detection.person_review:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

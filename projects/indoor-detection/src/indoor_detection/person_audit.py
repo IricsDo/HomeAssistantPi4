@@ -50,7 +50,7 @@ def _result_records(
     *,
     split_by_path: dict[Path, str],
     person_class_id: int,
-    auto_accept_confidence: float,
+    high_confidence_threshold: float,
 ) -> list[dict[str, Any]]:
     records: list[dict[str, Any]] = []
     for result in results:
@@ -63,8 +63,8 @@ def _result_records(
                 "image": image_path.as_posix(),
                 "split": split_by_path[image_path],
                 "status": (
-                    "auto_accept_candidate"
-                    if all(row["confidence"] >= auto_accept_confidence for row in candidates)
+                    "high_confidence_review"
+                    if all(row["confidence"] >= high_confidence_threshold for row in candidates)
                     else "manual_review"
                 ),
                 "person_candidates": candidates,
@@ -86,7 +86,7 @@ def audit_person_annotations(
     model_path: Path,
     output_dir: Path,
     candidate_confidence: float = 0.20,
-    auto_accept_confidence: float = 0.65,
+    high_confidence_threshold: float = 0.65,
     imgsz: int = 640,
     device: str = "0",
     batch: int = 16,
@@ -97,8 +97,8 @@ def audit_person_annotations(
         raise FileNotFoundError(f"Pretrained model not found: {model_path}")
     if output_dir.exists() and any(output_dir.iterdir()):
         raise FileExistsError(f"Output directory is not empty: {output_dir}")
-    if not 0 <= candidate_confidence <= auto_accept_confidence <= 1:
-        raise ValueError("Expected 0 <= candidate_confidence <= auto_accept_confidence <= 1")
+    if not 0 <= candidate_confidence <= high_confidence_threshold <= 1:
+        raise ValueError("Expected 0 <= candidate_confidence <= high_confidence_threshold <= 1")
 
     split_images = {split: _resolve_split(dataset_yaml, split) for split in SPLITS}
     split_by_path = {
@@ -127,7 +127,7 @@ def audit_person_annotations(
                 results,
                 split_by_path=split_by_path,
                 person_class_id=person_class_id,
-                auto_accept_confidence=auto_accept_confidence,
+                high_confidence_threshold=high_confidence_threshold,
             )
         )
 
@@ -149,7 +149,8 @@ def audit_person_annotations(
         },
         "settings": {
             "candidate_confidence": candidate_confidence,
-            "auto_accept_confidence": auto_accept_confidence,
+            "high_confidence_threshold": high_confidence_threshold,
+            "automatic_acceptance": False,
             "imgsz": imgsz,
             "device": device,
             "batch": batch,
@@ -174,7 +175,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--model", type=Path, required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--candidate-confidence", type=float, default=0.20)
-    parser.add_argument("--auto-accept-confidence", type=float, default=0.65)
+    parser.add_argument("--high-confidence-threshold", type=float, default=0.65)
     parser.add_argument("--imgsz", type=int, default=640)
     parser.add_argument("--device", default="0")
     parser.add_argument("--batch", type=int, default=16)
@@ -188,7 +189,7 @@ def main(argv: list[str] | None = None) -> int:
         model_path=args.model,
         output_dir=args.output_dir,
         candidate_confidence=args.candidate_confidence,
-        auto_accept_confidence=args.auto_accept_confidence,
+        high_confidence_threshold=args.high_confidence_threshold,
         imgsz=args.imgsz,
         device=args.device,
         batch=args.batch,

@@ -55,11 +55,24 @@ def test_result_records_mark_low_confidence_for_review(tmp_path: Path) -> None:
         [result(image)],
         split_by_path={image: "train"},
         person_class_id=2,
-        auto_accept_confidence=0.65,
+        high_confidence_threshold=0.65,
     )
 
     assert records[0]["status"] == "manual_review"
     assert records[0]["split"] == "train"
+
+
+def test_result_records_do_not_auto_accept_high_confidence(tmp_path: Path) -> None:
+    image = (tmp_path / "image.jpg").resolve()
+
+    records = _result_records(
+        [result(image)],
+        split_by_path={image: "test"},
+        person_class_id=0,
+        high_confidence_threshold=0.65,
+    )
+
+    assert records[0]["status"] == "high_confidence_review"
 
 
 def test_chunks_limit_the_number_of_images_loaded_together(tmp_path: Path) -> None:

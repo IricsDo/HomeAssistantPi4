@@ -50,11 +50,22 @@ Quét các corpus smoke/fire để tìm người chưa được gán nhãn:
 indoor-audit-person `
   --data E:\HomeAssistantPi4\interim\indoor-smoke-fire-v1\dataset.yaml `
   --model E:\HomeAssistantPi4\models\pretrained\yolo26n.pt `
-  --output-dir E:\HomeAssistantPi4\reports\person-audit-v1
+  --output-dir E:\HomeAssistantPi4\reports\person-audit-v2
 ```
 
-Lệnh chỉ tạo `candidates.jsonl` và báo cáo; không sửa label nguồn. Candidate dưới
-ngưỡng auto-accept phải được review, và mọi pseudo-label được chấp nhận phải nằm
+Lệnh chỉ tạo `candidates.jsonl` và báo cáo; không sửa label nguồn. Mọi candidate,
+kể cả nhóm confidence cao, phải được review. Pseudo-label được chấp nhận phải nằm
 trong một derivative mới trước khi compose dataset dùng để train.
+
+Tạo contact sheets và bảng quyết định review:
+
+```powershell
+indoor-review-person `
+  --candidates E:\HomeAssistantPi4\reports\person-audit-v2\candidates.jsonl `
+  --output-dir E:\HomeAssistantPi4\reviews\person-audit-v2
+```
+
+Mở các trang JPEG theo nhóm status và điền `accept` hoặc `reject` vào cột
+`decision` của `decisions.tsv`; không thay đổi `review_id`.
 Đường dẫn `E:` chỉ là cấu hình máy phát triển; khi đưa lên Pi 4, dùng file
 `dataset.yaml` được tạo trong thư mục processed hoặc truyền `indoor-train --data ...`.

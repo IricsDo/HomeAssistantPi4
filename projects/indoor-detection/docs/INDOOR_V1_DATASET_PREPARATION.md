@@ -36,16 +36,25 @@ YOLO26n COCO pretrained, SHA-256
 đã quét toàn bộ 11.500 ảnh smoke/fire tại confidence 0,20 và input 640:
 
 - 2.360 ảnh có candidate, tổng cộng 3.887 person boxes.
-- 898 ảnh chỉ có candidate confidence từ 0,65 trở lên.
+- 898 ảnh chỉ có candidate confidence từ 0,65 trở lên; đây vẫn là nhóm cần review,
+  không phải auto-accept.
 - 1.462 ảnh có ít nhất một candidate cần manual review.
 - Phân bố: train 1.628, val 433, test 299 ảnh có candidate.
 
-Artifacts nằm trong `E:\HomeAssistantPi4\reports\person-audit-v1`:
+Audit v2 thay thế semantics `auto_accept` không an toàn của v1. Artifacts chuẩn
+nằm trong `E:\HomeAssistantPi4\reports\person-audit-v2`:
 
 - `report.json` SHA-256
-  `15dcd39de13ecc0fb88a1ee37f99ba4ded42277e8f5e81c093b2b163b65491e6`.
+  `8de5e3726ea93e053a0625e69deb8c6ac93933f80da7c90507c644fc6bc1c187`.
 - `candidates.jsonl` SHA-256
-  `bd2832c1abeec96b051d1b09847e79b665d442ceb099bd041d1436d6765ded4a`.
+  `15007ff76ade5ecfa8acf42f33c568f4742863754888eb66c6c800134cdf5e1d`.
+
+Review bundle nằm trong `E:\HomeAssistantPi4\reviews\person-audit-v2`, gồm 57
+trang high-confidence review và 92 trang manual review, mỗi trang 16 ảnh.
+`decisions.tsv` ban đầu có SHA-256
+`2d52a9dec5ad1dcf2a1a84616fe91ce5a0c2998ea5fa97ec5be9906768da7937`.
+Quan sát mẫu cho thấy false positive trên bàn tay/ngọn lửa ngay cả ở nhóm
+confidence cao, vì vậy không candidate nào được tự động chấp nhận.
 
 Source labels chưa bị sửa. `indoor-v1` hiện là index kiểm kê, **chưa phải corpus
 được phép train**. Gate tiếp theo là review candidate, tạo derivative smoke/fire
