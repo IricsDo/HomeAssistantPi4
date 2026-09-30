@@ -1064,3 +1064,59 @@ validation state.
     checkpoint was stripped when training ended.
   - Keep v1 artifacts immutable and keep all new run artifacts on E:.
   - Never read or print `projects/.env`.
+
+## [2026-10-01] - Continuation training started by OpenAI Codex
+
+- **Current Task:** Train the corrected v2 unified smoke/fire/person checkpoint.
+- **Status:** IN_PROGRESS
+- **Current Owner:** OpenAI Codex
+
+- **Completed in this session:**
+  - Started `configs/train_indoor_v2.yaml` on the RTX 5070 Laptop GPU with all
+    artifacts under `E:\HomeAssistantPi4\runs\indoor-detection\indoor_partial_joint_yolo26n_v2`.
+  - Confirmed AMP passes, all 708 checkpoint tensors transfer, 14,900 train and
+    4,301 validation images load with zero corrupt records, and AutoBatch selects
+    batch 12.
+  - Completed epoch 1. Inline validation reports precision 0.83353, recall
+    0.71781, mAP50 0.79315 and mAP50-95 0.48044, proving the full-run validator
+    no longer emits the erroneous near-zero metrics.
+  - Training continued into epoch 2 after writing `best.pt`, `last.pt` and the
+    first row of `results.csv`.
+
+- **Unfinished / Next Steps (CRITICAL):**
+  - [ ] Keep the v2 process running and monitor `results.csv`, GPU health and early
+    stopping until training completes.
+  - [ ] Record the selected epoch, exact final/per-class metrics and SHA-256 of
+    both checkpoints.
+  - [ ] Run source/domain evaluation and class-threshold calibration before NCNN
+    export.
+
+- **Known Blocks / Issues:**
+  - None for Windows GPU training.
+  - Raspberry Pi benchmark and camera integration still require hardware.
+
+- **Validation:**
+  - Build: NOT APPLICABLE
+  - Tests: PASS (92/92, before starting the run)
+  - Typecheck: NOT CONFIGURED
+  - Lint: PASS (`.venv\\Scripts\\python.exe -m ruff check . --no-cache`)
+
+- **Git State:**
+  - Branch: `main`
+  - Last Commit: `fbf1373 feat:add-corrected-continuation-training-config`
+  - Working Tree: DIRTY (training progress entry pending commit)
+
+- **Uncommitted Changes:**
+  - `CHANGES.log`
+  - `.codex/` (pre-existing untracked directory, untouched)
+
+- **Active Files:**
+  - `projects/indoor-detection/configs/train_indoor_v2.yaml`
+  - `E:\HomeAssistantPi4\runs\indoor-detection\indoor_partial_joint_yolo26n_v2\results.csv`
+  - `E:\HomeAssistantPi4\runs\indoor-detection\indoor_partial_joint_yolo26n_v2\weights\best.pt`
+  - `E:\HomeAssistantPi4\runs\indoor-detection\indoor_partial_joint_yolo26n_v2\weights\last.pt`
+
+- **Notes for Next Agent:**
+  - Epoch 1 took 275.804 seconds including first-run setup and validation.
+  - Do not start a second v2 process or overwrite the active run.
+  - Never read or print `projects/.env`.
