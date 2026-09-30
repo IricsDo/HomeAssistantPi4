@@ -166,9 +166,16 @@ khai báo là đã biết trên từng ảnh, và từ chối batch có ground-t
 ngoài scope. Bảy test synthetic đạt, gồm một synthetic forward/backward trên
 YOLO26n thật; chưa dùng ảnh hoặc nhãn dataset thật.
 
-Prototype chưa được nối vào dataloader/trainer. Bước tiếp theo là tạo manifest
-scope theo ảnh, truyền mask cho cả train và validation, xác nhận augmentation
-giữ đúng scope, rồi chạy audit scope/annotation và synthetic trainer smoke test.
+Prototype đã được nối vào dataloader/trainer cho cả train và validation. Metrics
+validation bỏ prediction thuộc class unknown của từng ảnh. Multi-image
+augmentation (`mosaic`, `mixup`, `cutmix`, `copy_paste`) bị vô hiệu hóa; các
+biến đổi một ảnh giữ nguyên scope. Synthetic trainer smoke test một epoch trên
+bốn ảnh 64x64 đã đạt, không dùng pretrained weights hay dữ liệu project thật.
+
+Derivative `E:\HomeAssistantPi4\processed\indoor-partial-joint-v1` đã được tạo
+từ Home-fire, Indoor-FS và COCO-person, gồm 14.900/4.301/4.299 ảnh cho
+train/val/test và `class_scope_manifest.json` theo từng ảnh. Bước tiếp theo là
+audit structure, duplicate, distribution và annotation trên derivative này.
 Chưa train baseline; data gate vẫn FAILED.
 
 ### Gói review duplicate (2026-09-30)

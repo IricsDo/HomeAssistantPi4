@@ -751,3 +751,69 @@ validation state.
   - Loss masking only affects classification BCE. Out-of-scope GT boxes are rejected because they would otherwise affect assignment and localization loss.
   - Next implement scope manifest + per-image batch metadata through a custom YOLO dataset/trainer; include validation batches and augmented samples.
   - Project `.venv` is local to `projects/indoor-detection`; `E:\HomeAssistantPi4` remains for datasets/reports/artifacts only.
+
+## [2026-09-30 21:29 +07:00] - Scoped dataset/trainer integration from OpenAI Codex
+
+- **Current Task:** Carry per-image annotation scopes through YOLO26 train and validation.
+- **Status:** IN_PROGRESS
+- **Current Owner:** OpenAI Codex
+
+- **Completed in this session:**
+  - Added schema-v1 `class_scope_manifest.json` generation to the joint index composer, sourced from each immutable derivative manifest.
+  - Added a class-scoped YOLO dataset, model, trainer, and validator for pinned Ultralytics 8.4.163.
+  - Validated every image has a scope, every label class is in scope, and canonical IDs remain `smoke=0`, `fire=1`, `person=2`.
+  - Masked unknown-class BCE in both YOLO26 loss branches and unknown-class validation predictions before head top-k when raw outputs are available, with a postprocess filter as a fallback.
+  - Forced `mosaic`, `mixup`, `cutmix`, and `copy_paste` to zero for scoped training; single-image augmentations remain enabled.
+  - Ran a complete one-epoch CPU smoke test on four generated 64x64 images through training and validation; no project data or pretrained checkpoint was used.
+  - Created `E:\HomeAssistantPi4\processed\indoor-partial-joint-v1` as a scoped index over the existing sources: 14,900 train, 4,301 val, 4,299 test.
+  - Verified 23,500/23,500 indexed images have scope entries, split path overlap is zero, and scope counts are 11,500 smoke/fire plus 12,000 person.
+
+- **Unfinished / Next Steps (CRITICAL):**
+  - [ ] Add/run an index-aware audit for structure, label validity, class/scope distribution, empty labels, exact duplicates, and cross-split duplicates on `indoor-partial-joint-v1`.
+  - [ ] Complete stratified annotation/domain review for any selected training combination and record gate decisions.
+  - [ ] Do not train on real project data until every data gate passes.
+
+- **Known Blocks / Issues:**
+  - Data gate remains FAILED pending the full audit of the new scoped derivative.
+  - Multi-image augmentation is intentionally unavailable because combining differing annotation scopes can create false negatives.
+  - PyTorch validation masks unknown scores before YOLO26 top-k; exported/backend-only validation may only support the postprocess fallback. Use the pinned PyTorch path for authoritative scoped metrics.
+  - Dataset/report artifacts remain on E:; `projects/.env` was not read or printed.
+
+- **Validation:**
+  - Build: NOT APPLICABLE
+  - Tests: PASS (86/86 full suite, including one synthetic trainer epoch)
+  - Typecheck: NOT CONFIGURED
+  - Lint: PASS (`.venv\\Scripts\\python.exe -m ruff check . --no-cache`)
+
+- **Git State:**
+  - Branch: `main`
+  - Last Commit: `4456d03 feat: prototype class-masked YOLO loss`
+  - Working Tree: DIRTY
+
+- **Uncommitted Changes:**
+  - `CHANGES.log`
+  - `projects/indoor-detection/README.md`
+  - `projects/indoor-detection/configs/train_indoor_v1.yaml`
+  - `projects/indoor-detection/data/README.md`
+  - `projects/indoor-detection/docs/JOINT_DATASET_INTAKE.md`
+  - `projects/indoor-detection/src/indoor_detection/compose_dataset.py`
+  - `projects/indoor-detection/src/indoor_detection/partial_label_loss.py`
+  - `projects/indoor-detection/src/indoor_detection/partial_label_training.py`
+  - `projects/indoor-detection/src/indoor_detection/train.py`
+  - `projects/indoor-detection/tests/test_compose_dataset.py`
+  - `projects/indoor-detection/tests/test_partial_label_training.py`
+  - `projects/indoor-detection/tests/test_train.py`
+  - `.codex/` (pre-existing untracked directory, untouched)
+
+- **Active Files:**
+  - `CHANGES.log`
+  - `projects/indoor-detection/src/indoor_detection/compose_dataset.py`
+  - `projects/indoor-detection/src/indoor_detection/partial_label_training.py`
+  - `projects/indoor-detection/src/indoor_detection/train.py`
+  - `projects/indoor-detection/tests/test_partial_label_training.py`
+  - `E:\HomeAssistantPi4\processed\indoor-partial-joint-v1\`
+
+- **Notes for Next Agent:**
+  - Run the next gate against the scoped index rather than the old unscoped `datasets/indoor-v1`.
+  - The scope manifest SHA-256 is `a1fb72768031e1b73a75bdf3de72b476da8e522260916b5f94f2554893081d20`.
+  - `configs/train_indoor_v1.yaml` points to the scoped derivative but remains blocked by the data gate.

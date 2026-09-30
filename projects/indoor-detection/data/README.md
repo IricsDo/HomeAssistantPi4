@@ -6,6 +6,8 @@ liệu nặng được lưu tại `E:\HomeAssistantPi4`:
 - `raw/Home-fire-dataset/v1.0.0/`: archive tải từ GitHub Release, giữ nguyên.
 - `raw/COCO2017/`: annotation chính thức và cache chỉ các ảnh person đã chọn.
 - `processed/indoor-home-fire-v2/`: derivative giữ cả smoke và fire.
+- `processed/indoor-partial-joint-v1/`: index ba nguồn kèm class scope từng ảnh;
+  chỉ dùng sau khi toàn bộ data gate đạt.
 - `datasets/indoor-v1/`: index cuối cho smoke, fire và person sau annotation audit.
 - `manifests/`: checksum, nguồn, license và thống kê chuyển đổi.
 - `reports/`: kết quả audit ảnh, annotation và duplicate giữa các split.

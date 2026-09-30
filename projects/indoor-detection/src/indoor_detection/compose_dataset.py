@@ -15,6 +15,7 @@ from PIL import Image
 from indoor_detection.dataset import IMAGE_SUFFIXES, sha256_file
 
 SPLITS = ("train", "val", "test")
+TARGET_NAMES = ("smoke", "fire", "person")
 SPLIT_PRIORITY = {"train": 0, "val": 1, "test": 2}
 
 
@@ -141,6 +142,7 @@ def compose_dataset(
     output_dir: Path,
     roboflow_deduplicate: set[str],
     max_hamming_distance: int = 5,
+    emit_class_scopes: bool = False,
 ) -> dict[str, Any]:
     if output_dir.exists() and any(output_dir.iterdir()):
         raise FileExistsError(f"Output directory is not empty: {output_dir}")
@@ -155,6 +157,7 @@ def compose_dataset(
 
     output_dir.mkdir(parents=True, exist_ok=True)
     combined: dict[str, list[Path]] = {split: [] for split in SPLITS}
+    class_scopes: dict[Path, list[str]] = {}
     source_reports: list[dict[str, Any]] = []
     for name, dataset_yaml in sources:
         dataset_yaml = dataset_yaml.resolve()
@@ -173,6 +176,27 @@ def compose_dataset(
             combined[split].extend(kept)
             kept_counts[split] = len(kept)
         source_manifest = dataset_yaml.parent / "manifest.json"
+        annotation_scope: list[str] | None = None
+        if emit_class_scopes:
+            if not source_manifest.is_file():
+                raise FileNotFoundError(
+                    f"Source class scope requires a manifest: {source_manifest}"
+                )
+            source_metadata = json.loads(source_manifest.read_text(encoding="utf-8"))
+            raw_scope = source_metadata.get("output", {}).get("annotation_scope")
+            if not isinstance(raw_scope, list):
+                raise ValueError(f"Source manifest has no annotation scope: {source_manifest}")
+            scope = set(raw_scope)
+            if not scope or len(scope) != len(raw_scope) or not scope <= set(TARGET_NAMES):
+                raise ValueError(f"Invalid annotation scope in {source_manifest}: {raw_scope}")
+            annotation_scope = [target for target in TARGET_NAMES if target in scope]
+            for split in SPLITS:
+                for image in split_images[split]:
+                    if image in exclusions:
+                        continue
+                    previous = class_scopes.setdefault(image, annotation_scope)
+                    if previous != annotation_scope:
+                        raise ValueError(f"Conflicting annotation scopes for image: {image}")
         source_reports.append(
             {
                 "name": name,
@@ -189,6 +213,7 @@ def compose_dataset(
                     split: len(split_images[split]) for split in SPLITS
                 },
                 "kept_images": kept_counts,
+                "annotation_scope": annotation_scope,
                 "roboflow_cross_split_exclusions": evidence,
             }
         )
@@ -198,12 +223,28 @@ def compose_dataset(
         (output_dir / f"{split}.txt").write_text(
             "".join(f"{path.as_posix()}\n" for path in combined[split]), encoding="utf-8"
         )
+    class_scope_line = (
+        "class_scope_manifest: class_scope_manifest.json\n" if emit_class_scopes else ""
+    )
     (output_dir / "dataset.yaml").write_text(
         f"path: {output_dir.resolve().as_posix()}\n"
-        "train: train.txt\nval: val.txt\ntest: test.txt\n\n"
+        f"train: train.txt\nval: val.txt\ntest: test.txt\n{class_scope_line}\n"
         "names:\n  0: smoke\n  1: fire\n  2: person\n",
         encoding="utf-8",
     )
+    if emit_class_scopes:
+        scope_document = {
+            "schema_version": 1,
+            "classes": list(TARGET_NAMES),
+            "images": {
+                path.resolve().as_posix(): class_scopes[path]
+                for split in SPLITS
+                for path in combined[split]
+            },
+        }
+        (output_dir / "class_scope_manifest.json").write_text(
+            json.dumps(scope_document, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
+        )
     report: dict[str, Any] = {
         "schema_version": 1,
         "generated_at": datetime.now(UTC).isoformat(),
@@ -212,6 +253,7 @@ def compose_dataset(
             "roboflow_deduplicate": sorted(roboflow_deduplicate),
             "max_dhash_hamming_distance": max_hamming_distance,
             "split_priority": ["test", "val", "train"],
+            "class_scopes": emit_class_scopes,
         },
         "sources": source_reports,
         "output": {"splits": {split: len(combined[split]) for split in SPLITS}},
@@ -228,6 +270,11 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--roboflow-deduplicate", action="append", default=[])
     parser.add_argument("--max-hamming-distance", type=int, default=5)
     parser.add_argument("--output-dir", type=Path, required=True)
+    parser.add_argument(
+        "--class-scopes",
+        action="store_true",
+        help="Emit per-image annotation scopes from each source manifest",
+    )
     return parser
 
 
@@ -238,6 +285,7 @@ def main(argv: list[str] | None = None) -> int:
         output_dir=args.output_dir,
         roboflow_deduplicate=set(args.roboflow_deduplicate),
         max_hamming_distance=args.max_hamming_distance,
+        emit_class_scopes=args.class_scopes,
     )
     print(json.dumps(report["output"], indent=2))
     return 0

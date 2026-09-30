@@ -1,7 +1,7 @@
 task: detect
 mode: train
 model: yolo26n.pt
-data: E:/HomeAssistantPi4/datasets/indoor-v1/dataset.yaml
+data: E:/HomeAssistantPi4/processed/indoor-partial-joint-v1/dataset.yaml
 epochs: 80
 patience: 20
 batch: -1
@@ -15,8 +15,12 @@ seed: 42
 deterministic: true
 single_cls: false
 project: E:/HomeAssistantPi4/runs/indoor-detection
-name: indoor_yolo26n_v1
+name: indoor_partial_joint_yolo26n_v1
 exist_ok: false
 plots: true
 save: true
 close_mosaic: 10
+mosaic: 0.0
+mixup: 0.0
+cutmix: 0.0
+copy_paste: 0.0

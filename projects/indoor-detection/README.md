@@ -93,20 +93,26 @@ khi các class ngoài phạm vi đã được xác minh là không xuất hiện
 nhãn, hoặc được xử lý bởi class-masked loss đã triển khai và kiểm thử. Không ghép
 thẳng các nguồn partial vào training set.
 
-Criterion class-masked hiện mới là prototype cho Ultralytics 8.4.163; unit test
-và synthetic forward/backward trên YOLO26n đã đạt. Pipeline chưa truyền
-`known_classes` theo từng ảnh qua dataloader/trainer, nên chưa được dùng để train.
-Trước khi mở data gate cần thêm manifest class-scope, trainer/dataloader hỗ trợ
-mask cho cả train và validation, rồi audit dữ liệu thật theo scope.
+Pipeline class-masked cho Ultralytics 8.4.163 đã truyền `known_classes` theo từng
+ảnh qua train/validation dataloader, mask BCE và bỏ prediction ngoài scope khỏi
+validation metrics. Một smoke test một epoch trên bốn ảnh tổng hợp đã đạt. Các
+augmentation trộn nhiều ảnh (`mosaic`, `mixup`, `cutmix`, `copy_paste`) bị buộc
+về 0 để scope không bị trộn sai; augmentation một ảnh vẫn hoạt động.
+
+Scoped derivative hiện nằm tại
+`E:\HomeAssistantPi4\processed\indoor-partial-joint-v1`: 14.900 train, 4.301
+validation và 4.299 test. Nó chỉ là index cùng manifest scope trỏ tới ba nguồn
+bất biến; chưa phải dataset được phép train. Cần hoàn tất audit structure,
+duplicate, distribution và annotation theo scope trước khi mở data gate.
 
 `indoor-prepare-joint` hiện vẫn yêu cầu mỗi nguồn khai báo đủ ba class và mọi ảnh
 có label file. Đây là giới hạn hiện tại của tool, không còn là yêu cầu sản phẩm.
 Metadata trên E: đã có bốn ứng viên: `indoor-fs-v2` (5.000 ảnh fire/smoke),
 `indoor-home-fire-v2` (6.500 ảnh fire/smoke), `coco-person-v1` (12.000 ảnh
 person) và `indoor-joint-v1` v32 (9.749 ảnh cả ba class, nhưng indoor gate
-failed). Chưa được ghép ba nguồn partial vào train: bước tiếp theo là nối
-prototype loss với manifest class-scope theo ảnh trong trainer/dataloader và
-kiểm thử cả train lẫn validation. Tình trạng license được ghi lại khi intake;
+failed). Ba nguồn partial đã được ghép thành scoped index để audit, chưa được
+train. Bước tiếp theo là chạy toàn bộ data gate trên derivative mới. Tình trạng
+license được ghi lại khi intake;
 thiếu metadata không tự loại nguồn khỏi khâu đánh giá, nhưng không được xem là
 quyền sử dụng đã xác nhận.
 

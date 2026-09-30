@@ -32,6 +32,18 @@ def _load_config(path: Path) -> dict[str, Any]:
     return config
 
 
+def _uses_class_scopes(data_path: Path) -> bool:
+    """Return whether a dataset opts into partial-label class masking."""
+    import yaml
+
+    if not data_path.is_file():
+        raise FileNotFoundError(f"Dataset config not found: {data_path}")
+    data = yaml.safe_load(data_path.read_text(encoding="utf-8-sig"))
+    if not isinstance(data, dict):
+        raise ValueError("Dataset config must be a YAML mapping")
+    return bool(data.get("class_scope_manifest"))
+
+
 def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     config_path = Path(args.config).resolve()
@@ -69,7 +81,13 @@ def main(argv: list[str] | None = None) -> int:
     from ultralytics import YOLO
 
     model = YOLO(model_name)
-    model.train(**options)
+    data_config = Path(str(options["data"]))
+    if _uses_class_scopes(data_config):
+        from indoor_detection.partial_label_training import ClassScopedDetectionTrainer
+
+        model.train(trainer=ClassScopedDetectionTrainer, **options)
+    else:
+        model.train(**options)
     return 0
 
 

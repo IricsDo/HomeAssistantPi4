@@ -1,8 +1,7 @@
 """Experimental class-masked classification loss for partial-label YOLO data.
 
-This module only supplies the loss criterion. A training dataset must also
-provide a per-image ``known_classes`` boolean tensor in the batch; the regular
-YOLO dataset/trainer does not do that yet.
+The class-scoped dataset and trainer in :mod:`partial_label_training` provide
+the per-image ``known_classes`` boolean tensor consumed here.
 """
 
 from __future__ import annotations
