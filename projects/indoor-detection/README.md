@@ -100,10 +100,12 @@ augmentation trộn nhiều ảnh (`mosaic`, `mixup`, `cutmix`, `copy_paste`) b�
 về 0 để scope không bị trộn sai; augmentation một ảnh vẫn hoạt động.
 
 Scoped derivative hiện nằm tại
-`E:\HomeAssistantPi4\processed\indoor-partial-joint-v1`: 14.900 train, 4.301
-validation và 4.299 test. Nó chỉ là index cùng manifest scope trỏ tới ba nguồn
-bất biến; chưa phải dataset được phép train. Cần hoàn tất audit structure,
-duplicate, distribution và annotation theo scope trước khi mở data gate.
+`E:\HomeAssistantPi4\processed\indoor-partial-joint-v2`: 14.900 train, 4.301
+validation và 4.297 test. Nó chỉ là index cùng manifest scope trỏ tới ba nguồn
+bất biến. Audit đủ 23.498 ảnh đạt structure, label/scope, class distribution và
+exact-duplicate gate; hai duplicate conflict ở v1 đã được adjudicate và loại
+khỏi index v2, không sửa nguồn. Visual annotation/domain gate vẫn pending nên
+chưa được train.
 
 `indoor-prepare-joint` hiện vẫn yêu cầu mỗi nguồn khai báo đủ ba class và mọi ảnh
 có label file. Đây là giới hạn hiện tại của tool, không còn là yêu cầu sản phẩm.

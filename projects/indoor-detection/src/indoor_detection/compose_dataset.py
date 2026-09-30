@@ -143,6 +143,7 @@ def compose_dataset(
     roboflow_deduplicate: set[str],
     max_hamming_distance: int = 5,
     emit_class_scopes: bool = False,
+    exclude_images: set[Path] | None = None,
 ) -> dict[str, Any]:
     if output_dir.exists() and any(output_dir.iterdir()):
         raise FileExistsError(f"Output directory is not empty: {output_dir}")
@@ -154,6 +155,8 @@ def compose_dataset(
     unknown = roboflow_deduplicate - set(source_names)
     if unknown:
         raise ValueError(f"Unknown de-duplication sources: {sorted(unknown)}")
+    requested_exclusions = {path.resolve() for path in (exclude_images or set())}
+    found_exclusions: set[Path] = set()
 
     output_dir.mkdir(parents=True, exist_ok=True)
     combined: dict[str, list[Path]] = {split: [] for split in SPLITS}
@@ -170,6 +173,14 @@ def compose_dataset(
             exclusions, evidence = find_roboflow_cross_split_exclusions(
                 split_images, max_hamming_distance
             )
+        manual_exclusions = {
+            image
+            for images in split_images.values()
+            for image in images
+            if image in requested_exclusions
+        }
+        found_exclusions.update(manual_exclusions)
+        exclusions.update(manual_exclusions)
         kept_counts: dict[str, int] = {}
         for split in SPLITS:
             kept = [path for path in split_images[split] if path not in exclusions]
@@ -214,8 +225,16 @@ def compose_dataset(
                 },
                 "kept_images": kept_counts,
                 "annotation_scope": annotation_scope,
+                "manual_exclusions": sorted(path.as_posix() for path in manual_exclusions),
                 "roboflow_cross_split_exclusions": evidence,
             }
+        )
+
+    missing_exclusions = requested_exclusions - found_exclusions
+    if missing_exclusions:
+        raise ValueError(
+            "Requested exclusions are outside all source splits: "
+            f"{sorted(path.as_posix() for path in missing_exclusions)}"
         )
 
     for split in SPLITS:
@@ -254,6 +273,7 @@ def compose_dataset(
             "max_dhash_hamming_distance": max_hamming_distance,
             "split_priority": ["test", "val", "train"],
             "class_scopes": emit_class_scopes,
+            "manual_exclusions": sorted(path.as_posix() for path in requested_exclusions),
         },
         "sources": source_reports,
         "output": {"splits": {split: len(combined[split]) for split in SPLITS}},
@@ -275,6 +295,13 @@ def build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="Emit per-image annotation scopes from each source manifest",
     )
+    parser.add_argument(
+        "--exclude-image",
+        action="append",
+        type=Path,
+        default=[],
+        help="Exclude an adjudicated source image while preserving source files",
+    )
     return parser
 
 
@@ -286,6 +313,7 @@ def main(argv: list[str] | None = None) -> int:
         roboflow_deduplicate=set(args.roboflow_deduplicate),
         max_hamming_distance=args.max_hamming_distance,
         emit_class_scopes=args.class_scopes,
+        exclude_images=set(args.exclude_image),
     )
     print(json.dumps(report["output"], indent=2))
     return 0

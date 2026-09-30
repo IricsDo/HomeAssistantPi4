@@ -1,7 +1,7 @@
 task: detect
 mode: train
 model: yolo26n.pt
-data: E:/HomeAssistantPi4/processed/indoor-partial-joint-v1/dataset.yaml
+data: E:/HomeAssistantPi4/processed/indoor-partial-joint-v2/dataset.yaml
 epochs: 80
 patience: 20
 batch: -1

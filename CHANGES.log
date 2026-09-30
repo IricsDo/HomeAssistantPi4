@@ -817,3 +817,64 @@ validation state.
   - Run the next gate against the scoped index rather than the old unscoped `datasets/indoor-v1`.
   - The scope manifest SHA-256 is `a1fb72768031e1b73a75bdf3de72b476da8e522260916b5f94f2554893081d20`.
   - `configs/train_indoor_v1.yaml` points to the scoped derivative but remains blocked by the data gate.
+
+## [2026-09-30 21:48 +07:00] - Scoped joint machine audit from OpenAI Codex
+
+- **Current Task:** Run structure, duplicate, distribution, and annotation-scope gates on the scoped joint dataset.
+- **Status:** IN_PROGRESS
+- **Current Owner:** OpenAI Codex
+
+- **Completed in this session:**
+  - Added an index-aware audit command covering image readability, image/label pairing, YOLO label validity, per-image scope consistency, class/positive/empty distribution, path overlap, exact duplicates, and conflicting annotations.
+  - Audited all 23,500 images in scoped derivative v1. Structure passed, but two same-split exact duplicate groups had slightly different fire boxes.
+  - Visually reviewed both indoor fireplace images and compared labels; selected the slightly wider boxes: keep `test_1240` over `test_584`, and keep `test_696` over `test_967`.
+  - Added traceable manual exclusions to the composer and created immutable `E:\HomeAssistantPi4\processed\indoor-partial-joint-v2`; source images and labels remain unchanged.
+  - Audited all 23,498 v2 images. Structure/annotation/scope passed with zero errors and zero split-path overlap. Duplicate gate passed with zero exact, cross-split, annotation-conflict, or scope-conflict groups.
+  - Recorded full class/scope/positive/empty-label distributions at `E:\HomeAssistantPi4\reports\indoor-partial-joint-v2-audit\index-audit.json`.
+
+- **Unfinished / Next Steps (CRITICAL):**
+  - [ ] Finish the visual annotation/domain gate using stratified review across every source, split, scope, class-presence stratum, and negative stratum.
+  - [ ] Reconcile the 285 pending fire/smoke rows from the existing 390-image review or generate a new v2-linked review ledger with explicit decisions.
+  - [ ] Do not train on real project data until visual annotation/domain gate passes.
+
+- **Known Blocks / Issues:**
+  - Automated gates pass, but visual annotation/domain gate remains PENDING and `training_allowed` remains false.
+  - Empty labels are expected scoped negatives: train 1,087; val 1,187; test 1,168. Their absent out-of-scope classes are masked by the scoped trainer.
+  - Dataset/report artifacts remain on E:; `projects/.env` was not read or printed.
+
+- **Validation:**
+  - Build: NOT APPLICABLE
+  - Tests: PASS (89/89 full suite)
+  - Typecheck: NOT CONFIGURED
+  - Lint: PASS (`.venv\\Scripts\\python.exe -m ruff check . --no-cache`)
+
+- **Git State:**
+  - Branch: `main`
+  - Last Commit: `d2ee2d3 feat: integrate class-scoped YOLO training`
+  - Working Tree: DIRTY
+
+- **Uncommitted Changes:**
+  - `CHANGES.log`
+  - `projects/indoor-detection/README.md`
+  - `projects/indoor-detection/configs/train_indoor_v1.yaml`
+  - `projects/indoor-detection/data/README.md`
+  - `projects/indoor-detection/docs/JOINT_DATASET_INTAKE.md`
+  - `projects/indoor-detection/pyproject.toml`
+  - `projects/indoor-detection/src/indoor_detection/compose_dataset.py`
+  - `projects/indoor-detection/src/indoor_detection/scoped_dataset_audit.py`
+  - `projects/indoor-detection/tests/test_compose_dataset.py`
+  - `projects/indoor-detection/tests/test_scoped_dataset_audit.py`
+  - `.codex/` (pre-existing untracked directory, untouched)
+
+- **Active Files:**
+  - `CHANGES.log`
+  - `projects/indoor-detection/src/indoor_detection/compose_dataset.py`
+  - `projects/indoor-detection/src/indoor_detection/scoped_dataset_audit.py`
+  - `projects/indoor-detection/tests/test_scoped_dataset_audit.py`
+  - `E:\HomeAssistantPi4\processed\indoor-partial-joint-v2\`
+  - `E:\HomeAssistantPi4\reports\indoor-partial-joint-v2-audit\index-audit.json`
+
+- **Notes for Next Agent:**
+  - v2 scope-manifest SHA-256: `3c8888d117b20dc435c5c338bd8ac23b182aadf853c1e2e6d445486411e405be`.
+  - v2 audit-report SHA-256: `eaac4916d06c3b08e6da40a5add1e20a0b14b153e68bb7f861528a8743ba6177`.
+  - `configs/train_indoor_v1.yaml` points to v2 but training remains blocked by the pending visual gate.

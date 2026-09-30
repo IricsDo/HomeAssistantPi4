@@ -172,11 +172,15 @@ augmentation (`mosaic`, `mixup`, `cutmix`, `copy_paste`) bị vô hiệu hóa; c
 biến đổi một ảnh giữ nguyên scope. Synthetic trainer smoke test một epoch trên
 bốn ảnh 64x64 đã đạt, không dùng pretrained weights hay dữ liệu project thật.
 
-Derivative `E:\HomeAssistantPi4\processed\indoor-partial-joint-v1` đã được tạo
-từ Home-fire, Indoor-FS và COCO-person, gồm 14.900/4.301/4.299 ảnh cho
-train/val/test và `class_scope_manifest.json` theo từng ảnh. Bước tiếp theo là
-audit structure, duplicate, distribution và annotation trên derivative này.
-Chưa train baseline; data gate vẫn FAILED.
+Derivative `E:\HomeAssistantPi4\processed\indoor-partial-joint-v2` đã được tạo
+từ Home-fire, Indoor-FS và COCO-person, gồm 14.900/4.301/4.297 ảnh cho
+train/val/test và `class_scope_manifest.json` theo từng ảnh. Audit đầy đủ 23.498
+ảnh/label đạt structure, label/scope, distribution và duplicate machine gates:
+0 lỗi, 0 path overlap, 0 exact duplicate. Hai bản duplicate có box fire lệch nhẹ
+trong v1 đã được adjudicate: giữ `test_1240` thay `test_584`, giữ `test_696`
+thay `test_967`; source không bị sửa. Report nằm tại
+`E:\HomeAssistantPi4\reports\indoor-partial-joint-v2-audit\index-audit.json`.
+Visual annotation/domain gate vẫn pending. Chưa train baseline.
 
 ### Gói review duplicate (2026-09-30)
 

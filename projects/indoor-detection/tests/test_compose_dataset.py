@@ -77,3 +77,23 @@ def test_compose_dataset_emits_per_image_class_scopes(tmp_path: Path) -> None:
     assert manifest["classes"] == ["smoke", "fire", "person"]
     assert manifest["images"][fire_image.as_posix()] == ["smoke", "fire"]
     assert manifest["images"][person_image.as_posix()] == ["person"]
+
+
+def test_compose_dataset_records_manual_exclusion(tmp_path: Path) -> None:
+    source = tmp_path / "source"
+    dataset_yaml = _write_source(source, ["smoke", "fire"])
+    excluded = source / "images" / "train" / "unique-train.rf.train.jpg"
+
+    report = compose_dataset(
+        sources=[("fire", dataset_yaml)],
+        output_dir=tmp_path / "combined",
+        roboflow_deduplicate=set(),
+        emit_class_scopes=True,
+        exclude_images={excluded},
+    )
+
+    assert report["output"]["splits"]["train"] == 1
+    assert report["sources"][0]["manual_exclusions"] == [excluded.resolve().as_posix()]
+    assert excluded.resolve().as_posix() not in (
+        tmp_path / "combined" / "class_scope_manifest.json"
+    ).read_text()

@@ -41,6 +41,7 @@ indoor-audit-person = "indoor_detection.person_audit:main"
 indoor-review-person = "indoor_detection.person_review:main"
 indoor-verify-person = "indoor_detection.person_consensus:main"
 indoor-apply-person = "indoor_detection.person_enrichment:main"
+indoor-audit-scoped = "indoor_detection.scoped_dataset_audit:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
