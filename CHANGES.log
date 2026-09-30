@@ -1,0 +1,136 @@
+# Agent Handover Log
+
+This file records shared state and handovers between AI coding agents.
+
+Git remains the source of truth for code history. This file is the source of
+truth for agent coordination, task ownership, unfinished work, blockers, and
+validation state.
+
+## [INITIALIZED] - Project Collaboration Protocol
+
+- **Current Task:** Project setup / AI agent collaboration protocol
+- **Status:** PLANNED
+- **Current Owner:** Not assigned
+- **Completed in this session:**
+  - Added `AGENTS.md` collaboration protocol.
+  - Added `CLAUDE.md` Claude Code-specific instructions.
+  - Added `README.md` project documentation template.
+  - Initialized `CHANGES.log`.
+- **Unfinished / Next Steps (CRITICAL):**
+  - [ ] Fill in the actual project stack in `AGENTS.md`.
+  - [ ] Fill in real build/test/lint/typecheck commands.
+  - [ ] Replace the placeholder project description in `README.md`.
+  - [ ] Review the repository-specific architecture and conventions.
+- **Known Blocks / Issues:**
+  - Project-specific stack and commands have not yet been provided.
+- **Validation:**
+  - Build: NOT RUN
+  - Tests: NOT RUN
+  - Typecheck: NOT RUN
+  - Lint: NOT RUN
+- **Git State:**
+  - Branch: Not inspected
+  - Last Commit: Not inspected
+  - Working Tree: Not inspected
+- **Uncommitted Changes:**
+  - `AGENTS.md`
+  - `CLAUDE.md`
+  - `README.md`
+  - `CHANGES.log`
+- **Active Files:**
+  - `AGENTS.md`
+  - `CLAUDE.md`
+  - `README.md`
+  - `CHANGES.log`
+- **Notes for Next Agent:**
+  - These files are templates and should be adapted to the actual project.
+
+## [2026-09-30 13:29 +07:00] - Handover from OpenAI Codex
+
+- **Current Task:** Intake and quality-gate a fully labeled joint
+  smoke/fire/person dataset before training the unified detector.
+- **Status:** IN_PROGRESS
+- **Current Owner:** OpenAI Codex. Claude Code may take ownership when the user
+  explicitly asks it to continue.
+
+- **Completed in this session:**
+  - Verified the replacement Roboflow API key works without printing or committing
+    its value.
+  - Added an uncommitted Roboflow download helper that reads `projects/.env` and
+    masks the key in error messages.
+  - Downloaded Roboflow `spyrobot/fire-smoke-and-human-detector` version 32 in
+    YOLOv8 format.
+  - Verified the archive contains 19.510 ZIP entries and the extracted dataset
+    contains 8.001 train, 1.017 validation, and 731 test images.
+  - Verified every extracted image currently has a corresponding label file:
+    9.749 images and 9.749 labels total.
+  - Confirmed source classes are `fire`, `human`, `smoke`; the project intake maps
+    them to `smoke=0`, `fire=1`, `person=2`.
+  - Updated `AGENTS.md`, `CLAUDE.md`, and root `README.md` with the actual stack,
+    constraints, project state, and continuation instructions.
+
+- **Unfinished / Next Steps (CRITICAL):**
+  - [ ] Inspect/finalize `scripts/download_roboflow_dataset.py`; its success JSON
+    currently depends on SDK dataset attributes that were not reached because the
+    SDK extraction was interrupted.
+  - [ ] Normalize the extracted `data.yaml` split paths. They currently use
+    `../train/images`, `../valid/images`, and `../test/images`, which resolve
+    outside the extraction root in the current intake implementation.
+  - [ ] Run `indoor-prepare-joint` to create
+    `E:\HomeAssistantPi4\processed\indoor-joint-v1` and record URL, v32,
+    CC BY 4.0, and archive checksum in provenance.
+  - [ ] Run structural, exact/cross-split duplicate, class-distribution, negative
+    sample, and bounding-box audits.
+  - [ ] Generate stratified contact sheets and visually inspect indoor relevance
+    and annotation quality.
+  - [ ] Only after all gates pass, train `configs/train_joint_v1.yaml`.
+
+- **Known Blocks / Issues:**
+  - The complete raw dataset is available; there is no download blocker.
+  - `data.yaml` paths need normalization before intake.
+  - Pytest may hit Windows ACL errors when its default temp directory is used
+    inside the restricted sandbox. An explicit writable `--basetemp` or running
+    with normal local permissions resolves this; this is not a code failure.
+  - The project-local `projects/indoor-detection/.venv` has not yet been created.
+    Validation reused `projects/smoke-detection/.venv`, where this package is
+    installed editable.
+
+- **Dataset Artifacts (not tracked by Git):**
+  - Archive: `E:\HomeAssistantPi4\raw\downloads\fire-smoke-human-v32.zip`
+  - Archive size: 447.260.406 bytes
+  - SHA-256: `052078BD4677C6FF4B1D4AF9321B891E0A79AE16F899CED6E45F4BD3A67168A2`
+  - Complete extraction:
+    `E:\HomeAssistantPi4\raw\fire-smoke-human-v32-clean`
+  - Processed output: not created yet
+
+- **Validation:**
+  - Build: NOT APPLICABLE for dataset-preparation phase
+  - Tests: PASS (65/65)
+  - Typecheck: NOT CONFIGURED
+  - Lint: PASS (`ruff check .`)
+  - Compile: PASS (`python -m compileall -q src scripts tests`)
+
+- **Git State:**
+  - Branch: `main`
+  - Base Commit before this documentation handover:
+    `b07a200 feat: add fully labeled joint dataset intake`
+  - Remote at snapshot: `origin/main` at `b07a200`
+  - Working Tree: DIRTY
+
+- **Uncommitted Changes:**
+  - `projects/indoor-detection/scripts/download_roboflow_dataset.py`
+
+- **Active Files:**
+  - `projects/indoor-detection/src/indoor_detection/joint_dataset.py`
+  - `projects/indoor-detection/tests/test_joint_dataset.py`
+  - `projects/indoor-detection/docs/JOINT_DATASET_INTAKE.md`
+  - `projects/indoor-detection/configs/train_joint_v1.yaml`
+  - `projects/indoor-detection/scripts/download_roboflow_dataset.py`
+
+- **Notes for Next Agent:**
+  - Do not expose `projects/.env`; it is ignored and contains the Roboflow key.
+  - Do not train from the older partial-label fire/smoke corpora merely because
+    they are already prepared; missing person boxes would create false negatives.
+  - Do not start training until the raw v32 dataset has passed all intake gates.
+  - Smoke recall remains important and blurred frames must not be rejected solely
+    because of blur.
