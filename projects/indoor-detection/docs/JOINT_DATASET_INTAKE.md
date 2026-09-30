@@ -94,6 +94,50 @@ Không train từ dataset này. Bước tiếp theo là tìm/thu thập nguồn 
 phù hợp indoor, đồng thời adjudicate duplicate groups có nhãn khác nhau; sau đó
 tạo lại processed dataset và chạy toàn bộ gate trước khi train.
 
+### Cập nhật chính sách intake (2026-09-30)
+
+Mục tiêu sản phẩm vẫn là một model với ba class `smoke`, `fire`, `person` và
+một lượt inference. Không còn yêu cầu một nguồn đơn lẻ phải cung cấp cả ba
+class; nhiều nguồn có thể được hợp nhất sau khi class ID được chuẩn hóa.
+
+Nguồn partial-label chỉ được dùng an toàn nếu, với từng ảnh, các class ngoài
+phạm vi đã được xác minh là không xuất hiện, được bổ sung nhãn, hoặc được xử lý
+bằng class-masked loss đã triển khai và kiểm chứng. YOLO label format đang dùng
+không biểu diễn trạng thái “unknown”: class không có box bị xem như âm tính.
+Do đó không được ghép trực tiếp fire/smoke-only images có người chưa gắn nhãn
+vào training set ba class.
+
+Tool `indoor-prepare-joint` hiện vẫn yêu cầu mỗi nguồn khai báo cả ba class và
+label file cho mọi ảnh. Đây là giới hạn hiện tại của implementation; cần sửa
+tool/manifest và thêm validation trước khi nhập nguồn partial-label. Trong lúc
+chưa có hỗ trợ đó, chỉ dùng nguồn đã gắn đủ class hoặc curate/augment nhãn sao
+cho mọi class có thể xuất hiện đều được kiểm soát.
+
+Thứ tự ưu tiên nguồn: (1) có annotation sẵn, (2) đại diện cho môi trường/camera
+indoor mục tiêu, (3) nhãn đủ chính xác và có split/provenance hữu ích. Ghi rõ
+license và tình trạng xác minh khi intake; thiếu metadata không tự loại nguồn
+khỏi nghiên cứu/đánh giá, nhưng không được coi license chưa rõ là đã cấp quyền.
+Trước khi chia sẻ dataset/model ra ngoài hoặc dùng theo phạm vi có yêu cầu rõ
+ràng, cần xem lại quyền sử dụng tương ứng.
+
+### Ứng viên đã có trên ổ E:
+
+| Nguồn derivative | Ảnh | Annotation scope trong manifest | License/provenance ghi trong manifest | Trạng thái |
+|---|---:|---|---|---|
+| `processed/indoor-fs-v2` | 5.000 | `smoke`, `fire` | CC-BY-4.0; Hugging Face commit được ghi | Ứng viên indoor; cần kiểm tra annotation và xử lý nhãn person chưa biết |
+| `processed/indoor-home-fire-v2` | 6.500 | `smoke`, `fire` | CC-BY-NC-4.0; repo/release/DOI được ghi | Ứng viên home-fire; cần kiểm tra annotation và xử lý nhãn person chưa biết |
+| `processed/coco-person-v1` | 12.000 | `person` | COCO annotation CC-BY-4.0; ảnh giữ license Flickr theo từng ảnh | Person source; mức đại diện indoor và fire/smoke absence cần đánh giá |
+| `processed/indoor-joint-v1` (Roboflow v32) | 9.749 | `smoke`, `fire`, `person` | CC BY 4.0 theo manifest | Annotation đủ scope nhưng audit indoor/domain và duplicate hiện chưa đạt |
+
+Các số và trạng thái license ở bảng được đọc từ manifest hiện có; đây chưa phải
+chứng nhận độc lập về quyền sử dụng hay độ đầy đủ annotation. Các nguồn partial
+không được ghép thẳng bằng pipeline hiện tại.
+
+Data gate mới vẫn kiểm tra cấu trúc, annotation, duplicate/leakage, phân phối
+class và mức đại diện indoor. Gate nhãn được đánh giá theo class scope từng
+ảnh/nguồn, không theo điều kiện mọi nguồn phải có cùng danh sách class. Gate
+này chưa đạt cho đến khi pipeline có cách xử lý nhãn partial an toàn.
+
 ### Gói review duplicate (2026-09-30)
 
 Audit tạo gói adjudication tại

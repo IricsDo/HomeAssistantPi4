@@ -85,12 +85,25 @@ fire/smoke hiện có được tái tạo với mapping:
 - source `smoke=1` -> unified `smoke=0`
 - unified `person=2` có sẵn trong COCO person subset
 
-Các corpus trên chỉ gắn nhãn một phần: ảnh fire/smoke không đảm bảo đã gắn box
-cho người. Chúng không được dùng trực tiếp để fine-tune model ba lớp vì object
-thuộc target class nhưng thiếu nhãn sẽ bị học như background. Đường chính hiện
-tại là dataset đã gắn đủ cả ba lớp; pipeline person review cũ chỉ còn là fallback.
+Project cho phép ghép nhiều nguồn thành **một model ba lớp**, không bắt buộc mỗi
+nguồn đều có đủ `smoke/fire/person`. Tuy nhiên, label YOLO hiện tại không biểu
+diễn được trạng thái “chưa biết class này có xuất hiện hay không”: class không có
+box sẽ được hiểu là âm tính. Vì vậy, ảnh từ nguồn partial chỉ an toàn để train
+khi các class ngoài phạm vi đã được xác minh là không xuất hiện, đã được bổ sung
+nhãn, hoặc được xử lý bởi class-masked loss đã triển khai và kiểm thử. Không ghép
+thẳng các nguồn partial vào training set.
 
-Sau khi tải một dataset YOLO đã gắn đủ ba lớp, chuẩn hóa thứ tự class bằng:
+`indoor-prepare-joint` hiện vẫn yêu cầu mỗi nguồn khai báo đủ ba class và mọi ảnh
+có label file. Đây là giới hạn hiện tại của tool, không còn là yêu cầu sản phẩm.
+Metadata trên E: đã có bốn ứng viên: `indoor-fs-v2` (5.000 ảnh fire/smoke),
+`indoor-home-fire-v2` (6.500 ảnh fire/smoke), `coco-person-v1` (12.000 ảnh
+person) và `indoor-joint-v1` v32 (9.749 ảnh cả ba class, nhưng indoor gate
+failed). Chưa được ghép ba nguồn partial vào train: bước tiếp theo là thiết kế
+và kiểm thử cách xử lý class unknown theo từng ảnh. Tình trạng license được ghi
+lại khi intake; thiếu metadata không tự loại nguồn khỏi khâu đánh giá, nhưng
+không được xem là quyền sử dụng đã xác nhận.
+
+Với nguồn đã xác minh đủ nhãn ba lớp, chuẩn hóa thứ tự class bằng:
 
 ```powershell
 indoor-prepare-joint `

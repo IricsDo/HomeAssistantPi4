@@ -594,3 +594,51 @@ validation state.
   - Ledger on E: marks group 019's tighter second annotation as selected, with 050 and 051 pending.
   - Do not train until indoor relevance, class completeness, annotations, structure, duplicates, and distributions pass.
   - Never expose `projects/.env`.
+
+## [2026-09-30 17:05 +07:00] - Partial-label intake policy update from OpenAI Codex
+
+- **Current Task:** Revise data intake to allow complementary sources while preserving one three-class model.
+- **Status:** IN_PROGRESS
+- **Current Owner:** OpenAI Codex
+
+- **Completed in this session:**
+  - Updated intake policy: a single source need not contain all three classes; candidate priority favors labeled, indoor-relevant sources and records license status rather than dropping candidates solely for missing metadata.
+  - Documented the standard-YOLO limitation: an absent class row is treated as negative, not unknown; partial-label sources cannot be naively concatenated.
+  - Inventoried E: manifests: `indoor-fs-v2` (5,000, smoke/fire), `indoor-home-fire-v2` (6,500, smoke/fire), `coco-person-v1` (12,000, person), and v32 (9,749, all three; indoor audit failed).
+  - Updated README and intake documentation to identify the current tool limitation and next implementation step.
+
+- **Unfinished / Next Steps (CRITICAL):**
+  - [ ] Design and test safe per-image unknown-class handling, or curate/annotate source images so all target classes are known before training.
+  - [ ] Verify annotation quality and indoor relevance for candidate sources; resolve or quarantine v32 duplicates 050/051.
+  - [ ] Build a source-aware merged dataset, run all data gates, and train only after they pass.
+
+- **Known Blocks / Issues:**
+  - `indoor-prepare-joint` currently requires all three classes per source; standard YOLO labels cannot represent unknown classes.
+  - Candidate manifest scopes are not independent proof that every in-scope object is exhaustively annotated.
+  - `.codex/` is present as an untracked directory and was left untouched; it is excluded from this commit.
+
+- **Validation:**
+  - Build: NOT APPLICABLE
+  - Tests: PASS (6 focused joint/compose dataset tests)
+  - Typecheck: NOT CONFIGURED
+  - Lint: PASS (`python -m ruff check . --no-cache`)
+
+- **Git State:**
+  - Branch: `main`
+  - Last Commit: `de88c44 docs: record indoor data review handover`
+  - Working Tree: DIRTY
+
+- **Uncommitted Changes:**
+  - `CHANGES.log`
+  - `projects/indoor-detection/README.md`
+  - `projects/indoor-detection/docs/JOINT_DATASET_INTAKE.md`
+
+- **Active Files:**
+  - `CHANGES.log`
+  - `projects/indoor-detection/README.md`
+  - `projects/indoor-detection/docs/JOINT_DATASET_INTAKE.md`
+
+- **Notes for Next Agent:**
+  - User prefers labeled candidates over requiring one perfect source/license; still record provenance and do not assume unclear license means permission.
+  - Preserve one YOLO26n model with `smoke`, `fire`, and `person`; training remains blocked until unknown labels are handled safely.
+  - Dataset and report artifacts remain on E:; never inspect or print `projects/.env`.
