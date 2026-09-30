@@ -152,3 +152,21 @@ box của hai người chặt và tách rõ hơn. Còn ba nhóm (`019`, `050`, `
 Xem quyết định và lý do từng ảnh trong
 `E:\HomeAssistantPi4\reports\indoor-joint-v1-audit\duplicate-adjudication.csv`.
 Không có annotation nguồn nào bị sửa.
+
+### Rà soát tiếp theo (2026-09-30)
+
+Độ phân giải đầy đủ cho `duplicate-019` cho thấy hai bộ nhãn giống nhau ngoài
+box người: bản thứ hai bám sát hơn vào dáng người nhìn thấy. Ledger chọn bản
+thứ hai làm annotation giữ lại; bản đầu là duplicate cần bỏ khi tái tạo dataset.
+`duplicate-050` vẫn chưa adjudicate được: một bản có thêm nhiều box smoke trên
+các vùng khói mờ, nhưng ảnh không cho cơ sở chắc chắn để xác định box nào là
+đúng. `duplicate-051` cũng giữ pending: bản thứ hai có thêm một box person rõ
+ràng, nhưng còn nhiều lính cứu hỏa nhìn thấy ở phần dưới ảnh không được gắn nhãn.
+Không sửa nhãn nguồn.
+
+Tìm nguồn công khai bổ sung chưa tìm được dataset đủ điều kiện: [ISFire-4 trên
+Hugging Face](https://huggingface.co/datasets/shahriar-5/ISFire-4) có 7.370 ảnh
+indoor nhưng bốn class là các biến thể màu của fire/smoke, không có person.
+Zenodo Indoor Fire Smoke có mô tả box fire/smoke cho 5.000 ảnh nhưng không có
+person và metadata license còn trống. Cả hai đều chưa được nhập. Data gate vẫn
+FAILED; không train.

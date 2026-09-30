@@ -461,3 +461,95 @@ validation state.
   - Keep dataset artifacts on E:; never print or commit `projects/.env`.
   - Training remains blocked until indoor relevance, annotation, structure,
     duplicate, and distribution gates pass.
+
+## [2026-09-30 16:20 +07:00] - Duplicate review continuation from OpenAI Codex
+
+- **Current Task:** Adjudicate remaining duplicate labels and verify indoor data sources.
+- **Status:** IN_PROGRESS
+- **Current Owner:** OpenAI Codex
+
+- **Completed in this session:**
+  - Reviewed full-resolution groups 019, 050, and 051.
+  - Chose group 019's second copy because its person box is tighter while fire/smoke boxes match; source labels remain unchanged.
+  - Kept groups 050 and 051 pending: smoke coverage cannot be ranked confidently in 050; 051 omits other visible firefighters.
+  - Checked ISFire-4 and Zenodo's indoor fire/smoke set; neither supplies all three project classes with verified licensing.
+  - Updated `projects/indoor-detection/docs/JOINT_DATASET_INTAKE.md` with findings.
+
+- **Unfinished / Next Steps (CRITICAL):**
+  - [ ] Record the latest decisions in the E: adjudication CSV (write currently denied by filesystem ACL; request escalated access).
+  - [ ] Secure a verified indoor source with fire, smoke, and person annotations, or complete and review person labels for a suitable source.
+  - [ ] Resolve group 050 and repair/review group 051 before rebuilding the processed dataset.
+  - [ ] Rebuild and audit the processed joint dataset; do not train until every data gate passes.
+
+- **Known Blocks / Issues:**
+  - E: report directory is readable but write access is denied in this shell; no CSV changes were made.
+  - v32 remains unsuitable as an indoor training corpus; the data gate remains failed.
+
+- **Validation:**
+  - Build: NOT APPLICABLE
+  - Tests: NOT RUN (documentation/ledger update only)
+  - Typecheck: NOT CONFIGURED
+  - Lint: NOT RUN
+
+- **Git State:**
+  - Branch: `main`
+  - Last Commit: `cc852a3 docs: update reviewed indoor duplicate decisions`
+  - Working Tree: DIRTY
+
+- **Uncommitted Changes:**
+  - `CHANGES.log`
+  - `projects/indoor-detection/docs/JOINT_DATASET_INTAKE.md`
+
+- **Active Files:**
+  - `CHANGES.log`
+  - `projects/indoor-detection/docs/JOINT_DATASET_INTAKE.md`
+  - `E:\HomeAssistantPi4\reports\indoor-joint-v1-audit\duplicate-adjudication.csv` (pending ACL write)
+
+- **Notes for Next Agent:**
+  - Only group 019 has been adjudicated in this continuation; groups 050 and 051 remain unresolved.
+  - ISFire-4 has four color-coded fire/smoke classes and no person class. Zenodo set documents fire/smoke only and leaves license blank.
+  - Keep data artifacts on E: and never read or print `projects/.env`.
+
+## [2026-09-30 16:34 +07:00] - Ledger and validation follow-up from OpenAI Codex
+
+- **Current Task:** Record duplicate review decisions and validate the updated handover.
+- **Status:** IN_PROGRESS
+- **Current Owner:** OpenAI Codex
+
+- **Completed in this session:**
+  - Updated the E: CSV ledger: group 019 second copy retained; groups 050 and 051 explicitly marked pending with review reasons.
+  - Confirmed the CSV rows reflect all six affected source records.
+
+- **Unfinished / Next Steps (CRITICAL):**
+  - [ ] Find and verify a license-clear indoor source with complete fire, smoke, and person annotations.
+  - [ ] Resolve/re-annotate groups 050 and 051 before rebuilding the processed joint dataset.
+  - [ ] Rebuild and audit the processed dataset; keep training blocked until every gate passes.
+
+- **Known Blocks / Issues:**
+  - No suitable, license-verified three-class indoor dataset has been established.
+  - v32 still fails indoor-domain relevance and annotation review gates.
+
+- **Validation:**
+  - Build: NOT APPLICABLE
+  - Tests: PASS (5 focused intake/audit tests)
+  - Typecheck: NOT CONFIGURED
+  - Lint: PASS (`python -m ruff check . --no-cache`)
+
+- **Git State:**
+  - Branch: `main`
+  - Last Commit: `cc852a3 docs: update reviewed indoor duplicate decisions`
+  - Working Tree: DIRTY
+
+- **Uncommitted Changes:**
+  - `CHANGES.log`
+  - `projects/indoor-detection/docs/JOINT_DATASET_INTAKE.md`
+
+- **Active Files:**
+  - `CHANGES.log`
+  - `projects/indoor-detection/docs/JOINT_DATASET_INTAKE.md`
+  - `E:\HomeAssistantPi4\reports\indoor-joint-v1-audit\duplicate-adjudication.csv`
+
+- **Notes for Next Agent:**
+  - Test and lint commands passed after updating docs and ledger.
+  - The remaining duplicate groups require annotation adjudication/repair, not blind deduplication.
+  - Never expose or commit `projects/.env`; datasets and reports stay on E:.
