@@ -167,6 +167,9 @@ cython_debug/
 test_code/*.*
 client_secret_507758175100-idpj8q65rbj81udear405sc2levksls6.apps.googleusercontent.com.json
 
+# Local Codex state
+.codex/
+
 # Indoor detection project artifacts
 projects/indoor-detection/data/raw/
 projects/indoor-detection/data/interim/
