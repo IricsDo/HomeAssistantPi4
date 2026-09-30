@@ -142,3 +142,13 @@ Một bài báo mô tả dataset 5.000 ảnh với fire/smoke/person, nhưng nó
 nhiều miền (forest, industrial, urban, indoor, vehicle) và data chỉ được cấp từ
 tác giả tương ứng theo yêu cầu. Không có archive công khai để kiểm tra trực tiếp;
 không thể dùng làm nguồn đã xác minh.
+
+### Adjudication update (2026-09-30)
+
+Review ở độ phân giải đầy đủ đã tăng quyết định loại ngoại thất lên 55/59 nhóm.
+Ở group `duplicate-054`, đã chọn annotation của bản thứ hai: lửa/khói giống nhau,
+box của hai người chặt và tách rõ hơn. Còn ba nhóm (`019`, `050`, `051`) chưa
+đủ cơ sở để chọn nhãn dứt khoát; chúng vẫn được giữ trong ledger là chưa xử lý.
+Xem quyết định và lý do từng ảnh trong
+`E:\HomeAssistantPi4\reports\indoor-joint-v1-audit\duplicate-adjudication.csv`.
+Không có annotation nguồn nào bị sửa.

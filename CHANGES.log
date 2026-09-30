@@ -406,3 +406,58 @@ validation state.
   - Review decisions are in `E:\HomeAssistantPi4\reports\indoor-joint-v1-audit\duplicate-adjudication.csv`.
   - Keep all raw, processed and report data on E: and never expose `projects/.env`.
   - Do not train until every data gate passes.
+
+## [2026-09-30 15:44 +07:00] - Duplicate adjudication update from OpenAI Codex
+
+- **Current Task:** Finish duplicate review and find a verified indoor source for
+  the unified classes.
+- **Status:** IN_PROGRESS
+- **Current Owner:** OpenAI Codex
+
+- **Completed in this session:**
+  - Reviewed the remaining candidate groups at higher resolution.
+  - Increased clear outdoor/exterior exclusions in the ledger from 52 to 55 of
+    the 59 conflicting duplicate groups.
+  - Resolved duplicate group 054 by selecting the second copy's tighter,
+    non-overlapping boxes around the two visible people; fire/smoke boxes match.
+  - Left groups 019, 050, and 051 unresolved because the alternative annotations
+    cannot be confidently ranked from the image alone.
+  - Kept original image and label files unchanged; decisions are only in the
+    E: review CSV. No training was run.
+
+- **Unfinished / Next Steps (CRITICAL):**
+  - [ ] Adjudicate groups 019, 050, and 051 or exclude them from the candidate
+    indoor dataset with documented grounds.
+  - [ ] Resolve the lack of a public license-clear indoor dataset labeled for
+    all three classes, or plan verified person annotation.
+  - [ ] Rebuild the processed dataset and rerun all data gates before training.
+
+- **Known Blocks / Issues:**
+  - The 55 excluded groups and the remaining three groups are only one part of
+    v32; overall fire/smoke indoor relevance still fails.
+  - No fully verified three-class indoor source is available yet.
+
+- **Validation:**
+  - Build: NOT APPLICABLE
+  - Tests: PASS (5 focused intake/audit tests)
+  - Typecheck: NOT CONFIGURED
+  - Lint: PASS (`python -m ruff check . --no-cache`)
+
+- **Git State:**
+  - Branch: `main`
+  - Last Commit: `e5fa127 docs: record duplicate group review decisions`
+  - Working Tree: DIRTY (adjudication update pending commit)
+
+- **Uncommitted Changes:**
+  - `CHANGES.log`
+  - `projects/indoor-detection/docs/JOINT_DATASET_INTAKE.md`
+
+- **Active Files:**
+  - `CHANGES.log`
+  - `projects/indoor-detection/docs/JOINT_DATASET_INTAKE.md`
+
+- **Notes for Next Agent:**
+  - Decisions and visual notes are in the E: duplicate adjudication CSV.
+  - Keep dataset artifacts on E:; never print or commit `projects/.env`.
+  - Training remains blocked until indoor relevance, annotation, structure,
+    duplicate, and distribution gates pass.
