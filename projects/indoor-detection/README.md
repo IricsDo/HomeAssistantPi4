@@ -24,7 +24,9 @@ nhiệt đạt chuẩn.
 - [x] Class-specific confidence/temporal policy.
 - [x] Tạo và audit COCO person subset; dựng index `indoor-v1` ba lớp.
 - [x] Quét person candidate trên toàn bộ corpus smoke/fire.
-- [ ] Bổ sung và audit annotation person trên toàn bộ training corpus.
+- [x] Xác định partial-label conflict và dừng hướng vẽ lại hàng nghìn box.
+- [ ] Tải, chuẩn hóa và audit dataset đã gắn đủ `smoke/fire/person`.
+- [ ] Spot-check annotation và mức độ phù hợp với bối cảnh indoor.
 - [ ] Train, calibrate và đánh giá checkpoint ba lớp.
 - [ ] Export NCNN và benchmark trên Pi 4.
 - [ ] Tích hợp camera thật.
@@ -33,7 +35,9 @@ Các tài liệu và config `smoke` cũ được giữ làm baseline lịch sử
 deployment cuối cùng. Kết quả khóa nằm trong
 [Smoke baseline snapshot](docs/SMOKE_BASELINE_SNAPSHOT.md).
 Trạng thái chuẩn bị corpus ba lớp nằm trong
-[Indoor v1 dataset preparation](docs/INDOOR_V1_DATASET_PREPARATION.md).
+[Indoor v1 dataset preparation](docs/INDOOR_V1_DATASET_PREPARATION.md). Quyết
+định chuyển sang dữ liệu đã gắn đủ ba lớp nằm trong
+[Joint dataset intake](docs/JOINT_DATASET_INTAKE.md).
 
 ## Cài đặt trên Windows 11
 
@@ -76,24 +80,40 @@ fire/smoke hiện có được tái tạo với mapping:
 
 - source `fire=0` -> unified `fire=1`
 - source `smoke=1` -> unified `smoke=0`
-- unified `person=2` được bổ sung từ dữ liệu person và annotation audit
+- unified `person=2` có sẵn trong COCO person subset
 
-Không được train model ba lớp cho đến khi ảnh fire/smoke đã được kiểm tra người
-không gán nhãn. Một người xuất hiện nhưng thiếu box sẽ bị học như background.
+Các corpus trên chỉ gắn nhãn một phần: ảnh fire/smoke không đảm bảo đã gắn box
+cho người. Chúng không được dùng trực tiếp để fine-tune model ba lớp vì object
+thuộc target class nhưng thiếu nhãn sẽ bị học như background. Đường chính hiện
+tại là dataset đã gắn đủ cả ba lớp; pipeline person review cũ chỉ còn là fallback.
+
+Sau khi tải một dataset YOLO đã gắn đủ ba lớp, chuẩn hóa thứ tự class bằng:
+
+```powershell
+indoor-prepare-joint `
+  --dataset-yaml E:\HomeAssistantPi4\raw\fire-smoke-human-v32\data.yaml `
+  --output-dir E:\HomeAssistantPi4\processed\indoor-joint-v1 `
+  --source-url https://universe.roboflow.com/spyrobot/fire-smoke-and-human-detector/dataset/32 `
+  --source-version v32 `
+  --source-license "CC BY 4.0"
+```
+
+Tool từ chối dataset không khai báo chính xác ba lớp, yêu cầu label file cho mọi
+ảnh, remap `human/person` về `person=2` và ghi provenance vào manifest.
 
 ## Huấn luyện
 
 Config đầu tiên dành cho corpus thống nhất:
 
 ```powershell
-indoor-train --config configs/train_indoor_v1.yaml
+indoor-train --config configs/train_joint_v1.yaml
 ```
 
 Mặc định config đọc dữ liệu và ghi runs trên ổ E. Có thể override:
 
 ```powershell
-indoor-train --config configs/train_indoor_v1.yaml `
-  --data E:\HomeAssistantPi4\datasets\indoor-v1\dataset.yaml `
+indoor-train --config configs/train_joint_v1.yaml `
+  --data E:\HomeAssistantPi4\processed\indoor-joint-v1\dataset.yaml `
   --project E:\HomeAssistantPi4\runs\indoor-detection
 ```
 

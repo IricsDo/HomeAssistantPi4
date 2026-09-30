@@ -102,6 +102,15 @@ lửa. Vì vậy kết quả này chỉ dùng để ưu tiên review, không tha
 consensus v3 và không tự động tạo quyết định.
 
 Source labels chưa bị sửa. `indoor-v1` hiện là index kiểm kê, **chưa phải corpus
-được phép train**. Gate tiếp theo là review candidate, tạo derivative smoke/fire
-có person label, audit lại duplicate/annotation completeness, rồi compose một
-index bất biến mới cho training.
+được phép train**.
+
+## Thay đổi chiến lược ngày 2026-09-30
+
+Review 5.364 person candidate không còn là gate chính. Project chuyển sang ưu
+tiên một dataset đã gắn đầy đủ `smoke/fire/person`, bắt đầu với Fire Smoke and
+Human Detector v32. Pipeline review và các artifacts hiện có được giữ làm bằng
+chứng về partial-label conflict và làm fallback, không bị xóa.
+
+Gate tiếp theo là tải nguồn joint dataset vào ổ E, chuẩn hóa bằng
+`indoor-prepare-joint`, audit cấu trúc/duplicate, rồi spot-check một mẫu phân tầng.
+Chi tiết tại [Joint dataset intake](JOINT_DATASET_INTAKE.md).
