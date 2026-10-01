@@ -32,6 +32,11 @@ def build_parser() -> argparse.ArgumentParser:
     threshold_group.add_argument(
         "--operating-threshold", type=float, help="Report precision/recall at a frozen confidence"
     )
+    threshold_group.add_argument(
+        "--maximize-f1",
+        action="store_true",
+        help="Select the validation confidence with the highest class F1",
+    )
     return parser
 
 
@@ -58,10 +63,13 @@ def _select_operating_point(
     *,
     target_recall: float | None = None,
     threshold: float | None = None,
+    maximize_f1: bool = False,
     class_index: int = 0,
 ) -> dict[str, Any] | None:
-    if target_recall is None and threshold is None:
+    if target_recall is None and threshold is None and not maximize_f1:
         return None
+    if sum((target_recall is not None, threshold is not None, maximize_f1)) > 1:
+        raise ValueError("Choose only one operating-point selection policy")
     if target_recall is not None and not 0 < target_recall <= 1:
         raise ValueError("target_recall must be in the interval (0, 1]")
     if threshold is not None and not 0 <= threshold <= 1:
@@ -89,7 +97,15 @@ def _select_operating_point(
     precision_x, precisions = confidence_curves["precision"]
     if x_values != precision_x:
         raise RuntimeError("Precision and recall confidence grids differ")
-    if target_recall is not None:
+    if maximize_f1:
+        f1_values = [
+            2 * precision * recall / (precision + recall) if precision + recall else 0.0
+            for precision, recall in zip(precisions, recalls, strict=True)
+        ]
+        index = max(
+            range(len(f1_values)), key=lambda candidate: (f1_values[candidate], x_values[candidate])
+        )
+    elif target_recall is not None:
         eligible = [index for index, recall in enumerate(recalls) if recall >= target_recall]
         index = eligible[-1] if eligible else max(range(len(recalls)), key=recalls.__getitem__)
     else:
@@ -97,13 +113,16 @@ def _select_operating_point(
         index = min(
             range(len(x_values)), key=lambda candidate: abs(x_values[candidate] - threshold)
         )
-    return {
+    point = {
         "threshold": x_values[index],
         "precision": precisions[index],
         "recall": recalls[index],
         "target_recall": target_recall,
         "target_met": target_recall is None or recalls[index] >= target_recall,
     }
+    if maximize_f1:
+        point.update({"selection": "max_f1", "f1": f1_values[index]})
+    return point
 
 
 def _dataset_class_id(data_path: Path, class_name: str) -> int:
@@ -169,6 +188,7 @@ def evaluate(
     report_path: Path,
     target_recall: float | None = None,
     operating_threshold: float | None = None,
+    maximize_f1: bool = False,
     class_name: str = "smoke",
 ) -> dict[str, Any]:
     if not model_path.is_file():
@@ -219,6 +239,7 @@ def evaluate(
             metrics.curves_results,
             target_recall=target_recall,
             threshold=operating_threshold,
+            maximize_f1=maximize_f1,
             class_index=class_id,
         ),
         "operating_point_class": {"id": class_id, "name": class_name},
@@ -245,6 +266,7 @@ def main(argv: list[str] | None = None) -> int:
         report_path=args.report,
         target_recall=args.target_recall,
         operating_threshold=args.operating_threshold,
+        maximize_f1=args.maximize_f1,
         class_name=args.class_name,
     )
     print(json.dumps(report, indent=2))

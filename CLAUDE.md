@@ -25,15 +25,15 @@ Do not begin implementation until the current task and ownership are clear.
 - Goal: one YOLO26n detector for indoor `smoke`, `fire`, and `person`, exported
   to NCNN for Raspberry Pi 4 4 GB.
 - Current branch: `main`.
-- Last completed implementation milestone: scoped source/domain validation of
-  the locked v2 checkpoint.
+- Last completed implementation milestone: per-class calibration and
+  scope-aware error analysis at 640 and 416 px.
 - Current owner: OpenAI Codex; status is `IN_PROGRESS`. If the user asks Claude
   Code to continue, that request is the explicit handover authorization.
 - Tests at this snapshot: PASS, 92/92 before the evaluator update; read the latest
   `CHANGES.log` entry for the current count.
 - Ruff at this snapshot: PASS.
-- The v2 training run completed 40 epochs. Source/domain validation is complete;
-  the immediate task is per-class calibration and error analysis before NCNN
+- The v2 training run completed 40 epochs. V2 failed the 416 px deployment gate;
+  the immediate task is a new resolution-matched fine-tuning run before NCNN
   export.
 
 Read the newest entry in `CHANGES.log` for exact uncommitted files, dataset paths,
@@ -88,10 +88,12 @@ When implementing a task:
    `E:\HomeAssistantPi4\runs\indoor-detection\indoor_partial_joint_yolo26n_v2\weights\best.pt`.
 2. Keep all evaluation authoritative through the class-scoped validator.
 3. Preserve the completed source/domain reports and their mixed-domain caveat.
-4. Calibrate fire/person thresholds only on validation; do not reopen test for
+4. Preserve the completed calibration/error reports; do not reopen test for
    further selection.
-5. Run error analysis before deciding whether another fine-tuning cycle is needed.
-6. Export NCNN only after checkpoint and thresholds are locked.
+5. Start any fine-tuning from v2 `best.pt` in a new run and keep class-scoped
+   training/validation enabled.
+6. Export NCNN only after the selected edge resolution passes validation and
+   its checkpoint/thresholds are locked.
 
 ## 4. Handover to Another Agent
 

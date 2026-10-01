@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import os
 from collections import Counter, defaultdict
 from collections.abc import Iterable, Sequence
 from dataclasses import dataclass
@@ -138,6 +139,35 @@ def _dataset_class_id(dataset_yaml: Path, class_name: str) -> int:
     if len(matches) != 1:
         raise ValueError(f"Dataset must define class '{class_name}' exactly once")
     return matches[0]
+
+
+def _filter_images_for_class_scope(
+    dataset_yaml: Path, image_paths: Sequence[Path], class_id: int
+) -> tuple[list[Path], int, bool]:
+    config = yaml.safe_load(dataset_yaml.read_text(encoding="utf-8-sig"))
+    if not isinstance(config, dict):
+        raise ValueError("Dataset YAML must be a mapping")
+    if not config.get("class_scope_manifest"):
+        return list(image_paths), 0, False
+
+    from indoor_detection.partial_label_training import (
+        load_class_scopes,
+        resolve_scope_manifest,
+    )
+
+    config["yaml_file"] = str(dataset_yaml.resolve())
+    scopes = load_class_scopes(resolve_scope_manifest(config))
+    selected: list[Path] = []
+    for image_path in image_paths:
+        key = os.path.normcase(str(image_path.resolve()))
+        known_classes = scopes.get(key)
+        if known_classes is None:
+            raise ValueError(f"Image is missing from class-scope manifest: {image_path}")
+        if class_id >= len(known_classes):
+            raise ValueError(f"Class id {class_id} is outside the scope manifest")
+        if bool(known_classes[class_id]):
+            selected.append(image_path)
+    return selected, len(image_paths) - len(selected), True
 
 
 def _label_path(image_path: Path) -> Path:
@@ -455,6 +485,11 @@ def analyze_errors(
         raise ValueError(f"No images found in split: {split}")
     output_dir.mkdir(parents=True, exist_ok=True)
     class_id = _dataset_class_id(data_path.resolve(), class_name)
+    image_paths, excluded_out_of_scope, class_scoped_analysis = _filter_images_for_class_scope(
+        data_path.resolve(), image_paths, class_id
+    )
+    if not image_paths:
+        raise ValueError(f"No images have annotation scope for class: {class_name}")
     model = YOLO(str(model_path.resolve()))
     results = _predict_in_bounded_batches(
         model,
@@ -553,6 +588,8 @@ def analyze_errors(
         "split": split,
         "class_name": class_name,
         "class_id": class_id,
+        "class_scoped_analysis": class_scoped_analysis,
+        "excluded_out_of_scope_images": excluded_out_of_scope,
         "settings": {
             "imgsz": imgsz,
             "operating_confidence": operating_confidence,

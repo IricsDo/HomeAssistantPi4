@@ -34,13 +34,18 @@ hazard đạt mAP50 `0,937` (`indoor-fs-v2`) và `0,928`
 Tên source được dùng như provenance proxy; visual gate đã xác nhận corpus vẫn
 có ảnh outdoor, staged và synthetic nên chưa được xem là benchmark indoor thuần.
 
+Calibration/error analysis đã hoàn tất ở 640 và resolution triển khai 416. V2
+chưa đạt gate 416: smoke cần threshold `0,033` với precision `0,581`, còn person
+chỉ đạt recall `0,480` và F1 `0,597`. NCNN export được giữ lại cho đến sau một
+vòng fine-tune khớp resolution; test không được mở lại trong quyết định này.
+
 - Dataset: `E:\HomeAssistantPi4\processed\indoor-partial-joint-v2`
 - Run: `E:\HomeAssistantPi4\runs\indoor-detection\indoor_partial_joint_yolo26n_v2`
 - Reports: `E:\HomeAssistantPi4\reports\indoor-yolo26n-v2-evaluation`
 
-Bước tiếp theo là hoàn tất calibration cho fire/person trên validation, phân
-tích lỗi theo lớp, rồi quyết định có khóa model để export NCNN hay cần thêm một
-vòng fine-tune. Benchmark Pi 4 và camera thật chờ phần cứng.
+Bước tiếp theo là fine-tune một run mới từ v2 `best.pt` ở resolution dự kiến cho
+edge, đánh giá lại validation gate rồi mới export NCNN. Benchmark Pi 4 và camera
+thật chờ phần cứng.
 
 ## AI Agent Collaboration
 

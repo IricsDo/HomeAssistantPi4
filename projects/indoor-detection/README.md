@@ -213,6 +213,19 @@ synthetic. Vì vậy bảng này không phải benchmark indoor thuần đã xá
 Source indexes được tạo lại bằng `indoor-build-evaluation-slices`. Báo cáo JSON
 nằm cùng thư mục evaluation; test split không được mở lại cho source selection.
 
+### Calibration và quyết định export
+
+Ở 640 px, threshold validation là smoke `0,249249` (recall-oriented), fire
+`0,439439` (recall-oriented) và person `0,270270` (max F1). Scope-aware error
+analysis đạt P/R/F1 lần lượt: smoke `0,875/0,903/0,889`, fire
+`0,927/0,900/0,913`, person `0,733/0,601/0,660`.
+
+Khi đánh giá đúng resolution dự kiến cho Pi là 416 px, aggregate
+mAP50/mAP50-95 giảm còn `0,796/0,507`. Smoke phải hạ threshold xuống `0,033033`
+để giữ recall và tạo false alarm trên 5,25% ảnh âm; person chỉ đạt recall `0,480`
+và F1 `0,597`, với recall người nhỏ `0,181`. Vì vậy v2 chưa được duyệt để export
+NCNN cuối. Xem [V2 evaluation decision](docs/V2_EVALUATION_DECISION.md).
+
 ## Inference
 
 ```powershell

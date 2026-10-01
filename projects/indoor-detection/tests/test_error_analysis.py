@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 from collections import Counter
 from pathlib import Path
 
@@ -8,6 +9,7 @@ import pytest
 from indoor_detection.error_analysis import (
     Detection,
     _dataset_class_id,
+    _filter_images_for_class_scope,
     _metric_row,
     _miss_reason,
     _size_bucket,
@@ -25,6 +27,39 @@ def test_dataset_class_id_resolves_unified_mapping(tmp_path: Path) -> None:
     )
 
     assert _dataset_class_id(dataset_yaml, "person") == 2
+
+
+def test_filters_images_outside_requested_class_scope(tmp_path: Path) -> None:
+    smoke_image = (tmp_path / "smoke.jpg").resolve()
+    person_image = (tmp_path / "person.jpg").resolve()
+    manifest = tmp_path / "scopes.json"
+    manifest.write_text(
+        json.dumps(
+            {
+                "schema_version": 1,
+                "classes": ["smoke", "fire", "person"],
+                "images": {
+                    smoke_image.as_posix(): ["smoke", "fire"],
+                    person_image.as_posix(): ["person"],
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
+    dataset_yaml = tmp_path / "dataset.yaml"
+    dataset_yaml.write_text(
+        "path: .\nclass_scope_manifest: scopes.json\n"
+        "names: [smoke, fire, person]\n",
+        encoding="utf-8",
+    )
+
+    selected, excluded, scoped = _filter_images_for_class_scope(
+        dataset_yaml, [smoke_image, person_image], 2
+    )
+
+    assert selected == [person_image]
+    assert excluded == 1
+    assert scoped
 
 
 def test_box_iou() -> None:

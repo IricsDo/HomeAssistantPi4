@@ -3,6 +3,8 @@ from __future__ import annotations
 from pathlib import Path
 from types import SimpleNamespace
 
+import pytest
+
 from indoor_detection.evaluate import (
     _dataset_class_id,
     _dataset_uses_class_scopes,
@@ -46,6 +48,7 @@ def test_evaluate_parser_defaults_to_test_split() -> None:
     assert args.batch == 24
     assert args.workers == 0
     assert args.class_name == "smoke"
+    assert not args.maximize_f1
 
 
 def test_selects_highest_confidence_meeting_target_recall() -> None:
@@ -101,6 +104,22 @@ def test_selects_operating_point_for_requested_class() -> None:
     assert point["threshold"] == 0.1
     assert point["precision"] == 0.6
     assert point["recall"] == 0.85
+
+
+def test_selects_maximum_f1_operating_point() -> None:
+    curves = [
+        ([0.0, 0.1, 0.2], [[0.2, 0.7, 0.9]], "Confidence", "Precision"),
+        ([0.0, 0.1, 0.2], [[1.0, 0.8, 0.4]], "Confidence", "Recall"),
+    ]
+
+    point = _select_operating_point(curves, maximize_f1=True)
+
+    assert point is not None
+    assert point["threshold"] == 0.1
+    assert point["precision"] == 0.7
+    assert point["recall"] == 0.8
+    assert point["selection"] == "max_f1"
+    assert point["f1"] == pytest.approx(2 * 0.7 * 0.8 / 1.5)
 
 
 def test_dataset_class_id_supports_list_and_mapping_names(tmp_path: Path) -> None:

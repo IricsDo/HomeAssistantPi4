@@ -1263,3 +1263,89 @@ validation state.
     COCO person `eb5bf620003c9b9d04c296fa4d4a909c3e5ce4288f284d541e1bc8faa4e046a3`.
   - Test was not reopened for source/domain reporting.
   - Never read or print `projects/.env`; all large artifacts remain on E:.
+
+## [2026-10-01 10:48 +07:00] - Calibration and error analysis from OpenAI Codex
+
+- **Current Task:** Calibrate per-class thresholds, audit errors and decide
+  whether v2 is ready for NCNN export.
+- **Status:** IN_PROGRESS
+- **Current Owner:** OpenAI Codex
+
+- **Completed in this session:**
+  - Added reproducible maximum-F1 threshold selection to `indoor-evaluate`.
+    Smoke/fire remain recall-targeted; person uses max F1 because it is an
+    auxiliary occupancy signal.
+  - Made `indoor-analyze-errors` class-scope aware. It now excludes images whose
+    manifest does not declare the requested class and records excluded counts.
+  - At 640 px, selected smoke/fire/person thresholds 0.249249/0.439439/0.270270.
+    Scope-aware P/R/F1 was smoke 0.875/0.903/0.889, fire 0.927/0.900/0.913,
+    person 0.733/0.601/0.660.
+  - Repeated calibration at the intended 416 px edge resolution. Aggregate
+    mAP50/mAP50-95 fell from 0.846/0.565 to 0.796/0.507. Selected thresholds
+    were smoke 0.033033, fire 0.131131 and person 0.291291.
+  - Quantified 416 px errors: smoke P/R/F1 0.581/0.916/0.711 with 5.25%
+    negative-image false alarms; fire 0.801/0.907/0.851; person
+    0.788/0.480/0.597 with small-person recall 0.181.
+  - Reviewed false-positive/false-negative contact sheets. Person misses are
+    dominated by small/crowded people; common false positives are animals,
+    statues and dolls. Hazard galleries contain small/dark misses plus box
+    partition/localization disagreement.
+  - Recorded the decision in `docs/V2_EVALUATION_DECISION.md`: v2 remains the
+    locked reference but is not approved for final NCNN export at 416 px.
+
+- **Unfinished / Next Steps (CRITICAL):**
+  - [ ] Add a new config starting from v2 `best.pt` and fine-tune at the intended
+    edge resolution in a new run; do not overwrite v2.
+  - [ ] Re-run scoped validation/calibration/error gates on the new checkpoint.
+  - [ ] Export NCNN and compare PyTorch/NCNN outputs only after the 416-quality
+    gate passes.
+
+- **Known Blocks / Issues:**
+  - V2 quality at 416 is not sufficient for final export, chiefly smoke
+    precision/false alarms and small-person recall.
+  - No verified pure-indoor holdout exists; current sources remain mixed-domain.
+  - Raspberry Pi benchmark/camera integration require hardware.
+
+- **Validation:**
+  - Build: NOT APPLICABLE
+  - Tests: PASS (99/99 full suite)
+  - Typecheck: NOT CONFIGURED
+  - Lint: PASS (`.venv\\Scripts\\python.exe -m ruff check . --no-cache`)
+
+- **Git State:**
+  - Branch: `main`
+  - Last Commit: `569d641 feat:add-source-domain-evaluation`
+  - Working Tree: DIRTY (calibration/error-analysis milestone ready to commit)
+
+- **Uncommitted Changes:**
+  - `CHANGES.log`
+  - `CLAUDE.md`
+  - `README.md`
+  - `projects/indoor-detection/README.md`
+  - `projects/indoor-detection/docs/ACCEPTANCE_CRITERIA.md`
+  - `projects/indoor-detection/docs/V2_EVALUATION_DECISION.md`
+  - `projects/indoor-detection/src/indoor_detection/error_analysis.py`
+  - `projects/indoor-detection/src/indoor_detection/evaluate.py`
+  - `projects/indoor-detection/tests/test_error_analysis.py`
+  - `projects/indoor-detection/tests/test_evaluate.py`
+
+- **Active Files:**
+  - `projects/indoor-detection/src/indoor_detection/error_analysis.py`
+  - `projects/indoor-detection/src/indoor_detection/evaluate.py`
+  - `projects/indoor-detection/docs/V2_EVALUATION_DECISION.md`
+  - `E:\\HomeAssistantPi4\\reports\\indoor-yolo26n-v2-evaluation\\`
+
+- **Notes for Next Agent:**
+  - 640 calibration report SHA-256: fire
+    `3b5a699792c0848e82aedaa060962dd9e51a6fb4e045f6cc657d8a7d372be807`,
+    person `0294df338d1c090b872af2238662d79be789ef461835ff3f31ceaeac3ad9ffdd`.
+  - 416 calibration report SHA-256: smoke
+    `b1e061ef1991990debb39bdbd6e9aae556c1d4d130a9528e197f7d997dc1c513`,
+    fire `b4fae46abd7ba5a9677ff5f457c991ee911b61c94924b85eb18c9841598cbcc7`,
+    person `137c70d1a649f0b3b6f5cdaaa3e79cb0f83cd508678b503807d21f8ff5cd1707`.
+  - 416 error-analysis SHA-256: smoke
+    `d573440c030ca4f67420eade74d975d138b22e2b1a7281c273416b9175455d10`,
+    fire `ea656a9a5be1749a18d89ac8b72a36510107547b4f561315dda34c809431e3fe`,
+    person `50db6d7c4e01c0a08cd75415ac4157da42bdb3096dee367222f5ada5438bdeb8`.
+  - Test was not reopened after the original frozen smoke-threshold evaluation.
+  - Never read or print `projects/.env`; all large artifacts remain on E:.

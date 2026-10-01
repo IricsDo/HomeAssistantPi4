@@ -21,7 +21,9 @@
 
 - Smoke recall không giảm quá 0,03 so với smoke baseline trên cùng test slice.
 - Smoke recall mục tiêu >= 0,90.
-- Fire và person có target riêng sau khi validation corpus được khóa.
+- Fire recall mục tiêu >= 0,90 tại threshold được chọn trên validation.
+- Person chọn threshold F1 tối đa; mục tiêu validation F1 >= 0,65 và recall
+  >= 0,60. Các target này phải được đo lại tại đúng input size export.
 - Báo cáo per-class precision, recall, mAP50, mAP50-95 và confusion matrix.
 - Negative slices: steam/blur cho smoke; warm light/reflection cho fire; poster/TV
   cho person.
