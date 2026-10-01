@@ -130,6 +130,7 @@ def test_per_class_metrics_uses_model_class_names() -> None:
     metrics = SimpleNamespace(
         names={0: "smoke", 1: "fire", 2: "person"},
         box=SimpleNamespace(
+            ap_class_index=[0, 1, 2],
             p=[0.7, 0.8, 0.9],
             r=[0.6, 0.7, 0.8],
             ap50=[0.65, 0.75, 0.85],
@@ -141,4 +142,21 @@ def test_per_class_metrics_uses_model_class_names() -> None:
         "smoke": {"precision": 0.7, "recall": 0.6, "map50": 0.65, "map50_95": 0.4},
         "fire": {"precision": 0.8, "recall": 0.7, "map50": 0.75, "map50_95": 0.5},
         "person": {"precision": 0.9, "recall": 0.8, "map50": 0.85, "map50_95": 0.6},
+    }
+
+
+def test_per_class_metrics_maps_sparse_class_index() -> None:
+    metrics = SimpleNamespace(
+        names={0: "smoke", 1: "fire", 2: "person"},
+        box=SimpleNamespace(
+            ap_class_index=[2],
+            p=[0.9],
+            r=[0.8],
+            ap50=[0.85],
+            ap=[0.6],
+        ),
+    )
+
+    assert _per_class_metrics(metrics) == {
+        "person": {"precision": 0.9, "recall": 0.8, "map50": 0.85, "map50_95": 0.6}
     }

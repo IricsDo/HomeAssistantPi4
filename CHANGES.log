@@ -1189,3 +1189,77 @@ validation state.
     last-val `dc1241a52f2a263b3cd889a74d9dce9d47696799ceb7e277e89c978121061652`,
     best-test `059dfe71f612c578749aab24622da64dc53f2cdc21c76a5cc7c75461e9cd717e`.
   - Never read or print `projects/.env`; all large reports remain on E:.
+
+## [2026-10-01 10:31 +07:00] - Source/domain validation from OpenAI Codex
+
+- **Current Task:** Evaluate the locked YOLO26n v2 checkpoint by source/domain
+  before threshold calibration and error analysis.
+- **Status:** IN_PROGRESS
+- **Current Owner:** OpenAI Codex
+
+- **Completed in this session:**
+  - Added `indoor-build-evaluation-slices` to create reproducible source-specific
+    validation/test indexes without copying images or changing the shared scope
+    manifest.
+  - Fixed overwrite handling for existing slice directories and made evaluator
+    per-class reporting use Ultralytics `ap_class_index`, preventing sparse
+    person-only metrics from being assigned to `smoke`.
+  - Rebuilt source indexes: `coco-person-v1` 2,501 val / 2,499 test,
+    `indoor-fs-v2` 500/500, and `indoor-home-fire-v2` 1,300/1,298.
+  - Evaluated `best.pt` on validation only with the class-scoped validator.
+    `indoor-fs-v2` reached P/R 0.911/0.913 and mAP50/mAP50-95 0.937/0.669;
+    `indoor-home-fire-v2` reached 0.931/0.888 and 0.928/0.611; COCO person
+    reached 0.766/0.579 and 0.671/0.428.
+  - Updated the editable project install and verified the new CLI help entry.
+  - Documented that source names are provenance proxies: the visual gate found
+    outdoor, staged and synthetic samples, so these are not verified pure-indoor
+    benchmarks.
+
+- **Unfinished / Next Steps (CRITICAL):**
+  - [ ] Calibrate fire/person thresholds on validation without reopening test.
+  - [ ] Make per-class error analysis class-scope aware and inspect false
+    positives/false negatives, especially person recall.
+  - [ ] Decide whether to fine-tune again or lock thresholds/checkpoint for NCNN
+    export and PyTorch parity comparison.
+
+- **Known Blocks / Issues:**
+  - Person validation recall remains 0.579 on its COCO source and is the primary
+    model-quality concern.
+  - There is no verified pure-indoor holdout; source reports retain the existing
+    mixed-domain limitation.
+  - Raspberry Pi benchmark/camera integration still require hardware.
+
+- **Validation:**
+  - Build: NOT APPLICABLE
+  - Tests: PASS (97/97 full suite)
+  - Typecheck: NOT CONFIGURED
+  - Lint: PASS (`.venv\\Scripts\\python.exe -m ruff check . --no-cache`)
+
+- **Git State:**
+  - Branch: `main`
+  - Last Commit: `e26c4fa feat:add-scoped-checkpoint-evaluation`
+  - Working Tree: DIRTY (source/domain milestone ready to commit)
+
+- **Uncommitted Changes:**
+  - `CHANGES.log`
+  - `CLAUDE.md`
+  - `README.md`
+  - `projects/indoor-detection/README.md`
+  - `projects/indoor-detection/pyproject.toml`
+  - `projects/indoor-detection/src/indoor_detection/evaluate.py`
+  - `projects/indoor-detection/src/indoor_detection/evaluation_slices.py`
+  - `projects/indoor-detection/tests/test_evaluate.py`
+  - `projects/indoor-detection/tests/test_evaluation_slices.py`
+
+- **Active Files:**
+  - `projects/indoor-detection/src/indoor_detection/evaluate.py`
+  - `projects/indoor-detection/src/indoor_detection/evaluation_slices.py`
+  - `E:\\HomeAssistantPi4\\reports\\indoor-yolo26n-v2-evaluation\\`
+
+- **Notes for Next Agent:**
+  - Source summary SHA-256: `75818e74f31d83b5e8f5f2e017bfca8bbf988246230f5f5bbc46815f6fb0bf76`.
+  - Report SHA-256: indoor-fs `12cd1065f3d13b3fe8f8fab41a48af1b4887b424cd22f03a1e0352598fe6c888`,
+    indoor-home-fire `021e1d41d9abd120b00879c992e4bfe575c8c00ca6693d525bca1fba1de6486d`,
+    COCO person `eb5bf620003c9b9d04c296fa4d4a909c3e5ce4288f284d541e1bc8faa4e046a3`.
+  - Test was not reopened for source/domain reporting.
+  - Never read or print `projects/.env`; all large artifacts remain on E:.

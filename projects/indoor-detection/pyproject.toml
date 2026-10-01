@@ -43,6 +43,7 @@ indoor-verify-person = "indoor_detection.person_consensus:main"
 indoor-apply-person = "indoor_detection.person_enrichment:main"
 indoor-audit-scoped = "indoor_detection.scoped_dataset_audit:main"
 indoor-finalize-visual-gate = "indoor_detection.scoped_visual_gate:main"
+indoor-build-evaluation-slices = "indoor_detection.evaluation_slices:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

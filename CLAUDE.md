@@ -25,15 +25,16 @@ Do not begin implementation until the current task and ownership are clear.
 - Goal: one YOLO26n detector for indoor `smoke`, `fire`, and `person`, exported
   to NCNN for Raspberry Pi 4 4 GB.
 - Current branch: `main`.
-- Last completed implementation milestone: scoped validation and corrected v2
-  continuation training/evaluation.
+- Last completed implementation milestone: scoped source/domain validation of
+  the locked v2 checkpoint.
 - Current owner: OpenAI Codex; status is `IN_PROGRESS`. If the user asks Claude
   Code to continue, that request is the explicit handover authorization.
 - Tests at this snapshot: PASS, 92/92 before the evaluator update; read the latest
   `CHANGES.log` entry for the current count.
 - Ruff at this snapshot: PASS.
-- The v2 training run completed 40 epochs. The immediate task is source/domain
-  evaluation, per-class calibration and error analysis before NCNN export.
+- The v2 training run completed 40 epochs. Source/domain validation is complete;
+  the immediate task is per-class calibration and error analysis before NCNN
+  export.
 
 Read the newest entry in `CHANGES.log` for exact uncommitted files, dataset paths,
 checksums, known issues, and next commands. Do not rely only on this snapshot.
@@ -86,8 +87,9 @@ When implementing a task:
 1. Use checkpoint
    `E:\HomeAssistantPi4\runs\indoor-detection\indoor_partial_joint_yolo26n_v2\weights\best.pt`.
 2. Keep all evaluation authoritative through the class-scoped validator.
-3. Report metrics separately by source/domain and preserve an indoor-focused view.
-4. Calibrate thresholds only on validation; use test once with frozen choices.
+3. Preserve the completed source/domain reports and their mixed-domain caveat.
+4. Calibrate fire/person thresholds only on validation; do not reopen test for
+   further selection.
 5. Run error analysis before deciding whether another fine-tuning cycle is needed.
 6. Export NCNN only after checkpoint and thresholds are locked.
 

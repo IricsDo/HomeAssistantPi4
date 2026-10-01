@@ -197,6 +197,22 @@ Validation chọn confidence smoke `0,249249` để đạt recall `0,9002`. Thre
 machine-readable nằm tại
 `E:/HomeAssistantPi4/reports/indoor-yolo26n-v2-evaluation`.
 
+### Validation theo source/domain
+
+Các slice dưới đây chỉ dùng validation và cùng class-scope manifest; ảnh không
+được sao chép. `indoor-fs-v2` và `indoor-home-fire-v2` là source proxy gần mục
+tiêu indoor hơn COCO person, nhưng visual gate đã thấy cả ảnh outdoor, staged và
+synthetic. Vì vậy bảng này không phải benchmark indoor thuần đã xác minh.
+
+| Source | Ảnh val | Class được chấm | Precision | Recall | mAP50 | mAP50-95 |
+|---|---:|---|---:|---:|---:|---:|
+| `indoor-fs-v2` | 500 | smoke, fire | 0,911 | 0,913 | 0,937 | 0,669 |
+| `indoor-home-fire-v2` | 1.300 | smoke, fire | 0,931 | 0,888 | 0,928 | 0,611 |
+| `coco-person-v1` | 2.501 | person | 0,766 | 0,579 | 0,671 | 0,428 |
+
+Source indexes được tạo lại bằng `indoor-build-evaluation-slices`. Báo cáo JSON
+nằm cùng thư mục evaluation; test split không được mở lại cho source selection.
+
 ## Inference
 
 ```powershell

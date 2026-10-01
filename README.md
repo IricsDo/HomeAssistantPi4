@@ -28,12 +28,19 @@ Trên test, mAP50/mAP50-95 theo lớp là smoke `0,917/0,631`, fire
 từ validation để đạt recall 0,900; khi khóa trên test, precision/recall là
 `0,840/0,893`.
 
+Validation theo source đã hoàn tất bằng class-scoped validator. Hai source
+hazard đạt mAP50 `0,937` (`indoor-fs-v2`) và `0,928`
+(`indoor-home-fire-v2`); source COCO person đạt mAP50 `0,671`, recall `0,579`.
+Tên source được dùng như provenance proxy; visual gate đã xác nhận corpus vẫn
+có ảnh outdoor, staged và synthetic nên chưa được xem là benchmark indoor thuần.
+
 - Dataset: `E:\HomeAssistantPi4\processed\indoor-partial-joint-v2`
 - Run: `E:\HomeAssistantPi4\runs\indoor-detection\indoor_partial_joint_yolo26n_v2`
 - Reports: `E:\HomeAssistantPi4\reports\indoor-yolo26n-v2-evaluation`
 
-Bước tiếp theo là đánh giá theo source/domain, hoàn tất calibration cho từng lớp,
-phân tích lỗi, rồi export NCNN. Benchmark Pi 4 và camera thật chờ phần cứng.
+Bước tiếp theo là hoàn tất calibration cho fire/person trên validation, phân
+tích lỗi theo lớp, rồi quyết định có khóa model để export NCNN hay cần thêm một
+vòng fine-tune. Benchmark Pi 4 và camera thật chờ phần cứng.
 
 ## AI Agent Collaboration
 

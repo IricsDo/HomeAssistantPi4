@@ -144,12 +144,14 @@ def _per_class_metrics(metrics: Any) -> dict[str, dict[str, float]]:
         "map50": list(box.ap50),
         "map50_95": list(box.ap),
     }
+    class_ids = list(getattr(box, "ap_class_index", range(len(box.p))))
+    if any(len(values) != len(class_ids) for values in arrays.values()):
+        raise RuntimeError("Per-class metric arrays do not match ap_class_index")
     return {
-        str(names[class_id]): {
-            metric_name: float(values[class_id]) for metric_name, values in arrays.items()
+        str(names[int(class_id)]): {
+            metric_name: float(values[position]) for metric_name, values in arrays.items()
         }
-        for class_id in sorted(names)
-        if all(class_id < len(values) for values in arrays.values())
+        for position, class_id in enumerate(class_ids)
     }
 
 
