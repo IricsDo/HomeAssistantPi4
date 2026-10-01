@@ -19,18 +19,21 @@ At the beginning of every session:
 
 Do not begin implementation until the current task and ownership are clear.
 
-## 1.1 Current Project Snapshot (2026-09-30)
+## 1.1 Current Project Snapshot (2026-10-01)
 
 - Active project: `projects/indoor-detection`.
 - Goal: one YOLO26n detector for indoor `smoke`, `fire`, and `person`, exported
   to NCNN for Raspberry Pi 4 4 GB.
 - Current branch: `main`.
-- Last committed checkpoint: `b07a200 feat: add fully labeled joint dataset intake`.
+- Last completed implementation milestone: scoped validation and corrected v2
+  continuation training/evaluation.
 - Current owner: OpenAI Codex; status is `IN_PROGRESS`. If the user asks Claude
   Code to continue, that request is the explicit handover authorization.
-- Tests at this snapshot: PASS, 65/65.
+- Tests at this snapshot: PASS, 92/92 before the evaluator update; read the latest
+  `CHANGES.log` entry for the current count.
 - Ruff at this snapshot: PASS.
-- The immediate task is dataset intake and audit, not model training yet.
+- The v2 training run completed 40 epochs. The immediate task is source/domain
+  evaluation, per-class calibration and error analysis before NCNN export.
 
 Read the newest entry in `CHANGES.log` for exact uncommitted files, dataset paths,
 checksums, known issues, and next commands. Do not rely only on this snapshot.
@@ -80,18 +83,13 @@ When implementing a task:
 
 ### Immediate continuation checklist
 
-1. Inspect the uncommitted downloader before keeping or revising it:
-   `projects/indoor-detection/scripts/download_roboflow_dataset.py`.
-2. Use the complete raw extraction at
-   `E:\HomeAssistantPi4\raw\fire-smoke-human-v32-clean`.
-3. Fix or copy its `data.yaml` so split paths resolve inside that directory;
-   the exported file currently says `../train/images`, `../valid/images`, and
-   `../test/images`.
-4. Run `indoor-prepare-joint` into
-   `E:\HomeAssistantPi4\processed\indoor-joint-v1` with source URL, version v32,
-   and license `CC BY 4.0` recorded in the manifest.
-5. Audit structure, exact/cross-split duplicates, class distribution, negatives,
-   and stratified annotation samples before running `configs/train_joint_v1.yaml`.
+1. Use checkpoint
+   `E:\HomeAssistantPi4\runs\indoor-detection\indoor_partial_joint_yolo26n_v2\weights\best.pt`.
+2. Keep all evaluation authoritative through the class-scoped validator.
+3. Report metrics separately by source/domain and preserve an indoor-focused view.
+4. Calibrate thresholds only on validation; use test once with frozen choices.
+5. Run error analysis before deciding whether another fine-tuning cycle is needed.
+6. Export NCNN only after checkpoint and thresholds are locked.
 
 ## 4. Handover to Another Agent
 

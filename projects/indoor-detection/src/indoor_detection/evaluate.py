@@ -17,6 +17,8 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--split", choices=("val", "test"), default="test")
     parser.add_argument("--imgsz", type=int, default=640)
     parser.add_argument("--device", default="0")
+    parser.add_argument("--batch", type=int, default=24)
+    parser.add_argument("--workers", type=int, default=0)
     parser.add_argument("--project", type=Path, required=True)
     parser.add_argument("--name", required=True)
     parser.add_argument("--report", type=Path, required=True)
@@ -124,6 +126,15 @@ def _dataset_class_id(data_path: Path, class_name: str) -> int:
     return matches[0]
 
 
+def _dataset_uses_class_scopes(data_path: Path) -> bool:
+    import yaml
+
+    config = yaml.safe_load(data_path.read_text(encoding="utf-8-sig"))
+    if not isinstance(config, dict):
+        raise ValueError("Dataset YAML must be a mapping")
+    return bool(config.get("class_scope_manifest"))
+
+
 def _per_class_metrics(metrics: Any) -> dict[str, dict[str, float]]:
     names = dict(metrics.names)
     box = metrics.box
@@ -149,6 +160,8 @@ def evaluate(
     split: str,
     imgsz: int,
     device: str,
+    batch: int,
+    workers: int,
     project: Path,
     name: str,
     report_path: Path,
@@ -165,14 +178,23 @@ def evaluate(
 
     class_id = _dataset_class_id(data_path, class_name)
     model = YOLO(str(model_path.resolve()))
+    validation_options: dict[str, Any] = {}
+    uses_class_scopes = _dataset_uses_class_scopes(data_path)
+    if uses_class_scopes:
+        from indoor_detection.partial_label_training import ClassScopedDetectionValidator
+
+        validation_options["validator"] = ClassScopedDetectionValidator
     metrics = model.val(
         data=str(data_path.resolve()),
         split=split,
         imgsz=imgsz,
         device=device,
+        batch=batch,
+        workers=workers,
         project=str(project.resolve()),
         name=name,
         plots=True,
+        **validation_options,
     )
     report: dict[str, Any] = {
         "schema_version": 1,
@@ -185,6 +207,9 @@ def evaluate(
         "dataset_yaml": data_path.resolve().as_posix(),
         "split": split,
         "imgsz": imgsz,
+        "batch": batch,
+        "workers": workers,
+        "class_scoped_validation": uses_class_scopes,
         "metrics": _json_value(metrics.results_dict),
         "per_class_metrics": _per_class_metrics(metrics),
         "speed_ms_per_image": _json_value(metrics.speed),
@@ -211,6 +236,8 @@ def main(argv: list[str] | None = None) -> int:
         split=args.split,
         imgsz=args.imgsz,
         device=args.device,
+        batch=args.batch,
+        workers=args.workers,
         project=args.project,
         name=args.name,
         report_path=args.report,

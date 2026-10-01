@@ -14,33 +14,26 @@ hướng tới triển khai tiết kiệm tài nguyên trên Raspberry Pi 4 4 GB
 
 ## Trạng thái hiện tại
 
-Mốc implementation trước handover là commit `b07a200`, cung cấp pipeline intake
-dataset YOLO đã gắn đủ cả ba lớp. Dataset Roboflow
-`fire-smoke-and-human-detector` v32 đã được tải về ổ E và giải nén đủ:
+Scoped joint dataset v2 gồm 23.498 ảnh đã đạt automated và visual data gate với
+các giới hạn mixed-domain được ghi rõ. Baseline continuation YOLO26n v2 đã train
+đủ 40 epoch và checkpoint `best.pt` được khóa bằng validation set.
 
-| Split | Images | Labels |
+| Split | mAP50 | mAP50-95 |
 |---|---:|---:|
-| train | 8.001 | 8.001 |
-| valid | 1.017 | 1.017 |
-| test | 731 | 731 |
-| **Tổng** | **9.749** | **9.749** |
+| validation | 0,846 | 0,565 |
+| test | 0,818 | 0,535 |
 
-- Archive:
-  `E:\HomeAssistantPi4\raw\downloads\fire-smoke-human-v32.zip`
-- SHA-256:
-  `052078BD4677C6FF4B1D4AF9321B891E0A79AE16F899CED6E45F4BD3A67168A2`
-- Raw extraction hoàn chỉnh:
-  `E:\HomeAssistantPi4\raw\fire-smoke-human-v32-clean`
-- Processed dataset:
-  `E:\HomeAssistantPi4\processed\indoor-joint-v1`
-- Audit reports/contact sheets:
-  `E:\HomeAssistantPi4\reports\indoor-joint-v1-audit`
+Trên test, mAP50/mAP50-95 theo lớp là smoke `0,917/0,631`, fire
+`0,868/0,547`, person `0,670/0,429`. Confidence smoke `0,249249` được chọn chỉ
+từ validation để đạt recall 0,900; khi khóa trên test, precision/recall là
+`0,840/0,893`.
 
-Data gate hiện **chưa đạt**: audit thấy 100 nhóm ảnh trùng chính xác cùng split,
-59 nhóm có annotation khác nhau, và spot-check cho thấy ảnh fire/smoke chủ yếu
-là sự cố ngoài trời/cháy rừng, chưa đủ phù hợp miền indoor. Chưa train checkpoint
-ba lớp. Chi tiết và bước tiếp theo nằm trong `CHANGES.log` và
-`projects/indoor-detection/docs/JOINT_DATASET_INTAKE.md`.
+- Dataset: `E:\HomeAssistantPi4\processed\indoor-partial-joint-v2`
+- Run: `E:\HomeAssistantPi4\runs\indoor-detection\indoor_partial_joint_yolo26n_v2`
+- Reports: `E:\HomeAssistantPi4\reports\indoor-yolo26n-v2-evaluation`
+
+Bước tiếp theo là đánh giá theo source/domain, hoàn tất calibration cho từng lớp,
+phân tích lỗi, rồi export NCNN. Benchmark Pi 4 và camera thật chờ phần cứng.
 
 ## AI Agent Collaboration
 

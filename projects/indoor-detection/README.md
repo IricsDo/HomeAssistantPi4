@@ -175,6 +175,28 @@ Config v2 khởi tạo trọng số từ `last.pt` của v1 nhưng tạo optimiz
 learning rate ban đầu 0,001, tối đa 40 epoch và patience 15. Output được ghi vào
 run `indoor_partial_joint_yolo26n_v2`; v1 được giữ nguyên để truy vết.
 
+## Kết quả YOLO26n v2
+
+Training hoàn thành đủ 40 epoch. `best.pt` và `last.pt` cho metric validation
+giống nhau; `best.pt` được khóa làm checkpoint phát hành. Evaluator dùng scoped
+validator để không tính các class ngoài annotation scope thành negative.
+
+| Split | Class | Precision | Recall | mAP50 | mAP50-95 |
+|---|---|---:|---:|---:|---:|
+| val | all | 0,883 | 0,783 | 0,846 | 0,565 |
+| val | smoke | 0,923 | 0,882 | 0,926 | 0,625 |
+| val | fire | 0,922 | 0,914 | 0,941 | 0,641 |
+| val | person | 0,805 | 0,553 | 0,671 | 0,428 |
+| test | all | 0,865 | 0,750 | 0,818 | 0,535 |
+| test | smoke | 0,898 | 0,876 | 0,917 | 0,631 |
+| test | fire | 0,895 | 0,816 | 0,868 | 0,547 |
+| test | person | 0,803 | 0,556 | 0,670 | 0,429 |
+
+Validation chọn confidence smoke `0,249249` để đạt recall `0,9002`. Threshold
+được giữ nguyên trên test, đạt precision `0,8405` và recall `0,8926`. Báo cáo
+machine-readable nằm tại
+`E:/HomeAssistantPi4/reports/indoor-yolo26n-v2-evaluation`.
+
 ## Inference
 
 ```powershell

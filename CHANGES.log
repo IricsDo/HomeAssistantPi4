@@ -1120,3 +1120,72 @@ validation state.
   - Epoch 1 took 275.804 seconds including first-run setup and validation.
   - Do not start a second v2 process or overwrite the active run.
   - Never read or print `projects/.env`.
+
+## [2026-10-01] - V2 checkpoint selection and aggregate evaluation from OpenAI Codex
+
+- **Current Task:** Lock the trained YOLO26n v2 checkpoint and evaluate it with
+  class-scoped metrics.
+- **Status:** IN_PROGRESS
+- **Current Owner:** OpenAI Codex
+
+- **Completed in this session:**
+  - Confirmed continuation training completed all 40 epochs. Epoch 40 reached
+    validation precision 0.8811, recall 0.7820, mAP50 0.8452 and mAP50-95 0.5646.
+  - Updated `indoor-evaluate` to detect scoped datasets, construct the scoped
+    validator, and record batch/workers/scope mode in each JSON report.
+  - Independently evaluated both v2 checkpoints on validation; `best.pt` and
+    `last.pt` produced identical metrics. Locked `best.pt` for release/evaluation.
+  - Validation aggregate is precision 0.8831, recall 0.7830, mAP50 0.8458 and
+    mAP50-95 0.5646. Per-class mAP50/mAP50-95: smoke 0.9261/0.6251,
+    fire 0.9406/0.6413, person 0.6707/0.4276.
+  - Selected smoke confidence 0.249249 on validation for target recall 0.90,
+    yielding precision 0.8773 and recall 0.9002.
+  - Opened test once with locked `best.pt` and frozen smoke threshold. Test
+    aggregate is precision 0.8652, recall 0.7495, mAP50 0.8185 and mAP50-95
+    0.5354. Per-class mAP50/mAP50-95: smoke 0.9172/0.6307, fire
+    0.8683/0.5469, person 0.6699/0.4287.
+  - Frozen smoke threshold on test reached precision 0.8405 and recall 0.8926.
+
+- **Unfinished / Next Steps (CRITICAL):**
+  - [ ] Produce source/domain and indoor-focused reports without using test for
+    further model or threshold selection.
+  - [ ] Calibrate fire/person thresholds on validation and run per-class error
+    analysis, especially person recall.
+  - [ ] Decide whether quality is sufficient, then export NCNN and compare its
+    outputs with PyTorch.
+
+- **Known Blocks / Issues:**
+  - Smoke misses the 0.90 test recall target by 0.0074 at the frozen threshold.
+  - Person aggregate recall remains about 0.556 on test and needs error analysis.
+  - Raspberry Pi benchmark/camera integration still require hardware.
+
+- **Validation:**
+  - Build: NOT APPLICABLE
+  - Tests: PASS (93/93 full suite)
+  - Typecheck: NOT CONFIGURED
+  - Lint: PASS (`.venv\\Scripts\\python.exe -m ruff check . --no-cache`)
+
+- **Git State:**
+  - Branch: `main`
+  - Last Commit: `a5b11cf chore:ignore-local-codex-state`
+  - Working Tree: DIRTY (evaluation milestone pending full validation/commit)
+
+- **Uncommitted Changes:**
+  - `CHANGES.log`
+  - `CLAUDE.md`
+  - `README.md`
+  - `projects/indoor-detection/README.md`
+  - `projects/indoor-detection/src/indoor_detection/evaluate.py`
+  - `projects/indoor-detection/tests/test_evaluate.py`
+
+- **Active Files:**
+  - `projects/indoor-detection/src/indoor_detection/evaluate.py`
+  - `E:\HomeAssistantPi4\reports\indoor-yolo26n-v2-evaluation\`
+
+- **Notes for Next Agent:**
+  - `best.pt` SHA-256: `59dbfedb2f1fb79e1a9ad3ce584a1d1b85ae30b93bf5ca6d0f238f5cf20596b3`.
+  - `last.pt` SHA-256: `d682da87de12f5090f9331012d354d32f72ec10827086da06be95ad517ff5628`.
+  - Report SHA-256: best-val `b36527bfc8fe02a2682c4b2123131d1865561b96c05d9047aaddfd5b318ef660`,
+    last-val `dc1241a52f2a263b3cd889a74d9dce9d47696799ceb7e277e89c978121061652`,
+    best-test `059dfe71f612c578749aab24622da64dc53f2cdc21c76a5cc7c75461e9cd717e`.
+  - Never read or print `projects/.env`; all large reports remain on E:.

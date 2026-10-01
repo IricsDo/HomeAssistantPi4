@@ -5,6 +5,7 @@ from types import SimpleNamespace
 
 from indoor_detection.evaluate import (
     _dataset_class_id,
+    _dataset_uses_class_scopes,
     _json_value,
     _per_class_metrics,
     _select_operating_point,
@@ -42,6 +43,8 @@ def test_evaluate_parser_defaults_to_test_split() -> None:
 
     assert args.split == "test"
     assert args.imgsz == 640
+    assert args.batch == 24
+    assert args.workers == 0
     assert args.class_name == "smoke"
 
 
@@ -108,6 +111,19 @@ def test_dataset_class_id_supports_list_and_mapping_names(tmp_path: Path) -> Non
 
     assert _dataset_class_id(list_yaml, "person") == 2
     assert _dataset_class_id(mapping_yaml, "fire") == 1
+
+
+def test_detects_class_scoped_dataset(tmp_path: Path) -> None:
+    scoped_yaml = tmp_path / "scoped.yaml"
+    scoped_yaml.write_text(
+        "names: [smoke, fire, person]\nclass_scope_manifest: scopes.json\n",
+        encoding="utf-8",
+    )
+    complete_yaml = tmp_path / "complete.yaml"
+    complete_yaml.write_text("names: [smoke, fire, person]\n", encoding="utf-8")
+
+    assert _dataset_uses_class_scopes(scoped_yaml)
+    assert not _dataset_uses_class_scopes(complete_yaml)
 
 
 def test_per_class_metrics_uses_model_class_names() -> None:
