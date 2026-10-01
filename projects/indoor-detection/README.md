@@ -226,6 +226,16 @@ mAP50/mAP50-95 giảm còn `0,796/0,507`. Smoke phải hạ threshold xuống `0
 và F1 `0,597`, với recall người nhỏ `0,181`. Vì vậy v2 chưa được duyệt để export
 NCNN cuối. Xem [V2 evaluation decision](docs/V2_EVALUATION_DECISION.md).
 
+Config fine-tune khớp resolution được tách thành run mới:
+
+```powershell
+indoor-train --config configs/train_indoor_v3_416.yaml
+```
+
+V3 khởi tạo từ v2 `best.pt`, dùng 416 px, AdamW với learning rate `0,0003`, tối
+đa 20 epoch và patience 8. Mọi augmentation trộn ảnh vẫn bằng 0 để bảo toàn
+class scope. Run ghi vào `indoor_partial_joint_yolo26n_v3_416` và không ghi đè v2.
+
 ## Inference
 
 ```powershell

@@ -33,8 +33,8 @@ Do not begin implementation until the current task and ownership are clear.
   `CHANGES.log` entry for the current count.
 - Ruff at this snapshot: PASS.
 - The v2 training run completed 40 epochs. V2 failed the 416 px deployment gate;
-  the immediate task is a new resolution-matched fine-tuning run before NCNN
-  export.
+  `configs/train_indoor_v3_416.yaml` defines the new resolution-matched run from
+  v2 `best.pt`. Train/evaluate this run before NCNN export.
 
 Read the newest entry in `CHANGES.log` for exact uncommitted files, dataset paths,
 checksums, known issues, and next commands. Do not rely only on this snapshot.

@@ -43,9 +43,9 @@ vòng fine-tune khớp resolution; test không được mở lại trong quyết
 - Run: `E:\HomeAssistantPi4\runs\indoor-detection\indoor_partial_joint_yolo26n_v2`
 - Reports: `E:\HomeAssistantPi4\reports\indoor-yolo26n-v2-evaluation`
 
-Bước tiếp theo là fine-tune một run mới từ v2 `best.pt` ở resolution dự kiến cho
-edge, đánh giá lại validation gate rồi mới export NCNN. Benchmark Pi 4 và camera
-thật chờ phần cứng.
+Bước tiếp theo là chạy config `train_indoor_v3_416.yaml` từ v2 `best.pt`, đánh
+giá lại validation gate rồi mới export NCNN. Benchmark Pi 4 và camera thật chờ
+phần cứng.
 
 ## AI Agent Collaboration
 

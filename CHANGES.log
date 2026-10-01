@@ -1349,3 +1349,57 @@ validation state.
     person `50db6d7c4e01c0a08cd75415ac4157da42bdb3096dee367222f5ada5438bdeb8`.
   - Test was not reopened after the original frozen smoke-threshold evaluation.
   - Never read or print `projects/.env`; all large artifacts remain on E:.
+
+## [2026-10-01 10:51 +07:00] - V3 416 fine-tune config from OpenAI Codex
+
+- **Current Task:** Prepare a resolution-matched fine-tuning run after the v2
+  deployment gate failed at 416 px.
+- **Status:** IN_PROGRESS
+- **Current Owner:** OpenAI Codex
+
+- **Completed in this session:**
+  - Added `configs/train_indoor_v3_416.yaml`, starting from locked v2 `best.pt`
+    in a new non-overwriting run.
+  - Selected 416 px, AdamW, learning rate 0.0003, 20 maximum epochs and patience
+    8. V2 had plateaued over its final ten epochs, so this is a low-rate
+    resolution adaptation rather than another high-rate continuation.
+  - Kept all multi-image augmentations at zero to preserve per-image class scope.
+  - Added a config regression test and updated project continuation docs.
+
+- **Unfinished / Next Steps (CRITICAL):**
+  - [ ] Run `indoor-train --config configs/train_indoor_v3_416.yaml`.
+  - [ ] Select the v3 checkpoint with scoped validation at 416 px.
+  - [ ] Repeat calibration/error gates; export NCNN only if they pass.
+
+- **Known Blocks / Issues:**
+  - V2 416 px quality remains below the deployment gate.
+  - Raspberry Pi benchmark/camera integration require hardware.
+
+- **Validation:**
+  - Build: NOT APPLICABLE
+  - Tests: PASS (100/100 full suite)
+  - Typecheck: NOT CONFIGURED
+  - Lint: PASS (`.venv\\Scripts\\python.exe -m ruff check . --no-cache`)
+
+- **Git State:**
+  - Branch: `main`
+  - Last Commit: `3a77b4a feat:add-resolution-aware-calibration`
+  - Working Tree: DIRTY (v3 config milestone ready to commit)
+
+- **Uncommitted Changes:**
+  - `CHANGES.log`
+  - `CLAUDE.md`
+  - `README.md`
+  - `projects/indoor-detection/README.md`
+  - `projects/indoor-detection/configs/train_indoor_v3_416.yaml`
+  - `projects/indoor-detection/tests/test_train.py`
+
+- **Active Files:**
+  - `projects/indoor-detection/configs/train_indoor_v3_416.yaml`
+  - `projects/indoor-detection/tests/test_train.py`
+
+- **Notes for Next Agent:**
+  - Output run must be
+    `E:\\HomeAssistantPi4\\runs\\indoor-detection\\indoor_partial_joint_yolo26n_v3_416`.
+  - Do not resume or overwrite v2; test remains closed during v3 selection.
+  - Never read or print `projects/.env`; all large artifacts remain on E:.
