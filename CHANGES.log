@@ -1490,3 +1490,60 @@ validation state.
   - Person 640 report SHA-256:
     `5180de7fa5e488815a2406580e1e03ea25d3c2c07bc3581239197c1ab90a3a28`.
   - Never read or print `projects/.env`; all large artifacts remain on E:.
+
+## [2026-10-03 00:29 +07:00] - V4 512 fine-tune config from OpenAI Codex
+
+- **Current Task:** Prepare a focused training cycle for the remaining person
+  deployment blocker without changing the audited dataset.
+- **Status:** IN_PROGRESS
+- **Current Owner:** OpenAI Codex
+
+- **Completed in this session:**
+  - Added `configs/train_indoor_v4_512.yaml`, starting from v3 `best.pt` in a
+    new non-overwriting run.
+  - Selected 512 px because validation at that size was close to the person gate
+    while requiring substantially fewer pixels than 640.
+  - Limited the run to 12 epochs with AdamW and learning rate 0.00015.
+  - Reduced `scale` to 0.15 and `translate` to 0.05 so small people are less
+    likely to be further downscaled or cropped during training.
+  - Kept mosaic, mixup, cutmix and copy-paste disabled to preserve class scope.
+  - Added a regression test and updated current-state documentation.
+
+- **Unfinished / Next Steps (CRITICAL):**
+  - [ ] Run `indoor-train --config configs/train_indoor_v4_512.yaml`.
+  - [ ] Calibrate smoke/fire/person on validation at the intended export size.
+  - [ ] Export NCNN only if person reaches F1 >= 0.65 and recall >= 0.60 while
+    both hazard recall targets remain >= 0.90.
+
+- **Known Blocks / Issues:**
+  - V3 person quality is below gate at every evaluated resolution.
+  - Raspberry Pi benchmark and camera integration require hardware.
+
+- **Validation:**
+  - Build: NOT APPLICABLE
+  - Tests: PASS (101/101 full suite)
+  - Typecheck: NOT CONFIGURED
+  - Lint: PASS (`.venv\\Scripts\\python.exe -m ruff check . --no-cache`)
+
+- **Git State:**
+  - Branch: `main`
+  - Last Commit: `7def0f7 docs:record-v3-evaluation-gate`
+  - Working Tree: DIRTY (v4 config milestone ready to commit)
+
+- **Uncommitted Changes:**
+  - `CHANGES.log`
+  - `CLAUDE.md`
+  - `README.md`
+  - `projects/indoor-detection/README.md`
+  - `projects/indoor-detection/configs/train_indoor_v4_512.yaml`
+  - `projects/indoor-detection/tests/test_train.py`
+
+- **Active Files:**
+  - `projects/indoor-detection/configs/train_indoor_v4_512.yaml`
+  - `projects/indoor-detection/tests/test_train.py`
+
+- **Notes for Next Agent:**
+  - Output run must be
+    `E:\\HomeAssistantPi4\\runs\\indoor-detection\\indoor_partial_joint_yolo26n_v4_512`.
+  - Do not resume or overwrite v3. Keep test closed during model selection.
+  - Never read or print `projects/.env`; all large artifacts remain on E:.

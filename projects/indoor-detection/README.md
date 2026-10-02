@@ -243,6 +243,16 @@ V3 hoàn tất 20 epoch. Tại 416 px, smoke đạt P/R/F1
 `0,575`) hoặc 640 px (`F1 0,647`, recall `0,586`), nên chưa export NCNN. Xem
 [V3 evaluation decision](docs/V3_EVALUATION_DECISION.md).
 
+Vòng tiếp theo dùng config:
+
+```powershell
+indoor-train --config configs/train_indoor_v4_512.yaml
+```
+
+V4 bắt đầu từ v3 `best.pt`, train tối đa 12 epoch ở 512 px với learning rate
+`0,00015`; `scale=0,15` và `translate=0,05` giảm nguy cơ làm người nhỏ còn nhỏ
+hơn hoặc bị crop. Các augmentation trộn ảnh vẫn tắt và run mới không ghi đè v3.
+
 ## Inference
 
 ```powershell

@@ -43,9 +43,9 @@ NCNN export vẫn bị khóa; test không được mở lại trong quyết đ�
 - Run: `E:\HomeAssistantPi4\runs\indoor-detection\indoor_partial_joint_yolo26n_v3_416`
 - Reports: `E:\HomeAssistantPi4\reports\indoor-yolo26n-v3-evaluation`
 
-Bước tiếp theo là một fine-tune ngắn ở 512 px từ v3 `best.pt`, giảm scale
-variation để bảo toàn người nhỏ, rồi chạy lại toàn bộ validation gate. Benchmark
-Pi 4 và camera thật chờ phần cứng.
+Bước tiếp theo là chạy `configs/train_indoor_v4_512.yaml`: fine-tune 12 epoch ở
+512 px từ v3 `best.pt`, giảm scale/translation để bảo toàn người nhỏ, rồi chạy
+lại toàn bộ validation gate. Benchmark Pi 4 và camera thật chờ phần cứng.
 
 ## AI Agent Collaboration
 

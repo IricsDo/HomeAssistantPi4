@@ -34,8 +34,9 @@ Do not begin implementation until the current task and ownership are clear.
 - Ruff at this snapshot: PASS.
 - The v3 run completed 20 epochs. Smoke and fire pass at 416 px, but person fails
   the F1/recall gate at 416, 512 and 640 px. Do not export NCNN yet. The next
-  cycle is a short 512 px fine-tune from v3 `best.pt` with reduced geometric
-  scale variation; see `docs/V3_EVALUATION_DECISION.md`.
+  cycle is `configs/train_indoor_v4_512.yaml`, a short 512 px fine-tune from v3
+  `best.pt` with reduced geometric scale variation; see
+  `docs/V3_EVALUATION_DECISION.md`.
 
 Read the newest entry in `CHANGES.log` for exact uncommitted files, dataset paths,
 checksums, known issues, and next commands. Do not rely only on this snapshot.

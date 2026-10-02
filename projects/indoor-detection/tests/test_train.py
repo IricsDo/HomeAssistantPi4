@@ -49,3 +49,19 @@ def test_v3_config_is_resolution_matched_and_preserves_safe_augmentations() -> N
     assert config["model"].endswith("indoor_partial_joint_yolo26n_v2/weights/best.pt")
     for augmentation in ("mosaic", "mixup", "cutmix", "copy_paste"):
         assert config[augmentation] == 0.0
+
+
+def test_v4_config_targets_small_people_without_mixing_images() -> None:
+    config = _load_config(Path("configs/train_indoor_v4_512.yaml"))
+
+    assert config["imgsz"] == 512
+    assert config["epochs"] == 12
+    assert config["patience"] == 5
+    assert config["lr0"] == pytest.approx(0.00015)
+    assert config["scale"] == pytest.approx(0.15)
+    assert config["translate"] == pytest.approx(0.05)
+    assert config["exist_ok"] is False
+    assert config["name"] == "indoor_partial_joint_yolo26n_v4_512"
+    assert config["model"].endswith("indoor_partial_joint_yolo26n_v3_416/weights/best.pt")
+    for augmentation in ("mosaic", "mixup", "cutmix", "copy_paste"):
+        assert config[augmentation] == 0.0
