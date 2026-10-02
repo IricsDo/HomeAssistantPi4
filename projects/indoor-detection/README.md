@@ -29,7 +29,8 @@ nhiệt đạt chuẩn.
   `smoke/fire/person`.
 - [x] Tạo scoped joint dataset v2, loại hai duplicate conflict khỏi index và
   hoàn tất automated + visual data gate với các giới hạn miền được ghi rõ.
-- [ ] Train, calibrate và đánh giá checkpoint ba lớp.
+- [x] Train, calibrate và đánh giá checkpoint ba lớp v1-v3.
+- [ ] Đạt person deployment gate ở input size phù hợp với Pi 4.
 - [ ] Export NCNN và benchmark trên Pi 4.
 - [ ] Tích hợp camera thật.
 
@@ -116,8 +117,8 @@ Metadata trên E: đã có bốn ứng viên: `indoor-fs-v2` (5.000 ảnh fire/s
 `indoor-home-fire-v2` (6.500 ảnh fire/smoke), `coco-person-v1` (12.000 ảnh
 person) và `indoor-joint-v1` v32 (9.749 ảnh cả ba class, nhưng indoor gate
 failed). Ba nguồn partial đã được ghép thành scoped index v2 và đã qua data gate
-với các giới hạn nêu trên; bước tiếp theo là train baseline thống nhất. Tình trạng
-license được ghi lại khi intake;
+với các giới hạn nêu trên. V1-v3 đã train và đánh giá; person quality gate vẫn
+đang chặn export cuối. Tình trạng license được ghi lại khi intake;
 thiếu metadata không tự loại nguồn khỏi khâu đánh giá, nhưng không được xem là
 quyền sử dụng đã xác nhận.
 
@@ -235,6 +236,12 @@ indoor-train --config configs/train_indoor_v3_416.yaml
 V3 khởi tạo từ v2 `best.pt`, dùng 416 px, AdamW với learning rate `0,0003`, tối
 đa 20 epoch và patience 8. Mọi augmentation trộn ảnh vẫn bằng 0 để bảo toàn
 class scope. Run ghi vào `indoor_partial_joint_yolo26n_v3_416` và không ghi đè v2.
+
+V3 hoàn tất 20 epoch. Tại 416 px, smoke đạt P/R/F1
+`0,770/0,911/0,835`, fire đạt `0,866/0,906/0,886`, nhưng person max-F1 chỉ đạt
+`0,759/0,518/0,616`. Person vẫn không qua gate ở 512 px (`F1 0,634`, recall
+`0,575`) hoặc 640 px (`F1 0,647`, recall `0,586`), nên chưa export NCNN. Xem
+[V3 evaluation decision](docs/V3_EVALUATION_DECISION.md).
 
 ## Inference
 

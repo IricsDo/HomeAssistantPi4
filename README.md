@@ -34,18 +34,18 @@ hazard đạt mAP50 `0,937` (`indoor-fs-v2`) và `0,928`
 Tên source được dùng như provenance proxy; visual gate đã xác nhận corpus vẫn
 có ảnh outdoor, staged và synthetic nên chưa được xem là benchmark indoor thuần.
 
-Calibration/error analysis đã hoàn tất ở 640 và resolution triển khai 416. V2
-chưa đạt gate 416: smoke cần threshold `0,033` với precision `0,581`, còn person
-chỉ đạt recall `0,480` và F1 `0,597`. NCNN export được giữ lại cho đến sau một
-vòng fine-tune khớp resolution; test không được mở lại trong quyết định này.
+V3 đã fine-tune đủ 20 epoch ở 416 px và cải thiện rõ hazard gate. Smoke đạt
+P/R/F1 `0,770/0,911/0,835`, fire đạt `0,866/0,906/0,886`. Person vẫn là blocker:
+F1/recall chỉ `0,616/0,518` ở 416, `0,634/0,575` ở 512 và `0,647/0,586` ở 640.
+NCNN export vẫn bị khóa; test không được mở lại trong quyết định này.
 
 - Dataset: `E:\HomeAssistantPi4\processed\indoor-partial-joint-v2`
-- Run: `E:\HomeAssistantPi4\runs\indoor-detection\indoor_partial_joint_yolo26n_v2`
-- Reports: `E:\HomeAssistantPi4\reports\indoor-yolo26n-v2-evaluation`
+- Run: `E:\HomeAssistantPi4\runs\indoor-detection\indoor_partial_joint_yolo26n_v3_416`
+- Reports: `E:\HomeAssistantPi4\reports\indoor-yolo26n-v3-evaluation`
 
-Bước tiếp theo là chạy config `train_indoor_v3_416.yaml` từ v2 `best.pt`, đánh
-giá lại validation gate rồi mới export NCNN. Benchmark Pi 4 và camera thật chờ
-phần cứng.
+Bước tiếp theo là một fine-tune ngắn ở 512 px từ v3 `best.pt`, giảm scale
+variation để bảo toàn người nhỏ, rồi chạy lại toàn bộ validation gate. Benchmark
+Pi 4 và camera thật chờ phần cứng.
 
 ## AI Agent Collaboration
 

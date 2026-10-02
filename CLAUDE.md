@@ -19,22 +19,23 @@ At the beginning of every session:
 
 Do not begin implementation until the current task and ownership are clear.
 
-## 1.1 Current Project Snapshot (2026-10-01)
+## 1.1 Current Project Snapshot (2026-10-03)
 
 - Active project: `projects/indoor-detection`.
 - Goal: one YOLO26n detector for indoor `smoke`, `fire`, and `person`, exported
   to NCNN for Raspberry Pi 4 4 GB.
 - Current branch: `main`.
-- Last completed implementation milestone: per-class calibration and
-  scope-aware error analysis at 640 and 416 px.
+- Last completed implementation milestone: v3 416 px training, calibration,
+  resolution diagnostic and scope-aware error analysis.
 - Current owner: OpenAI Codex; status is `IN_PROGRESS`. If the user asks Claude
   Code to continue, that request is the explicit handover authorization.
-- Tests at this snapshot: PASS, 92/92 before the evaluator update; read the latest
-  `CHANGES.log` entry for the current count.
+- Tests at this snapshot: read the latest `CHANGES.log` entry for the current
+  count.
 - Ruff at this snapshot: PASS.
-- The v2 training run completed 40 epochs. V2 failed the 416 px deployment gate;
-  `configs/train_indoor_v3_416.yaml` defines the new resolution-matched run from
-  v2 `best.pt`. Train/evaluate this run before NCNN export.
+- The v3 run completed 20 epochs. Smoke and fire pass at 416 px, but person fails
+  the F1/recall gate at 416, 512 and 640 px. Do not export NCNN yet. The next
+  cycle is a short 512 px fine-tune from v3 `best.pt` with reduced geometric
+  scale variation; see `docs/V3_EVALUATION_DECISION.md`.
 
 Read the newest entry in `CHANGES.log` for exact uncommitted files, dataset paths,
 checksums, known issues, and next commands. Do not rely only on this snapshot.

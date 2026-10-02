@@ -1403,3 +1403,90 @@ validation state.
     `E:\\HomeAssistantPi4\\runs\\indoor-detection\\indoor_partial_joint_yolo26n_v3_416`.
   - Do not resume or overwrite v2; test remains closed during v3 selection.
   - Never read or print `projects/.env`; all large artifacts remain on E:.
+
+## [2026-10-03 00:23 +07:00] - V3 training and validation milestone from OpenAI Codex
+
+- **Current Task:** Improve the unified three-class detector at an edge-oriented
+  input size and keep the NCNN export gate closed until every class passes.
+- **Status:** IN_PROGRESS
+- **Current Owner:** OpenAI Codex
+
+- **Completed in this session:**
+  - Completed all 20 epochs of `configs/train_indoor_v3_416.yaml` without
+    overwriting v2. Epoch 19 recorded the highest mAP50-95 (`0.52560`).
+  - Locked v3 `best.pt` with SHA-256
+    `ebeaaa7848167e658b5f6c22a3869839133aafe798937c33ddffab73d11ac1ae`.
+  - Re-ran class-scoped validation calibration at 416 px. Smoke reached the
+    recall target at threshold `0.106106`; fire reached it at `0.279279`.
+  - Ran scope-aware error analysis. Smoke P/R/F1 is `0.770/0.911/0.835` with
+    2.32% negative-image false alarms. Fire is `0.866/0.906/0.886` with 1.30%
+    negative-image false alarms.
+  - Confirmed smoke recall remains 0.860 on the blurred bucket; blur is not used
+    as a rejection rule.
+  - Person max-F1 at 416 px is `0.616` with recall `0.518`, below the required
+    `0.65/0.60`. Small-person recall is `0.213`; 1,649 misses are below
+    confidence and 893 are localization/no-overlap errors.
+  - Tested resolution as a diagnostic. Person reaches F1/recall `0.634/0.575`
+    at 512 and `0.647/0.586` at 640, so resolution alone does not pass the gate.
+  - Visually reviewed false-negative and false-positive contact sheets. Person
+    misses are mainly distant/crowded people; false positives include animals,
+    statues, dolls and other human-shaped objects. Hazard galleries still show
+    small/dark regions and annotation/localization disagreements.
+  - Added `docs/V3_EVALUATION_DECISION.md` and updated the repository/project
+    snapshots. NCNN export remains intentionally blocked. Test was not reopened.
+
+- **Unfinished / Next Steps (CRITICAL):**
+  - [ ] Add a new non-overwriting v4 config starting from v3 `best.pt`, train at
+    512 px with reduced geometric scale variation, and keep multi-image
+    augmentations disabled.
+  - [ ] Re-run calibration and scope-aware error gates at the intended export
+    size; person must reach validation F1 >= 0.65 and recall >= 0.60.
+  - [ ] Export NCNN and compare PyTorch/NCNN outputs only after all class gates
+    pass.
+
+- **Known Blocks / Issues:**
+  - Person quality remains below the deployment gate at 416, 512 and 640 px.
+  - The evaluation sources are mixed-domain rather than a verified pure-indoor
+    holdout.
+  - Raspberry Pi benchmark and camera integration require the physical hardware.
+
+- **Validation:**
+  - Build: NOT APPLICABLE
+  - Tests: PASS (100/100 full suite). The first sandboxed run failed only because
+    Windows denied pytest temporary-directory access; the approved retry passed.
+  - Typecheck: NOT CONFIGURED
+  - Lint: PASS (`.venv\\Scripts\\python.exe -m ruff check . --no-cache`)
+
+- **Git State:**
+  - Branch: `main`
+  - Last Commit: `c015a95 feat:add-416-finetune-config`
+  - Working Tree: DIRTY (v3 evaluation milestone ready to commit)
+
+- **Uncommitted Changes:**
+  - `CHANGES.log`
+  - `CLAUDE.md`
+  - `README.md`
+  - `projects/indoor-detection/README.md`
+  - `projects/indoor-detection/docs/V3_EVALUATION_DECISION.md`
+
+- **Active Files:**
+  - `projects/indoor-detection/docs/V3_EVALUATION_DECISION.md`
+  - `E:\\HomeAssistantPi4\\runs\\indoor-detection\\indoor_partial_joint_yolo26n_v3_416\\`
+  - `E:\\HomeAssistantPi4\\reports\\indoor-yolo26n-v3-evaluation\\`
+
+- **Notes for Next Agent:**
+  - 416 calibration report SHA-256: smoke
+    `617f90e1724d20791a15364438d0554a1ad2f24b6a1dfa21661ed6660738f559`,
+    fire `3548aa9a9f3047da58b9558f556ddca22f732db403801e65c7afdd16cb66f21e`,
+    person `6651215e20e12e2b93246cbb21a8a4056789bbf7b71423dea6cdb4dbf10643f9`.
+  - 416 error-analysis SHA-256: smoke
+    `a98005041bce8a4da3925b1ef088f1b973b3b99aa072bf48802db7559f3b8c57`,
+    fire `e8acdd12a5be5e20ee8c37f690c03c50173f1db764b5972fb176b9206e319d97`,
+    person `b5ab70a539a2134437edbf092b4c4499408519a8e7e40dd46d9ed6fd0c737c5e`.
+  - 512 calibration report SHA-256: smoke
+    `2a1f019255ab80b5c5703bd35e228fa264fa76b37c4fd73d6af8eae3539905a8`,
+    fire `e152d870282b1edaf2728ef97c38b71c1f771af33ab6e134f91cc43c7c7238d8`,
+    person `41e3b8a2e16564479f0aae1b3129c3cbf6f03c046f7dff547255fa7351672bd3`.
+  - Person 640 report SHA-256:
+    `5180de7fa5e488815a2406580e1e03ea25d3c2c07bc3581239197c1ab90a3a28`.
+  - Never read or print `projects/.env`; all large artifacts remain on E:.
