@@ -63,13 +63,50 @@ old policy; batch composition can change padding, so those reports must not
 be mixed with the square reports. Cold-start NMS time-limit warnings occurred
 in the old fire diagnostics; the new warmup precedes all scored images.
 
+## V2 control at 512 px
+
+V2 calibration gives smoke threshold 0.166166 (P/R 0.8437/0.9000), fire
+threshold 0.305305 (0.9029/0.9002) and person threshold 0.283283
+(P/R/F1 0.7594/0.5410/0.6318). Person explicit square matching gives
+0.7644/0.5432/0.6351, with 2,898 true positives, 893 false positives and 2,437
+misses. Negative-image false alarms are 11.61%; small-person recall is 0.2530.
+V2 was not audited again for hazards because the person gate already fails.
+
+| Square matching at 512 | Person F1 | Person recall | Small-person recall | Negative-image false alarms |
+|---|---:|---:|---:|---:|
+| V2 control | 0.6351 | 0.5432 | 0.2530 | 11.61% |
+| V4 | 0.6292 | 0.5593 | 0.2907 | 14.64% |
+
+Neither checkpoint passes. V4 improves small-person recall but loses precision;
+the control does not support claiming that restarting from v2 alone fixes the
+512 px gate. Move to training-only error mining before another fine-tune.
+
+Control reports: `E:\HomeAssistantPi4\reports\indoor-yolo26n-v2-512-control`.
+
+## Training-only mining
+
+V4 was run on all 7,000 training images with person annotation scope. This is
+mining on data already seen in training, not an independent quality estimate.
+It finds 7,624 missed person boxes, including 6,454 small boxes, and predictions
+on 41/1,000 annotated-negative images. Training small-person recall is 0.4049.
+Gallery review confirms distant/crowded people and object/animal/sign false alarms.
+Possible annotation ambiguities require full-resolution review before any
+negative candidate is accepted.
+
+Artifacts: `E:\HomeAssistantPi4\reports\indoor-person-train-mining-v1`.
+`review-queue.json` contains 64 images ranked by small missed-box count and all
+41 negative images with predictions. Every row is REVIEW_REQUIRED with a null
+decision. No source label, dataset index or training configuration was changed.
+Validation/test images are excluded by selecting the train split before mining.
+
 ## Next steps
 
-1. Compare v2 best.pt at 512 px using the same calibration and matching policy.
-   V2 already passed the person gate at 640 px, while the v3-to-v4 chain did
-   not recover that performance. Establish this control before another fine-tune.
-2. Use the comparison to decide whether a new 512 px run should start from v2
-   or whether additional audited person data is needed. Do not simply repeat v4.
+1. Review the 105 queued training examples at full resolution. Review small
+   or crowded missed people and high-confidence false alarms on negative images.
+   Use validation only for evaluation; do not add its error examples to training.
+2. Build a reviewed training intervention with explicit annotation scope and
+   provenance. Retain source images/labels, freeze validation/test, and repeat
+   structural, annotation and cross-split duplicate gates before training.
 3. Lock a checkpoint and thresholds only after all validation gates pass, then
    export NCNN and check output parity. Pi latency and camera validation require
    the physical hardware.

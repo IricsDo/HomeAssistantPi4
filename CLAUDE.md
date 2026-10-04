@@ -32,8 +32,9 @@ Do not begin implementation until the current task and ownership are clear.
   count.
 - Ruff at this snapshot: PASS.
 - V4 person calibration at 512 px gives F1/recall 0.6356/0.5625; explicit
-  matching gives 0.6292/0.5593. The export gate remains closed. Compare v2
-  best.pt at the same 512 px before choosing another fine-tune; see
+  matching gives 0.6292/0.5593. V2 control at 512 gives 0.6351/0.5432 and
+  also fails. The export gate remains closed. Training-only person mining is
+  complete; review the 105-example queue before choosing another fine-tune; see
   `docs/V4_EVALUATION_DECISION.md`.
 
 Read the newest entry in `CHANGES.log` for exact uncommitted files, dataset paths,
@@ -90,8 +91,8 @@ When implementing a task:
 3. Preserve the completed source/domain reports and their mixed-domain caveat.
 4. Preserve the completed calibration/error reports; do not reopen test for
    further selection.
-5. Compare v2 best.pt at 512 px before selecting the next training initialization.
-   Keep every new run separate and class-scoped training/validation enabled.
+5. Review training-only person mining before a new training intervention.
+   Keep validation/test frozen, every run separate and class scopes enabled.
 6. Export NCNN only after the selected edge resolution passes validation and
    its checkpoint/thresholds are locked.
 

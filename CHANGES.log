@@ -1606,3 +1606,67 @@ validation state.
     `870AC7777C86E79AEA36A4D1CD1E174AD28FAD1525B9FE8A5A3669E07004E8D3`,
     `A2887504A5F77CA07A8F45DF845B71F7EABFE7111A5590743EECC3814A844424`.
   - All large artifacts stay on E:. Never read/print projects/.env.
+
+## [2026-10-05 01:56 +07:00] - V2 control and training mining from OpenAI Codex
+
+- **Current Task:** Prepare a reviewed training intervention for person at 512 px.
+- **Status:** IN_PROGRESS
+- **Current Owner:** OpenAI Codex
+- **Completed in this session:**
+  - V4 milestone committed/pushed as ce2427c; working tree was clean before control.
+  - Calibrated v2 best.pt at 512 on validation: smoke threshold 0.166166,
+    P/R 0.8437/0.9000; fire threshold 0.305305, P/R 0.9029/0.9002;
+    person threshold 0.283283, P/R/F1 0.7594/0.5410/0.6318.
+  - V2 square person matching gives P/R/F1 0.7644/0.5432/0.6351, small-person
+    recall 0.2530 and negative-image false alarms 11.61%. It also fails gate.
+    V4 has better small-person recall but worse precision; no clear winning checkpoint.
+  - Mined V4 errors on 7,000 train images with person scope; excluded 7,900
+    images outside scope. Found 7,624 misses (6,454 small boxes) and 41/1,000
+    annotated-negative images with predictions. Training metrics are not holdout evidence.
+  - Reviewed contact sheets; small/crowded people and object/animal/sign confusion remain.
+  - Created review-queue.json: 64 images ranked by small missed-box count and all
+    41 negative images with predictions. Every row is REVIEW_REQUIRED, decision null.
+  - Verified all 105 paths belong to train and none to validation/test.
+  - No source labels, dataset indexes or training configs were changed; no new training.
+- **Unfinished / Next Steps (CRITICAL):**
+  - [ ] Review 105 queued examples at full resolution; record annotation ambiguity
+    separately from genuine misses/false alarms. Do not infer labels from predictions.
+  - [ ] Build a scoped training derivative/intervention from accepted examples;
+    keep validation/test frozen and preserve immutable source images/labels.
+  - [ ] Audit structure, annotation and cross-split duplicates before a new run.
+  - [ ] Recalibrate all classes; export NCNN only when every gate passes.
+- **Known Blocks / Issues:**
+  - Both V2 and V4 fail person gate at 512; changing initialization alone has
+    not established a fix. Mixed-domain and missing Pi hardware limitations remain.
+- **Validation:**
+  - Build: NOT APPLICABLE
+  - Tests: PASS (103/103, 6.50 seconds; approved Windows temp-directory run)
+  - Typecheck: NOT CONFIGURED
+  - Lint: PASS (`python -m ruff check . --no-cache`)
+  - Control/mining: PASS; scored error logs have no NMS warning.
+  - Queue split membership: PASS (105 train, zero validation/test overlaps)
+- **Git State:**
+  - Branch: main
+  - Last Commit: ce2427c fix: stabilize error audits and record v4 gate
+  - Working Tree: DIRTY (documentation milestone ready to commit)
+- **Uncommitted Changes:**
+  - CHANGES.log, CLAUDE.md, README.md, projects/indoor-detection/README.md
+  - projects/indoor-detection/docs/V4_EVALUATION_DECISION.md
+- **Active Files:**
+  - E:\HomeAssistantPi4\reports\indoor-person-train-mining-v1\review-queue.json
+  - projects/indoor-detection/docs/V4_EVALUATION_DECISION.md
+- **Notes for Next Agent:**
+  - Control reports: E:\HomeAssistantPi4\reports\indoor-yolo26n-v2-512-control.
+    A PowerShell scalar-splat error prevented the first person command; explicit
+    --maximize-f1 retry succeeded and has its own log. No partial report was used.
+  - Control calibration SHA-256 (smoke/fire/person):
+    `C46F5C7D38FC76C67065A202EFE49D6A7DF82FDEE35476A6691801B8B0F00DF5`,
+    `745AD597A4EB1D82BAE11518BF85C8BB07169B1C243C8E6793EF96F394749033`,
+    `C8201B35731E90C830E5E6D779F46B2C512AECCB4ED8F5147DEE8440F95FA691`.
+  - Control person error SHA-256:
+    `967A6F4161FF0CF784A6FADF7AB0B74CF71A63FFCCC85E751001FD31C78DCD9D`.
+  - Training mining error SHA-256:
+    `26CB19441567457B1D492652DFD1B6EC0FB29C142BF9B0D0100B39EE5A721188`.
+  - Review queue SHA-256:
+    `E7FE47342711A28831C1446BC25A77AE95AE7D6ACCD8D6931EEFCEF56F2C05D2`.
+  - All large artifacts remain on E:. Never read/print projects/.env.

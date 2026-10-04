@@ -256,8 +256,10 @@ hơn hoặc bị crop. Các augmentation trộn ảnh vẫn tắt và run mới 
 V4 hoàn tất 12 epoch, checkpoint tốt nhất tại epoch 11. Calibration person ở
 512 px đạt P/R/F1 `0,7305/0,5625/0,6356`; explicit error matching đạt
 `0,7190/0,5593/0,6292`, vẫn dưới quality gate. Smoke/fire đạt recall mục tiêu;
-NCNN export tiếp tục bị khóa. Bước tiếp theo là đánh giá lại v2 `best.pt` ở
-512 px theo cùng policy trước khi chọn một vòng fine-tune mới.
+NCNN export tiếp tục bị khóa. Control v2 tại cùng 512 px cho explicit F1/recall
+`0,6351/0,5432`, cũng không đạt gate. Mining 7.000 ảnh training có scope person
+đã xong; hàng đợi tại `E:/HomeAssistantPi4/reports/indoor-person-train-mining-v1`
+gồm 64 ảnh người nhỏ và 41 ảnh âm cần review. Validation/test nằm ngoài hàng đợi.
 Xem [V4 evaluation decision](docs/V4_EVALUATION_DECISION.md).
 
 ## Inference

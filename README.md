@@ -49,8 +49,11 @@ export vẫn bị khóa. Smoke/fire đạt recall mục tiêu trên validation.
 Xem [V4 evaluation decision](projects/indoor-detection/docs/V4_EVALUATION_DECISION.md).
 Reports: `E:\HomeAssistantPi4\reports\indoor-yolo26n-v4-evaluation`.
 
-Bước tiếp theo là đối chiếu v2 `best.pt` tại cùng 512 px trước khi chọn vòng
-fine-tune mới; v2 tại 640 px từng đạt person gate tốt hơn chuỗi v3-v4.
+Bộ control v2 tại 512 px cũng không đạt person gate: explicit F1/recall
+`0,6351/0,5432`. V4 tăng recall người nhỏ nhưng có nhiều false alarm hơn.
+Mining lỗi trên 7.000 ảnh training có scope person đã xong. Hàng đợi 105 ảnh
+tại `E:\HomeAssistantPi4\reports\indoor-person-train-mining-v1\review-queue.json`
+cần review người nhỏ/ảnh âm trước khi chuẩn bị vòng fine-tune mới.
 Benchmark Pi 4 và camera thật chờ phần cứng.
 
 ## AI Agent Collaboration
