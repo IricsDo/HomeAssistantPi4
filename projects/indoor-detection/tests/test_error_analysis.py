@@ -12,11 +12,34 @@ from indoor_detection.error_analysis import (
     _filter_images_for_class_scope,
     _metric_row,
     _miss_reason,
+    _predict_in_bounded_batches,
     _size_bucket,
     _summarize,
     box_iou,
     match_detections,
 )
+
+
+@pytest.mark.parametrize("batch", [1, 2])
+def test_audit_uses_square_inputs_for_every_chunk(batch: int) -> None:
+    class Predictor:
+        def __init__(self) -> None:
+            self.calls: list[dict[str, object]] = []
+
+        def predict(self, **kwargs: object) -> list[str]:
+            self.calls.append(kwargs)
+            assert kwargs["rect"] is False
+            assert kwargs["imgsz"] == 512
+            return list(kwargs["source"])
+
+    model = Predictor()
+    paths = [Path("landscape.jpg"), Path("portrait.jpg"), Path("square.jpg")]
+    results = list(_predict_in_bounded_batches(
+        model, paths, imgsz=512, device="cpu", batch=batch,
+        confidence=0.001, max_det=300,
+    ))
+    assert results == [str(path) for path in paths]
+    assert [call["batch"] for call in model.calls] == ([1, 1, 1] if batch == 1 else [2, 1])
 
 
 def test_dataset_class_id_resolves_unified_mapping(tmp_path: Path) -> None:

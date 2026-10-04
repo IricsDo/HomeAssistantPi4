@@ -429,6 +429,7 @@ def _predict_in_bounded_batches(
         batch_results = model.predict(
             source=[str(path) for path in chunk],
             imgsz=imgsz,
+            rect=False,
             conf=confidence,
             device=device,
             batch=len(chunk),
@@ -491,6 +492,17 @@ def analyze_errors(
     if not image_paths:
         raise ValueError(f"No images have annotation scope for class: {class_name}")
     model = YOLO(str(model_path.resolve()))
+    # Initialize lazy CUDA/NMS operations before scoring a batch: a cold NMS
+    # timeout can otherwise leave later images in that batch unprocessed.
+    model.predict(
+        source=str(image_paths[0]),
+        imgsz=imgsz,
+        rect=False,
+        conf=candidate_confidence,
+        device=device,
+        max_det=max_det,
+        verbose=False,
+    )
     results = _predict_in_bounded_batches(
         model,
         image_paths,
@@ -592,6 +604,8 @@ def analyze_errors(
         "excluded_out_of_scope_images": excluded_out_of_scope,
         "settings": {
             "imgsz": imgsz,
+            "rect": False,
+            "warmup_images": 1,
             "operating_confidence": operating_confidence,
             "candidate_confidence": candidate_confidence,
             "iou_threshold": iou_threshold,

@@ -43,9 +43,15 @@ NCNN export vẫn bị khóa; test không được mở lại trong quyết đ�
 - Run: `E:\HomeAssistantPi4\runs\indoor-detection\indoor_partial_joint_yolo26n_v3_416`
 - Reports: `E:\HomeAssistantPi4\reports\indoor-yolo26n-v3-evaluation`
 
-Bước tiếp theo là chạy `configs/train_indoor_v4_512.yaml`: fine-tune 12 epoch ở
-512 px từ v3 `best.pt`, giảm scale/translation để bảo toàn người nhỏ, rồi chạy
-lại toàn bộ validation gate. Benchmark Pi 4 và camera thật chờ phần cứng.
+V4 đã hoàn tất 12 epoch ở 512 px. Person sau calibration đạt F1 `0,6356`,
+recall `0,5625`; explicit error matching cho F1/recall `0,6292/0,5593`, nên
+export vẫn bị khóa. Smoke/fire đạt recall mục tiêu trên validation.
+Xem [V4 evaluation decision](projects/indoor-detection/docs/V4_EVALUATION_DECISION.md).
+Reports: `E:\HomeAssistantPi4\reports\indoor-yolo26n-v4-evaluation`.
+
+Bước tiếp theo là đối chiếu v2 `best.pt` tại cùng 512 px trước khi chọn vòng
+fine-tune mới; v2 tại 640 px từng đạt person gate tốt hơn chuỗi v3-v4.
+Benchmark Pi 4 và camera thật chờ phần cứng.
 
 ## AI Agent Collaboration
 

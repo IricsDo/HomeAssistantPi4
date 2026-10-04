@@ -29,7 +29,7 @@ nhiệt đạt chuẩn.
   `smoke/fire/person`.
 - [x] Tạo scoped joint dataset v2, loại hai duplicate conflict khỏi index và
   hoàn tất automated + visual data gate với các giới hạn miền được ghi rõ.
-- [x] Train, calibrate và đánh giá checkpoint ba lớp v1-v3.
+- [x] Train, calibrate và đánh giá checkpoint ba lớp v1-v4.
 - [ ] Đạt person deployment gate ở input size phù hợp với Pi 4.
 - [ ] Export NCNN và benchmark trên Pi 4.
 - [ ] Tích hợp camera thật.
@@ -243,7 +243,7 @@ V3 hoàn tất 20 epoch. Tại 416 px, smoke đạt P/R/F1
 `0,575`) hoặc 640 px (`F1 0,647`, recall `0,586`), nên chưa export NCNN. Xem
 [V3 evaluation decision](docs/V3_EVALUATION_DECISION.md).
 
-Vòng tiếp theo dùng config:
+V4 đã chạy bằng config:
 
 ```powershell
 indoor-train --config configs/train_indoor_v4_512.yaml
@@ -252,6 +252,13 @@ indoor-train --config configs/train_indoor_v4_512.yaml
 V4 bắt đầu từ v3 `best.pt`, train tối đa 12 epoch ở 512 px với learning rate
 `0,00015`; `scale=0,15` và `translate=0,05` giảm nguy cơ làm người nhỏ còn nhỏ
 hơn hoặc bị crop. Các augmentation trộn ảnh vẫn tắt và run mới không ghi đè v3.
+
+V4 hoàn tất 12 epoch, checkpoint tốt nhất tại epoch 11. Calibration person ở
+512 px đạt P/R/F1 `0,7305/0,5625/0,6356`; explicit error matching đạt
+`0,7190/0,5593/0,6292`, vẫn dưới quality gate. Smoke/fire đạt recall mục tiêu;
+NCNN export tiếp tục bị khóa. Bước tiếp theo là đánh giá lại v2 `best.pt` ở
+512 px theo cùng policy trước khi chọn một vòng fine-tune mới.
+Xem [V4 evaluation decision](docs/V4_EVALUATION_DECISION.md).
 
 ## Inference
 

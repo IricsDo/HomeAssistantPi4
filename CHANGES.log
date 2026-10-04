@@ -1547,3 +1547,62 @@ validation state.
     `E:\\HomeAssistantPi4\\runs\\indoor-detection\\indoor_partial_joint_yolo26n_v4_512`.
   - Do not resume or overwrite v3. Keep test closed during model selection.
   - Never read or print `projects/.env`; all large artifacts remain on E:.
+
+## [2026-10-05 01:46 +07:00] - V4 evaluation milestone from OpenAI Codex
+
+- **Current Task:** Resolve the person deployment gate for the unified detector.
+- **Status:** IN_PROGRESS
+- **Current Owner:** OpenAI Codex
+- **Completed in this session:**
+  - Verified preserved V4 training: 12 epochs, best epoch 11, mAP50-95 0.54568.
+  - Verified best.pt SHA-256: `bee9971938d8a213b294751fa39d6af7cf41b63e0e214bcff9ba94a4de708a22`.
+  - V4 validation calibration at 512: smoke threshold 0.176176, P/R 0.8513/0.9009;
+    fire threshold 0.392392, P/R 0.9176/0.9000; person threshold 0.297297,
+    P/R/F1 0.7305/0.5625/0.6356. Person still fails the deployment gate.
+  - Completed all three explicit error audits with square 512 inputs and warmup.
+    P/R/F1: smoke 0.8340/0.9138/0.8721, fire 0.9159/0.9065/0.9112,
+    person 0.7190/0.5593/0.6292. Negative-image false alarms: 1.21%, 1.30%, 14.64%.
+  - Reviewed person galleries: small/crowded misses, animals/dolls/statues/object false alarms.
+  - Fixed audit batch-dependent rectangular padding using rect=False; added warmup
+    before scored images to avoid cold-start NMS skipping later batch images.
+    Old reports are preserved. New square audit logs contain no WARNING entries.
+  - Added regression coverage for square inputs across full and remainder batches.
+  - Updated README snapshots, CLAUDE.md and docs/V4_EVALUATION_DECISION.md.
+- **Unfinished / Next Steps (CRITICAL):**
+  - [ ] Compare v2 best.pt at 512 using validation calibration and square error analysis.
+  - [ ] Select the next model initialization/data intervention from that comparison.
+  - [ ] Export NCNN only when all gates pass; test remains closed for selection.
+- **Known Blocks / Issues:**
+  - Person F1/recall remain below 0.65/0.60; small-person recall is 0.2907.
+  - Mixed-domain corpus does not establish pure-indoor performance.
+  - Pi benchmark and camera integration require hardware.
+- **Validation:**
+  - Build: NOT APPLICABLE
+  - Tests: PASS (103/103); sandbox attempt hit the existing Windows temporary-directory
+    permission failure, approved retry passed in 10.85 seconds.
+  - Typecheck: NOT CONFIGURED
+  - Lint: PASS (`python -m ruff check . --no-cache`)
+- **Git State:**
+  - Branch: main
+  - Last Commit: c8a9472 feat:add-512-person-finetune-config
+  - Working Tree: DIRTY (this milestone staged for commit)
+- **Uncommitted Changes:**
+  - CHANGES.log, CLAUDE.md, README.md, projects/indoor-detection/README.md
+  - projects/indoor-detection/docs/V4_EVALUATION_DECISION.md
+  - projects/indoor-detection/src/indoor_detection/error_analysis.py
+  - projects/indoor-detection/tests/test_error_analysis.py
+- **Active Files:**
+  - projects/indoor-detection/docs/V4_EVALUATION_DECISION.md
+  - E:\HomeAssistantPi4\reports\indoor-yolo26n-v4-evaluation
+- **Notes for Next Agent:**
+  - Authoritative error reports are *_square_error_analysis/error-analysis.json.
+    The old batch-1 fire diagnostic used rectangular inputs and is not authoritative.
+  - Calibration SHA-256 (smoke/fire/person):
+    `59FA07CFE0D9EB7BD4E9156D07BCAFF071BA02E933E7B5D29C1773F9F683BCD3`,
+    `8B8D3A7C9EA2BCF6053E354A237E273B008A3A12BE38326643A858A1BE76BB75`,
+    `964DCC2C333B7F83DBE0DC8F13272FEFDE40ECF22C9E144822E5F896D01A5942`.
+  - Square error-report SHA-256 (smoke/fire/person):
+    `FA5B49124DC66AE4567F79437632781D23164DC38BD5099E351F6221D9F03A82`,
+    `870AC7777C86E79AEA36A4D1CD1E174AD28FAD1525B9FE8A5A3669E07004E8D3`,
+    `A2887504A5F77CA07A8F45DF845B71F7EABFE7111A5590743EECC3814A844424`.
+  - All large artifacts stay on E:. Never read/print projects/.env.

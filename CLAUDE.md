@@ -19,24 +19,22 @@ At the beginning of every session:
 
 Do not begin implementation until the current task and ownership are clear.
 
-## 1.1 Current Project Snapshot (2026-10-03)
+## 1.1 Current Project Snapshot (2026-10-05)
 
 - Active project: `projects/indoor-detection`.
 - Goal: one YOLO26n detector for indoor `smoke`, `fire`, and `person`, exported
   to NCNN for Raspberry Pi 4 4 GB.
 - Current branch: `main`.
-- Last completed implementation milestone: v3 416 px training, calibration,
-  resolution diagnostic and scope-aware error analysis.
+- Last completed training: v4 512 px, 12 epochs, with best checkpoint at epoch 11.
 - Current owner: OpenAI Codex; status is `IN_PROGRESS`. If the user asks Claude
   Code to continue, that request is the explicit handover authorization.
 - Tests at this snapshot: read the latest `CHANGES.log` entry for the current
   count.
 - Ruff at this snapshot: PASS.
-- The v3 run completed 20 epochs. Smoke and fire pass at 416 px, but person fails
-  the F1/recall gate at 416, 512 and 640 px. Do not export NCNN yet. The next
-  cycle is `configs/train_indoor_v4_512.yaml`, a short 512 px fine-tune from v3
-  `best.pt` with reduced geometric scale variation; see
-  `docs/V3_EVALUATION_DECISION.md`.
+- V4 person calibration at 512 px gives F1/recall 0.6356/0.5625; explicit
+  matching gives 0.6292/0.5593. The export gate remains closed. Compare v2
+  best.pt at the same 512 px before choosing another fine-tune; see
+  `docs/V4_EVALUATION_DECISION.md`.
 
 Read the newest entry in `CHANGES.log` for exact uncommitted files, dataset paths,
 checksums, known issues, and next commands. Do not rely only on this snapshot.
@@ -92,8 +90,8 @@ When implementing a task:
 3. Preserve the completed source/domain reports and their mixed-domain caveat.
 4. Preserve the completed calibration/error reports; do not reopen test for
    further selection.
-5. Start any fine-tuning from v2 `best.pt` in a new run and keep class-scoped
-   training/validation enabled.
+5. Compare v2 best.pt at 512 px before selecting the next training initialization.
+   Keep every new run separate and class-scoped training/validation enabled.
 6. Export NCNN only after the selected edge resolution passes validation and
    its checkpoint/thresholds are locked.
 
