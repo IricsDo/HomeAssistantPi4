@@ -364,3 +364,13 @@ with a frozen bounded plan, not automatic repeated training. Data gate/provenanc
 remain valid with documented limits; model quality remains unapproved. Full
 controls, hashes, error slices and resource recovery in V5_EVALUATION_DECISION.md.
 No source labels or holdout indexes were changed. All jobs finished.
+
+## P1b coverage pilot (2026-10-06)
+
+Remaining filtered population after excluding all 560 previously attempted IDs:
+1,834 images/20,311 boxes. Frozen proxy strata seed45 selected 60 images with
+quotas30/20/10; acquired and decoded all, zero visible geometry flags. Actual
+clipped vboxes contain 615/1,430 small boxes (43.01%). All 60 galleries generated,
+none reviewed yet; exact/near overlap and accepted-label coverage remain pending.
+No conversion, joint modification or training. Immediate protocol and hashes:
+[Small-person intake](SMALL_PERSON_INTAKE.md). Preserve noncommercial source policy.

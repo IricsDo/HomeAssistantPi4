@@ -2396,3 +2396,71 @@ validation state.
     do not use saved epoch2 recovery checkpoint to repeat this finished experiment.
   - Sessions2148 stopped,16464 training complete,2759 evaluation complete;
     all test/helper jobs finished. Live process check found no detector/evaluation job.
+
+## [2026-10-06 00:42 +07:00] - P1b coverage/acquisition milestone from OpenAI Codex
+
+- **Current Task:** P1b labelled small-person coverage pilot after v5 NO RELEASE.
+- **Status:** IN_PROGRESS (audit/freeze/acquisition completed; review/gates pending)
+- **Current Owner:** OpenAI Codex
+- **Completed in this session:**
+  - Read AGENTS, CLAUDE, latest CHANGES, README/plan and implementation; main
+    c9d6044. Preserved unrelated untracked source_box_review.py unchanged.
+  - Added annotation coverage utility with deterministic stratified freeze and
+    fail-closed previous-plan hash/ID checks; reused existing annotation validator
+    and acquisition API. No new dependencies or changes to source annotations.
+  - Revalidated 15,000 original train records. Excluded all560 prior attempted
+    IDs, retained body-ignore/geometry and conservative head-overlap filters.
+    Remaining1,834 images/20,311 boxes; envelope-proxy strata high37/some248/none1549.
+    ODGT has no image dimensions: pre-acquisition envelope and raw pixel metrics
+    are ranking proxies, not normalized small-person ground truth.
+  - Froze60 IDs before download: seed45, sorted strata high/some/none quotas30/20/10.
+    Stop: systematic annotation problem blocks conversion; accepted actual small
+    box share<30% blocks expansion. Review all60; no automatic model run.
+  - Acquired exactly60 pinned training JPEG members via bounded HTTP ranges,
+    workers8, exit0. All decode/receipt hashes/visible geometry checks PASS,
+    zero flags,43 outside vboxes clipped for measurement. Original labels preserved.
+  - Actual decoded dimensions: small615/1,430=43.01%, medium559, large256.
+    High/some/none small counts548/63/4. Provisional coverage target met, but
+    accepted-label gate UNVERIFIED. Generated all60 paired galleries; none visually
+    reviewed this milestone. No exact/near duplicate claim for this new pilot.
+  - Validation/test index SHA remain bd6edaeb329efa5cb86d4e904f4a90b49072118fbfe388bc652bbbdd1de8f182 /
+    4d37f4aeb2dfb212adda2aeff60748935a283a03f6074d55cca10376367f8180.
+    No source or joint index mutation, model predictions/train/test/export.
+  - Updated plan, CLAUDE, both READMEs, assessment and SMALL_PERSON_INTAKE.md.
+- **Unfinished / Next Steps (CRITICAL):**
+  - [ ] Verify fresh artifact manifest, review60 paired galleries plus tiny/ambiguous
+    original-resolution crops; save separate ACCEPT/EXCLUDE ledger and reasons.
+  - [ ] Build current joint v3 registry24,046 images (includes548 accepted CrowdHuman),
+    audit exact/near overlap and adjudicate candidates; old registries alone insufficient.
+  - [ ] Recompute accepted actual size coverage; go/no-go before separate expansion
+    freeze/download. Any derivative must retain hazard rehearsal/scopes/holdout and
+    pass full intake gates. Predeclare only one new run after its data gate.
+- **Known Blocks / Issues:** Person model gate still FAIL; test/NCNN closed.
+  No image-level semantic approval yet; proxy filters can remove valid crowded
+  cases. Original source license/mixed-domain/crop-mirror-session limits persist.
+  Camera hardware P5 blocked. Old optional42/56 review and sampling untouched.
+- **Validation:**
+  - Build: NOT APPLICABLE (dataset intake)
+  - Tests: PASS158/158,7.75s; project .venv python -m pytest -p no:cacheprovider
+    --basetemp C:/Users/Public/Documents/indoor-coverage-20261006a
+  - Typecheck: NOT CONFIGURED
+  - Lint: PASS (.venv python -m ruff check . --no-cache)
+  - Acquisition/decode/geometry/actual size workflow exit0; git diff --check PASS.
+    Full data/quality gate NOT PASSED; no new processed derivative exists.
+- **Git State:** Branch main; Last Commit c9d6044; Working Tree DIRTY pending
+  scoped milestone commit/push. Old untracked source_box_review.py excluded.
+- **Uncommitted Changes / Active Files:** CHANGES.log, CLAUDE.md, README.md;
+  project README, PROJECT_PLAN, docs/CROWDHUMAN_ASSESSMENT.md,
+  docs/SMALL_PERSON_INTAKE.md, src/indoor_detection/crowdhuman_coverage.py,
+  tests/test_crowdhuman_coverage.py. Preserved source_box_review.py.
+- **Notes for Next Agent:**
+  - Raw: E:/HomeAssistantPi4/raw/CrowdHuman-small-person-pilot-v1.
+    Reports: E:/HomeAssistantPi4/reports/crowdhuman-small-person-pilot-v1.
+    gallery/bundle.json lists all60 overlays awaiting review; do not reacquire.
+  - coverage SHA940ff807e303ac3e4a3aad0d5d00a5917212a14085b6d6d1d413dcba7e18ba4b;
+    plan SHAf382301b5e1cff26363b799a2c90cd48ddd36a44533fae0c922cfbabae5838e0;
+    actual coverage SHA99672b0dc74824315e3a2ed99c25224661fbc91c483fe51efadfcd98b7aa11ff.
+    8-file artifact manifest SHAba4fa8ca190cae51af88cdf33203ed85c062b022d4d955838cc2b56afb98fbe1.
+    Full protocol, paths, reproduction and remaining gates in SMALL_PERSON_INTAKE.md.
+  - Session38286 acquisition completeexit0; size/gallery workflow completeexit0;
+    all test/lint jobs finished. No background job; venv C, all large artifacts E.

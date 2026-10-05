@@ -1,10 +1,11 @@
 # Kế hoạch hoàn thành Indoor Detection
 
 Ngày cập nhật: **2026-10-06**. Agent cập nhật: **OpenAI Codex**.
-Owner hiện tại: **OpenAI Codex**. Milestone evaluation v5: **READY_FOR_REVIEW**.
+Owner hiện tại: **OpenAI Codex**. P1b small-person intake: **IN_PROGRESS**.
 V5 đã train đủ 12 epoch và đánh giá validation. Person vẫn FAIL; test/export đóng.
-Không còn job chạy. Bước tiếp theo: P1b lựa chọn dữ liệu đã có nhãn ưu tiên người
-nhỏ trước một can thiệp mới. Xem [V5 decision](docs/V5_EVALUATION_DECISION.md).
+Không còn job chạy. P1b đã audit pool, freeze/tải 60 ảnh/1.430 box, trong đó
+615 box nhỏ (43,01%). Bước tiếp theo: review 60 annotation và duplicate gates.
+Xem [Small-person intake](docs/SMALL_PERSON_INTAKE.md) và [V5 decision](docs/V5_EVALUATION_DECISION.md).
 
 Đây là checklist tổng thể để các agent tiếp tục project. `AGENTS.md` quy định
 cách làm việc; `CHANGES.log` ghi lịch sử, kết quả thực chạy và bàn giao từng phiên.
@@ -141,11 +142,16 @@ box-review/reweighting/sampler cũ dưới đây không áp dụng cho v5, khôn
 **Đầu ra:** quyết định nguồn và can thiệp; review box/sampling nếu áp dụng,
 manifest can thiệp và báo cáo data gate trên E:; config/code và quyết định trong Git.
 
-### P1b — Vòng tiếp theo sau v5 (PLANNED, chưa acquire/train mới)
+### P1b — Vòng tiếp theo sau v5 (IN_PROGRESS, pilot acquired; chưa train mới)
 
-- [ ] Audit annotation pool còn lại theo kích thước box, mật độ và scope; ưu tiên
+- [x] Audit annotation pool còn lại theo kích thước box, mật độ và scope; ưu tiên
   dữ liệu đã gắn nhãn small/occluded person, không lấy error ảnh holdout vào train.
-- [ ] Freeze bounded IDs/size strata/seed và visual stop condition trước download.
+- [x] Freeze bounded IDs/size strata/seed và visual stop condition trước download.
+  Pilot 60 seed45/quotas30-20-10 đã tải và decode; 615/1.430 box nhỏ. Proxy trước
+  tải không phải kích thước ảnh thật. Xem SMALL_PERSON_INTAKE.md cho paths/hashes.
+- [ ] Review toàn bộ 60 pilot, exact/near duplicate với joint v3; tính coverage
+  sau loại ảnh. Không mở expansion nếu accepted small-box share <30% hoặc lỗi
+  annotation hệ thống mới. Chưa review gallery trong milestone acquisition.
 - [ ] Tạo derivative mới, giữ rehearsal hazard và holdout; qua đủ intake data gate.
 - [ ] Chốt một run mới và initialization/retention rationale trước P2 tiếp theo.
   Không auto nhiều retry hoặc hạ gate. Xem V5 decision cho coverage census:
@@ -243,7 +249,8 @@ Không đánh dấu PASS bằng benchmark CPU Windows hay thời gian GPU traini
 1. Đọc đầy đủ `AGENTS.md`, `CLAUDE.md`, entry mới nhất `CHANGES.log`, README và
    file này; chạy `git status`/`git log`. Xác định owner, giữ dirty work.
 2. **V5 đã hoàn tất, person FAIL.** Đọc V5_EVALUATION_DECISION.md và bắt đầu P1b
-   annotation coverage/size-stratified selection. Không resume run hoàn tất, không
+   review pilot tại SMALL_PERSON_INTAKE.md (coverage/freeze/acquisition đã xong).
+   Không lặp acquisition đã hoàn tất. Không resume run hoàn tất, không
    chạy lại config v5 hoặc verifier pre-run để bỏ qua target đã tồn tại. Không test
    hoặc export khi person gate chưa đạt. Không lặp intake artifact đã hoàn tất.
    Bằng chứng lịch sử **P1: labelled CrowdHuman pilot** tại CROWDHUMAN_ASSESSMENT.md và

@@ -30,8 +30,11 @@ Do not begin implementation until the current task and ownership are clear.
 - Last completed training: v5 512 px, 12 epochs, best checkpoint epoch 7.
 - Current owner: OpenAI Codex; v5 evaluation milestone is `READY_FOR_REVIEW`.
   Person explicit F1/recall 0.6415/0.5717 FAIL; smoke/fire recall 0.9172/0.9073 PASS.
-  Test/export remain closed; no background job. Next is P1b size-stratified
-  labelled person-data selection. Do not resume/relaunch completed v5. See
+  Test/export remain closed; no background job. P1b audit/selection and 60-image
+  acquisition completed: 615/1,430 small boxes (43.01%), geometry PASS.
+  Next: review all 60 galleries and exact/near overlap against current joint v3.
+  No automatic expansion/training; see docs/SMALL_PERSON_INTAKE.md.
+  Do not resume/relaunch completed v5. See
   docs/V5_EVALUATION_DECISION.md and latest CHANGES for current execution state.
   If the user asks Claude
   Code to continue, that request is the explicit handover authorization.

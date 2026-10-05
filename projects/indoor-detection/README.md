@@ -36,6 +36,9 @@ V5 đã train đủ 12 epoch và đánh giá validation 512 px. **Person FAIL**:
 F1/recall 0,6415/0,5717; smoke/fire recall 0,9172/0,9073 PASS. Test/export đóng;
 không còn job chạy. Bước tiếp theo: labelled small-person intake theo P1b. Xem
 [V5 decision](docs/V5_EVALUATION_DECISION.md).
+P1b đã audit/freeze/tải pilot 60 ảnh, 615/1.430 box nhỏ (43,01%), geometry PASS.
+Gallery chưa review; duplicate gates còn mở, chưa convert/train. Tiếp tục tại
+[Small-person intake](docs/SMALL_PERSON_INTAKE.md).
 Xem [assessment](docs/CROWDHUMAN_ASSESSMENT.md).
 
 - [x] Baseline smoke-only và checkpoint tham chiếu đã được khóa.
