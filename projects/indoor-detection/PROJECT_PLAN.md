@@ -4,7 +4,10 @@ Ngày cập nhật: **2026-10-06**. Agent cập nhật: **OpenAI Codex**.
 Owner hiện tại: **OpenAI Codex**. P1b small-person intake: **IN_PROGRESS**.
 V5 đã train đủ 12 epoch và đánh giá validation. Person vẫn FAIL; test/export đóng.
 Không còn job chạy. P1b đã audit pool, freeze/tải 60 ảnh/1.430 box, trong đó
-615 box nhỏ (43,01%). Bước tiếp theo: review 60 annotation và duplicate gates.
+615 box nhỏ (43,01%). Review/duplicate đã xong: 30 ACCEPT/30 EXCLUDE, phần nhận
+có 189/397 box nhỏ (47,61%). CrowdHuman expansion hoãn; pilot COCO train chưa
+dùng đã freeze 60 ảnh/415 box (342 nhỏ theo metadata), chưa tải. Bước tiếp theo:
+acquire/decode/review và duplicate gate của pilot COCO.
 Xem [Small-person intake](docs/SMALL_PERSON_INTAKE.md) và [V5 decision](docs/V5_EVALUATION_DECISION.md).
 
 Đây là checklist tổng thể để các agent tiếp tục project. `AGENTS.md` quy định
@@ -149,9 +152,15 @@ manifest can thiệp và báo cáo data gate trên E:; config/code và quyết �
 - [x] Freeze bounded IDs/size strata/seed và visual stop condition trước download.
   Pilot 60 seed45/quotas30-20-10 đã tải và decode; 615/1.430 box nhỏ. Proxy trước
   tải không phải kích thước ảnh thật. Xem SMALL_PERSON_INTAKE.md cho paths/hashes.
-- [ ] Review toàn bộ 60 pilot, exact/near duplicate với joint v3; tính coverage
+- [x] Review toàn bộ 60 pilot, exact/near duplicate với joint v3; tính coverage
   sau loại ảnh. Không mở expansion nếu accepted small-box share <30% hoặc lỗi
-  annotation hệ thống mới. Chưa review gallery trong milestone acquisition.
+  annotation hệ thống mới. Đã xem60 gallery/21 crop, nhận30/loại30; accepted small
+  share47,61%. Zero exact/near candidates với24.046 ảnh. Expansion hoãn do các
+  assignment dày/partial còn mơ hồ; không claim mọi nhãn bị loại đều sai.
+- [x] Audit metadata nguồn COCO train chưa dùng; freeze pilot60 seed46,
+  30 ảnh3-6 người +30 ảnh7-15 người, 342/415 box nhỏ theo metadata. Chưa tải.
+- [ ] Acquire/review pilot COCO đã freeze; kiểm tra actual size, scope/duplicate
+  và source gate trước lựa chọn expansion. Không thay source/joint cũ.
 - [ ] Tạo derivative mới, giữ rehearsal hazard và holdout; qua đủ intake data gate.
 - [ ] Chốt một run mới và initialization/retention rationale trước P2 tiếp theo.
   Không auto nhiều retry hoặc hạ gate. Xem V5 decision cho coverage census:
@@ -249,7 +258,8 @@ Không đánh dấu PASS bằng benchmark CPU Windows hay thời gian GPU traini
 1. Đọc đầy đủ `AGENTS.md`, `CLAUDE.md`, entry mới nhất `CHANGES.log`, README và
    file này; chạy `git status`/`git log`. Xác định owner, giữ dirty work.
 2. **V5 đã hoàn tất, person FAIL.** Đọc V5_EVALUATION_DECISION.md và bắt đầu P1b
-   review pilot tại SMALL_PERSON_INTAKE.md (coverage/freeze/acquisition đã xong).
+   acquire/review pilot COCO tại SMALL_PERSON_INTAKE.md. CrowdHuman60 review/gate
+   đã xong, expansion hoãn; plan COCO60 đã khóa nhưng chưa acquire.
    Không lặp acquisition đã hoàn tất. Không resume run hoàn tất, không
    chạy lại config v5 hoặc verifier pre-run để bỏ qua target đã tồn tại. Không test
    hoặc export khi person gate chưa đạt. Không lặp intake artifact đã hoàn tất.

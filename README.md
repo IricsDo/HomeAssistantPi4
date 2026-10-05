@@ -22,9 +22,12 @@ explicit F1/recall 0,6415/0,5717; smoke/fire recall 0,9172/0,9073 đạt mục t
 Test/export vẫn đóng; không còn job chạy. Bước tiếp theo là dữ liệu đã gắn nhãn
 ưu tiên người nhỏ. Joint v3 có 24.046 ảnh, data gate PASS_WITH_LIMITATIONS. Xem
 [V5 decision](projects/indoor-detection/docs/V5_EVALUATION_DECISION.md).
-P1b đã audit pool và tải pilot 60 ảnh: 615/1.430 box nhỏ (43,01%). Còn review
-annotation và duplicate gates trước quyết định mở rộng; xem
+P1b đã audit pool và tải pilot 60 ảnh: 615/1.430 box nhỏ (43,01%). Review và
+duplicate screening đã hoàn tất; xem
 [Small-person intake](projects/indoor-detection/docs/SMALL_PERSON_INTAKE.md).
+Review đã xong: nhận30/loại30, phần nhận có47,61% box nhỏ; duplicate screening
+không có match/candidate. Expansion CrowdHuman hoãn do annotation mơ hồ; đã
+freeze pilot COCO train chưa dùng60 ảnh, chưa tải/train.
 Camera mục tiêu là Raspberry Pi Camera Module 3 Wide IMX708;
 xem [chiến lược dữ liệu](projects/indoor-detection/docs/PERSON_DATA_STRATEGY.md).
 

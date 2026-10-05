@@ -2464,3 +2464,74 @@ validation state.
     Full protocol, paths, reproduction and remaining gates in SMALL_PERSON_INTAKE.md.
   - Session38286 acquisition completeexit0; size/gallery workflow completeexit0;
     all test/lint jobs finished. No background job; venv C, all large artifacts E.
+
+## [2026-10-06 01:04 +07:00] - P1b review decision from OpenAI Codex
+
+- **Current Task:** Small-person pilot visual/duplicate gates and next labelled intake.
+- **Status:** IN_PROGRESS (CrowdHuman pilot review complete; expansion deferred;
+  unused-COCO pilot frozen, not acquired)
+- **Current Owner:** OpenAI Codex
+- **Completed in this session:**
+  - Read instructions/handovers/README/plan and code, Git main7250de2. Preserved
+    unrelated source_box_review.py unchanged/untracked and excluded from staging.
+  - Verified all8 acquisition artifact hashes; original evidence untouched.
+  - Fresh current joint v3 registry hashes24,046 images including548 accepted
+    CrowdHuman derivatives. Exact zero internal/corpus overlaps. dHash<=5
+    all60 x24,046 pairs:zero internal/corpus candidates. No queue to adjudicate.
+    Near audit reverified all registry image hashes; split index locks unchanged.
+  - Actually inspected all60 paired galleries and21 original-resolution diagnostic
+    crops. Ledger30 ACCEPT/30 EXCLUDE;397 accepted boxes:189small/107medium/101large,
+    small47.61% PASS coverage. ACCEPT is eligibility for a future derivative, not
+    exhaustive annotation certification or a joint training gate.
+  - Crops resolve apparent duplicates04/11/27/28/41/51/59 as distinct occluded
+    people; do not call those errors. Confirmed record34 unsupported wall/window
+    assignment; source coordinates and plain+annotated crop preserved.
+  - Conservative other exclusions: unresolved dense/partial assignments or
+    completeness, reflection/background ambiguity18/40, promotional rendering48,
+    border58 and box/border convention52. Not all excluded labels are proven wrong;
+    no new whole-source systematic error rate established. Defer CrowdHuman
+    expansion/conversion; retain accepted30 and originals. No source/joint changes.
+  - Annotation-only unused COCO train census:64,115 person images,6,000 current
+    filenames excluded,4,756 crowd images and1 invalid-geometry excluded;
+    53,358 eligible. Enriched >=3 small,>=50% small share,<=40 person boxes:
+    8,093 images/60,213 boxes/49,192 small. Zero candidate original images present.
+    Metadata sizes need actual decoded verification; no holdout annotation mining.
+  - Froze a concrete next pilot before download:60 original COCO train IDs seed46,
+    30 from3-6 people and30 from7-15 (populations3,633/4,460);415 boxes/342 small
+    from metadata. Review all60; stop on systematic annotation/completeness issue,
+    unresolved duplicate conflict or accepted small-share<30%. No download yet.
+  - Updated SMALL_PERSON_INTAKE, plan, CLAUDE, both READMEs and source assessment.
+- **Unfinished / Next Steps (CRITICAL):**
+  - [ ] Read coco_person_dataset.py; acquire exactly frozen60 to fresh E directory,
+    preserve original source IDs/labels. Do not rerun old uniform COCO builder.
+  - [ ] Decode/hash/geometry/actual sizes; render/review all60 and exact/near screen
+    against current joint v3. Source go/no-go before expansion/derivative.
+  - [ ] Retain rehearsal/scopes/holdout and full intake gates; predeclare one next
+    experiment only after data approval. Test/NCNN remain closed; do not train now.
+- **Known Blocks / Issues:** Person validation gate still FAIL; hardware P5 blocked.
+  CrowdHuman expansion deferred for unresolved labels, no automatic conversion.
+  Near screen cannot prove absence of crop/mirror/edit/session overlap. COCO
+  metadata candidate selection is not a visual/domain/duplicate gate. No claim
+  of indoor-camera quality. Previous optional42/56 box review/sampling untouched.
+- **Validation:**
+  - Build: NOT APPLICABLE (dataset review)
+  - Tests: PASS158/158,7.72s; .venv python -m pytest -p no:cacheprovider
+    --basetemp C:/Users/Public/Documents/indoor-small-review-20261006a
+  - Typecheck: NOT CONFIGURED
+  - Lint: PASS (.venv python -m ruff check . --no-cache)
+  - Duplicate/COCO census workflows exit0; review ledger60 unique IDs accounted.
+    Coverage and duplicate screening PASS with limits; no new joint/model gate.
+- **Git State:** main; Last Commit7250de2; DIRTY scoped docs pending commit/push.
+- **Uncommitted Changes / Active Files:** CHANGES.log, CLAUDE, root README;
+  project README, PROJECT_PLAN, docs/SMALL_PERSON_INTAKE.md and CROWDHUMAN_ASSESSMENT.md.
+  Preserved unrelated untracked source_box_review.py; no code/dependency change.
+- **Notes for Next Agent:**
+  - All new artifacts under E:/HomeAssistantPi4/reports/crowdhuman-small-person-pilot-v1.
+    Raw pilot unchanged at E:/HomeAssistantPi4/raw/CrowdHuman-small-person-pilot-v1.
+  - review-final-v1.json SHA4cd72f6cbc612a8b5a67f1df909f4da104c80ea96d7036662257037ddcc05c2d;
+    coco-pilot-plan-60-v1.json SHAc1afa602c049015ae9172b28469e8e4f51984d0459b5d03ca9f02cb69f0c169a;
+    review-artifact-manifest.json SHA33897720b03346992c65ead3f8d77e54ed6f28e7f54bf8b6f58cb94ba8c9dd0a
+    locks30 primary reports/workflows/crops. Acquisition manifest remains historical.
+  - Ledger is authoritative; provisional crop notes are not confirmed errors.
+    Tests and sessions43143 duplicate/6121 COCO census all finishedexit0; no job.
+    Venv C; images/reports E; no secret access, predictions, conversion or train.

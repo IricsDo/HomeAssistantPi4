@@ -374,3 +374,18 @@ clipped vboxes contain 615/1,430 small boxes (43.01%). All 60 galleries generate
 none reviewed yet; exact/near overlap and accepted-label coverage remain pending.
 No conversion, joint modification or training. Immediate protocol and hashes:
 [Small-person intake](SMALL_PERSON_INTAKE.md). Preserve noncommercial source policy.
+
+### P1b review/duplicate decision (2026-10-06)
+
+The pending gallery state above is historical. All60 paired galleries and21
+original crops now inspected:30 ACCEPT/30 EXCLUDE. Accepted397 boxes include189
+small (47.61%). Several suspected duplicates resolved as distinct occluded people;
+record34 has a confirmed unsupported target. Most other exclusions are conservative
+for unresolved assignments/completeness, not proof that all their labels are wrong.
+Current joint24,046-image SHA registry and full dHash<=5 screening:zero internal or
+corpus exact overlaps/near candidates. Crop/mirror/session limitations persist.
+
+Expansion/conversion deferred; keep accepted examples separate and source unchanged.
+Unused original COCO train metadata assessed instead:8,093 enriched candidates,
+60-image pilot frozen seed46 (342/415 small boxes from metadata), none acquired.
+Full ledger/hashes/next commands in SMALL_PERSON_INTAKE.md. No new train/test/export.

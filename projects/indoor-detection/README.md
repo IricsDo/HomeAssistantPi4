@@ -37,8 +37,11 @@ F1/recall 0,6415/0,5717; smoke/fire recall 0,9172/0,9073 PASS. Test/export đón
 không còn job chạy. Bước tiếp theo: labelled small-person intake theo P1b. Xem
 [V5 decision](docs/V5_EVALUATION_DECISION.md).
 P1b đã audit/freeze/tải pilot 60 ảnh, 615/1.430 box nhỏ (43,01%), geometry PASS.
-Gallery chưa review; duplicate gates còn mở, chưa convert/train. Tiếp tục tại
+Gallery/duplicate review đã hoàn tất; chưa convert/train. Tiếp tục tại
 [Small-person intake](docs/SMALL_PERSON_INTAKE.md).
+Review đã xong60 gallery/21 crop: nhận30/loại30, accepted small189/397=47,61%.
+Exact/near screening24.046 ảnh không có match/candidate. Hoãn expansion do
+assignment dày còn mơ hồ; pilot COCO train chưa dùng60 ảnh đã freeze, chưa tải.
 Xem [assessment](docs/CROWDHUMAN_ASSESSMENT.md).
 
 - [x] Baseline smoke-only và checkpoint tham chiếu đã được khóa.

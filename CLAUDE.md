@@ -32,7 +32,11 @@ Do not begin implementation until the current task and ownership are clear.
   Person explicit F1/recall 0.6415/0.5717 FAIL; smoke/fire recall 0.9172/0.9073 PASS.
   Test/export remain closed; no background job. P1b audit/selection and 60-image
   acquisition completed: 615/1,430 small boxes (43.01%), geometry PASS.
-  Next: review all 60 galleries and exact/near overlap against current joint v3.
+  CrowdHuman review now30 ACCEPT/30 EXCLUDE, accepted small189/397=47.61%;
+  exact/near screening against24,046 joint images has zero overlaps/candidates.
+  Expansion deferred due unresolved dense-label assignments; no new conversion.
+  Next: acquire/review frozen unused-COCO train pilot60 seed46 (342/415 small
+  boxes from metadata, not decoded images yet).
   No automatic expansion/training; see docs/SMALL_PERSON_INTAKE.md.
   Do not resume/relaunch completed v5. See
   docs/V5_EVALUATION_DECISION.md and latest CHANGES for current execution state.

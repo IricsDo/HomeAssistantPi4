@@ -1,7 +1,7 @@
 # P1b small-person labelled pilot
 
-Updated 2026-10-06 by OpenAI Codex. **IN_PROGRESS**: annotation coverage audit,
-frozen selection and acquisition complete; semantic and duplicate gates pending.
+Updated 2026-10-06 by OpenAI Codex. **IN_PROGRESS**: CrowdHuman pilot review and
+duplicate screening complete; expansion deferred. Next unused-COCO pilot frozen.
 No model run, conversion or joint-dataset mutation. V5 remains NO RELEASE.
 
 ## Selection and evidence
@@ -99,3 +99,77 @@ From project C: venv, annotation-only assessment command (use a fresh output):
 the acquisition-compatible plan. This acquisition is completed; do not repeat it.
 Tests **158/158 (7.75s)**, Ruff PASS; no new dependency. Venv stays on C:, all
 image/report artifacts on E:. Unrelated untracked source_box_review.py preserved.
+
+## Review decision and next pilot (2026-10-06)
+
+The acquisition-state paragraphs above are historical. **All 60 paired galleries
+and 21 original-resolution diagnostic crops were actually inspected**. Final
+ledger `review-final-v1.json`: **30 ACCEPT / 30 EXCLUDE**. ACCEPT means eligible
+for a later derivative, not certification of exhaustive labels or a joint gate.
+All source images and annotations remain unchanged; no conversion was performed.
+
+Accepted gallery numbers: 01,02,03,04,07,08,09,11,13,14,16,19,20,24,26,27,28,29,
+31,33,39,41,44,51,54,55,56,57,59,60. Accepted labels: **397 boxes**, including
+**189 small / 107 medium / 101 large**, small share **47.61%** (coverage gate PASS).
+Accepted high/some/none strata have 172/13/4 small boxes respectively.
+
+Original crops resolved several apparent duplicates as distinct occluded people
+(04,11,27,28,41,51,59). Do not call these annotation errors. Record34's crop
+confirms an unsupported target on the wall/window left of the first visible
+woman, separate from her box2. Other exclusions include unresolved crowded/partial
+assignments or completeness, mirror/background ambiguity (18/40), promotional
+rendering (48), decorative border (58), and embedded border/box convention (52).
+Conservative exclusions do **not** mean every excluded annotation is proven wrong.
+No new systematic error rate or whole-source defect is established by this sample.
+
+**Defer CrowdHuman expansion and conversion**: coverage passes, but unresolved
+dense-target assignments make automatic enlargement inappropriate. This decision
+does not invalidate the previous v3 gate or imply that all existing source labels
+are bad. Retain the 30 accepted examples and ledger for a later scoped intervention.
+Model quality gate remains FAIL; no new model predictions, test or export.
+
+Current joint registry `joint-v3-registry.json` freshly hashes **24,046 images**,
+including all548 previous accepted CrowdHuman derivatives. Exact raw SHA screen:
+zero internal/corpus overlaps. All60 x24,046 dHash<=5 pairs screened, zero internal
+or corpus candidates. No adjudication queue needed. Registry files were rehashed
+by the near audit; train/val/test index hashes unchanged. Crop/mirror/edit/session
+overlap remains a limitation, so screening is not an exhaustive leakage proof.
+
+### Concrete next intake: unused original COCO train annotations
+
+Annotation-only census from existing `raw/COCO2017/annotations/instances_train2017.json`:
+64,115 train images have person annotations. Excluded 6,000 filenames already in
+current corpus, 4,756 person-crowd images, and one invalid clipped-geometry image;
+remaining **53,358 images**. No original validation/test annotations were mined.
+Filename exclusion is only preliminary and does not replace image duplicate gates.
+
+Rule for enriched candidates: >=3 small boxes, >=50% small share, <=40 people;
+valid clipped person geometry and no person `iscrowd`. **8,093 candidates**, 60,213
+boxes including49,192 small. None of these candidate original images is downloaded.
+Unlike ODGT proxies, sizes use original COCO image width/height metadata, still
+requiring decode verification. Existing COCO convention matches the base source;
+this is not a claim of indoor-domain adequacy or guaranteed metric improvement.
+
+Frozen `coco-pilot-plan-60-v1.json`: seed46, sorted train ID pools, sample30 with
+3-6 people, then30 with7-15 people (populations3,633/4,460). **60 images / 415 boxes,
+342 small (82.41%) according to metadata**. All60 require visual review. Same
+accepted small-share>=30% stop rule; any systematic annotation/completeness issue
+or unresolved duplicate conflict blocks expansion/conversion. No download yet.
+
+Next agent: inspect `src/indoor_detection/coco_person_dataset.py` before extending
+or reusing acquisition; preserve its original train IDs/annotations and this frozen
+plan. Acquire exactly these60 to a fresh E directory, decode/hash/geometry/size
+check, render all60, screen against current joint v3 and review. Do not rerun the
+old uniform COCO builder to replace existing source indexes. Keep partial-label
+scope person, hazard rehearsal and all current holdout membership unchanged.
+
+| New artifact under the same report root | SHA-256 |
+|---|---|
+| review-final-v1.json | 4cd72f6cbc612a8b5a67f1df909f4da104c80ea96d7036662257037ddcc05c2d |
+| coco-pilot-plan-60-v1.json | c1afa602c049015ae9172b28469e8e4f51984d0459b5d03ca9f02cb69f0c169a |
+| review-artifact-manifest.json (30 files) | 33897720b03346992c65ead3f8d77e54ed6f28e7f54bf8b6f58cb94ba8c9dd0a |
+
+Other artifacts: exact-overlap.json, near-overlap.json, unused-coco-train-coverage.json,
+duplicate-workflow.py, coco-coverage-workflow.py, crops/*.png. Original acquisition
+manifest remains untouched. Review manifest locks all21 actually viewed crops.
+Tests158/158 (7.72s), Ruff PASS. No active job or dependency/code change this milestone.
