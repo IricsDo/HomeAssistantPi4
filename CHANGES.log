@@ -1789,3 +1789,84 @@ validation state.
   - Read the plan at session startup; do not rerun finished mining or open training
     merely because image-level review passed. Box review and sampling remain pending.
   - No new training/export or background job was started in this documentation session.
+
+## [2026-10-05 20:32 +07:00] - Person source strategy milestone from OpenAI Codex
+
+- **Current Task:** Evaluate additional person data for Camera Module 3 Wide;
+  preserve source-box review and choose an evidence-based P1 intervention.
+- **Status:** IN_PROGRESS (strategy/documentation milestone completed)
+- **Current Owner:** OpenAI Codex
+- **Completed in this session:**
+  - Read repository instructions, README, plan, latest handover and Git state.
+    Started on main at 36d2977 with only source_box_review.py untracked; preserved it.
+  - User authorizes selecting suitable labeled person sources, including outdoor
+    public areas; Leo Ueno People Detection is only a reference candidate.
+  - Created docs/PERSON_DATA_STRATEGY.md: outdoor eligibility, camera implications,
+    shortlist, intake/duplicate/annotation protocol and controlled comparison.
+    CrowdHuman is first for policy/preview inspection, not approved for training.
+    Leo Ueno, WiderPerson and additional COCO are alternatives, not selected datasets.
+  - Verified official Camera Module 3 Wide IMX708 specifications: approximately
+    12 MP, autofocus, 120/102/67 degree diagonal/horizontal/vertical FoV.
+    User says mounting height/tilt/distance are not determined. Hardware access,
+    illumination and exact IR variant are not confirmed; P5 stays BLOCKED.
+  - Updated AGENTS, CLAUDE, both READMEs and PROJECT_PLAN: prioritize source
+    assessment; sampling is optional, not mandatory before new-data intake.
+  - Recorded user-suggested conditional head/face fallback and future fall
+    detection extension. No architecture/model/gate change implemented. Current
+    scope remains one YOLO26n smoke/fire/person detector; P1-P6 are unchanged.
+  - Preserved provisional source-box review notes for 42/56 images on E:.
+    Gallery bundle contains 56 images/716 boxes; 43-56 not reviewed. Suspected
+    duplicate/completeness issues require original COCO annotation comparison;
+    these notes are not final annotation or training approval.
+- **Unfinished / Next Steps (CRITICAL):**
+  - [ ] Inspect original CrowdHuman annotation/access/ignore policy and bounded
+    train previews; compare with reference Roboflow source before acquisition.
+  - [ ] Record candidate decision and selection evidence; download only on E:.
+    Audit source structure, semantics, class scopes and exact/near duplicate
+    conflicts with current data/holdout before preparing a new processed corpus.
+  - [ ] Preserve/finish source box review when needed; diagnose suspected issues
+    against original COCO train annotations. Do not silently edit source labels.
+  - [ ] Choose and freeze an intervention; pass its data gate before P2.
+    No sampler is implemented and no new-source data gate has passed.
+- **Known Blocks / Issues:**
+  - Person quality/export gate remains closed. No new training/export started.
+  - WiderPerson official page was inaccessible through web tool; author paper
+    verified, acquisition and exact schema remain pending.
+  - Mixed-domain validation does not prove Camera Module 3 Wide indoor quality.
+  - source_box_review.py is unfinished prior work with no dedicated regression
+    coverage yet; excluded from this documentation commit, retained untracked.
+- **Validation:**
+  - Build: NOT APPLICABLE (documentation milestone)
+  - Tests: PASS (116/116, 26.03 seconds); from project:
+    .venv\Scripts\python.exe -m pytest -p no:cacheprovider
+    --basetemp C:\Users\Public\Documents\indoor-camera-strategy-pytest-20261005a
+  - Typecheck: NOT CONFIGURED
+  - Lint: PASS (.venv\Scripts\python.exe -m ruff check . --no-cache)
+  - Git diff whitespace check: PASS
+- **Git State:**
+  - Branch: main
+  - Last Commit: 36d2977 docs:add-indoor-project-delivery-plan
+  - Working Tree: DIRTY (documentation staged next; preserved unfinished source file)
+- **Uncommitted Changes:**
+  - AGENTS.md, CLAUDE.md, CHANGES.log, README.md
+  - projects/indoor-detection/README.md, PROJECT_PLAN.md, docs/PERSON_DATA_STRATEGY.md
+  - projects/indoor-detection/src/indoor_detection/source_box_review.py (untracked,
+    preserved and excluded from documentation milestone commit)
+- **Active Files:**
+  - projects/indoor-detection/docs/PERSON_DATA_STRATEGY.md
+  - projects/indoor-detection/PROJECT_PLAN.md
+  - projects/indoor-detection/src/indoor_detection/source_box_review.py
+  - E:\HomeAssistantPi4\reports\indoor-person-source-box-review-v1\bundle.json
+  - E:\HomeAssistantPi4\reports\indoor-person-source-box-review-v1\review-notes-progress-42.json
+- **Notes for Next Agent:**
+  - Progress-notes SHA-256:
+    4609399114F3F8209E22AAE7C9692AE3B5DFEE5D5AC46042F4FD363E9F1BE4B8.
+    These are provisional per-image/row notes, not complete box decisions.
+  - Follow the latest plan/strategy instead of requiring sampling from older entries.
+    Hold validation/test membership and selection protocol frozen; do not use test
+    predictions to select datasets, thresholds or training interventions.
+  - Head boxes cannot simply be renamed person boxes. Any later fusion needs its
+    own presence evaluation plus unchanged person metrics and Pi compute evidence.
+    Fall detection requires a separately scoped temporal/video evaluation project.
+  - No new packages, source annotation changes, dataset index edits or background
+    jobs. No key was read/printed; venv remains C:, large artifacts remain E:.

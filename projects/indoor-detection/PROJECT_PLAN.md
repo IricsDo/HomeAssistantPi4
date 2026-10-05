@@ -12,6 +12,10 @@ rồi cập nhật kế hoạch này theo bằng chứng. Không sửa lịch s�
 
 - Một YOLO26n, một lượt inference cho `smoke=0`, `fire=1`, `person=2`.
 - Phát triển/train trên Windows; triển khai NCNN trên Raspberry Pi 4 4 GB.
+- Camera mục tiêu: Raspberry Pi Camera Module 3 Wide, IMX708 ~12 MP, autofocus;
+  FoV 120° diagonal / 102° horizontal / 67° vertical. Chưa chốt vị trí/khoảng cách
+  lắp đặt; chưa xác nhận phần cứng sẵn sàng để benchmark. Xem
+  [Person data strategy](docs/PERSON_DATA_STRATEGY.md) và nguồn thông số chính thức.
 - Dùng confidence và temporal policy riêng cho mỗi class; smoke không bị loại
   chỉ vì ảnh mờ. Xuất annotated media và event JSONL schema v2.
 - Có thể ghép nhiều nguồn partial-label vào **một model** bằng class-masked
@@ -33,7 +37,7 @@ rồi cập nhật kế hoạch này theo bằng chứng. Không sửa lịch s�
 | ID | Công đoạn | Trạng thái | Điều kiện kết thúc |
 |---|---|---|---|
 | P0 | Stack, downloader, chuẩn hóa và baseline | COMPLETED | Có scoped corpus đã audit và báo cáo v1–v4 |
-| P1 | Review box và chuẩn bị can thiệp training | IN_PROGRESS | Can thiệp có provenance, sampling giới hạn và data gate đạt |
+| P1 | Đánh giá nguồn bổ sung, review box và chốt can thiệp | IN_PROGRESS | Can thiệp dữ liệu hoặc sampling có provenance và data gate đạt |
 | P2 | Fine-tune có kiểm soát | PLANNED | Run mới hoàn tất, checkpoint/log/config truy vết được |
 | P3 | Calibration, quality gate và khóa ứng viên | PLANNED | Cả ba class đạt gate ở đúng resolution, test dùng đúng protocol |
 | P4 | Export NCNN và kiểm tra tương đương | PLANNED | Artifact, preprocessing, output và chất lượng sau export được kiểm tra |
@@ -56,8 +60,12 @@ deployment đầy đủ nếu P5 chưa có kết quả.
   **0,6356/0,5625**, vẫn dưới gate. V2 control 512 cũng không đạt.
 - Đã mine 7.000 ảnh training có person scope, review 105 ảnh gốc: nhận
   56 positive + 35 negative; 14 ảnh bị loại khỏi phần tăng trọng số.
-- Manifest review checks đạt; **`training_allowed=false`** vì chưa review box
-  và chưa triển khai sampling. Không xóa 14 ảnh khỏi dataset nguồn.
+- Manifest review checks đạt; **`training_allowed=false`**. Review box có notes
+  tạm cho 42/56 ảnh, chưa hoàn tất hoặc duyệt tăng trọng số. Không xóa 14 ảnh khỏi
+  dataset nguồn. Sampling chưa triển khai và không còn là bước bắt buộc.
+- Người dùng cho phép chọn nguồn person phù hợp, kể cả outdoor/public area;
+  dataset Leo Ueno chỉ tham khảo. Ưu tiên khảo sát nguồn mới trước chọn can thiệp;
+  CrowdHuman, Leo Ueno, WiderPerson và mở rộng COCO mới chỉ ở mức metadata.
 - Checkpoint/metric lịch sử: [V4 decision](docs/V4_EVALUATION_DECISION.md),
   [V3 decision](docs/V3_EVALUATION_DECISION.md), [V2 decision](docs/V2_EVALUATION_DECISION.md).
   Queue lịch sử vẫn `REVIEW_REQUIRED`; quyết định nằm trong file review riêng.
@@ -66,6 +74,17 @@ deployment đầy đủ nếu P5 chưa có kết quả.
 
 ### P1 — Review annotation và chốt can thiệp dữ liệu
 
+- [x] Ghi nhận Camera Module 3 Wide và quyết định cho phép nguồn person outdoor.
+- [x] Lập shortlist, tiêu chí và protocol tại
+  [PERSON_DATA_STRATEGY.md](docs/PERSON_DATA_STRATEGY.md); chưa chọn/tải nguồn mới.
+- [ ] Khảo sát annotation/access policy và train examples của CrowdHuman trước;
+  so với nguồn Roboflow tham khảo. Kiểm tra semantics, ignore, scale, pose và
+  coverage; không chọn bằng metric của model khác.
+- [ ] Chọn nguồn bằng bằng chứng; ghi provenance/metadata thiếu. Nếu bổ sung data,
+  tạo derivative mới, scope person, giữ rehearsal hazard; kiểm tra augmentation
+  families/video sessions và exact/near duplicate với corpus/holdout hiện tại.
+- [ ] Chốt hướng bổ sung dữ liệu, sampling có review hoặc kết hợp có lý do trước P2.
+  Các checklist sampling bên dưới chỉ áp dụng nếu chọn hướng sampling.
 - [x] Mining chỉ trên train, không dùng ảnh lỗi validation/test làm training examples.
 - [x] Review 105 ảnh gốc và lưu quyết định riêng.
 - [x] Freeze 91 ảnh được nhận: hash ảnh/nhãn, scope, split fingerprints;
@@ -80,20 +99,20 @@ deployment đầy đủ nếu P5 chưa có kết quả.
   tái lập, mapping weight đúng ảnh, scope không mất và validation không bị reweight.
   Sampler hiện **chưa được triển khai**; không coi manifest là config training.
 - [ ] Giữ train index unique; không nhân dòng trong `train.txt` để né duplicate gate.
-- [ ] Đối chiếu hash ảnh/nhãn với review manifest và giữ membership validation/test.
+- [ ] Đối chiếu hash ảnh/nhãn với manifest của can thiệp và giữ membership validation/test.
 - [ ] Audit structure, duplicate/conflict, class distribution và annotation của
   can thiệp; ghi rõ giới hạn của near-duplicate/domain audit nếu có.
 - [ ] Ghi quyết định data gate cho can thiệp; chỉ khi đạt mới mở P2.
 
-**Đầu ra:** review box, sampling config/implementation có test, manifest can thiệp
-và báo cáo data gate trên E:; config/code và quyết định tóm tắt trong Git.
+**Đầu ra:** quyết định nguồn và can thiệp; review box/sampling nếu áp dụng,
+manifest can thiệp và báo cáo data gate trên E:; config/code và quyết định trong Git.
 
 ### P2 — Fine-tune và theo dõi run mới
 
 - [ ] Chọn checkpoint khởi tạo có lý do từ control/validation hiện có; v2/v4
   đều chưa được duyệt deployment. Không mặc định đổi initialization là đủ sửa gate.
 - [ ] Tạo config/run mới: ghi input size, seed, optimizer, LR, epochs/patience,
-  sampler version, dataset/manifest hash và checkpoint đầu vào.
+   sampler version nếu dùng, dataset/manifest hash và checkpoint đầu vào.
 - [ ] Xác minh data gate P1 và môi trường GPU trước khi chạy.
 - [ ] Chạy một thí nghiệm có giới hạn; giữ class masking và tắt augmentation trộn ảnh.
 - [ ] Ghi log đầy đủ, kiểm tra lỗi/NMS warnings và kết quả inline/final validator.
@@ -149,6 +168,8 @@ Kết quả trên Windows chưa chứng minh Pi đạt latency/RAM.
 - [ ] Đo detection-to-alert: fire <= 1 giây, smoke <= 2 giây; tách inference time
   và độ trễ do capture/temporal confirmation. Khóa ngưỡng performance sau đo thật.
 - [ ] Tích hợp nguồn camera; kiểm tra mất kết nối, frame lỗi, shutdown và recovery.
+- [ ] Với Camera Module 3 Wide: chốt capture mode/crop, focus/exposure và aspect
+  ratio; đo người ở xa/mép ảnh sau resize, low light và lens distortion thực tế.
 - [ ] Kiểm tra người/negative indoor thật và low light, blur, steam, reflection,
   poster/TV. Ghi phương pháp kiểm tra thực địa; không coi COCO là bằng chứng indoor.
 - [ ] Soak test 8 giờ: không crash, không tăng RAM liên tục; lưu log trên storage
@@ -177,7 +198,9 @@ Không đánh dấu PASS bằng benchmark CPU Windows hay thời gian GPU traini
 
 1. Đọc đầy đủ `AGENTS.md`, `CLAUDE.md`, entry mới nhất `CHANGES.log`, README và
    file này; chạy `git status`/`git log`. Xác định owner, giữ dirty work.
-2. Tiếp tục **P1: review box của 56 ảnh positive**, rồi chốt sampling plan.
+2. Tiếp tục **P1: đánh giá nguồn person bổ sung** theo PERSON_DATA_STRATEGY.md.
+   Giữ tiến độ review box 42/56 và kiểm tra source annotation khi quay lại review;
+   chọn can thiệp theo bằng chứng. Không bắt buộc sampling trước intake nguồn mới.
    Không chạy lại mining, không train/export ngay từ manifest hiện tại.
 3. Đọc các artifact ở `E:\HomeAssistantPi4\reports\indoor-person-train-mining-v1`:
    `review-queue.json`, `review-results-v1.json`, `review-manifest-v1.json`.
@@ -187,6 +210,16 @@ Không đánh dấu PASS bằng benchmark CPU Windows hay thời gian GPU traini
    `train.py`, `error_analysis.py`. Cấu hình v4 là tham chiếu, không phải run mới.
 5. Kiểm tra dependencies và CLI hiện có trước viết code/lệnh; không đoán flag.
    Các path code/config trong mục này tính từ `projects/indoor-detection`.
+
+### Hướng mở rộng sau scope hiện tại
+
+- Người dùng đề xuất head/face model bổ sung nếu can thiệp person chưa đủ hiệu quả.
+  Đây là fallback có điều kiện, chưa đổi kiến trúc hoặc quality gate. Phân biệt
+  head/body boxes, presence fusion và person metric; cần so sánh lợi ích và tổng
+  latency/RAM trên Pi trước quyết định. Xem PERSON_DATA_STRATEGY.md.
+- Người dùng muốn fall detection sau khi project này hoàn tất. Lập task/video
+  protocol riêng cho temporal/pose/tracking, phân biệt ngã với ngồi/nằm/cúi;
+  chưa thêm vào điều kiện hoàn thành P1-P6 và chưa chọn model/framework.
 
 ### Quy tắc cập nhật kế hoạch sau mỗi milestone
 

@@ -39,6 +39,9 @@ The purpose of this document is to maintain project consistency, prevent agents 
 - Smoke detections must not be rejected solely because an image is blurred.
 - Camera integration and real Pi benchmarking remain out of scope until the user
   provides the hardware.
+- Target camera is Raspberry Pi Camera Module 3 Wide (IMX708, ~12 MP, autofocus).
+  Mounting geometry and accessible hardware are not yet confirmed. Outdoor person
+  data is eligible after assessment; follow projects/indoor-detection/docs/PERSON_DATA_STRATEGY.md.
 - Never print or commit `projects/.env`; it contains the Roboflow API key and is
   already covered by `.gitignore`.
 

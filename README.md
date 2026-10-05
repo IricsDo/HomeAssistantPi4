@@ -17,6 +17,10 @@ hướng tới triển khai tiết kiệm tài nguyên trên Raspberry Pi 4 4 GB
 Kế hoạch tổng thể và checklist cho agent tiếp theo:
 [PROJECT_PLAN.md](projects/indoor-detection/PROJECT_PLAN.md).
 
+Đang đánh giá nguồn person bổ sung (indoor hoặc outdoor) cho camera mục tiêu
+Raspberry Pi Camera Module 3 Wide IMX708. Sampling là lựa chọn, chưa chốt can thiệp;
+xem [chiến lược dữ liệu](projects/indoor-detection/docs/PERSON_DATA_STRATEGY.md).
+
 Scoped joint dataset v2 gồm 23.498 ảnh đã đạt automated và visual data gate với
 các giới hạn mixed-domain được ghi rõ. Baseline continuation YOLO26n v2 đã train
 đủ 40 epoch và checkpoint `best.pt` được khóa bằng validation set.

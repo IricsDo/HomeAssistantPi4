@@ -38,9 +38,17 @@ Do not begin implementation until the current task and ownership are clear.
   also fails. The export gate remains closed. Training-only person mining is
   complete. All 105 original images have been reviewed: 56 positive and 35
   negative images accepted for sampling-plan preparation, 14 excluded from
-  extra weighting. Box-level review and the bounded sampling implementation
-  are pending; this is not training approval. See
+  extra weighting. Box review has provisional notes for 42/56 images, not final
+  approval. User now authorizes assessing additional person sources, including
+  outdoor/public areas; prioritize this assessment before choosing an intervention.
+  Sampling is optional, not a prerequisite for new-source intake. Camera target:
+  Module 3 Wide IMX708; mounting geometry is undetermined and hardware access
+  is unconfirmed. See `projects/indoor-detection/docs/PERSON_DATA_STRATEGY.md` and
   `docs/V4_EVALUATION_DECISION.md`.
+- Head/face supplementation is a conditional user-suggested fallback; fall
+  detection is a post-project extension. Neither is implemented or part of the
+  current release gate; preserve the one-detector contract pending an explicit
+  architecture decision supported by quality and Pi performance evidence.
 
 Read the newest entry in `CHANGES.log` for exact uncommitted files, dataset paths,
 checksums, known issues, and next commands. Do not rely only on this snapshot.
@@ -96,9 +104,12 @@ When implementing a task:
 3. Preserve the completed source/domain reports and their mixed-domain caveat.
 4. Preserve the completed calibration/error reports; do not reopen test for
    further selection.
-5. Continue from the training review manifest; review positive boxes and implement
-   a bounded sampling plan before a new training intervention.
-   Keep validation/test frozen, every run separate and class scopes enabled.
+5. Assess additional person sources per PERSON_DATA_STRATEGY.md; the Leo Ueno
+   dataset is a reference, not a required source. Preserve partial source-box
+   review and diagnose source annotations before weighting those candidates.
+   Choose new-data intake, verified sampling or a justified combination, and pass
+   the intervention data gate before training. Keep validation/test frozen,
+   every run separate and class scopes enabled.
 6. Export NCNN only after the selected edge resolution passes validation and
    its checkpoint/thresholds are locked.
 

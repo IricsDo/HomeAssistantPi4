@@ -21,6 +21,12 @@ nhiệt đạt chuẩn.
 Theo dõi công việc đến nghiệm thu tại [PROJECT_PLAN.md](PROJECT_PLAN.md).
 Kế hoạch ghi trạng thái, dependency, điều kiện hoàn thành và bước tiếp theo cho agent.
 
+Hướng tiếp theo là đánh giá nguồn person bổ sung, kể cả outdoor/public area;
+sampling là lựa chọn theo bằng chứng. Camera mục tiêu: Raspberry Pi Camera Module 3
+Wide IMX708 ~12 MP, autofocus. Vị trí lắp chưa xác định; xem
+[PERSON_DATA_STRATEGY.md](docs/PERSON_DATA_STRATEGY.md) về tiêu chí chọn nguồn,
+shortlist và ảnh hưởng của góc rộng. Chưa chọn nguồn mới hoặc mở training.
+
 - [x] Baseline smoke-only và checkpoint tham chiếu đã được khóa.
 - [x] Package, domain, detector và event schema đã generalize cho ba lớp.
 - [x] Dataset converters giữ lại cả smoke và fire.
