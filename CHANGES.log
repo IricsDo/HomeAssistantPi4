@@ -1949,3 +1949,69 @@ validation state.
   - Reproduction command in assessment doc; choose new output filename.
   - No image archives/val/test downloaded, no predictions/train/export, no package
     changes, no background job remains. Secrets untouched; large artifacts on E:.
+
+## [2026-10-05 21:11 +07:00] - CrowdHuman original pilot milestone from OpenAI Codex
+
+- **Current Task:** P1 additional person-source intake and labelled pilot.
+- **Status:** IN_PROGRESS (acquisition/pairing/exact-overlap milestone completed)
+- **Current Owner:** OpenAI Codex
+- **Completed in this session:**
+  - Read AGENTS/CLAUDE/README/plan/latest handover; main db47352, preserved prior
+    untracked source_box_review.py. No secrets accessed or dependencies changed.
+  - Added bounded HTTP Range ZIP member acquisition at pinned CrowdHuman revision;
+    require exact HTTP 206 interval/stable size, bounded read, ZIP CRC and SHA-256.
+    Signed redirect URLs stay in memory only; no arbitrary ZIP path extraction.
+  - Acquired all frozen 60 train IDs on E: (33,599,374 image bytes; 34,593,123
+    transferred bytes), automatically paired 621 existing person annotations.
+  - Built paired vbox/fbox gallery and geometry report. All images decode; 51
+    vboxes/187 fboxes extend beyond image bounds, none have empty intersection.
+    Display clipping does not modify labels or approve amodal conventions.
+  - Hashed all 23,498 current corpus images: zero exact file overlap with pilot,
+    zero pilot internal duplicates. All split path fingerprints match frozen
+    review manifest; no split changes or test predictions/model evaluation.
+  - Inspected gallery 01-03; provisional notes bind bundle hash, no final approval.
+    Updated plan, assessment, CLAUDE and both READMEs with current state.
+- **Unfinished / Next Steps (CRITICAL):**
+  - [ ] Continue paired review 04-60; revisit 01-03 for final decisions. Use original
+    image resolution for tiny/ambiguous cases; settle visible/full convention
+    compatible with existing person boxes. Do not redraw all labels by default.
+  - [ ] Near-duplicate/recompression/crop overlap assessment against current corpus
+    and frozen holdout before approving source. Exact file hashes do not cover it.
+  - [ ] If pilot passes semantics/completeness, acquire eligible training subset,
+    build new scoped derivative retaining hazard rehearsal and audit data gates.
+    No training/export until intervention gate passes. Keep validation/test fixed.
+  - [ ] Preserve earlier source-box notes 42/56 and unfinished source_box_review.py.
+- **Known Blocks / Issues:**
+  - Person quality/export and intervention data gates remain closed. No body-ignore
+    spatial masking: continue conservative whole-image exclusion for candidate.
+  - Acquisition CLI requires fresh output; interrupted partial artifacts preserved,
+    automatic resume not implemented. This completed pilot needs no redownload.
+  - Full archive publisher checksum not verified; per-member CRC/hash is recorded.
+  - Pi/camera availability and mounting geometry unconfirmed.
+- **Validation:**
+  - Build: NOT APPLICABLE (no application build during data preparation)
+  - Tests: PASS (132/132, 6.84 seconds); project .venv python -m pytest
+    -p no:cacheprovider --basetemp C:/Users/Public/Documents/indoor-pilot-full-20261005d
+  - Typecheck: NOT CONFIGURED
+  - Lint: PASS after correcting import/line formatting (command rerun before commit)
+  - Live acquisition, image decode, exact-overlap and split fingerprint checks: PASS
+  - Visual/near-duplicate data gate: PENDING; training_allowed=false
+- **Git State:**
+  - Branch: main
+  - Last Commit: db47352 feat:assess-crowdhuman-annotations-and-freeze-pilot
+  - Working Tree: DIRTY (this milestone prepared for scoped commit/push)
+- **Uncommitted Changes / Active Files:**
+  - CHANGES.log, CLAUDE.md, README.md, projects/indoor-detection/README.md, PROJECT_PLAN.md
+  - projects/indoor-detection/docs/CROWDHUMAN_ASSESSMENT.md
+  - projects/indoor-detection/src/indoor_detection/crowdhuman_pilot.py
+  - projects/indoor-detection/tests/test_crowdhuman_pilot.py
+  - Preserved untracked source_box_review.py, excluded from this commit
+- **Notes for Next Agent:**
+  - Originals/receipts: E:/HomeAssistantPi4/raw/CrowdHuman-pilot-v1.
+  - Gallery/reports: E:/HomeAssistantPi4/reports/crowdhuman-pilot-box-review-v1.
+  - Corpus registry: E:/HomeAssistantPi4/reports/crowdhuman-pilot-corpus-hashes-v1.json.
+  - Artifact SHA-256 table and reproduction command in CROWDHUMAN_ASSESSMENT.md.
+  - For existing acquisition, call render_review(acquisition_path, NEW_output_path)
+    if needed; do not run the acquisition CLI against existing output.
+  - No background process remains after acquisition/hash jobs completed. No train,
+    export, source annotation edits, package installs or secret access this session.

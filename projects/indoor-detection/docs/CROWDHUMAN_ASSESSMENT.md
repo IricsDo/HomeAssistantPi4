@@ -109,3 +109,67 @@ SHA-256 `00b47f33466af5c0df1167f3982627c794eb8f091cf43ca5c63f3c15c88b95cc`.
 Selection uses annotations only, not image appearance or detector scores. Images
 are still awaiting acquisition and label review; do not confuse these IDs with
 the ten HF convenience preview rows.
+
+## Original-image acquisition tooling
+
+`indoor_detection.crowdhuman_pilot` acquires only exact selected training ZIP
+members using bounded HTTP Range requests. Each response must be HTTP 206 with
+the requested byte interval and stable archive size; reads are capped at 8 MiB.
+ZIP member CRC and per-image SHA-256 are checked/recorded. This does not verify a
+whole-archive SHA-256 or independently authenticate the original publisher.
+No signed redirect URLs are persisted. No new dependencies are needed.
+
+```powershell
+.venv\Scripts\python.exe -m indoor_detection.crowdhuman_pilot `
+  --plan E:/HomeAssistantPi4/reports/crowdhuman-assessment-v1/labelled-pilot-plan.json `
+  --annotations E:/HomeAssistantPi4/raw/CrowdHuman-assessment/annotation_train.odgt `
+  --output E:/HomeAssistantPi4/raw/CrowdHuman-pilot-v1 `
+  --review-output E:/HomeAssistantPi4/reports/crowdhuman-pilot-box-review-v1
+```
+
+The CLI requires a fresh output directory and validates the frozen annotation
+hash and pilot IDs before creating it. On interruption, keep the partial output
+and receipts; this version does not resume automatically. Use a fresh directory
+for a retry. It never extracts arbitrary ZIP paths or modifies source labels.
+The gallery displays visible boxes on the left and full-body boxes on the right,
+numbered consistently. Boxes are clipped for display only; bounds excursions
+and empty intersections are counted separately in `bundle.json`. Amodal boxes
+outside the frame are not automatically annotation errors. Neither acquisition
+nor gallery generation opens the training gate.
+
+Review policy: examine the frozen 60-image sample and flagged geometry, rather
+than manually inspect the entire source. Conversion/class-ID remapping uses
+existing labels; there is no requirement to redraw all boxes or label the two
+unknown hazard classes in these person-only images. Class scopes remain required.
+
+### Acquisition milestone result (2026-10-05)
+
+- All 60 frozen original IDs acquired and paired with 621 person annotations.
+  Images total 33,599,374 bytes; HTTP ranges transferred 34,593,123 bytes across
+  the three pinned train ZIPs. No full archive, candidate val/test or model run.
+- Original images/receipts: `E:/HomeAssistantPi4/raw/CrowdHuman-pilot-v1`.
+- Gallery/reports: `E:/HomeAssistantPi4/reports/crowdhuman-pilot-box-review-v1`.
+  Left vbox/right fbox. All 60 images decode and all boxes have valid geometry;
+  51 vboxes and 187 fboxes extend outside the image, zero empty intersections.
+  These excursions need interpretation, not automatic deletion of amodal labels.
+- Exact raw-file SHA-256 check: zero pilot internal duplicates and zero overlap
+  with all 23,498 current train/val/test images. Corpus registry:
+  `E:/HomeAssistantPi4/reports/crowdhuman-pilot-corpus-hashes-v1.json`.
+  Split path fingerprints match the earlier frozen review manifest. Near
+  duplicates (including recompressed/cropped versions) are not yet audited.
+- Three gallery pairs inspected: outdoor market crowd, outdoor public street,
+  indoor seated gathering. Pairing appears correct; visible/full differences
+  are evident around occlusion. Notes in `review-progress-03.json` are provisional,
+  not completeness/convention approval. Continue 04–60, revisit 01–03 for final
+  decisions and inspect tiny/ambiguous cases at original resolution.
+- Tests: 132 passed; lint PASS. No new dependencies or changes to original labels,
+  source indexes or old unfinished source-box review. Training gate remains closed.
+
+| Artifact | SHA-256 |
+|---|---|
+| acquisition.json | cac744a7ab4992a0e3739770b3c85d5d40d4d2d56a038a35884c18ce03ea6a4f |
+| pilot-annotations.json | 872c4e1fd55fca207d2aeb0eb32664ecaaf510a8400802e74cfe239bc08f566e |
+| bundle.json | 212cb3c13c8587ac14b6898d8deac9dc01a6297a067215bbcce7590d073876ae |
+| exact-overlap.json | af4dc10d96e6e750d8a0dbc93ee884047ca31320681a3fc4fa87a7c06c4a1a2e |
+| corpus hash registry | 88454fa205d927a292af02cf59f7a72ab5dd9bca5fe2634f24bcd0d042c81b99 |
+| review-progress-03.json | 38d5ad498d4095607634b503a17f15a6a18586c3ffb1467660493e16de41aa43 |

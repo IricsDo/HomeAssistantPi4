@@ -82,8 +82,10 @@ deployment đầy đủ nếu P5 chưa có kết quả.
 - [x] Khảo sát CrowdHuman annotation/access policy, audit 15.000 train annotation
   records và review 10 domain previews; so sơ bộ semantics với Roboflow tham khảo.
   Preview chưa ghép annotation nên không thay thế visual box gate.
-- [ ] Tải training image members cho pilot; chọn seed/IDs trong 2.875 ứng viên,
-  review nhãn vbox/fbox, ignore/completeness và scale/pose. Chốt convention;
+- [x] Freeze 60 IDs seed 42 trong 2.875 ứng viên; tải đúng training image members,
+  ghép annotation và tạo gallery vbox/fbox. Exact SHA-256 overlap với 23.498 ảnh
+  hiện có đạt; giữ nguyên split fingerprints. Chưa đạt visual/near-duplicate gate.
+- [ ] Review nhãn vbox/fbox của pilot, ignore/completeness và scale/pose. Chốt convention;
   audit duplicate với corpus/holdout trước quyết định chuyển đổi.
 - [ ] Chọn nguồn bằng bằng chứng; ghi provenance/metadata thiếu. Nếu bổ sung data,
   tạo derivative mới, scope person, giữ rehearsal hazard; kiểm tra augmentation
@@ -205,6 +207,9 @@ Không đánh dấu PASS bằng benchmark CPU Windows hay thời gian GPU traini
    file này; chạy `git status`/`git log`. Xác định owner, giữ dirty work.
 2. Tiếp tục **P1: labelled CrowdHuman pilot** theo CROWDHUMAN_ASSESSMENT.md và
    PERSON_DATA_STRATEGY.md. Annotation prefilter/preview không phải data gate.
+   60 ảnh gốc/621 box đã ghép; gallery trên E: tại
+   `reports/crowdhuman-pilot-box-review-v1`. Notes 3/60 còn tạm;
+   tiếp tục review 04–60 và chốt convention trước conversion/near-duplicate gate.
    Giữ tiến độ review box 42/56 và kiểm tra source annotation khi quay lại review;
    chọn can thiệp theo bằng chứng. Không bắt buộc sampling trước intake nguồn mới.
    Không chạy lại mining, không train/export ngay từ manifest hiện tại.

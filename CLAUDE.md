@@ -52,7 +52,10 @@ Do not begin implementation until the current task and ownership are clear.
 - CrowdHuman assessment now advances to a labelled pilot: 15,000 train records
   audited, 2,875 pass the conservative no-body-ignore prefilter, ten HF domain
   previews reviewed. Previews lack original ODGT IDs/labels; no box data gate
-  passed. See docs/CROWDHUMAN_ASSESSMENT.md for acquisition/review next steps.
+  passed. Original 60-ID pilot is now acquired/paired (621 boxes), with gallery
+  and exact file-overlap PASS against the current 23,498-image corpus. Visual
+  notes cover 3/60 provisionally; convention/completeness and near duplicates
+  remain pending. See docs/CROWDHUMAN_ASSESSMENT.md for review next steps.
 
 Read the newest entry in `CHANGES.log` for exact uncommitted files, dataset paths,
 checksums, known issues, and next commands. Do not rely only on this snapshot.

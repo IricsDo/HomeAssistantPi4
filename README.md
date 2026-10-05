@@ -64,7 +64,8 @@ tại `E:\HomeAssistantPi4\reports\indoor-person-train-mining-v1\review-queue.js
 sampling plan; 14 ảnh mơ hồ không được tăng trọng số. Manifest lưu hash ảnh,
 nhãn và membership của các split. Review box vẫn dở; sampling chỉ là lựa chọn.
 CrowdHuman đã qua annotation prefilter và domain preview; bước tiếp theo là
-pilot ghép ảnh gốc với nhãn. Chưa đạt data gate hoặc có training mới; xem
+pilot 60 ảnh gốc/621 box đã ghép nhãn và có gallery; exact duplicate audit đạt.
+Review box/convention và near duplicates còn tiếp tục. Chưa đạt data gate hoặc có training mới; xem
 [assessment](projects/indoor-detection/docs/CROWDHUMAN_ASSESSMENT.md).
 Benchmark Pi 4 và camera thật chờ phần cứng.
 
