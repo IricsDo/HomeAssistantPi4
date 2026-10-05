@@ -17,9 +17,11 @@ hướng tới triển khai tiết kiệm tài nguyên trên Raspberry Pi 4 4 GB
 Kế hoạch tổng thể và checklist cho agent tiếp theo:
 [PROJECT_PLAN.md](projects/indoor-detection/PROJECT_PLAN.md).
 
-Đã chuẩn bị can thiệp bổ sung person cho v5; **dừng trước train theo yêu cầu người
-dùng**. Joint v3 có 24.046 ảnh, data gate PASS_WITH_LIMITATIONS; config và read-only
-preflight đã sẵn sàng. Xem [V5 preparation](projects/indoor-detection/docs/V5_TRAINING_PREPARATION.md).
+V5 đã train đủ 12 epoch và đánh giá validation ở 512 px. **Person vẫn FAIL**:
+explicit F1/recall 0,6415/0,5717; smoke/fire recall 0,9172/0,9073 đạt mục tiêu.
+Test/export vẫn đóng; không còn job chạy. Bước tiếp theo là dữ liệu đã gắn nhãn
+ưu tiên người nhỏ. Joint v3 có 24.046 ảnh, data gate PASS_WITH_LIMITATIONS. Xem
+[V5 decision](projects/indoor-detection/docs/V5_EVALUATION_DECISION.md).
 Camera mục tiêu là Raspberry Pi Camera Module 3 Wide IMX708;
 xem [chiến lược dữ liệu](projects/indoor-detection/docs/PERSON_DATA_STRATEGY.md).
 
@@ -71,7 +73,7 @@ CrowdHuman pilot đã review đủ 60 ảnh: nhận 49, loại 11; chọn vbox v
 overlap đạt. Đã xem 22 near-hash candidates, đều khác cảnh. Gallery 30 ảnh annotation
 đã review: nhận 29/loại 1 ảnh đồ họa. Expansion chuyển 499 ảnh/5.303 box;
 470 ảnh chỉ auto-screen. Joint v3 thêm 548 ảnh person, giữ nguyên holdout và mọi
-hazard rehearsal, data gate đạt với giới hạn; chưa có training mới. Xem
+hazard rehearsal, data gate đạt với giới hạn; v5 đã train nhưng chưa đạt person gate. Xem
 [assessment](projects/indoor-detection/docs/CROWDHUMAN_ASSESSMENT.md).
 Benchmark Pi 4 và camera thật chờ phần cứng.
 

@@ -2247,3 +2247,152 @@ validation state.
     separately reviewed refreshed evidence; never bypass the guard silently.
   - All large data/reports/checkpoints remain on E, Python venv stays in project
     on C. All validation jobs finished; no background job remains.
+
+## [2026-10-05 23:13 +07:00] - V5 run continuation from OpenAI Codex
+
+- **Current Task:** P2 bounded v5 training, followed by P3 validation gates.
+- **Status:** IN_PROGRESS
+- **Current Owner:** OpenAI Codex
+- **Completed in this session:**
+  - User requested continuation after preparation stop; authorization to resume
+    the planned bounded run. Read AGENTS, CLAUDE, latest CHANGES, README and plan.
+  - Git main d73ddf3; preserved untracked source_box_review.py unchanged.
+  - Read-only readiness PASS: frozen config/checkpoint/gate/evidence unchanged,
+    target run absent. CUDA available, RTX 5070 Laptop; torch 2.14.0+cu130,
+    Ultralytics 8.4.163. No duplicate indoor_detection Python job found.
+- **Unfinished / Next Steps (CRITICAL):**
+  - [ ] Execute configs/train_indoor_v5_512.yaml once, monitor and retain logs on E.
+  - [ ] Hash final checkpoints, calibrate/evaluate validation at 512 with scopes,
+    square preprocessing and warmup; report all class gates, no test selection.
+  - [ ] Record result, run tests/lint, update plan/docs, commit/push milestone.
+- **Known Blocks / Issues:** Data limitations unchanged; quality/export gate closed.
+  Original preparation verifier is intentionally a pre-run check and will reject
+  an existing run afterward. Do not overwrite its frozen snapshot or run directory.
+- **Validation:** Readiness/GPU PASS; tests/lint not rerun yet this session.
+  Build not applicable; typecheck not configured.
+- **Git State:** Branch main; Last Commit d73ddf3; Working Tree DIRTY (plan/log).
+- **Uncommitted Changes / Active Files:** CHANGES.log, PROJECT_PLAN.md;
+  preserved source_box_review.py. Config, train.py and evaluator read only.
+- **Notes for Next Agent:** Run name indoor_partial_joint_yolo26n_v5_crowdhuman_512.
+  Preparation paths/hashes in docs/V5_TRAINING_PREPARATION.md. No new training
+  result yet at this entry; inspect newer handover/log before launching anything.
+
+## [2026-10-05 23:28 +07:00] - V5 resource recovery from OpenAI Codex
+
+- **Current Task:** P2 v5 training, same bounded experiment.
+- **Status:** IN_PROGRESS
+- **Completed:** Initial AutoBatch=18. Epochs 1/2 completed; epoch 2 inline
+  mAP50/mAP50-95 0.82673/0.53914. Windows free RAM fell to 0.76 GB with loader
+  workers=8 and training slowed. Verified last.pt epoch index1, optimizer present,
+  batch18, total12 epochs. Stopped only the verified v5 process tree (26 processes),
+  preserving checkpoints/logs. Free RAM rose to17.27 GB. Partial epoch3 discarded.
+  Resume same run from preserved resume-epoch2.pt with workers2/batch18, keeping
+  optimizer/epoch/LR schedule. No alternate experiment or test predictions.
+- **Next Steps:** Monitor resume, then validation calibration and explicit matching
+  as declared in docs/V5_EVALUATION_DECISION.md; do not launch a duplicate job.
+- **Issues:** Resume/changed worker RNG not bit-identical to uninterrupted run.
+  Original preparation snapshot/config unchanged; post-launch verifier rejecting
+  existing target run is expected. Quality/export gates remain closed.
+- **Validation:** Tests153/153 (8.09s), Ruff PASS earlier this session. GPU/readiness
+  pre-run PASS; resume checkpoint CPU integrity/state check PASS. Build N/A;
+  typecheck not configured. Final train/evaluation not yet complete.
+- **Git State:** main d73ddf3; DIRTY CHANGES.log, CLAUDE, both READMEs,
+  PROJECT_PLAN and new docs/V5_EVALUATION_DECISION.md. Preserve source_box_review.py.
+- **Active Artifacts:** E:/HomeAssistantPi4/reports/indoor-yolo26n-v5-evaluation:
+  resume-receipt.json, train-resume-workers2.yaml, training-resume-console.log,
+  original training-console.log and resume-epoch2.pt.
+  Checkpoint SHA25fffce3374a929047f08c343696de0168cb505fba53a831ef07b3edde2abc6c;
+  resume config SHA748f04a5efc6fc986bf90830d6e83877d450a22df2425bd4e4abea0b58aad9cb.
+- **Notes:** Active tool session16464 is resumed train, initial session2148 stopped.
+  All output on E; venv C. Verify live process/log and latest handover if resumed
+  by another agent. Do not rerun intake or original training config blindly.
+
+## [2026-10-06 00:08 +07:00] - V5 validation milestone from OpenAI Codex
+
+- **Current Task:** P2 bounded v5 completed; P3 validation decision and next P1b.
+- **Status:** READY_FOR_REVIEW (v5 NO RELEASE; project quality gate still open work)
+- **Current Owner:** OpenAI Codex
+- **Completed in this session:**
+  - User requested continuation after prep stop; read instructions, handover,
+    README/plan/implementation, Git main d73ddf3. Preserved old untracked
+    source_box_review.py untouched and excluded from staging.
+  - Pre-run readiness/hash and GPU checks PASS. One v5 run at512, seed42,
+    class masking, all rehearsal/scopes retained, mixing augmentations off.
+  - AutoBatch18/workers8 initially; RAM0.76GB and paging slowdown. After epoch2
+    verified last.pt optimizer/epoch/batch, stopped only verified v5 process tree.
+    Preserved original log and resume-epoch2.pt; discarded partial epoch3. Resumed
+    same run with workers2/batch18 and full optimizer/LR/epoch schedule. Recovery
+    receipt/config/log on E; original Git config/preparation snapshot unchanged.
+    Resume/changed loader RNG is not bit-identical uninterrupted training.
+  - Completed all12 total epochs (2 initial +10 resumed), exit0. Patience5 triggered
+    at epoch12, coinciding with cap. Best epoch7, inline mAP50/mAP50-95
+    0.82890/0.54678; standalone scoped validation batch20: 0.82896/0.54633.
+    Completed-segment CSV time sum1,951.197s (32.52min), excluding setup/restart/
+    discarded partial epoch; do not interpret reset resume time as whole run.
+  - Best SHA caa86c04beb2d38d92f9a84d3b3fdc833d056aa5587ec2a5f3407c8d4bcd9fc7;
+    last SHA 8468d30624ed2e18fb5ede304770af48942201ac601af1de3e4f64d84237eccd.
+    Both stripped checkpoints5,351,557bytes, canonical class names verified.
+  - Calibrated all3 classes on validation, then square512 explicit matching,
+    warmup1, batch16, IoU0.5, candidates0.001/max_det100, scoped eligible images.
+    Smoke/fire thresholds0.122122/0.357357; person max-F1 threshold0.325325.
+  - Explicit smoke P/R/F1 0.7686/0.9172/0.8363 PASS recall; fire
+    0.8995/0.9073/0.9034 PASS recall; person0.7307/0.5717/0.6415 FAIL both gates.
+    Person calibration F1/recall0.6391/0.5636 also FAIL. No test inference/export.
+  - Person TP/FP/FN3,050/1,124/2,285; small recall650/2,257=0.2880,
+    70.3% misses small. Negative alarms136/1,154=11.79%. Viewed miss/negative
+    contact sheets plus original-resolution overlays000000388846/000000078823.
+    Selected examples show tiny people and nonperson dog/toy/statue false alarms.
+    No relabeling or training from holdout error examples.
+  - Verified existing v2/v4 square controls; v5 person F1/recall improve over both,
+    small recall does not improve over v4. Different initialization/history/resume
+    prevent clean causal ablation claims. Source/condition slices recorded.
+    Smoke blurred recall72/86=0.8372; negative alarms24/990 versus v4's12/990;
+    overall recall PASS does not establish equal hazard quality.
+  - Train-only existing-label census: added701/5,810 small boxes12.07%, base COCO
+    10,846/23,611=45.94%. All person boxes+24.61%, small boxes only+6.46%.
+    This is coverage evidence, not proof of failure cause. Planned next P1b:
+    annotated small-person coverage/size-stratified bounded selection.
+  - Locked27 primary artifacts/checkpoints/config/data files in artifact-manifest;
+    data YAML, train/val/test indexes and scope manifest reverified unchanged.
+    All large artifacts remain E, venv C; no dependency, secret or source changes.
+  - Updated plan (P2 completed, P3 failed validation/no candidate lock; P1b planned),
+    CLAUDE, READMEs, assessment, historical preparation pointer and V5 decision.
+- **Unfinished / Next Steps (CRITICAL):**
+  - [ ] Start P1b by auditing remaining labelled annotations for small visible-body
+    coverage/image density; freeze bounded IDs/size strata/seed/visual stop rule.
+  - [ ] Only then acquire/convert a fresh derivative, retain hazard rehearsal,
+    scopes/holdout fingerprints and pass full intake gates. Do not relaunch v5.
+  - [ ] Predeclare one next run's initialization/retention rationale after data gate.
+    No automatic series of trials, gate reduction or architecture change.
+  - [ ] Keep test/NCNN closed until validation passes. Hardware P5 still blocked.
+- **Known Blocks / Issues:**
+  - Person F1>=0.65 and recall>=0.60 unmet. Smoke same-test regression unverified;
+    this session did not reopen test. Historical v2 test use must be disclosed.
+  - Mixed-domain/unsampled labels/near-duplicate and source license limits remain.
+    Holdout person source COCO only; no CrowdHuman domain or Camera3 benchmark.
+  - Optional old42/56 box review/sampling untouched, not mandatory for new intake.
+- **Validation:**
+  - Build: NOT APPLICABLE (training/evaluation; no application build)
+  - Tests: PASS153/153,6.79s; project .venv python -m pytest -p no:cacheprovider
+    --basetemp C:/Users/Public/Documents/indoor-v5-final-20261006a
+  - Typecheck: NOT CONFIGURED
+  - Lint: PASS (.venv python -m ruff check . --no-cache)
+  - Train/evaluation exits0; no traceback/NMS timeout in their logs. Checkpoint
+    hashes/names, post-run data/index/scope locks and27-file manifest PASS.
+    Class gates: smoke/fire PASS, person FAIL; overall release FAIL.
+- **Git State:** Branch main; Last Commit d73ddf3; Working Tree DIRTY pending
+  scoped milestone commit/push. Preserved unrelated source_box_review.py untracked.
+- **Uncommitted Changes / Active Files:** CHANGES.log, CLAUDE.md, README.md;
+  project README.md, PROJECT_PLAN.md, docs/CROWDHUMAN_ASSESSMENT.md,
+  docs/V5_TRAINING_PREPARATION.md, docs/V5_EVALUATION_DECISION.md.
+- **Notes for Next Agent:**
+  - Reports: E:/HomeAssistantPi4/reports/indoor-yolo26n-v5-evaluation.
+    Model run: indoor_partial_joint_yolo26n_v5_crowdhuman_512 under E runs.
+  - artifact-manifest.json SHA ba4baa6cb90da56fc4464c19dd40ba160dbe5276b7667cc2f2ad637ae38854c4;
+    evaluation-summary.json SHA67a837823dc5737d789165c22160f8b779c00c64731d6ca4b517fb7c85a236fd.
+  - Full protocol/controls/timing/hash table and next checklist in V5 decision.
+    Frozen pre-run readiness is historical and must reject the existing run.
+    Completed stripped checkpoints cannot resume training with original optimizer;
+    do not use saved epoch2 recovery checkpoint to repeat this finished experiment.
+  - Sessions2148 stopped,16464 training complete,2759 evaluation complete;
+    all test/helper jobs finished. Live process check found no detector/evaluation job.

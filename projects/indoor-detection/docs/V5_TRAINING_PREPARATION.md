@@ -1,5 +1,9 @@
 # V5 preparation — stop before training
 
+> Historical preparation snapshot. The user subsequently requested continuation;
+> v5 training/evaluation are now complete. Current decision and next task:
+> [V5 evaluation](V5_EVALUATION_DECISION.md). Do not relaunch the completed run.
+
 Owner: **OpenAI Codex**. Status: **READY_FOR_REVIEW** (2026-10-05).
 The user explicitly requested continuation through preparation, then a stop.
 **No v5 training has started; do not start it without a subsequent user request.**

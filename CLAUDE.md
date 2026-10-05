@@ -21,16 +21,18 @@ At the beginning of every session:
 
 Do not begin implementation until the current task and ownership are clear.
 
-## 1.1 Current Project Snapshot (2026-10-05)
+## 1.1 Current Project Snapshot (2026-10-06)
 
 - Active project: `projects/indoor-detection`.
 - Goal: one YOLO26n detector for indoor `smoke`, `fire`, and `person`, exported
   to NCNN for Raspberry Pi 4 4 GB.
 - Current branch: `main`.
-- Last completed training: v4 512 px, 12 epochs, with best checkpoint at epoch 11.
-- Current owner: OpenAI Codex; preparation status is `READY_FOR_REVIEW`.
-  User requested stop before training: v5 is prepared, not started. See
-  docs/V5_TRAINING_PREPARATION.md. Do not launch training without a subsequent user request.
+- Last completed training: v5 512 px, 12 epochs, best checkpoint epoch 7.
+- Current owner: OpenAI Codex; v5 evaluation milestone is `READY_FOR_REVIEW`.
+  Person explicit F1/recall 0.6415/0.5717 FAIL; smoke/fire recall 0.9172/0.9073 PASS.
+  Test/export remain closed; no background job. Next is P1b size-stratified
+  labelled person-data selection. Do not resume/relaunch completed v5. See
+  docs/V5_EVALUATION_DECISION.md and latest CHANGES for current execution state.
   If the user asks Claude
   Code to continue, that request is the explicit handover authorization.
 - Tests at this snapshot: read the latest `CHANGES.log` entry for the current
@@ -69,7 +71,8 @@ Do not begin implementation until the current task and ownership are clear.
   not individually visually reviewed. Joint v3: 15,448/4,301/4,297 train/val/test,
   all base images/scopes/hazard rehearsal preserved, holdout indexes byte-identical.
   Automated and visual data gate PASS_WITH_LIMITATIONS; read-only preflight PASS.
-  Config train_indoor_v5_512.yaml starts from v2, 512px/max12 epochs; no train yet.
+  V5 started from v2, completed 12 epochs, with workers 2/batch 18 after epoch 2
+  resource recovery. Original prep snapshot remains historical, not execution state.
   See docs/CROWDHUMAN_ASSESSMENT.md for exact paths/hashes/commands.
 
 Read the newest entry in `CHANGES.log` for exact uncommitted files, dataset paths,

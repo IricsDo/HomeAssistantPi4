@@ -349,3 +349,18 @@ No new training, predictions or export; target run directory remains absent.
 Tests 153/153, Ruff PASS. Full paths, hashes, limitations and future commands:
 [V5 preparation](V5_TRAINING_PREPARATION.md). Authoritative evidence is under
 `E:/HomeAssistantPi4/reports/indoor-partial-joint-v3-audit`.
+
+## V5 experiment outcome (2026-10-06)
+
+The user subsequently requested continuation. V5 completed 12 total epochs and
+validation calibration/square explicit matching. Person F1/recall 0.6415/0.5717
+still FAIL; smoke/fire recall 0.9172/0.9073 PASS. No test inference or NCNN export.
+Initial worker-memory pressure was recovered at epoch2 with same-run checkpoint
+resume/workers2/batch18; optimizer retained, not bit-identical uninterrupted RNG.
+
+Added labels contain only701/5,810 small (<1% area) person boxes, versus
+10,846/23,611 in the base COCO train data. Next: size-stratified labelled intake
+with a frozen bounded plan, not automatic repeated training. Data gate/provenance
+remain valid with documented limits; model quality remains unapproved. Full
+controls, hashes, error slices and resource recovery in V5_EVALUATION_DECISION.md.
+No source labels or holdout indexes were changed. All jobs finished.

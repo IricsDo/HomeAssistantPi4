@@ -32,8 +32,10 @@ Exact/near duplicate screening không xác nhận overlap; dHash có giới hạ
 22 near-hash candidates đã review, đều khác cảnh. Review 30: nhận 29/loại 1 ảnh
 đồ họa; 499 ảnh/5.303 box đã chuyển YOLO, 470 ảnh chỉ auto-screen.
 Joint v3 gồm 15.448 train/4.301 val/4.297 test; data gate PASS_WITH_LIMITATIONS.
-Config v5 và read-only preflight đã sẵn sàng; **dừng trước train theo yêu cầu người
-dùng**, v5 chưa chạy. Xem [V5 preparation](docs/V5_TRAINING_PREPARATION.md).
+V5 đã train đủ 12 epoch và đánh giá validation 512 px. **Person FAIL**: explicit
+F1/recall 0,6415/0,5717; smoke/fire recall 0,9172/0,9073 PASS. Test/export đóng;
+không còn job chạy. Bước tiếp theo: labelled small-person intake theo P1b. Xem
+[V5 decision](docs/V5_EVALUATION_DECISION.md).
 Xem [assessment](docs/CROWDHUMAN_ASSESSMENT.md).
 
 - [x] Baseline smoke-only và checkpoint tham chiếu đã được khóa.
@@ -47,7 +49,7 @@ Xem [assessment](docs/CROWDHUMAN_ASSESSMENT.md).
   `smoke/fire/person`.
 - [x] Tạo scoped joint dataset v2, loại hai duplicate conflict khỏi index và
   hoàn tất automated + visual data gate với các giới hạn miền được ghi rõ.
-- [x] Train, calibrate và đánh giá checkpoint ba lớp v1-v4.
+- [x] Train, calibrate và đánh giá checkpoint ba lớp v1-v5.
 - [ ] Đạt person deployment gate ở input size phù hợp với Pi 4.
 - [ ] Export NCNN và benchmark trên Pi 4.
 - [ ] Tích hợp camera thật.
