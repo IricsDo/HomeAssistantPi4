@@ -35,8 +35,14 @@ Do not begin implementation until the current task and ownership are clear.
   CrowdHuman review now30 ACCEPT/30 EXCLUDE, accepted small189/397=47.61%;
   exact/near screening against24,046 joint images has zero overlaps/candidates.
   Expansion deferred due unresolved dense-label assignments; no new conversion.
-  Next: acquire/review frozen unused-COCO train pilot60 seed46 (342/415 small
-  boxes from metadata, not decoded images yet).
+  COCO pilot60 seed46 acquired/decoded,342/415 small boxes (82.41%), geometry
+  PASS; all60 galleries/25 crops reviewed:24 ACCEPT/36 EXCLUDE,127/156 small
+  (81.41%). Exact/near screens against24,046 corpus images have zero matches
+  or candidates. Recurrent label/completeness/representation issues block automatic
+  expansion. Next: assess reviewed-only54-image proposal (COCO24+CrowdHuman30),
+  now frozen with cross-pilot screening zero matches/candidates; assess annotation
+  policy and separate derivatives/full joint gates before any run.
+  No conversion/training authorization yet; current source/joint unchanged.
   No automatic expansion/training; see docs/SMALL_PERSON_INTAKE.md.
   Do not resume/relaunch completed v5. See
   docs/V5_EVALUATION_DECISION.md and latest CHANGES for current execution state.

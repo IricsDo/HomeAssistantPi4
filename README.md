@@ -27,7 +27,11 @@ duplicate screening đã hoàn tất; xem
 [Small-person intake](projects/indoor-detection/docs/SMALL_PERSON_INTAKE.md).
 Review đã xong: nhận30/loại30, phần nhận có47,61% box nhỏ; duplicate screening
 không có match/candidate. Expansion CrowdHuman hoãn do annotation mơ hồ; đã
-freeze pilot COCO train chưa dùng60 ảnh, chưa tải/train.
+review pilot COCO train60 ảnh: nhận24/loại36, phần nhận có81,41% box nhỏ;
+exact/near screening không có match/candidate. Không mở expansion tự động.
+Đã freeze đề xuất chỉ dùng54 ảnh đã review (COCO24+CrowdHuman30); cross-pilot
+screening không có match/candidate. Tiếp theo: chốt policy và full joint gates
+trước chuẩn bị train.
 Camera mục tiêu là Raspberry Pi Camera Module 3 Wide IMX708;
 xem [chiến lược dữ liệu](projects/indoor-detection/docs/PERSON_DATA_STRATEGY.md).
 

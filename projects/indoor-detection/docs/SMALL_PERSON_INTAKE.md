@@ -173,3 +173,89 @@ Other artifacts: exact-overlap.json, near-overlap.json, unused-coco-train-covera
 duplicate-workflow.py, coco-coverage-workflow.py, crops/*.png. Original acquisition
 manifest remains untouched. Review manifest locks all21 actually viewed crops.
 Tests158/158 (7.72s), Ruff PASS. No active job or dependency/code change this milestone.
+
+
+## COCO pilot acquisition and review decision (2026-10-06)
+
+The COCO pre-acquisition paragraphs above are historical. The exact frozen60 IDs
+were downloaded with the existing bounded COCO downloader, workers8, to fresh
+`E:/HomeAssistantPi4/raw/COCO-small-person-pilot-v1`. Reports/gallery/crops are at
+`E:/HomeAssistantPi4/reports/coco-small-person-pilot-v1`. Original image IDs,
+filenames, source boxes, category metadata and per-image license IDs are retained
+in `source-annotations.json`; no source relabeling or new rights verification.
+Only original train annotations were read. No old uniform builder/holdout mining.
+
+All60 decode and match source dimensions; clipped person geometry passes, with
+no flagged issues. Actual decoded sizes:342 small/58 medium/15 large =415 boxes,
+small82.41%, matching frozen metadata. Small means clipped box area/image area
+<1%; medium<10%. Raw acquisition receipts bind image hashes and frozen plan.
+All60 paired plain/box galleries and25 original-pixel diagnostic crops were
+actually viewed. Authoritative `review-final-v1.json`: **24 ACCEPT/36 EXCLUDE**.
+Accepted gallery numbers:01,06,08,10,11,12,14,17,19,21,22,29,30,31,33,36,39,41,
+48,49,50,53,55,57. **156 accepted boxes:127 small/23 medium/6 large**, small81.41%.
+ACCEPT is eligibility for a later reviewed-only derivative, not exhaustive
+annotation certification or training authorization.
+
+Confirmed localized concerns include the omitted beach pair05, unboxed woman09,
+foreground head and split background assignment20, adjacent pedestrian32,
+unsupported wide box37, unboxed boarding-stair people43 and train passenger47.
+03's helmet extends above the source primary-person bbox; 52's tiny box10 lacks
+supported physical person extent. 15 includes a printed advertisement face,
+26 labels reflections,56 labels a skull/skeleton prop,16 is a printed photograph
+and27 is an anaglyph. Other exclusions are conservative unresolved completeness
+or tiny/partial target assignments, not proven wrong labels. 19's crop resolves
+apparent overlap as distinct people. 53's crop does not support a substantial
+head-omission claim. Motion blur39 is accepted; blur alone is not a rejection.
+
+Exact hashes:zero internal/corpus matches. dHash<=5 screen:zero internal/corpus
+candidates against24,046 joint v3 images, including548 prior CrowdHuman. Existing
+registry membership/index locks verified; the near screen freshly rehashed all
+registry images. No queue needed. Crop/mirror/edit/session overlap remains a
+limitation. Frozen train/val/test indexes are byte-identical; no source/joint,
+scope, predictions, model, test or export changes.
+
+**No automatic expansion of the enriched COCO pool.** Recurrent localized label,
+completeness and representation concerns defeat metadata-only eligibility. This
+sample is small-box enriched, not an estimate of whole-COCO annotation quality.
+It does not invalidate the existing v3 gate. Preserve accepted24 and all originals.
+
+Next: assess a **reviewed-only proposal54 images** (COCO24 + prior CrowdHuman30)
+before deciding conversion. Nominal labels553, including316 small (57.14%), before
+cross-pilot duplicate/compatibility checks. Keep source-specific box conventions
+explicit (original clipped COCO bbox / reviewed CrowdHuman vbox), person-only
+scope and immutable provenance. This is a modest bounded intervention, not a
+claim that54 images will solve person recall. First screen/adjudicate between the
+two pilots; retained samples must pass the derivative and full joint gates with
+all hazard rehearsal and holdouts preserved. Conversion and training remain
+unauthorized by these review ledgers. Prepare a single declared experiment only
+after the joint data gate, then stop for the user's training-stage boundary.
+
+| Artifact | SHA-256 |
+|---|---|
+| acquisition.json (raw root) | f41126ee8302471aa1b8e1945eb58be1a92dc6130365bbb18abe56767cfd8776 |
+| actual-size-coverage.json | b0409d576b936473346ffa2a5dea6e078b1a0025cfed1c47faeb62d4ec28aa09 |
+| artifact-manifest.json (69 source/acquisition/audit/gallery locks) | e5eb9ab6f8378e47f5c4b63bfdb5c214b14170726efaf60d3692d1bb798380c2 |
+| review-final-v1.json | e20c030b0ae2f84d3d3f76a7d337573271107b4dd51627cc1d606ee85ae7dfe6 |
+| review-artifact-manifest.json (30 review/crop/workflow locks) | 291b33b0c36778dbb4d1447ccf282c5b07496a70834e559b81755b95b39795e4 |
+
+Workflow `acquire-audit-workflow.py` refuses existing raw/report targets; it is
+for reproduction to fresh paths, not a resume command. Acquisition/gallery/near
+session75415 completedexit0. `crop-workflow.py`, `crop-regions.json` and
+`review-workflow.py` retain decision evidence. Acquisition gallery bundle's
+NOT_REVIEWED status is historical; separate final ledger is authoritative.
+Tests158/158 (6.57s), Ruff result in latest CHANGES; no dependency/code change.
+
+
+### Reviewed-only proposal now frozen
+
+`reviewed-only-proposal-54-v1.json` SHA
+`99f92074cdc73b9bf1885444e0a7574f62807c6c4873b9341038c88738c2d41f`
+binds all54 original IDs/images/annotations/review hashes, source conventions,
+person=2 scope and joint-v3 split locks. **Cross-pilot screening completed**:
+all60 COCO images vs30 accepted CrowdHuman, zero exact/near candidates. This
+covers accepted24 COCO; existing pilot-internal screens also have zero candidates.
+`proposal-artifact-manifest.json` SHA
+`f3dc6146d88e65bb98943330f38edad87a2f5ee8c5d176b630f021edf7c0d671`
+locks5 proposal/registry/cross-audit/workflow files. No annotation modifications,
+conversion or training. Next begins compatibility/provenance decision and separate
+derivatives/full joint gate; do not repeat acquisition or completed visual review.

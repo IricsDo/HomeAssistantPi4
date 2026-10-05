@@ -41,7 +41,13 @@ Gallery/duplicate review đã hoàn tất; chưa convert/train. Tiếp tục t�
 [Small-person intake](docs/SMALL_PERSON_INTAKE.md).
 Review đã xong60 gallery/21 crop: nhận30/loại30, accepted small189/397=47,61%.
 Exact/near screening24.046 ảnh không có match/candidate. Hoãn expansion do
-assignment dày còn mơ hồ; pilot COCO train chưa dùng60 ảnh đã freeze, chưa tải.
+assignment dày còn mơ hồ. COCO pilot60 đã acquire/audit/review60 gallery/25 crop:
+nhận24/loại36, accepted127/156 box nhỏ (81,41%); exact/near screening không có
+match/candidate với24.046 ảnh. Không mở expansion tự động vì label/completeness
+và representation còn vấn đề. Tiếp theo: đánh giá proposal chỉ dùng54 ảnh đã
+review (COCO24+CrowdHuman30), đã freeze với cross-pilot screening không có
+match/candidate; chốt policy và full joint gates trước train.
+Chưa convert, chưa thay dataset/scope/index hiện có.
 Xem [assessment](docs/CROWDHUMAN_ASSESSMENT.md).
 
 - [x] Baseline smoke-only và checkpoint tham chiếu đã được khóa.

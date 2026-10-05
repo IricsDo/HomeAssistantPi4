@@ -2535,3 +2535,84 @@ validation state.
   - Ledger is authoritative; provisional crop notes are not confirmed errors.
     Tests and sessions43143 duplicate/6121 COCO census all finishedexit0; no job.
     Venv C; images/reports E; no secret access, predictions, conversion or train.
+
+## [2026-10-06 01:21 +07:00] - COCO small-person pilot milestone from OpenAI Codex
+
+- **Current Task:** P1b labelled small-person intake after v5 failed person gate.
+- **Status:** IN_PROGRESS (COCO pilot acquired/audited/reviewed; reviewed-only54
+  proposal frozen; derivative/full joint gates and training preparation pending)
+- **Current Owner:** OpenAI Codex
+- **Completed in this session:**
+  - Read full AGENTS/CLAUDE, latest CHANGES, READMEs/plan and existing COCO/overlap
+    utilities; Git main d47b8c2. Preserved unrelated untracked source_box_review.py.
+  - Verified frozen60 plan SHA/source annotation SHA/current joint split locks.
+    Reused existing bounded COCO downloader workers8, exactly60 original train
+    images into a fresh raw folder on E. Preserved original filenames/IDs/all
+    selected source annotations/category metadata/license IDs; no relabeling.
+  - Decode/source-dimension/clipped-geometry PASS all60, no flagged issues.
+    Actual boxes415=342small/58medium/15large, small82.41%, matches metadata.
+  - Exact zero internal/corpus matches; dHash<=5 zero internal/corpus candidates
+    against24,046 current joint v3 images. Registry/index locks verified; near
+    audit freshly rehashed corpus files. Crop/mirror/edit/session limits remain.
+  - Actually viewed all60 plain/box galleries and25 original-pixel crops. Ledger
+    24 ACCEPT/36 EXCLUDE; accepted156 boxes=127small/23medium/6large,81.41% small.
+    Coverage PASS; acceptance is derivative eligibility, not exhaustive labels.
+  - Confirmed localized completeness/extent problems: beach pair05, woman09,
+    foreground/split assignment20, adjacent pedestrian32, wide box37, boarding
+    stairs43, train passenger47; helmet03/unsupported region52. Representation
+    mismatch includes poster15/reflections26/skeleton56/photo16/anaglyph27.
+    Other exclusions conservative; no whole-source error-rate claim. Crop19
+    resolves overlap as distinct people; crop53 does not support major head omission.
+    Motion blur39 accepted; blur alone is not a rejection criterion.
+  - No automatic enriched-pool expansion: recurring eligibility risks require
+    visual selection. Preserve accepted24/all originals and prior CrowdHuman30.
+  - Froze reviewed-only proposal54 (COCO24+CrowdHuman30), nominal553 boxes/316small
+    (57.14%). Cross-pilot all60COCO x30acceptedCrowdHuman screening:zero exact/near
+    candidates; covers accepted24. Original IDs/annotations/reviews/scopes locked.
+    No guarantee this modest intervention improves quality; no conversion yet.
+  - Updated CLAUDE/root README/project README/PROJECT_PLAN/SMALL_PERSON_INTAKE.
+    No repository code/dependency, joint index/scope, prediction, train/test/export change.
+- **Unfinished / Next Steps (CRITICAL):**
+  - [ ] Inspect reviewed-only-proposal-54-v1.json and verify all3 artifact manifests;
+    assess original clipped COCO bbox / reviewed CrowdHuman vbox compatibility
+    and provenance. Record a separate derivative decision (ledgers are eligibility,
+    not conversion authorization); do not repeat acquisition/completed image review.
+  - [ ] If accepted, create separate immutable source derivatives and a fresh joint
+    based on v3; retain ALL hazard rehearsal/scopes and exact holdout fingerprints.
+    Run full structure/class/annotation/exact/near/visual gates and readiness checks.
+  - [ ] Predeclare one bounded experiment only after joint gate with initialization,
+    retention rationale and hashes; STOP before launching training as user requested.
+    Test/NCNN remain closed while person quality gate FAIL. No automatic expansion.
+- **Known Blocks / Issues:** Person v5 F1/recall0.6415/0.5717 FAIL; hardware P5
+  blocked. Source-wide approval/indoor-camera proof unavailable. Reviewed-only
+  subset small, no guaranteed model gain; original license metadata not newly
+  verified. Prior optional42/56 box review/sampling unchanged.
+- **Validation:**
+  - Build: NOT APPLICABLE (dataset review)
+  - Tests: PASS158/158,6.57s; from project .venv/Scripts/python.exe -m pytest
+    -p no:cacheprovider --basetemp C:/Users/Public/Documents/indoor-coco-review-20261006a
+  - Typecheck: NOT CONFIGURED
+  - Lint: PASS; root projects/indoor-detection/.venv/Scripts/python.exe -m ruff
+    check projects/indoor-detection --no-cache
+  - Acquisition/audit session75415 exit0; crop/review/proposal workflows exit0.
+    All104 artifact locks and joint split locks reverified PASS; no active Python
+    detector/helper process. Full joint training gate NOT OPENED; git diff --check PASS.
+- **Git State:** Branch main; Last Commit d47b8c2; DIRTY scoped docs pending
+  atomic milestone commit/push; unrelated untracked source_box_review.py excluded.
+- **Uncommitted Changes / Active Files:** CHANGES.log, CLAUDE.md, README.md;
+  project README/PROJECT_PLAN/docs/SMALL_PERSON_INTAKE.md. Preserved source_box_review.py.
+- **Notes for Next Agent:**
+  - Raw E:/HomeAssistantPi4/raw/COCO-small-person-pilot-v1.
+    Reports E:/HomeAssistantPi4/reports/coco-small-person-pilot-v1.
+    gallery/bundle.json NOT_REVIEWED is historical; review-final-v1.json authoritative.
+  - Acquisition SHAf41126ee8302471aa1b8e1945eb58be1a92dc6130365bbb18abe56767cfd8776;
+    actual-size SHAb0409d576b936473346ffa2a5dea6e078b1a0025cfed1c47faeb62d4ec28aa09.
+    Manifest69 SHAe5eb9ab6f8378e47f5c4b63bfdb5c214b14170726efaf60d3692d1bb798380c2.
+    Review SHAe20c030b0ae2f84d3d3f76a7d337573271107b4dd51627cc1d606ee85ae7dfe6;
+    review-manifest30 SHA291b33b0c36778dbb4d1447ccf282c5b07496a70834e559b81755b95b39795e4.
+    Proposal54 SHA99f92074cdc73b9bf1885444e0a7574f62807c6c4873b9341038c88738c2d41f;
+    proposal-manifest5 SHAf3dc6146d88e65bb98943330f38edad87a2f5ee8c5d176b630f021edf7c0d671.
+  - Scripts acquire-audit-workflow.py/crop-workflow.py/review-workflow.py/
+    proposal-workflow.py are E evidence and refuse existing outputs; not resume
+    commands. Read original labels/receipts; source key projects/.env never accessed.
+  - Venv C, large artifacts E. All jobs finished; no train launched this session.

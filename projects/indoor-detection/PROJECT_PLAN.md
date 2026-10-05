@@ -6,8 +6,11 @@ V5 đã train đủ 12 epoch và đánh giá validation. Person vẫn FAIL; test
 Không còn job chạy. P1b đã audit pool, freeze/tải 60 ảnh/1.430 box, trong đó
 615 box nhỏ (43,01%). Review/duplicate đã xong: 30 ACCEPT/30 EXCLUDE, phần nhận
 có 189/397 box nhỏ (47,61%). CrowdHuman expansion hoãn; pilot COCO train chưa
-dùng đã freeze 60 ảnh/415 box (342 nhỏ theo metadata), chưa tải. Bước tiếp theo:
-acquire/decode/review và duplicate gate của pilot COCO.
+dùng đã tải/review: 60 ảnh/415 box,342 nhỏ; nhận24/loại36, accepted127/156 nhỏ
+(81,41%). Exact/near screening không có match/candidate. Không mở expansion tự
+động do vấn đề annotation/completeness/representation. Bước tiếp theo: đánh giá
+reviewed-only proposal54 ảnh (COCO24+CrowdHuman30) đã freeze, cross-pilot duplicate
+không có match/candidate. Tiếp theo: policy/derivative riêng/full joint gate; chưa train.
 Xem [Small-person intake](docs/SMALL_PERSON_INTAKE.md) và [V5 decision](docs/V5_EVALUATION_DECISION.md).
 
 Đây là checklist tổng thể để các agent tiếp tục project. `AGENTS.md` quy định
@@ -158,9 +161,14 @@ manifest can thiệp và báo cáo data gate trên E:; config/code và quyết �
   share47,61%. Zero exact/near candidates với24.046 ảnh. Expansion hoãn do các
   assignment dày/partial còn mơ hồ; không claim mọi nhãn bị loại đều sai.
 - [x] Audit metadata nguồn COCO train chưa dùng; freeze pilot60 seed46,
-  30 ảnh3-6 người +30 ảnh7-15 người, 342/415 box nhỏ theo metadata. Chưa tải.
-- [ ] Acquire/review pilot COCO đã freeze; kiểm tra actual size, scope/duplicate
-  và source gate trước lựa chọn expansion. Không thay source/joint cũ.
+  30 ảnh3-6 người +30 ảnh7-15 người, 342/415 box nhỏ theo metadata trước tải.
+- [x] Acquire/review pilot COCO đã freeze; kiểm tra actual size, scope/duplicate
+  và chốt no automatic expansion. 60 gallery/25 crop; nhận24/loại36,127/156 nhỏ.
+  Exact/near với24.046 ảnh không có match/candidate; nguồn/joint cũ giữ nguyên.
+- [x] Freeze reviewed-only proposal54 (COCO24+CrowdHuman30); cross-pilot all60COCO
+  x30acceptedCrowdHuman exact/near không có match/candidate. Artifact/hash trên E:.
+- [ ] Chốt provenance/annotation policy của proposal trước derivative. Không suy ra
+  full source đạt gate từ subset được nhận; chưa có conversion authorization.
 - [ ] Tạo derivative mới, giữ rehearsal hazard và holdout; qua đủ intake data gate.
 - [ ] Chốt một run mới và initialization/retention rationale trước P2 tiếp theo.
   Không auto nhiều retry hoặc hạ gate. Xem V5 decision cho coverage census:
@@ -258,8 +266,9 @@ Không đánh dấu PASS bằng benchmark CPU Windows hay thời gian GPU traini
 1. Đọc đầy đủ `AGENTS.md`, `CLAUDE.md`, entry mới nhất `CHANGES.log`, README và
    file này; chạy `git status`/`git log`. Xác định owner, giữ dirty work.
 2. **V5 đã hoàn tất, person FAIL.** Đọc V5_EVALUATION_DECISION.md và bắt đầu P1b
-   acquire/review pilot COCO tại SMALL_PERSON_INTAKE.md. CrowdHuman60 review/gate
-   đã xong, expansion hoãn; plan COCO60 đã khóa nhưng chưa acquire.
+   reviewed-only proposal tại SMALL_PERSON_INTAKE.md. CrowdHuman/COCO pilot review
+   đã xong; expansion tự động đều đóng. COCO nhận24, CrowdHuman nhận30;
+   cross-pilot screening đã đạt; chốt policy rồi derivative riêng/full joint gates.
    Không lặp acquisition đã hoàn tất. Không resume run hoàn tất, không
    chạy lại config v5 hoặc verifier pre-run để bỏ qua target đã tồn tại. Không test
    hoặc export khi person gate chưa đạt. Không lặp intake artifact đã hoàn tất.
