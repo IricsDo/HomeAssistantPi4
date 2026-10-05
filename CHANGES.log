@@ -1739,3 +1739,53 @@ validation state.
     label inspection, evaluation metric or selection used test images this session.
   - No training/export was started. No background job remains active.
   - Never read/print projects/.env; venv stays in project on C:, artifacts stay on E:.
+
+## [2026-10-05 12:54 +07:00] - Delivery plan milestone from OpenAI Codex
+
+- **Current Task:** Prepare a reviewed training intervention for person at 512 px;
+  maintain an agent-followable delivery plan.
+- **Status:** IN_PROGRESS (delivery-plan document completed; technical task continues)
+- **Current Owner:** OpenAI Codex
+- **Completed in this session:**
+  - Verified main was clean at 0e81f38 and inspected instructions, latest handover,
+    architecture, acceptance criteria, README and evaluation decisions.
+  - Existing phase/decision documents covered individual stages, but no consolidated
+    delivery checklist existed. Created projects/indoor-detection/PROJECT_PLAN.md.
+  - Recorded P0 completed and six remaining stages P1-P6: annotation/sampling,
+    controlled training, quality/selection, NCNN parity, real Pi/camera, final delivery.
+  - Added concrete checklists, outputs, gates, dependencies, artifact locations,
+    immediate next task and milestone update rules. Hardware stage stays BLOCKED.
+  - Added plan-reading instructions to AGENTS.md and CLAUDE.md; linked both READMEs.
+  - No code, source annotations, dataset indexes, dependencies or run configs changed.
+- **Unfinished / Next Steps (CRITICAL):**
+  - [ ] Follow PROJECT_PLAN.md P1: review source boxes on the 56 accepted positive
+    images and then implement/test the bounded sampling plan over the unique index.
+  - [ ] Audit/freeze the intervention before a new run; continue P2-P6 in dependency order.
+  - [ ] Update plan checkboxes/status with evidence after every significant milestone.
+- **Known Blocks / Issues:**
+  - Person quality gate remains below target; manifest training_allowed is still false.
+  - Real Pi/camera work waits for user-provided hardware. Mixed-domain caveat remains.
+- **Validation:**
+  - Build: NOT APPLICABLE (documentation milestone)
+  - Tests: PASS (116/116, 6.76 seconds); project .venv python -m pytest
+    -p no:cacheprovider --basetemp C:\Users\Public\Documents\indoor-plan-pytest-20261005a
+  - Typecheck: NOT CONFIGURED
+  - Lint: PASS (project .venv python -m ruff check . --no-cache)
+  - Git diff whitespace check: PASS
+- **Git State:**
+  - Branch: main
+  - Last Commit: 0e81f38 feat:freeze-reviewed-person-training-candidates
+  - Working Tree: DIRTY (documentation milestone prepared for commit/push)
+- **Uncommitted Changes:**
+  - AGENTS.md, CLAUDE.md, CHANGES.log, README.md
+  - projects/indoor-detection/README.md
+  - projects/indoor-detection/PROJECT_PLAN.md
+- **Active Files:**
+  - projects/indoor-detection/PROJECT_PLAN.md
+  - E:\HomeAssistantPi4\reports\indoor-person-train-mining-v1\review-manifest-v1.json
+- **Notes for Next Agent:**
+  - The plan summarizes current state; CHANGES remains the append-only evidence log.
+    Check live Git and latest handover before trusting any snapshot.
+  - Read the plan at session startup; do not rerun finished mining or open training
+    merely because image-level review passed. Box review and sampling remain pending.
+  - No new training/export or background job was started in this documentation session.

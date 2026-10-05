@@ -18,6 +18,9 @@ nhiệt đạt chuẩn.
 
 ## Trạng thái
 
+Theo dõi công việc đến nghiệm thu tại [PROJECT_PLAN.md](PROJECT_PLAN.md).
+Kế hoạch ghi trạng thái, dependency, điều kiện hoàn thành và bước tiếp theo cho agent.
+
 - [x] Baseline smoke-only và checkpoint tham chiếu đã được khóa.
 - [x] Package, domain, detector và event schema đã generalize cho ba lớp.
 - [x] Dataset converters giữ lại cả smoke và fire.

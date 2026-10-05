@@ -16,6 +16,8 @@ At the beginning of every session:
 4. Inspect recent relevant commits.
 5. Identify the active task and current owner.
 6. Inspect the relevant files before editing.
+7. Read `projects/indoor-detection/PROJECT_PLAN.md` and continue the first
+   unfinished applicable checklist item; update the plan after milestones.
 
 Do not begin implementation until the current task and ownership are clear.
 

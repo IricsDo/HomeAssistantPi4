@@ -321,6 +321,8 @@ At the beginning of every session:
 5. Identify the current active task.
 6. Confirm task ownership.
 7. Inspect the relevant files before editing.
+8. Read `projects/indoor-detection/PROJECT_PLAN.md` for the delivery checklist;
+   update its status after significant milestones with evidence in `CHANGES.log`.
 
 If a task has been explicitly handed over to the current agent, continue it without unnecessary user confirmation.
 
