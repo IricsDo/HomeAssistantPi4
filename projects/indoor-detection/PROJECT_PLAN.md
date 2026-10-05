@@ -1,7 +1,9 @@
 # Kế hoạch hoàn thành Indoor Detection
 
 Ngày cập nhật: **2026-10-05**. Agent cập nhật: **OpenAI Codex**.
-Owner hiện tại: **OpenAI Codex**. Task kỹ thuật: **IN_PROGRESS**.
+Owner hiện tại: **OpenAI Codex**. Task chuẩn bị train: **READY_FOR_REVIEW**.
+**Dừng trước train theo yêu cầu người dùng.** V5 chưa chạy; chỉ tiếp tục training
+khi người dùng yêu cầu tiếp tục. Xem [V5 preparation](docs/V5_TRAINING_PREPARATION.md).
 
 Đây là checklist tổng thể để các agent tiếp tục project. `AGENTS.md` quy định
 cách làm việc; `CHANGES.log` ghi lịch sử, kết quả thực chạy và bàn giao từng phiên.
@@ -37,22 +39,27 @@ rồi cập nhật kế hoạch này theo bằng chứng. Không sửa lịch s�
 | ID | Công đoạn | Trạng thái | Điều kiện kết thúc |
 |---|---|---|---|
 | P0 | Stack, downloader, chuẩn hóa và baseline | COMPLETED | Có scoped corpus đã audit và báo cáo v1–v4 |
-| P1 | Đánh giá nguồn bổ sung, review box và chốt can thiệp | IN_PROGRESS | Can thiệp dữ liệu hoặc sampling có provenance và data gate đạt |
-| P2 | Fine-tune có kiểm soát | PLANNED | Run mới hoàn tất, checkpoint/log/config truy vết được |
+| P1 | Đánh giá nguồn bổ sung, review box và chốt can thiệp | COMPLETED | Joint v3 data gate PASS_WITH_LIMITATIONS, đã khóa evidence |
+| P2 | Fine-tune có kiểm soát | PLANNED | Config/preflight đã chuẩn bị; chưa chạy theo yêu cầu người dùng |
 | P3 | Calibration, quality gate và khóa ứng viên | PLANNED | Cả ba class đạt gate ở đúng resolution, test dùng đúng protocol |
 | P4 | Export NCNN và kiểm tra tương đương | PLANNED | Artifact, preprocessing, output và chất lượng sau export được kiểm tra |
 | P5 | Benchmark và camera trên Pi thật | BLOCKED | Có phần cứng, đo performance/latency/soak và kiểm tra miền thật |
 | P6 | Đóng gói vận hành và nghiệm thu | PLANNED | Hướng dẫn tái lập, cấu hình phát hành và bàn giao đầy đủ |
 
-**Còn 6 công đoạn lớn P1–P6**, trong đó P1 đang làm. P2–P3 có thể cần lặp
+**Còn 5 công đoạn lớn P2–P6**; P1 đã hoàn tất cho can thiệp v5. P2–P3 có thể cần lặp
 nếu chưa đạt chất lượng; đây không phải sáu lần chạy cố định hay phần trăm hoàn thành.
 P5 bị chặn bởi phần cứng. Có thể chuẩn bị tài liệu P6 trước, nhưng chưa nghiệm thu
 deployment đầy đủ nếu P5 chưa có kết quả.
 
 ### Bằng chứng hiện tại
 
-- Dataset: `E:\HomeAssistantPi4\processed\indoor-partial-joint-v2\dataset.yaml`.
-  14.900 train / 4.301 validation / 4.297 test; tổng 23.498 ảnh.
+- Dataset mới: `E:\HomeAssistantPi4\processed\indoor-partial-joint-v3\dataset.yaml`.
+  15.448 train / 4.301 validation / 4.297 test; tổng 24.046 ảnh, thêm 548 ảnh
+  person/5.810 box từ pilot + expansion. Base v2 và holdout giữ nguyên.
+- Gate/preflight: `E:/HomeAssistantPi4/reports/indoor-partial-joint-v3-audit`:
+  data-gate.json PASS_WITH_LIMITATIONS; train-readiness.json READY_STOPPED_BEFORE_TRAIN.
+  Config `configs/train_indoor_v5_512.yaml`, checkpoint v2, 512 px/max 12 epoch,
+  seed 42, LR 0.00015. CUDA/GPU/checkpoint load đã kiểm tra, chưa train/inference.
 - Automated data gate đạt; visual gate `PASS_WITH_LIMITATIONS` về mixed-domain.
   Dataset v32 đã tải/chuẩn hóa/audit nhưng không phải corpus deployment được chọn.
 - Package detector, class scopes, masked loss/validator, policy và JSONL đã có.
@@ -69,8 +76,10 @@ deployment đầy đủ nếu P5 chưa có kết quả.
   ảnh qua prefilter không body-ignore. Pilot 60 đã chốt 49 ACCEPT/11 EXCLUDE;
   derivative 49 ảnh/507 box đã chuyển, freeze expansion 500/spot-check 30 theo seed.
   Expansion đã tải đủ 500 ảnh/5.313 box, decode/geometry/exact checks đạt; 22
-  near-hash candidates đều khác cảnh sau review. Gallery 30 ảnh annotation chờ
-  review. Joint data gate chưa mở. Xem [assessment](docs/CROWDHUMAN_ASSESSMENT.md).
+  near-hash candidates đều khác cảnh sau review. Review 30: nhận 29/loại 1 ảnh
+  đồ họa; không thấy lỗi box hệ thống mới. 499 ảnh/5.303 box chuyển YOLO, 470 ảnh
+  chỉ auto-screen, không claim từng ảnh đã review. Joint v3 gate đã mở với giới hạn;
+  quality/export gate vẫn đóng. Xem [V5 preparation](docs/V5_TRAINING_PREPARATION.md).
 - Checkpoint/metric lịch sử: [V4 decision](docs/V4_EVALUATION_DECISION.md),
   [V3 decision](docs/V3_EVALUATION_DECISION.md), [V2 decision](docs/V2_EVALUATION_DECISION.md).
   Queue lịch sử vẫn `REVIEW_REQUIRED`; quyết định nằm trong file review riêng.
@@ -94,13 +103,16 @@ deployment đầy đủ nếu P5 chưa có kết quả.
 - [x] Tải bounded expansion 500 IDs seed 43 đã freeze từ 2.334 ứng viên sau lọc
   head-overlap; decode/geometry/exact checks toàn bộ, near-screen/adjudication
   với corpus + 49 pilot và kiểm tra split giữ nguyên. Chưa duyệt source/joint gate.
-- [ ] Review 30 IDs seed 44 và flagged cases, không bắt buộc xem cả 500.
+- [x] Review 30 IDs seed 44 và flagged cases, không bắt buộc xem cả 500.
   Ghi quyết định nguồn trước compose; dừng nếu có lỗi nhãn hệ thống mới.
-- [ ] Chọn nguồn bằng bằng chứng; ghi provenance/metadata thiếu. Nếu bổ sung data,
+- [x] Chọn nguồn bằng bằng chứng; ghi provenance/metadata thiếu. Nếu bổ sung data,
   tạo derivative mới, scope person, giữ rehearsal hazard; kiểm tra augmentation
   families/video sessions và exact/near duplicate với corpus/holdout hiện tại.
-- [ ] Chốt hướng bổ sung dữ liệu, sampling có review hoặc kết hợp có lý do trước P2.
+- [x] Chốt hướng bổ sung dữ liệu, sampling có review hoặc kết hợp có lý do trước P2.
   Các checklist sampling bên dưới chỉ áp dụng nếu chọn hướng sampling.
+
+**Can thiệp đã chọn: bổ sung CrowdHuman, uniform sampling hiện có. Checklist
+box-review/reweighting/sampler cũ dưới đây không áp dụng cho v5, không chặn P1.**
 - [x] Mining chỉ trên train, không dùng ảnh lỗi validation/test làm training examples.
 - [x] Review 105 ảnh gốc và lưu quyết định riêng.
 - [x] Freeze 91 ảnh được nhận: hash ảnh/nhãn, scope, split fingerprints;
@@ -114,22 +126,22 @@ deployment đầy đủ nếu P5 chưa có kết quả.
 - [ ] Triển khai và test sampling với class-scoped trainer hiện có; kiểm tra
   tái lập, mapping weight đúng ảnh, scope không mất và validation không bị reweight.
   Sampler hiện **chưa được triển khai**; không coi manifest là config training.
-- [ ] Giữ train index unique; không nhân dòng trong `train.txt` để né duplicate gate.
-- [ ] Đối chiếu hash ảnh/nhãn với manifest của can thiệp và giữ membership validation/test.
-- [ ] Audit structure, duplicate/conflict, class distribution và annotation của
+- [x] Giữ train index unique; không nhân dòng trong `train.txt` để né duplicate gate.
+- [x] Đối chiếu hash ảnh/nhãn với manifest của can thiệp và giữ membership validation/test.
+- [x] Audit structure, duplicate/conflict, class distribution và annotation của
   can thiệp; ghi rõ giới hạn của near-duplicate/domain audit nếu có.
-- [ ] Ghi quyết định data gate cho can thiệp; chỉ khi đạt mới mở P2.
+- [x] Ghi quyết định data gate cho can thiệp; chỉ khi đạt mới mở P2.
 
 **Đầu ra:** quyết định nguồn và can thiệp; review box/sampling nếu áp dụng,
 manifest can thiệp và báo cáo data gate trên E:; config/code và quyết định trong Git.
 
 ### P2 — Fine-tune và theo dõi run mới
 
-- [ ] Chọn checkpoint khởi tạo có lý do từ control/validation hiện có; v2/v4
+- [x] Chọn checkpoint khởi tạo có lý do từ control/validation hiện có; v2/v4
   đều chưa được duyệt deployment. Không mặc định đổi initialization là đủ sửa gate.
-- [ ] Tạo config/run mới: ghi input size, seed, optimizer, LR, epochs/patience,
+- [x] Tạo config/run mới: ghi input size, seed, optimizer, LR, epochs/patience,
    sampler version nếu dùng, dataset/manifest hash và checkpoint đầu vào.
-- [ ] Xác minh data gate P1 và môi trường GPU trước khi chạy.
+- [x] Xác minh data gate P1 và môi trường GPU trước khi chạy.
 - [ ] Chạy một thí nghiệm có giới hạn; giữ class masking và tắt augmentation trộn ảnh.
 - [ ] Ghi log đầy đủ, kiểm tra lỗi/NMS warnings và kết quả inline/final validator.
 - [ ] Lưu checkpoint/hash và báo cáo thời gian, trạng thái hoàn tất/dừng.
@@ -214,16 +226,20 @@ Không đánh dấu PASS bằng benchmark CPU Windows hay thời gian GPU traini
 
 1. Đọc đầy đủ `AGENTS.md`, `CLAUDE.md`, entry mới nhất `CHANGES.log`, README và
    file này; chạy `git status`/`git log`. Xác định owner, giữ dirty work.
-2. Tiếp tục **P1: labelled CrowdHuman pilot** theo CROWDHUMAN_ASSESSMENT.md và
+2. **V5 đã sẵn sàng, dừng trước train theo yêu cầu người dùng.** Đọc
+   V5_TRAINING_PREPARATION.md; chạy read-only readiness verifier và kiểm tra Git/GPU
+   trước run nếu người dùng yêu cầu tiếp tục. Không tự khởi chạy train ngay khi đọc
+   handover. Không acquire, compose hoặc review lại các artifact đã hoàn tất.
+   Bằng chứng lịch sử **P1: labelled CrowdHuman pilot** tại CROWDHUMAN_ASSESSMENT.md và
    PERSON_DATA_STRATEGY.md. Annotation prefilter/preview không phải data gate.
    60 ảnh gốc/621 box đã ghép; gallery trên E: tại
    `reports/crowdhuman-pilot-box-review-v1`. Review đã chốt 49 ACCEPT/11 EXCLUDE,
    vbox clipped, near-hash candidate false positive. Derivative 49 ảnh/507 box tại
    `processed/crowdhuman-reviewed-pilot-v1`, chưa được training.
-   Expansion 500 đã acquire/audit, không tải lại. Tiếp tục review 30 frozen IDs
+   Expansion 500 đã acquire/audit/review 30 frozen IDs; xem
    tại `reports/crowdhuman-expansion-500-review-v1/gallery/bundle.json` trên E:;
-   22 near candidates đã adjudicate, không có overlap xác nhận. Sau source gate,
-   chuyển expansion/compose/audit joint với hazard rehearsal và scope.
+   22 near candidates đã adjudicate, không có overlap xác nhận. 499 đã chuyển,
+   joint v3 đã audit với hazard rehearsal và scope, gate PASS_WITH_LIMITATIONS.
    Giữ tiến độ review box 42/56 và kiểm tra source annotation khi quay lại review;
    chọn can thiệp theo bằng chứng. Không bắt buộc sampling trước intake nguồn mới.
    Không chạy lại mining, không train/export ngay từ manifest hiện tại.

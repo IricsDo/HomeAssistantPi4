@@ -321,3 +321,31 @@ Tests **141/141**, Ruff PASS. No new dependencies, secret access or background j
 | near-adjudication-v1.json | 9151cb4fa3dbaf4920a4f3783f262666698078925ed7cdf9edbda368826a7d04 |
 | gallery/bundle.json | ee395774d044a87daf5d9ea2ef747adbaec7b630441c83bfc3716a438070cedd |
 | split-preservation.json | d390a8d7aee0a85ba4eee09bfa4ae10cd397174dd68cbae86bd858a53b13ee1f |
+
+## Review, joint audit and preparation milestone (2026-10-05)
+
+The pending review above is now completed: all 30 frozen galleries inspected,
+29 accepted and record 292 excluded (athletics graphic/photomontage). Original
+resolution crops resolved ambiguities in records 60, 194, 264, 278 and 353.
+No new systematic box issue was found in this bounded sample. The other 470
+images received automated screening only; annotation completeness is not proved.
+
+Converted 499 expansion images with 5,303 existing person boxes. Combined with
+the 49 accepted pilot images, the intervention adds **548 images / 5,810 boxes**.
+Original images/annotations are preserved. Person-only scope and clipped vbox
+conversion are retained; six converted overlays were also inspected.
+
+`E:/HomeAssistantPi4/processed/indoor-partial-joint-v3` contains 15,448 train,
+4,301 val and 4,297 test images. All base scopes and hazard rehearsal are retained;
+val/test index bytes are unchanged. Full index audit: zero structure errors,
+exact duplicates or annotation/scope conflicts. All new boxes match source vbox
+conversion within rounding tolerance. Data gate: **PASS_WITH_LIMITATIONS** for
+a bounded class-masked experiment, not model quality or deployment approval.
+Mixed domains/staging, unsampled completeness and license restrictions remain.
+
+V5 config and read-only readiness verifier are prepared. GPU and initialization
+checkpoint checks passed. **Stopped before training at the user's request.**
+No new training, predictions or export; target run directory remains absent.
+Tests 153/153, Ruff PASS. Full paths, hashes, limitations and future commands:
+[V5 preparation](V5_TRAINING_PREPARATION.md). Authoritative evidence is under
+`E:/HomeAssistantPi4/reports/indoor-partial-joint-v3-audit`.

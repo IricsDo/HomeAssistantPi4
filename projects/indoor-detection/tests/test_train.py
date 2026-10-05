@@ -30,6 +30,19 @@ def test_train_parser_accepts_phase3_overrides() -> None:
     assert args.fraction == pytest.approx(0.05)
 
 
+def test_v5_config_adds_crowdhuman_without_mixing_or_overwriting_runs() -> None:
+    config = _load_config(Path("configs/train_indoor_v5_512.yaml"))
+    assert config["imgsz"] == 512 and config["epochs"] == 12
+    assert config["patience"] == 5 and config["seed"] == 42
+    assert config["model"].endswith("indoor_partial_joint_yolo26n_v2/weights/best.pt")
+    assert config["data"].endswith("indoor-partial-joint-v3/dataset.yaml")
+    assert config["name"] == "indoor_partial_joint_yolo26n_v5_crowdhuman_512"
+    assert config["exist_ok"] is False and config["single_cls"] is False
+    assert config["optimizer"] == "AdamW" and config["lr0"] == pytest.approx(0.00015)
+    for augmentation in ("mosaic", "mixup", "cutmix", "copy_paste"):
+        assert config[augmentation] == 0.0
+
+
 def test_detects_class_scope_manifest_in_dataset_yaml(tmp_path) -> None:
     dataset = tmp_path / "dataset.yaml"
     dataset.write_text("class_scope_manifest: scopes.json\n", encoding="utf-8")

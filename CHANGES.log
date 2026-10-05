@@ -2168,3 +2168,82 @@ validation state.
     decisions are near-adjudication-v1.json. No need to rerun acquisition/screening.
   - Full artifact hash table and tooling notes in CROWDHUMAN_ASSESSMENT.md.
   - No background process remains after completed acquisition/audit jobs.
+
+## [2026-10-05 22:57 +07:00] - Training preparation milestone from OpenAI Codex
+
+- **Current Task:** Complete P1 person-data intervention and prepare bounded P2 v5.
+- **Status:** READY_FOR_REVIEW (STOPPED BEFORE TRAIN at explicit user request)
+- **Current Owner:** OpenAI Codex
+- **Completed in this session:**
+  - Read full instructions, README, delivery plan and latest handover; inspected
+    Git/implementation. Continued from main 032e765. Preserved the pre-existing
+    untracked source_box_review.py unchanged and excluded it from staging.
+  - Inspected all 30 frozen expansion annotation galleries and original-resolution
+    ambiguity crops: 29 ACCEPT, record 292 EXCLUDE (graphic/photomontage).
+    Source gate PASS_WITH_LIMITATIONS; remaining 470 images were only automatically
+    screened, never claimed individually visually reviewed.
+  - Converted 499 expansion images / 5,303 person boxes. With accepted pilot,
+    added 548 images / 5,810 boxes into a fresh joint v3 index derivative.
+    Preserved originals, all base scopes, hazard rehearsal and val/test index bytes.
+  - Joint counts: train 15,448; val 4,301; test 4,297 (24,046 total).
+    Train smoke/fire/person boxes: 4,124 / 5,549 / 29,421.
+    Full structure/label/scope/distribution audit passed: zero errors, exact
+    duplicates or annotation/scope conflicts. Inherited reviewed near-overlap
+    evidence; all 5,810 new boxes match clipped source vbox conversion. Inspected
+    six converted overlays. Joint data gate PASS_WITH_LIMITATIONS.
+  - Added guarded scoped intake composition and a read-only readiness verifier,
+    with tests for immutable holdouts/scopes, hashes, invalid inputs and readiness.
+    No new dependencies. No secret access or changes to projects/.env.
+  - Prepared train_indoor_v5_512.yaml: v2 best.pt initialization, joint v3,
+    512 px, max 12 epochs, AdamW lr0 0.00015, seed 42; mixing augmentations off.
+    Checkpoint CPU load/canonical names and RTX 5070 Laptop CUDA availability
+    checked. Target v5 run directory absent. No training/inference/export started.
+  - Updated PROJECT_PLAN (P1 completed; P2 prepared, not executed), CLAUDE,
+    both READMEs, source assessment and V5_TRAINING_PREPARATION.md.
+- **Unfinished / Next Steps (CRITICAL):**
+  - [ ] STOP here. Launch no training until a subsequent user request to resume.
+  - [ ] On resume, read V5_TRAINING_PREPARATION.md, inspect Git and recheck the
+    frozen readiness evidence/GPU. Reaudit changed underlying data if applicable.
+  - [ ] Only after resume and successful checks, run the bounded v5 config,
+    then validation calibration/scoped evaluation and person/hazard quality gates.
+  - [ ] Keep export closed until quality approval; Pi/camera work awaits hardware.
+- **Known Blocks / Issues:**
+  - Data gate opened with documented limits, not model quality approval. Person
+    F1>=0.65 and recall>=0.60; smoke/fire recall>=0.90 remain unchanged.
+  - 470 expansion images not individually visually inspected. Mixed indoor/outdoor
+    and staged scenes, semantic completeness and crop/mirror/session overlap
+    limitations remain. Original CrowdHuman non-commercial license applies.
+  - Historical v2 test use must be disclosed; keep test closed during v5 selection.
+  - Earlier optional 42/56 source-box review/sampling remains untouched.
+- **Validation:**
+  - Build: NOT APPLICABLE (dataset preparation)
+  - Tests: PASS (153/153, 7.00 seconds), project .venv python -m pytest
+    -p no:cacheprovider --basetemp C:/Users/Public/Documents/indoor-ready-20261005b
+  - Typecheck: NOT CONFIGURED
+  - Lint: PASS (.venv python -m ruff check . --no-cache)
+  - Live joint/conversion/data gate/readiness: PASS with documented limits.
+    Verifier reports training_started=false and execution_authorized=false.
+  - git diff --check: PASS
+- **Git State:**
+  - Branch: main
+  - Last Commit: 032e765 feat: acquire filtered CrowdHuman expansion with verified resume
+  - Working Tree: DIRTY (this milestone prepared for scoped commit/push)
+- **Uncommitted Changes / Active Files:**
+  - CHANGES.log, CLAUDE.md, README.md; project README.md, PROJECT_PLAN.md,
+    docs/CROWDHUMAN_ASSESSMENT.md, docs/V5_TRAINING_PREPARATION.md,
+    configs/train_indoor_v5_512.yaml, src/indoor_detection/crowdhuman_intake.py,
+    tests/test_crowdhuman_intake.py, tests/test_train.py.
+  - Preserved unrelated untracked source_box_review.py; exclude from commit.
+- **Notes for Next Agent:**
+  - Joint: E:/HomeAssistantPi4/processed/indoor-partial-joint-v3/dataset.yaml.
+    Reports: E:/HomeAssistantPi4/reports/indoor-partial-joint-v3-audit.
+  - Read-only command from project: .venv/Scripts/python.exe -m
+    indoor_detection.crowdhuman_intake --readiness
+    E:/HomeAssistantPi4/reports/indoor-partial-joint-v3-audit/train-readiness.json
+  - Target run: indoor_partial_joint_yolo26n_v5_crowdhuman_512, not created.
+    Full artifact/config/checkpoint hashes and future commands in V5 preparation.
+  - Readiness is a frozen preparation snapshot, not continuous image monitoring.
+    Git line-ending changes may affect config byte hash: inspect changes and use
+    separately reviewed refreshed evidence; never bypass the guard silently.
+  - All large data/reports/checkpoints remain on E, Python venv stays in project
+    on C. All validation jobs finished; no background job remains.

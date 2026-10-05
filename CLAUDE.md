@@ -28,7 +28,10 @@ Do not begin implementation until the current task and ownership are clear.
   to NCNN for Raspberry Pi 4 4 GB.
 - Current branch: `main`.
 - Last completed training: v4 512 px, 12 epochs, with best checkpoint at epoch 11.
-- Current owner: OpenAI Codex; status is `IN_PROGRESS`. If the user asks Claude
+- Current owner: OpenAI Codex; preparation status is `READY_FOR_REVIEW`.
+  User requested stop before training: v5 is prepared, not started. See
+  docs/V5_TRAINING_PREPARATION.md. Do not launch training without a subsequent user request.
+  If the user asks Claude
   Code to continue, that request is the explicit handover authorization.
 - Tests at this snapshot: read the latest `CHANGES.log` entry for the current
   count.
@@ -60,8 +63,13 @@ Do not begin implementation until the current task and ownership are clear.
   approval. Frozen 500-ID expansion is acquired/paired (5,313 boxes), all images
   decode, visible geometry has no flagged issues, exact overlap is zero against
   current corpus plus accepted pilot. All 22 near-hash candidates adjudicated as
-  unrelated scenes; crop/mirror/session limitations remain. Next: review the 30
-  frozen annotation galleries (seed 44), then scoped conversion/joint audit.
+  unrelated scenes; crop/mirror/session limitations remain. All 30 annotation
+  spot-checks now reviewed: 29 ACCEPT/1 graphic EXCLUDE; no new systematic box issue.
+  Converted 499 expansion images/5,303 boxes; 470 were automatically screened,
+  not individually visually reviewed. Joint v3: 15,448/4,301/4,297 train/val/test,
+  all base images/scopes/hazard rehearsal preserved, holdout indexes byte-identical.
+  Automated and visual data gate PASS_WITH_LIMITATIONS; read-only preflight PASS.
+  Config train_indoor_v5_512.yaml starts from v2, 512px/max12 epochs; no train yet.
   See docs/CROWDHUMAN_ASSESSMENT.md for exact paths/hashes/commands.
 
 Read the newest entry in `CHANGES.log` for exact uncommitted files, dataset paths,

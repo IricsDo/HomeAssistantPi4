@@ -29,8 +29,11 @@ shortlist và ảnh hưởng của góc rộng. CrowdHuman pilot đã review đ�
 49 ACCEPT/11 EXCLUDE, chọn vbox clipped và chuyển 49 ảnh/507 box sang YOLO person=2.
 Exact/near duplicate screening không xác nhận overlap; dHash có giới hạn crop/mirror.
 Đã acquire đủ bounded intake 500 ảnh/5.313 box; decode/geometry và exact overlap đạt.
-22 near-hash candidates đã review, đều khác cảnh. Gallery 30 spot-check IDs chờ
-review annotation; chưa chuyển expansion sang YOLO, ghép joint hoặc duyệt training.
+22 near-hash candidates đã review, đều khác cảnh. Review 30: nhận 29/loại 1 ảnh
+đồ họa; 499 ảnh/5.303 box đã chuyển YOLO, 470 ảnh chỉ auto-screen.
+Joint v3 gồm 15.448 train/4.301 val/4.297 test; data gate PASS_WITH_LIMITATIONS.
+Config v5 và read-only preflight đã sẵn sàng; **dừng trước train theo yêu cầu người
+dùng**, v5 chưa chạy. Xem [V5 preparation](docs/V5_TRAINING_PREPARATION.md).
 Xem [assessment](docs/CROWDHUMAN_ASSESSMENT.md).
 
 - [x] Baseline smoke-only và checkpoint tham chiếu đã được khóa.
