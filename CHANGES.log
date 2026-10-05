@@ -2015,3 +2015,82 @@ validation state.
     if needed; do not run the acquisition CLI against existing output.
   - No background process remains after acquisition/hash jobs completed. No train,
     export, source annotation edits, package installs or secret access this session.
+
+## [2026-10-05 21:33 +07:00] - CrowdHuman pilot review milestone from OpenAI Codex
+
+- **Current Task:** P1 bounded additional person-data intake.
+- **Status:** IN_PROGRESS (60-image pilot review/near-screen/conversion completed)
+- **Current Owner:** OpenAI Codex
+- **Completed in this session:**
+  - Read full instructions/plan/assessment/README and latest handover. Started main
+    a66bdf1 with only source_box_review.py untracked; preserved it unchanged.
+  - Inspected all 60 paired vbox/fbox galleries and original-resolution crops for
+    small/suspicious cases. Review-final: 49 ACCEPT, 11 EXCLUDE. Pilot domains:
+    34 outdoor, 21 indoor, 3 graphic/composite, 2 uncertain; not source-wide statistics.
+  - Excluded 05/15/43 for unresolved ambiguity, 20/35/51 for graphic content,
+    31/42/47/53/58 for repeated/inconsistent person assignments supported by
+    original crops and annotation coordinates. Case 48 resolved as distinct people.
+    No source annotation edits or prediction-based labelling.
+  - Chose vbox clipped to image as person convention; contrasted amodal fbox and
+    five existing COCO examples (including occluded passenger and bench sitter).
+    This is a project intake decision, not a universal COCO policy assertion.
+  - Added near-overlap screen reusing existing dHash utility, SHA-verifying all
+    23,498 corpus files. Threshold <=5 predeclared; one train candidate, no
+    holdout/internal candidates. Pilot27 campus group versus rotated campfire:
+    visually unrelated, false positive. Crop/mirror/session coverage remains limited.
+  - Converted accepted 49 unchanged images/507 visible boxes to YOLO class2 with
+    person-only scope records and provenance/hash manifest; label parsing/copy
+    hash checks passed. No dataset YAML/joint indexes or training approval yet.
+  - Freeze bounded expansion: exclude all pilot IDs; whole-image exclusion for
+    invalid heads or head intersection/min(area)>=0.5. 481/2,815 excluded, 0
+    invalid heads, 2,334 remaining. Freeze 500 IDs seed43, 30 review IDs seed44.
+    Filter is conservative, not proof of duplicate labels; no blanket source PASS.
+  - Added regression coverage for near-hash candidates, immutable/hash-bound
+    conversion and clipping, expansion filtering/seed/sample bounds. No packages added.
+  - Updated assessment, PROJECT_PLAN, CLAUDE and both READMEs.
+- **Unfinished / Next Steps (CRITICAL):**
+  - [ ] Acquire frozen expansion-plan-500-v1.json on E: using command in assessment.
+    Do not overwrite pilot or retry against existing directories.
+  - [ ] Review the frozen 30 expansion IDs and flagged cases, not every image.
+    Stop joint conversion if a new systematic box/completeness issue emerges.
+  - [ ] Exact/near overlap screen/adjudication against current corpus and holdout;
+    preserve split membership. Do not evaluate test predictions for source selection.
+  - [ ] If source gate passes, compose new scoped joint derivative retaining all
+    smoke/fire rehearsal, approved pilot and expansion. Audit structure, labels,
+    class distribution, duplicate/conflicts and visual gate before any new training.
+  - [ ] Earlier sampling/source-box review (42/56 provisional) remains optional and
+    untouched; do not assume its manifest is approved for weighting.
+- **Known Blocks / Issues:**
+  - Person quality/export gate closed, intervention joint data gate not approved.
+  - 60-image sample and conservative head filter do not certify all source labels;
+    vbox conversion uses existing annotation, not redraw/pseudo-labels.
+  - dHash does not exhaustively catch crop/mirror/heavy edits or same-session images.
+  - Pi/camera availability/mounting still unconfirmed. No new model run/export.
+- **Validation:**
+  - Build: NOT APPLICABLE (dataset preparation, no application build)
+  - Tests: PASS (134/134, 7.03 seconds); project .venv python -m pytest
+    -p no:cacheprovider --basetemp C:/Users/Public/Documents/indoor-pilot-review-20261005c
+  - Typecheck: NOT CONFIGURED
+  - Lint: PASS (.venv python -m ruff check . --no-cache)
+  - Live pilot label parse/copied-image hashes/near-screen corpus hashes: PASS
+  - Joint intervention data gate: NOT RUN, training_allowed=false
+- **Git State:**
+  - Branch: main
+  - Last Commit: a66bdf1 feat: acquire and pair frozen CrowdHuman pilot
+  - Working Tree: DIRTY (milestone prepared for scoped commit/push)
+- **Uncommitted Changes / Active Files:**
+  - CHANGES.log, CLAUDE.md, README.md; project README.md, PROJECT_PLAN.md,
+    docs/CROWDHUMAN_ASSESSMENT.md, src/indoor_detection/crowdhuman_pilot.py,
+    tests/test_crowdhuman_pilot.py
+  - Preserved untracked source_box_review.py, excluded from milestone commit
+- **Notes for Next Agent:**
+  - Reports: E:/HomeAssistantPi4/reports/crowdhuman-pilot-box-review-v1:
+    review-final-v1.json, near-overlap-v1.json, near-adjudication-v1.json,
+    expansion-plan-500-v1.json, head-pair-crops-v1/, context-crops-v1/.
+    detail-crops-v1 contains exploratory rough crops; use targeted head/context
+    crops and original images for authoritative review context.
+  - Derivative: E:/HomeAssistantPi4/processed/crowdhuman-reviewed-pilot-v1/manifest.json.
+  - Full artifact SHA-256 table and commands in CROWDHUMAN_ASSESSMENT.md.
+  - Frozen 500 originals are not yet acquired; their 30 spot-check IDs are already
+    fixed independently of model output. No additional packages, secret access,
+    changes to old split indexes or background processes remain this session.

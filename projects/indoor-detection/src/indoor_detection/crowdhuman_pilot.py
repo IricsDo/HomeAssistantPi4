@@ -6,14 +6,18 @@ import argparse
 import hashlib
 import io
 import json
+import random
 import re
+import shutil
 import urllib.request
 import zipfile
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from typing import Any
 
 from PIL import Image, ImageDraw
 
+from indoor_detection.compose_dataset import _dhash, _hamming_distance
 from indoor_detection.crowdhuman_assessment import _valid_box
 from indoor_detection.dataset import DatasetValidationError, sha256_file
 
@@ -264,6 +268,188 @@ def audit_exact_overlap(acquisition: Path, registry: Path, output: Path) -> dict
                               "Near-duplicate and visual annotation gates remain pending"]}
     with output.open("x", encoding="utf-8") as stream:
         stream.write(json.dumps(report, indent=2) + "\n")
+    return report
+
+
+def audit_near_overlap(
+    acquisition: Path, registry: Path, output: Path, *, max_distance: int = 5, workers: int = 8
+) -> dict[str, Any]:
+    """Screen all pilot/corpus pairs using the existing 64-bit dHash convention."""
+    if output.exists():
+        raise FileExistsError(output)
+    if not 0 <= max_distance <= 64:
+        raise ValueError("Invalid Hamming distance")
+    pilot = json.loads((acquisition / "acquisition.json").read_text(encoding="utf-8"))
+    corpus = json.loads(registry.read_text(encoding="utf-8"))
+    for row in pilot["records"]:
+        if sha256_file(Path(row["image_path"])) != row["sha256"]:
+            raise DatasetValidationError("Pilot image hash changed")
+
+    def fingerprint(row: dict[str, Any]) -> dict[str, Any]:
+        path = Path(row["path"])
+        if sha256_file(path) != row["sha256"]:
+            raise DatasetValidationError("Corpus image changed since hash registry")
+        return {**row, "dhash": f"{_dhash(path):016x}"}
+
+    with ThreadPoolExecutor(max_workers=max(1, workers)) as pool:
+        fingerprints = list(pool.map(fingerprint, corpus["records"]))
+    selected = [{"image_id": row["image_id"],
+                 "dhash": f"{_dhash(Path(row['image_path'])):016x}"}
+                for row in pilot["records"]]
+    matches = []
+    internal = []
+    for index, row in enumerate(selected):
+        value = int(row["dhash"], 16)
+        for existing in fingerprints:
+            distance = _hamming_distance(value, int(existing["dhash"], 16))
+            if distance <= max_distance:
+                matches.append({"image_id": row["image_id"], "distance": distance,
+                                "corpus": existing})
+        for other in selected[:index]:
+            distance = _hamming_distance(value, int(other["dhash"], 16))
+            if distance <= max_distance:
+                internal.append({"image_ids": [other["image_id"], row["image_id"]],
+                                 "distance": distance})
+    report = {"training_allowed": False, "method": "64-bit dHash, grayscale 9x8 BILINEAR",
+              "max_hamming_distance": max_distance, "pilot_images": len(selected),
+              "corpus_images": len(fingerprints), "corpus_candidates": matches,
+              "internal_candidates": internal, "pilot_fingerprints": selected,
+              "corpus_fingerprints": fingerprints, "registry_sha256": sha256_file(registry),
+              "acquisition_sha256": sha256_file(acquisition / "acquisition.json"),
+              "limitations": ["Candidates require visual adjudication; similarity is not identity",
+                              "Not exhaustive for crops, mirrors, edits or same-session frames",
+                              "No model scores or holdout performance used"]}
+    with output.open("x", encoding="utf-8") as stream:
+        stream.write(json.dumps(report, indent=2) + "\n")
+    return report
+
+
+def freeze_expansion_plan(
+    annotations: Path, audit_path: Path, review_path: Path, output: Path,
+    *, sample_size: int = 500, seed: int = 43,
+) -> dict[str, Any]:
+    """Freeze a bounded train-only expansion after conservative head-overlap exclusion."""
+    if output.exists():
+        raise FileExistsError(output)
+    audit = json.loads(audit_path.read_text(encoding="utf-8"))
+    review = json.loads(review_path.read_text(encoding="utf-8"))
+    if audit["annotation_sha256"] != sha256_file(annotations):
+        raise DatasetValidationError("Expansion annotations do not match audit")
+    eligible = {row["image_id"] for row in audit["records"] if row["provisionally_eligible"]}
+    pilot_ids = {row["image_id"] for row in review["records"]}
+    eligible -= pilot_ids
+    selected = []
+    overlap_excluded = invalid_excluded = 0
+    with annotations.open(encoding="utf-8") as stream:
+        for line in stream:
+            row = json.loads(line)
+            if row["ID"] not in eligible:
+                continue
+            heads = [box.get("hbox") for box in row["gtboxes"]]
+            if not all(_valid_box(head) for head in heads):
+                invalid_excluded += 1
+                continue
+            suspicious = False
+            for index, (x, y, w, h) in enumerate(heads):
+                for X, Y, W, H in heads[:index]:
+                    intersection = (max(0, min(x + w, X + W) - max(x, X))
+                                    * max(0, min(y + h, Y + H) - max(y, Y)))
+                    if intersection / min(w * h, W * H) >= 0.5:
+                        suspicious = True
+                        break
+                if suspicious:
+                    break
+            if suspicious:
+                overlap_excluded += 1
+            else:
+                selected.append(row["ID"])
+    if sample_size < 1 or sample_size > len(selected):
+        raise DatasetValidationError("Expansion sample size exceeds filtered population")
+    ids = random.Random(seed).sample(sorted(selected), sample_size)
+    plan = {"schema_version": 1, "training_allowed": False, "seed": seed,
+            "sample_size": sample_size, "population_size": len(selected), "image_ids": ids,
+            "annotation_sha256": sha256_file(annotations), "audit_sha256": sha256_file(audit_path),
+            "pilot_review_sha256": sha256_file(review_path), "revision": REVISION,
+            "filter": "No body-ignore/invalid geometry; exclude all pilot IDs; valid hbox; "
+                      "whole-image exclusion when head intersection/min(area) >= 0.5",
+            "head_overlap_excluded": overlap_excluded, "invalid_head_excluded": invalid_excluded,
+            "selection": "Python random.Random(seed).sample from sorted filtered "
+                         "original train IDs",
+            "visual_spotcheck_ids": random.Random(44).sample(ids, min(30, len(ids))),
+            "visual_spotcheck_seed": 44,
+            "stop_condition": "Any new systematic box/completeness problem defers joint conversion",
+            "limitations": ["Head overlap is a conservative exclusion heuristic, "
+                            "not proof of error",
+                            "Does not detect every duplicate, graphic, crop or annotation omission",
+                            "Acquire, screen overlaps, spot-check and audit before training"]}
+    with output.open("x", encoding="utf-8") as stream:
+        stream.write(json.dumps(plan, indent=2) + "\n")
+    return plan
+
+
+def convert_reviewed_pilot(acquisition: Path, review_path: Path, output: Path) -> dict[str, Any]:
+    """Convert accepted visible-body boxes only; never approve joint training."""
+    review = json.loads(review_path.read_text(encoding="utf-8"))
+    if review.get("box_convention") != "vbox" or not review.get("reviewer"):
+        raise DatasetValidationError("Expected reviewed visible-body convention")
+    if (review.get("acquisition_sha256") != sha256_file(acquisition / "acquisition.json")
+            or review.get("annotations_sha256")
+            != sha256_file(acquisition / "pilot-annotations.json")):
+        raise DatasetValidationError("Review does not match acquisition/annotations")
+    acquired = json.loads((acquisition / "acquisition.json").read_text(encoding="utf-8"))
+    annotations = json.loads((acquisition / "pilot-annotations.json").read_text(encoding="utf-8"))
+    rows = {row["ID"]: row for row in annotations}
+    decisions = {row["image_id"]: row for row in review["records"]}
+    ids = {row["image_id"] for row in acquired["records"]}
+    if (set(decisions) != ids or len(decisions) != len(review["records"])
+            or any(row.get("decision") not in ("ACCEPT", "EXCLUDE")
+                   for row in decisions.values())):
+        raise DatasetValidationError("Pilot review incomplete or duplicated")
+    output.mkdir(parents=True, exist_ok=False)
+    images = output / "images" / "train"
+    labels = output / "labels" / "train"
+    images.mkdir(parents=True)
+    labels.mkdir(parents=True)
+    records = []
+    for receipt in acquired["records"]:
+        image_id = receipt["image_id"]
+        if decisions[image_id]["decision"] != "ACCEPT":
+            continue
+        if not re.fullmatch(r"[\w,.-]+", image_id) or image_id in (".", ".."):
+            raise DatasetValidationError("Unsafe derivative image ID")
+        source = Path(receipt["image_path"])
+        if sha256_file(source) != receipt["sha256"]:
+            raise DatasetValidationError("Pilot image hash changed")
+        with Image.open(source) as image:
+            width, height = image.size
+        lines = []
+        for box in rows[image_id]["gtboxes"]:
+            if (box["tag"] != "person" or box.get("extra", {}).get("ignore", 0)
+                    or not _valid_box(box.get("vbox"))):
+                raise DatasetValidationError("Unsafe accepted annotation")
+            x, y, w, h = box["vbox"]
+            left, top = max(0, x), max(0, y)
+            right, bottom = min(width, x + w), min(height, y + h)
+            if right <= left or bottom <= top:
+                raise DatasetValidationError("Empty visible body after clipping")
+            values = ((left + right) / (2 * width), (top + bottom) / (2 * height),
+                      (right - left) / width, (bottom - top) / height)
+            lines.append("2 " + " ".join(f"{value:.8f}" for value in values))
+        if not lines:
+            raise DatasetValidationError("Accepted image has no person boxes")
+        image_path = images / f"{image_id}.jpg"
+        label_path = labels / f"{image_id}.txt"
+        shutil.copyfile(source, image_path)
+        label_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+        records.append({"image_id": image_id, "image_path": str(image_path.resolve()),
+                        "label_path": str(label_path.resolve()), "known_classes": ["person"],
+                        "source_sha256": receipt["sha256"], "image_sha256": sha256_file(image_path),
+                        "label_sha256": sha256_file(label_path), "boxes": len(lines)})
+    report = {"training_allowed": False, "status": "CONVERTED_AWAITING_JOINT_INTAKE_GATE",
+              "box_convention": "vbox clipped to image", "class_id": 2,
+              "review_sha256": sha256_file(review_path), "records": records,
+              "images": len(records), "boxes": sum(row["boxes"] for row in records)}
+    (output / "manifest.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     return report
 
 

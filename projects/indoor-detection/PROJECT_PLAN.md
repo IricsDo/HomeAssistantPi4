@@ -66,8 +66,9 @@ deployment đầy đủ nếu P5 chưa có kết quả.
 - Người dùng cho phép chọn nguồn person phù hợp, kể cả outdoor/public area;
   dataset Leo Ueno chỉ tham khảo. Ưu tiên khảo sát nguồn mới trước chọn can thiệp;
   CrowdHuman đã audit annotation train và xem 10 domain previews; 2.875/15.000
-  ảnh qua prefilter không body-ignore. Chọn tiến tới labelled pilot, chưa đạt data
-  gate. Xem [assessment](docs/CROWDHUMAN_ASSESSMENT.md); các nguồn khác còn metadata.
+  ảnh qua prefilter không body-ignore. Pilot 60 đã chốt 49 ACCEPT/11 EXCLUDE;
+  derivative 49 ảnh/507 box đã chuyển, freeze expansion 500/spot-check 30 theo seed.
+  Joint data gate chưa mở. Xem [assessment](docs/CROWDHUMAN_ASSESSMENT.md).
 - Checkpoint/metric lịch sử: [V4 decision](docs/V4_EVALUATION_DECISION.md),
   [V3 decision](docs/V3_EVALUATION_DECISION.md), [V2 decision](docs/V2_EVALUATION_DECISION.md).
   Queue lịch sử vẫn `REVIEW_REQUIRED`; quyết định nằm trong file review riêng.
@@ -85,8 +86,12 @@ deployment đầy đủ nếu P5 chưa có kết quả.
 - [x] Freeze 60 IDs seed 42 trong 2.875 ứng viên; tải đúng training image members,
   ghép annotation và tạo gallery vbox/fbox. Exact SHA-256 overlap với 23.498 ảnh
   hiện có đạt; giữ nguyên split fingerprints. Chưa đạt visual/near-duplicate gate.
-- [ ] Review nhãn vbox/fbox của pilot, ignore/completeness và scale/pose. Chốt convention;
-  audit duplicate với corpus/holdout trước quyết định chuyển đổi.
+- [x] Review đủ 60 pilot và crop trường hợp nghi lỗi; nhận 49/loại 11, chọn vbox
+  clipped. Chuyển 49 ảnh/507 box sang YOLO person=2; exact/near screening và
+  adjudication pilot hoàn tất với giới hạn dHash. Chưa duyệt toàn bộ nguồn.
+- [ ] Tải bounded expansion 500 IDs seed 43 đã freeze từ 2.334 ứng viên sau lọc
+  head-overlap; review 30 IDs seed 44 và flagged cases, không bắt buộc xem cả 500.
+  Audit overlap và ghi quyết định nguồn trước compose; dừng nếu có lỗi nhãn hệ thống mới.
 - [ ] Chọn nguồn bằng bằng chứng; ghi provenance/metadata thiếu. Nếu bổ sung data,
   tạo derivative mới, scope person, giữ rehearsal hazard; kiểm tra augmentation
   families/video sessions và exact/near duplicate với corpus/holdout hiện tại.
@@ -208,8 +213,11 @@ Không đánh dấu PASS bằng benchmark CPU Windows hay thời gian GPU traini
 2. Tiếp tục **P1: labelled CrowdHuman pilot** theo CROWDHUMAN_ASSESSMENT.md và
    PERSON_DATA_STRATEGY.md. Annotation prefilter/preview không phải data gate.
    60 ảnh gốc/621 box đã ghép; gallery trên E: tại
-   `reports/crowdhuman-pilot-box-review-v1`. Notes 3/60 còn tạm;
-   tiếp tục review 04–60 và chốt convention trước conversion/near-duplicate gate.
+   `reports/crowdhuman-pilot-box-review-v1`. Review đã chốt 49 ACCEPT/11 EXCLUDE,
+   vbox clipped, near-hash candidate false positive. Derivative 49 ảnh/507 box tại
+   `processed/crowdhuman-reviewed-pilot-v1`, chưa được training.
+   Tiếp tục `expansion-plan-500-v1.json`: acquire 500, review 30 frozen IDs/flags,
+   overlap audit, rồi compose/audit joint với hazard rehearsal và scope.
    Giữ tiến độ review box 42/56 và kiểm tra source annotation khi quay lại review;
    chọn can thiệp theo bằng chứng. Không bắt buộc sampling trước intake nguồn mới.
    Không chạy lại mining, không train/export ngay từ manifest hiện tại.

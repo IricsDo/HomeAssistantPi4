@@ -1,7 +1,9 @@
 # CrowdHuman preliminary assessment
 
 Date: 2026-10-05. Reviewer: OpenAI Codex.
-Decision: **ADVANCE_TO_LABELLED_PILOT**, **training_allowed=false**.
+Current decision: **ADVANCE_TO_BOUNDED_FILTERED_INTAKE**, **training_allowed=false**.
+The 60-image review is complete; 49 images are converted. A separate 500-image
+expansion is frozen, not yet acquired or approved. Historical milestones follow.
 
 ## Policy and access
 
@@ -106,8 +108,8 @@ Pilot selection is now frozen: 60 IDs sampled by Python `random.Random(42)` from
 the sorted 2,875 provisional eligible IDs. Plan:
 `E:\HomeAssistantPi4\reports\crowdhuman-assessment-v1\labelled-pilot-plan.json`,
 SHA-256 `00b47f33466af5c0df1167f3982627c794eb8f091cf43ca5c63f3c15c88b95cc`.
-Selection uses annotations only, not image appearance or detector scores. Images
-are still awaiting acquisition and label review; do not confuse these IDs with
+Selection used annotations only, not image appearance or detector scores. At
+freeze time images awaited acquisition/review; do not confuse these IDs with
 the ten HF convenience preview rows.
 
 ## Original-image acquisition tooling
@@ -173,3 +175,78 @@ unknown hazard classes in these person-only images. Class scopes remain required
 | exact-overlap.json | af4dc10d96e6e750d8a0dbc93ee884047ca31320681a3fc4fa87a7c06c4a1a2e |
 | corpus hash registry | 88454fa205d927a292af02cf59f7a72ab5dd9bca5fe2634f24bcd0d042c81b99 |
 | review-progress-03.json | 38d5ad498d4095607634b503a17f15a6a18586c3ffb1467660493e16de41aa43 |
+
+## Pilot review and conversion milestone (2026-10-05)
+
+All 60 paired galleries were inspected, with original-resolution context/head
+crops for small or suspicious cases. Decisions in `review-final-v1.json`:
+**49 ACCEPT / 11 EXCLUDE**. The sample contains 34 outdoor, 21 indoor, three
+graphic/composite and two uncertain venue images; these counts describe this
+seeded pilot, not the whole source or the ten earlier convenience previews.
+
+Excluded gallery numbers: 05 (ambiguous background figure), 15 (ambiguous tiny
+overlapping heads), 20/35/51 (graphic compositions), 31/42/47/53/58 (repeated or
+inconsistent person assignments supported by original crops/coordinates), and
+43 (ambiguous rear-head assignments). No source labels were edited. Number 48's
+suspected duplication was resolved as two distinct people behind one another.
+Blur alone was not an exclusion rule. Review does not prove exhaustive labels
+for every distant person.
+
+Choose **vbox clipped to image bounds**, rather than amodal fbox, for this intake.
+The paired review shows fbox extending into hidden legs/background; comparison
+with five existing COCO labelled examples, including a bus passenger/head and a
+bench sitter, supports matching observed body extent. This is a project intake
+decision from inspected examples, not a universal claim about every COCO box.
+Head boxes remain diagnostic metadata, never a second person target.
+
+Converted derivative: `E:/HomeAssistantPi4/processed/crowdhuman-reviewed-pilot-v1`:
+49 unchanged original images, 507 YOLO boxes with class ID 2, scope `person` in
+`manifest.json`. All output labels parse and copied-image hashes match receipts.
+This directory has no training configuration; compose a new scoped joint index
+with hazard rehearsal and pass its gates before training.
+
+Near-duplicate screen revalidated every corpus file SHA-256, reused the project's
+64-bit dHash (9x8 grayscale BILINEAR) and compared all 60 x 23,498 pairs at Hamming
+distance <= 5, plus pilot pairs. One train candidate, zero holdout/internal
+candidates. Pilot 27 is a posed campus staff group; its matched corpus image is a
+rotated close campfire scene. Visual adjudication: unrelated scenes, false positive.
+Reports: `near-overlap-v1.json`, `near-adjudication-v1.json`. This screen does not
+guarantee detection of crops, mirrors, heavily edited or same-session images.
+
+### Frozen next intake
+
+Automatic approval of all 2,875 provisional images is deferred because the pilot
+exposes annotation anomalies. The next bounded intake excludes all 60 pilot IDs
+and whole images with invalid hbox or any head-pair intersection/min(area) >= 0.5.
+This conservative heuristic may exclude valid close/occluded people; it is not
+proof of duplicate annotation and does not repair labels. Among 2,815 remaining
+prefilter candidates, 481 are excluded for overlap, zero for invalid heads,
+leaving **2,334**. Freeze 500 IDs using `random.Random(43).sample` from sorted IDs.
+Freeze 30 visual spot-check IDs with seed 44 before acquisition/model inference.
+
+Plan: `expansion-plan-500-v1.json` in the pilot report directory. Stop joint
+conversion if spot-checks reveal a new systematic box/completeness problem.
+Review those 30 plus flagged cases; do not require manual inspection of all 500.
+Acquisition, duplicate screening/adjudication and the joint data gate remain
+required. The reviewed 49 can be retained separately; no images are added to the
+current train/val/test indexes yet, and no model training/export occurred.
+
+```powershell
+.venv\Scripts\python.exe -m indoor_detection.crowdhuman_pilot `
+  --plan E:/HomeAssistantPi4/reports/crowdhuman-pilot-box-review-v1/expansion-plan-500-v1.json `
+  --annotations E:/HomeAssistantPi4/raw/CrowdHuman-assessment/annotation_train.odgt `
+  --output E:/HomeAssistantPi4/raw/CrowdHuman-expansion-500-v1
+```
+
+Programmatic utilities: `audit_near_overlap(acquisition, corpus_registry, NEW_report)`,
+`convert_reviewed_pilot(acquisition, review, NEW_output)` and
+`freeze_expansion_plan(annotations, annotation_audit, pilot_review, NEW_plan)`.
+Fresh output protects existing artifacts. Tests 134/134 and Ruff PASS; no new packages.
+
+| New artifact | SHA-256 |
+|---|---|
+| review-final-v1.json | 62da8e22f017db5517f5a8bc500c4a4860973230467d6f062c10cacc197bba3a |
+| near-overlap-v1.json | ecc1dc9c37a2450a2f764bcf2bba1559ead1710636b434932dd5f294e0fcf04b |
+| near-adjudication-v1.json | 7c9efde3dc7603e0d29b1ce9d449ffd5516585ed293095b56f37eff4a1c04a13 |
+| converted manifest.json | 652235b771029afeaa2d09903691609fd0944a839eefe402e166ab94ccadddf1 |
+| expansion-plan-500-v1.json | 40c186386b12ba58b0d846640ad0be2124d6ddb3daa82703246dfd3f42dec48a |

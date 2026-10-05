@@ -25,9 +25,10 @@ Hướng tiếp theo là đánh giá nguồn person bổ sung, kể cả outdoor
 sampling là lựa chọn theo bằng chứng. Camera mục tiêu: Raspberry Pi Camera Module 3
 Wide IMX708 ~12 MP, autofocus. Vị trí lắp chưa xác định; xem
 [PERSON_DATA_STRATEGY.md](docs/PERSON_DATA_STRATEGY.md) về tiêu chí chọn nguồn,
-shortlist và ảnh hưởng của góc rộng. CrowdHuman pilot đã tải và ghép đủ 60 ảnh/
-621 box, tạo gallery và đạt exact duplicate audit với corpus hiện có. Review
-convention/completeness và near duplicates còn tiếp tục; chưa được duyệt training.
+shortlist và ảnh hưởng của góc rộng. CrowdHuman pilot đã review đủ 60 ảnh:
+49 ACCEPT/11 EXCLUDE, chọn vbox clipped và chuyển 49 ảnh/507 box sang YOLO person=2.
+Exact/near duplicate screening không xác nhận overlap; dHash có giới hạn crop/mirror.
+Đã freeze bounded intake 500 IDs và 30 spot-check IDs, chưa acquire hoặc duyệt training.
 Xem [assessment](docs/CROWDHUMAN_ASSESSMENT.md).
 
 - [x] Baseline smoke-only và checkpoint tham chiếu đã được khóa.

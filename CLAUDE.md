@@ -53,9 +53,13 @@ Do not begin implementation until the current task and ownership are clear.
   audited, 2,875 pass the conservative no-body-ignore prefilter, ten HF domain
   previews reviewed. Previews lack original ODGT IDs/labels; no box data gate
   passed. Original 60-ID pilot is now acquired/paired (621 boxes), with gallery
-  and exact file-overlap PASS against the current 23,498-image corpus. Visual
-  notes cover 3/60 provisionally; convention/completeness and near duplicates
-  remain pending. See docs/CROWDHUMAN_ASSESSMENT.md for review next steps.
+  and exact file-overlap PASS against the current 23,498-image corpus. Review is
+  complete: 49 accepted/11 excluded, vbox clipped chosen, 49 images/507 boxes
+  converted on E:. Near-hash screen's only train candidate is visually unrelated;
+  zero holdout candidates, with crop/mirror/session limitations. No whole-source
+  approval. Next: frozen 500-ID head-overlap-filtered expansion (seed 43), 30
+  frozen visual spot-checks (seed 44), overlap/joint audit before training.
+  See docs/CROWDHUMAN_ASSESSMENT.md for exact paths/hashes/commands.
 
 Read the newest entry in `CHANGES.log` for exact uncommitted files, dataset paths,
 checksums, known issues, and next commands. Do not rely only on this snapshot.

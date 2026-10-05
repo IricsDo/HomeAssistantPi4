@@ -10,6 +10,9 @@ from indoor_detection.crowdhuman_pilot import (
     RangeReader,
     acquire,
     audit_exact_overlap,
+    audit_near_overlap,
+    convert_reviewed_pilot,
+    freeze_expansion_plan,
     load_pilot,
     render_review,
 )
@@ -102,7 +105,7 @@ def test_acquisition_and_review(tmp_path, monkeypatch):
     monkeypatch.setattr("indoor_detection.crowdhuman_pilot.RangeReader", LocalReader)
     annotations = tmp_path / "train.odgt"
     annotations.write_text(json.dumps({"ID": "abc", "gtboxes": [
-        {"tag": "person", "vbox": [0, 0, 10, 20], "fbox": [-2, 0, 15, 40]}]}))
+        {"tag": "person", "vbox": [-2, -1, 12, 21], "fbox": [-2, 0, 15, 40]}]}))
     plan = tmp_path / "plan.json"
     plan.write_text(json.dumps({"image_ids": ["abc"], "sample_size": 1,
                                 "annotation_sha256": sha256_file(annotations)}))
@@ -125,6 +128,60 @@ def test_acquisition_and_review(tmp_path, monkeypatch):
     assert overlap["corpus_overlap"][0]["corpus_matches"][0]["split"] == "val"
     with pytest.raises(FileExistsError):
         audit_exact_overlap(output, registry, tmp_path / "overlap.json")
+    registry.write_text(json.dumps({"records": [{"sha256": result["records"][0]["sha256"],
+                                                "split": "val",
+                                                "path": str(output / "images/abc.jpg")}]}))
+    near = audit_near_overlap(output, registry, tmp_path / "near.json")
+    assert len(near["corpus_candidates"]) == 1
+    assert near["corpus_candidates"][0]["distance"] == 0
+    assert near["training_allowed"] is False
+    review_file = tmp_path / "review.json"
+    review_file.write_text(json.dumps({
+        "reviewer": "OpenAI Codex", "box_convention": "vbox",
+        "acquisition_sha256": sha256_file(output / "acquisition.json"),
+        "annotations_sha256": sha256_file(output / "pilot-annotations.json"),
+        "records": [{"image_id": "abc", "decision": "ACCEPT"}],
+    }))
+    converted = convert_reviewed_pilot(output, review_file, tmp_path / "converted")
+    assert converted["images"] == 1 and converted["boxes"] == 1
+    assert converted["training_allowed"] is False
+    assert (tmp_path / "converted/labels/train/abc.txt").read_text() == (
+        "2 0.25000000 0.33333333 0.50000000 0.66666667\n")
+    data = json.loads(review_file.read_text())
+    data["acquisition_sha256"] = "changed"
+    review_file.write_text(json.dumps(data))
+    with pytest.raises(DatasetValidationError, match="does not match"):
+        convert_reviewed_pilot(output, review_file, tmp_path / "converted-mismatch")
     (output / "images/abc.jpg").write_bytes(b"changed")
     with pytest.raises(DatasetValidationError, match="hash changed"):
         render_review(output, tmp_path / "review-changed")
+
+
+def test_near_invalid_distance(tmp_path):
+    with pytest.raises(ValueError, match="Hamming"):
+        audit_near_overlap(tmp_path, tmp_path / "registry.json", tmp_path / "out.json",
+                           max_distance=65)
+
+
+def test_expansion_filter_and_seed(tmp_path):
+    annotations = tmp_path / "train.odgt"
+    rows = [
+        {"ID": "pilot", "gtboxes": [{"hbox": [0, 0, 10, 10]}]},
+        {"ID": "good", "gtboxes": [{"hbox": [0, 0, 10, 10]}, {"hbox": [20, 0, 10, 10]}]},
+        {"ID": "overlap", "gtboxes": [{"hbox": [0, 0, 10, 10]}, {"hbox": [2, 0, 10, 10]}]},
+        {"ID": "invalid", "gtboxes": [{"hbox": [0, 0, 0, 10]}]},
+    ]
+    annotations.write_text("\n".join(json.dumps(row) for row in rows))
+    audit = tmp_path / "audit.json"
+    audit.write_text(json.dumps({"annotation_sha256": sha256_file(annotations),
+                                 "records": [{"image_id": row["ID"],
+                                              "provisionally_eligible": True} for row in rows]}))
+    review = tmp_path / "review.json"
+    review.write_text(json.dumps({"records": [{"image_id": "pilot"}]}))
+    plan = freeze_expansion_plan(annotations, audit, review, tmp_path / "plan.json", sample_size=1)
+    assert plan["image_ids"] == ["good"] and plan["population_size"] == 1
+    assert plan["head_overlap_excluded"] == 1 and plan["invalid_head_excluded"] == 1
+    assert plan["training_allowed"] is False
+    with pytest.raises(DatasetValidationError, match="sample size"):
+        freeze_expansion_plan(annotations, audit, review, tmp_path / "too-large.json",
+                              sample_size=2)

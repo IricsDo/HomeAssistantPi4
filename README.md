@@ -63,9 +63,10 @@ tại `E:\HomeAssistantPi4\reports\indoor-person-train-mining-v1\review-queue.js
 đã được review ảnh gốc: 56 ảnh có người và 35 ảnh âm được nhận để chuẩn bị
 sampling plan; 14 ảnh mơ hồ không được tăng trọng số. Manifest lưu hash ảnh,
 nhãn và membership của các split. Review box vẫn dở; sampling chỉ là lựa chọn.
-CrowdHuman đã qua annotation prefilter và domain preview; bước tiếp theo là
-pilot 60 ảnh gốc/621 box đã ghép nhãn và có gallery; exact duplicate audit đạt.
-Review box/convention và near duplicates còn tiếp tục. Chưa đạt data gate hoặc có training mới; xem
+CrowdHuman pilot đã review đủ 60 ảnh: nhận 49, loại 11; chọn vbox và chuyển
+49 ảnh/507 box sang YOLO. Exact/near duplicate screening không xác nhận overlap.
+Đã freeze kế hoạch bổ sung 500 ảnh và mẫu review 30 ảnh; joint data gate vẫn đóng,
+chưa có training mới. Xem
 [assessment](projects/indoor-detection/docs/CROWDHUMAN_ASSESSMENT.md).
 Benchmark Pi 4 và camera thật chờ phần cứng.
 
