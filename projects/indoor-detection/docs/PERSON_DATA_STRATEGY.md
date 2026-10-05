@@ -10,7 +10,10 @@ a required choice. Prioritize new-source assessment before committing to a
 sampling intervention. Sampling remains optional and cannot add missing scenes.
 Keep one YOLO26n detector, canonical smoke=0/fire=1/person=2, class scopes,
 the current frozen validation/test membership, and the existing quality gates.
-No dataset in the shortlist below has been approved or downloaded in this milestone.
+No new source has passed the training data gate. CrowdHuman train annotations
+and ten domain previews have now been acquired for assessment; original archive
+images and a labelled pilot remain pending. See
+[CROWDHUMAN_ASSESSMENT.md](CROWDHUMAN_ASSESSMENT.md).
 
 Outdoor person images are eligible training data. Indoor/outdoor is a context
 attribute, not a different output class. Similar body appearance can transfer,
@@ -54,11 +57,11 @@ Day/night illumination and exact camera variant also remain unspecified.
 These do not block source research; do not assume mounting geometry.
 P5 remains blocked until hardware is available for actual integration/benchmarking.
 
-## Candidate shortlist: metadata assessment only
+## Candidate shortlist: assessment, no training approval
 
 | Candidate | Potential contribution | Risks and next decision |
 |---|---|---|
-| CrowdHuman, original source | Dedicated person annotation; occlusion and crowded scenes; separate head, visible-body and full-body boxes | First inspect annotation policy and representative train examples. Choose one compatible box convention; never treat all three boxes as three people. Verify ignore-region support, completeness, scale and download access. Dense crowds may differ from home occupancy. Not selected yet. |
+| CrowdHuman, original source | Dedicated person annotation; occlusion and crowded scenes; separate head, visible-body and full-body boxes | Advances to labelled pilot after annotation audit/domain preview. 2,875 train images pass conservative no-body-ignore prefilter; original image/label pairing, box convention, completeness and duplicate gates pending. Dense crowds may differ from home occupancy. Not approved for training. |
 | Leo Ueno People Detection | Aggregates sources with varied scenes/cameras, including security-camera data | Reference alternative. Inspect exact version, individual source provenance and person aliases. Head/face/group labels are not automatically whole-person boxes. Audit duplicates and augmentation ancestry. Not selected from its published metrics. |
 | WiderPerson | Author paper describes diverse pedestrian scenarios beyond traffic | Backup candidate. Official landing page was inaccessible through the web tool in this session; acquisition/schema/ignore policy remain unverified. Do not replace missing primary evidence with an arbitrary mirror. |
 | Additional COCO train images | Existing converter/provenance, no new label format | Useful only if unsampled training images add missing coverage. Exclude all current holdout overlaps and resolve source crowd/annotation-policy questions before treating more COCO as a remedy. |
@@ -116,8 +119,9 @@ WiderPerson metadata is supported by the authors' paper; access is still pending
 
 ## Immediate continuation
 
-- Inspect CrowdHuman annotation/access policy and train previews first; compare
-  with the reference Roboflow source before selecting an acquisition.
+- CrowdHuman policy/annotation audit and domain preview are complete. Acquire
+  original train image members and review a seeded labelled pilot of provisional
+  eligible images before choosing box convention or creating processed data.
 - Preserve current source-box review: 42/56 images have provisional visual notes;
   suspected duplicate/completeness issues require comparison with original COCO
   annotations. No final box gate or weighting approval has been issued.

@@ -65,7 +65,9 @@ deployment đầy đủ nếu P5 chưa có kết quả.
   dataset nguồn. Sampling chưa triển khai và không còn là bước bắt buộc.
 - Người dùng cho phép chọn nguồn person phù hợp, kể cả outdoor/public area;
   dataset Leo Ueno chỉ tham khảo. Ưu tiên khảo sát nguồn mới trước chọn can thiệp;
-  CrowdHuman, Leo Ueno, WiderPerson và mở rộng COCO mới chỉ ở mức metadata.
+  CrowdHuman đã audit annotation train và xem 10 domain previews; 2.875/15.000
+  ảnh qua prefilter không body-ignore. Chọn tiến tới labelled pilot, chưa đạt data
+  gate. Xem [assessment](docs/CROWDHUMAN_ASSESSMENT.md); các nguồn khác còn metadata.
 - Checkpoint/metric lịch sử: [V4 decision](docs/V4_EVALUATION_DECISION.md),
   [V3 decision](docs/V3_EVALUATION_DECISION.md), [V2 decision](docs/V2_EVALUATION_DECISION.md).
   Queue lịch sử vẫn `REVIEW_REQUIRED`; quyết định nằm trong file review riêng.
@@ -77,9 +79,12 @@ deployment đầy đủ nếu P5 chưa có kết quả.
 - [x] Ghi nhận Camera Module 3 Wide và quyết định cho phép nguồn person outdoor.
 - [x] Lập shortlist, tiêu chí và protocol tại
   [PERSON_DATA_STRATEGY.md](docs/PERSON_DATA_STRATEGY.md); chưa chọn/tải nguồn mới.
-- [ ] Khảo sát annotation/access policy và train examples của CrowdHuman trước;
-  so với nguồn Roboflow tham khảo. Kiểm tra semantics, ignore, scale, pose và
-  coverage; không chọn bằng metric của model khác.
+- [x] Khảo sát CrowdHuman annotation/access policy, audit 15.000 train annotation
+  records và review 10 domain previews; so sơ bộ semantics với Roboflow tham khảo.
+  Preview chưa ghép annotation nên không thay thế visual box gate.
+- [ ] Tải training image members cho pilot; chọn seed/IDs trong 2.875 ứng viên,
+  review nhãn vbox/fbox, ignore/completeness và scale/pose. Chốt convention;
+  audit duplicate với corpus/holdout trước quyết định chuyển đổi.
 - [ ] Chọn nguồn bằng bằng chứng; ghi provenance/metadata thiếu. Nếu bổ sung data,
   tạo derivative mới, scope person, giữ rehearsal hazard; kiểm tra augmentation
   families/video sessions và exact/near duplicate với corpus/holdout hiện tại.
@@ -198,7 +203,8 @@ Không đánh dấu PASS bằng benchmark CPU Windows hay thời gian GPU traini
 
 1. Đọc đầy đủ `AGENTS.md`, `CLAUDE.md`, entry mới nhất `CHANGES.log`, README và
    file này; chạy `git status`/`git log`. Xác định owner, giữ dirty work.
-2. Tiếp tục **P1: đánh giá nguồn person bổ sung** theo PERSON_DATA_STRATEGY.md.
+2. Tiếp tục **P1: labelled CrowdHuman pilot** theo CROWDHUMAN_ASSESSMENT.md và
+   PERSON_DATA_STRATEGY.md. Annotation prefilter/preview không phải data gate.
    Giữ tiến độ review box 42/56 và kiểm tra source annotation khi quay lại review;
    chọn can thiệp theo bằng chứng. Không bắt buộc sampling trước intake nguồn mới.
    Không chạy lại mining, không train/export ngay từ manifest hiện tại.

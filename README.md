@@ -62,8 +62,10 @@ Mining lỗi trên 7.000 ảnh training có scope person đã xong. Hàng đợi
 tại `E:\HomeAssistantPi4\reports\indoor-person-train-mining-v1\review-queue.json`
 đã được review ảnh gốc: 56 ảnh có người và 35 ảnh âm được nhận để chuẩn bị
 sampling plan; 14 ảnh mơ hồ không được tăng trọng số. Manifest lưu hash ảnh,
-nhãn và membership của các split. Còn kiểm tra box và triển khai sampling có
-giới hạn trước vòng fine-tune mới; chưa có training mới.
+nhãn và membership của các split. Review box vẫn dở; sampling chỉ là lựa chọn.
+CrowdHuman đã qua annotation prefilter và domain preview; bước tiếp theo là
+pilot ghép ảnh gốc với nhãn. Chưa đạt data gate hoặc có training mới; xem
+[assessment](projects/indoor-detection/docs/CROWDHUMAN_ASSESSMENT.md).
 Benchmark Pi 4 và camera thật chờ phần cứng.
 
 ## AI Agent Collaboration

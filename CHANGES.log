@@ -1870,3 +1870,82 @@ validation state.
     Fall detection requires a separately scoped temporal/video evaluation project.
   - No new packages, source annotation changes, dataset index edits or background
     jobs. No key was read/printed; venv remains C:, large artifacts remain E:.
+
+## [2026-10-05 20:43 +07:00] - CrowdHuman assessment milestone from OpenAI Codex
+
+- **Current Task:** P1 additional person-source assessment and labelled pilot.
+- **Status:** IN_PROGRESS (annotation audit/domain preview milestone completed)
+- **Current Owner:** OpenAI Codex
+- **Completed in this session:**
+  - Re-read instructions/plan/latest handover and inspected Git. Started main at
+    1f4eaed with only prior source_box_review.py untracked; preserved that file.
+  - Verified official CrowdHuman schema/terms: visible/full/head boxes, body versus
+    head ignore attributes, mask regions. Existing class masks do not provide
+    spatial ignore handling. Chose whole-image body-ignore exclusion for the pilot.
+  - Official Drive pages failed web fetch; acquired train ODGT from HF
+    sshao0516/CrowdHuman pinned revision d97203da87e348ea69f7a7633a57c21a956120a6.
+    Profile/author links support source identity but no independent original
+    publisher checksum was verified. Recorded official terms separately from HF tag.
+  - Added crowdhuman_assessment.py with immutable output and fail-closed schema
+    checks plus eight regression tests. It audits annotations only, not conversion.
+  - Audited 15,000 train records: 339,565 non-ignored person boxes, 99,227 body-ignore
+    boxes; 12,125 images have body-ignore. 2,875 images pass provisional no-ignore/
+    valid-body-geometry prefilter; none are approved for training.
+  - Downloaded/viewed ten deterministic HF train preview rows 0,11,22,33,44,55,66,
+    77,88,99; nine clearly indoor scenes, one sports composite. These are convenience
+    previews, not corpus statistics. HF gives null labels/no original ODGT IDs;
+    preview-to-label correspondence and clean-subset membership are not established.
+  - Decision ADVANCE_TO_LABELLED_PILOT: freeze 60 candidate IDs using Python
+    random.Random(42).sample from sorted 2,875 eligible IDs, without detector filtering.
+    Original candidate image members and their labelled review remain pending.
+  - Updated assessment/strategy, PROJECT_PLAN, CLAUDE and both READMEs; corrected
+    remaining README wording that implied sampling was mandatory.
+- **Unfinished / Next Steps (CRITICAL):**
+  - [ ] Acquire original CrowdHuman train image members for the frozen 60-ID pilot
+    on E: with revision/hash provenance. Do not use convenience previews as labels.
+  - [ ] Overlay paired vbox/fbox and review geometry/completeness/occlusion; choose
+    compatible body convention. Preserve whole-image ignore exclusions for now.
+  - [ ] Audit exact/near duplicate conflicts against current corpus and frozen
+    holdout; if pilot semantics fail, defer CrowdHuman and assess alternatives.
+  - [ ] Only after candidate approval build/audit a new joint derivative retaining
+    hazard rehearsal and class scopes. No training before intervention data gate.
+  - [ ] Retain prior 42/56 source-box review progress and unfinished code; no
+    original COCO labels, source indexes or existing review artifacts were changed.
+- **Known Blocks / Issues:**
+  - Person quality/export gate stays closed; no intervention data gate approved.
+  - Preview labels are unavailable; image bounds/completeness/overlap not audited.
+  - Full-body versus visible-body compatibility requires labelled review; 261,612
+    non-ignored person boxes have differing visible/full coordinates.
+  - Pi/camera hardware access still unconfirmed. Mount geometry undetermined.
+- **Validation:**
+  - Build: NOT APPLICABLE (assessment CLI, no build configured)
+  - Tests: PASS (124/124, 6.92 seconds); project .venv python -m pytest
+    -p no:cacheprovider --basetemp C:\Users\Public\Documents\indoor-crowdhuman-pytest-20261005a
+  - Typecheck: NOT CONFIGURED
+  - Lint: PASS (.venv\Scripts\python.exe -m ruff check . --no-cache)
+  - Live annotation audit: PASS as schema prefilter, training_allowed=false
+- **Git State:**
+  - Branch: main
+  - Last Commit: 1f4eaed docs:record-camera-person-data-and-future-detection-strategy
+  - Working Tree: DIRTY (assessment milestone prepared for commit/push)
+- **Uncommitted Changes:**
+  - CHANGES.log, CLAUDE.md, README.md, projects/indoor-detection/README.md
+  - projects/indoor-detection/PROJECT_PLAN.md
+  - projects/indoor-detection/docs/PERSON_DATA_STRATEGY.md, CROWDHUMAN_ASSESSMENT.md
+  - projects/indoor-detection/src/indoor_detection/crowdhuman_assessment.py
+  - projects/indoor-detection/tests/test_crowdhuman_assessment.py
+  - Preserved untracked src/indoor_detection/source_box_review.py, excluded from commit
+- **Active Files / Artifacts:**
+  - E:\HomeAssistantPi4\raw\CrowdHuman-assessment\annotation_train.odgt (80,017,502 bytes)
+  - E:\HomeAssistantPi4\reports\crowdhuman-assessment-v1\annotation-audit.json
+  - Same report directory: preview/, preview-hashes.json, hf-train-preview.json,
+    preview-decision.json, labelled-pilot-plan.json
+  - projects/indoor-detection/docs/CROWDHUMAN_ASSESSMENT.md
+- **Notes for Next Agent:**
+  - ODGT SHA-256: 6bf241a79f19e30cf52681eab3392368bd5a534164be9272e7a808cb284d9f77
+  - Audit SHA-256: 187ff20e47d994ba3b21004b98d5c065a1ad54dcce154af9aa27e23cc73ef19a
+  - Preview decision SHA-256: 8cf52f80c9344f3f0d38eba0233af5f05b053fdf9e4a6ada85a65301e0c2297c
+  - Pilot plan SHA-256: 00b47f33466af5c0df1167f3982627c794eb8f091cf43ca5c63f3c15c88b95cc
+  - Reproduction command in assessment doc; choose new output filename.
+  - No image archives/val/test downloaded, no predictions/train/export, no package
+    changes, no background job remains. Secrets untouched; large artifacts on E:.
