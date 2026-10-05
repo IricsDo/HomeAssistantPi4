@@ -259,8 +259,27 @@ V4 hoàn tất 12 epoch, checkpoint tốt nhất tại epoch 11. Calibration per
 NCNN export tiếp tục bị khóa. Control v2 tại cùng 512 px cho explicit F1/recall
 `0,6351/0,5432`, cũng không đạt gate. Mining 7.000 ảnh training có scope person
 đã xong; hàng đợi tại `E:/HomeAssistantPi4/reports/indoor-person-train-mining-v1`
-gồm 64 ảnh người nhỏ và 41 ảnh âm cần review. Validation/test nằm ngoài hàng đợi.
+gồm 64 ảnh người nhỏ và 41 ảnh âm. Đã review đủ 105 ảnh gốc: 56 ảnh positive và
+35 ảnh negative được nhận cho bước chuẩn bị sampling; 14 ảnh mơ hồ được loại
+khỏi phần tăng trọng số. Đây là review mức ảnh, chưa chứng nhận từng box nhỏ.
+Validation/test nằm ngoài hàng đợi và không được dùng chọn mẫu.
 Xem [V4 evaluation decision](docs/V4_EVALUATION_DECISION.md).
+
+Đóng băng nhóm đã review bằng kiểm tra membership, hash ảnh, syntax nhãn,
+class scope và exact duplicate với validation/test:
+
+```powershell
+python -m indoor_detection.training_review `
+  --data E:/HomeAssistantPi4/processed/indoor-partial-joint-v2/dataset.yaml `
+  --queue E:/HomeAssistantPi4/reports/indoor-person-train-mining-v1/review-queue.json `
+  --review E:/HomeAssistantPi4/reports/indoor-person-train-mining-v1/review-results-v1.json `
+  --output E:/HomeAssistantPi4/reports/indoor-person-train-mining-v1/review-manifest-v1.json
+```
+
+Lệnh không ghi đè manifest có sẵn. Manifest chỉ phục vụ chuẩn bị can thiệp:
+`training_allowed=false` cho đến khi review box, sampling plan và data gate của
+can thiệp hoàn tất. Không lặp đường dẫn trong train index để né duplicate gate;
+giữ toàn bộ dữ liệu rehearsal smoke/fire và scope person-only của ảnh COCO.
 
 ## Inference
 

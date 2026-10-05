@@ -1670,3 +1670,72 @@ validation state.
   - Review queue SHA-256:
     `E7FE47342711A28831C1446BC25A77AE95AE7D6ACCD8D6931EEFCEF56F2C05D2`.
   - All large artifacts remain on E:. Never read/print projects/.env.
+
+## [2026-10-05 12:48 +07:00] - Training review milestone from OpenAI Codex
+
+- **Current Task:** Prepare a reviewed training intervention for person at 512 px.
+- **Status:** IN_PROGRESS
+- **Current Owner:** OpenAI Codex
+- **Completed in this session:**
+  - Started from clean main at e21cc6d; read project instructions and previous handover.
+  - Reviewed all 105 original queued images at native resolution: 56 ACCEPT_POSITIVE,
+    35 ACCEPT_NEGATIVE, 8 EXCLUDE_TINY_OR_AMBIGUOUS, 6 EXCLUDE_AMBIGUOUS.
+  - Saved review-results-v1.json separately; original queue is unchanged.
+    Exclusion applies only to additional weighting, not removal from the source dataset.
+  - Added training_review module to freeze unique accepted candidates with image/label
+    hashes and split membership fingerprints. It checks complete review coverage,
+    queue/image hashes, person-only scopes, source label syntax/category, and exact
+    duplicates against validation/test bytes. It refuses to overwrite an existing manifest.
+  - Executed checks on the real data: PASS, 91 accepted, no held-out path/content
+    overlap or reviewed-image duplication. Original source labels/indexes unchanged.
+  - Saved review-manifest-v1.json under the existing E: mining report directory.
+    training_allowed remains false: image-level review does not certify every tiny box.
+  - Added 13 regression tests and updated CLAUDE.md and both READMEs.
+    AGENTS.md rules remain applicable and required no changes.
+- **Unfinished / Next Steps (CRITICAL):**
+  - [ ] Inspect accepted positive source boxes; distinguish tiny/occluded boxes,
+    annotation ambiguity and genuine model misses. Preserve original labels.
+  - [ ] Implement a bounded sampling plan over the unique full training index,
+    preserving all hazard rehearsal and per-image scopes. Do not repeat paths in
+    train.txt or weaken the existing duplicate gate. No sampler is implemented yet.
+  - [ ] Verify candidate/label hashes and frozen split fingerprints, audit the
+    intervention and complete its annotation gate before authorizing a new run.
+  - [ ] Run a separate controlled fine-tune, recalibrate all three classes using
+    validation only; NCNN export requires all quality gates to pass.
+- **Known Blocks / Issues:**
+  - Person gate still fails for V2/V4 at 512. Sampling design and box-level review
+    remain unfinished. Mixed-domain limitation and absent Pi hardware remain.
+  - PowerShell sandbox launcher intermittently failed with CreateProcess access denied;
+    cmd.exe execution worked. Approved validation/report commands completed successfully.
+- **Validation:**
+  - Build: NOT APPLICABLE
+  - Tests: PASS (116/116, 24.23 seconds), project .venv python -m pytest
+    -p no:cacheprovider --basetemp C:\Users\Public\Documents\indoor-review-pytest-20261005a
+  - Typecheck: NOT CONFIGURED
+  - Lint: PASS (project .venv python -m ruff check . --no-cache)
+  - Real review manifest checks: PASS; training_allowed=false
+  - Git diff whitespace check: PASS
+- **Git State:**
+  - Branch: main
+  - Last Commit: e21cc6d docs: record 512 control and training review queue
+  - Working Tree: DIRTY (this milestone prepared for commit/push)
+- **Uncommitted Changes:**
+  - CHANGES.log, CLAUDE.md, README.md, projects/indoor-detection/README.md
+  - projects/indoor-detection/src/indoor_detection/training_review.py
+  - projects/indoor-detection/tests/test_training_review.py
+- **Active Files:**
+  - projects/indoor-detection/src/indoor_detection/training_review.py
+  - E:\HomeAssistantPi4\reports\indoor-person-train-mining-v1\review-results-v1.json
+  - E:\HomeAssistantPi4\reports\indoor-person-train-mining-v1\review-manifest-v1.json
+- **Notes for Next Agent:**
+  - All review artifacts are in E:\HomeAssistantPi4\reports\indoor-person-train-mining-v1.
+  - Review-results SHA-256:
+    `23CFB4CAF191D23E4D409E08C6BBBB5145E62D9D2D3C22055FB4687E924F8255`.
+  - Review-manifest SHA-256:
+    `262CDACF15391B9825C069762B8C319CBDCBC8E2A0F6576276E27DA23B27E46E`.
+  - Reproduction command is documented in the project README; choose a new output
+    filename because the tool deliberately preserves previous manifests.
+  - Held-out image bytes were hashed solely for leakage checks: no prediction,
+    label inspection, evaluation metric or selection used test images this session.
+  - No training/export was started. No background job remains active.
+  - Never read/print projects/.env; venv stays in project on C:, artifacts stay on E:.

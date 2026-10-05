@@ -53,7 +53,10 @@ Bộ control v2 tại 512 px cũng không đạt person gate: explicit F1/recall
 `0,6351/0,5432`. V4 tăng recall người nhỏ nhưng có nhiều false alarm hơn.
 Mining lỗi trên 7.000 ảnh training có scope person đã xong. Hàng đợi 105 ảnh
 tại `E:\HomeAssistantPi4\reports\indoor-person-train-mining-v1\review-queue.json`
-cần review người nhỏ/ảnh âm trước khi chuẩn bị vòng fine-tune mới.
+đã được review ảnh gốc: 56 ảnh có người và 35 ảnh âm được nhận để chuẩn bị
+sampling plan; 14 ảnh mơ hồ không được tăng trọng số. Manifest lưu hash ảnh,
+nhãn và membership của các split. Còn kiểm tra box và triển khai sampling có
+giới hạn trước vòng fine-tune mới; chưa có training mới.
 Benchmark Pi 4 và camera thật chờ phần cứng.
 
 ## AI Agent Collaboration

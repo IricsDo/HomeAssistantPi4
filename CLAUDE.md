@@ -34,7 +34,10 @@ Do not begin implementation until the current task and ownership are clear.
 - V4 person calibration at 512 px gives F1/recall 0.6356/0.5625; explicit
   matching gives 0.6292/0.5593. V2 control at 512 gives 0.6351/0.5432 and
   also fails. The export gate remains closed. Training-only person mining is
-  complete; review the 105-example queue before choosing another fine-tune; see
+  complete. All 105 original images have been reviewed: 56 positive and 35
+  negative images accepted for sampling-plan preparation, 14 excluded from
+  extra weighting. Box-level review and the bounded sampling implementation
+  are pending; this is not training approval. See
   `docs/V4_EVALUATION_DECISION.md`.
 
 Read the newest entry in `CHANGES.log` for exact uncommitted files, dataset paths,
@@ -91,7 +94,8 @@ When implementing a task:
 3. Preserve the completed source/domain reports and their mixed-domain caveat.
 4. Preserve the completed calibration/error reports; do not reopen test for
    further selection.
-5. Review training-only person mining before a new training intervention.
+5. Continue from the training review manifest; review positive boxes and implement
+   a bounded sampling plan before a new training intervention.
    Keep validation/test frozen, every run separate and class scopes enabled.
 6. Export NCNN only after the selected edge resolution passes validation and
    its checkpoint/thresholds are locked.
