@@ -2094,3 +2094,77 @@ validation state.
   - Frozen 500 originals are not yet acquired; their 30 spot-check IDs are already
     fixed independently of model output. No additional packages, secret access,
     changes to old split indexes or background processes remain this session.
+
+## [2026-10-05 22:26 +07:00] - CrowdHuman expansion acquisition milestone from OpenAI Codex
+
+- **Current Task:** P1 bounded additional person-data intake.
+- **Status:** IN_PROGRESS (500-image acquisition/automated checks/overlap completed)
+- **Current Owner:** OpenAI Codex
+- **Completed in this session:**
+  - Read instructions, README, delivery plan and latest handover; main started at
+    7b62ec4. Preserved untracked source_box_review.py unchanged and excluded from commit.
+  - Continued the frozen 500-ID/30-spot-check plan. Sequential acquisition stopped
+    after eight paired images; added explicit verified resume and bounded 1..8
+    independent HTTP/ZIP workers. No deletion or overwrite of acquired files.
+  - Resume checks frozen plan/annotation/revision, remote member metadata, size,
+    CRC and SHA-256; rejects completed directories, changed/unpaired/unknown files.
+    Defaults remain fresh output/one worker. Signed URLs remain memory-only.
+  - Acquired all 500 original training images with 5,313 existing person boxes.
+    Image bytes 280,735,838; successful resumed invocation Range bytes 283,362,229
+    (earlier interrupted transfer excluded), eight validated images reused.
+  - Added all-image decode/hash/visible-box audit and subset gallery rendering.
+    All 500 decode, zero invalid/empty/repeated clipped vboxes/body-ignore flags;
+    360 out-of-image vboxes recorded for normal clipping, not auto-excluded.
+  - Exact screening against 23,498 existing images +49 accepted pilot images:
+    zero internal/overlap. Near <=5 reverified all 23,547 image hashes, zero
+    internal candidates, 22 corpus candidates across four expansion IDs.
+    Inspected all 22 paired galleries: unrelated scenes, zero confirmed overlap.
+    Candidate splits: train15/val4/test3. No holdout predictions/metrics used.
+  - Created the frozen 30 annotation galleries; these remain UNREVIEWED.
+    Dataset YAML and all three index hashes unchanged. No expansion YOLO
+    conversion, joint composition, training/export, dependencies or secret access.
+  - Updated assessment, PROJECT_PLAN, CLAUDE and both READMEs.
+- **Unfinished / Next Steps (CRITICAL):**
+  - [ ] Review all 30 records in the expansion gallery/bundle.json, inspect original
+    crops for ambiguity, record per-sampled-image notes and source gate decision.
+    Stop joint conversion if a new systematic annotation/completeness issue appears.
+  - [ ] If approved, convert expansion with person-only scope and explicit review
+    basis: 30 visually sampled versus other images automatically screened. Never
+    claim all 500 were visually reviewed; preserve all originals/source labels.
+  - [ ] Compose new scoped joint derivative including approved expansion/pilot and
+    all hazard rehearsal; freeze holdout membership, audit structure/labels,
+    distribution/duplicate-conflicts and visual gate before any P2 run.
+  - [ ] Earlier 42/56 source-box review/sampling remains optional and untouched.
+- **Known Blocks / Issues:**
+  - Source visual and joint intervention gates still closed; training_allowed=false.
+  - Near dHash/annotation geometry checks do not prove crop/mirror/edit/session
+    coverage or semantic completeness. Whole-archive publisher SHA not verified.
+  - Unpaired/truncated files after interruption require inspection; resume never
+    silently deletes or repairs them. Completed acquisition must not be resumed.
+  - Pi/camera hardware and mounting remain unconfirmed.
+- **Validation:**
+  - Build: NOT APPLICABLE (dataset preparation)
+  - Tests: PASS (141/141, 6.94 seconds); project .venv python -m pytest
+    -p no:cacheprovider --basetemp C:/Users/Public/Documents/indoor-expansion-20261005e
+  - Typecheck: NOT CONFIGURED
+  - Lint: PASS (.venv python -m ruff check . --no-cache)
+  - Live acquisition/decode/hash/geometry/exact/near adjudication/split checks: PASS
+    with documented scope; source visual/joint training gate PENDING.
+- **Git State:**
+  - Branch: main
+  - Last Commit: 7b62ec4 feat: review CrowdHuman pilot and freeze filtered intake
+  - Working Tree: DIRTY (milestone prepared for scoped commit/push)
+- **Uncommitted Changes / Active Files:**
+  - CHANGES.log, CLAUDE.md, README.md; project README.md, PROJECT_PLAN.md,
+    docs/CROWDHUMAN_ASSESSMENT.md, src/indoor_detection/crowdhuman_pilot.py,
+    tests/test_crowdhuman_pilot.py.
+  - Preserved untracked source_box_review.py, excluded from commit.
+- **Notes for Next Agent:**
+  - Originals/receipts: E:/HomeAssistantPi4/raw/CrowdHuman-expansion-500-v1.
+    acquisition.json SHA 5ac9bd4ba2b7dde85e55c86ecb01c02a8d43c4eb139f485a38578dc6d9adcfce.
+  - Reports: E:/HomeAssistantPi4/reports/crowdhuman-expansion-500-review-v1.
+    gallery/bundle.json is exactly the 30 frozen IDs with original numbers.
+  - near-review-queue.json remains the initial pending queue; authoritative final
+    decisions are near-adjudication-v1.json. No need to rerun acquisition/screening.
+  - Full artifact hash table and tooling notes in CROWDHUMAN_ASSESSMENT.md.
+  - No background process remains after completed acquisition/audit jobs.

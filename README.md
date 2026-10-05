@@ -65,8 +65,9 @@ sampling plan; 14 ảnh mơ hồ không được tăng trọng số. Manifest l�
 nhãn và membership của các split. Review box vẫn dở; sampling chỉ là lựa chọn.
 CrowdHuman pilot đã review đủ 60 ảnh: nhận 49, loại 11; chọn vbox và chuyển
 49 ảnh/507 box sang YOLO. Exact/near duplicate screening không xác nhận overlap.
-Đã freeze kế hoạch bổ sung 500 ảnh và mẫu review 30 ảnh; joint data gate vẫn đóng,
-chưa có training mới. Xem
+Đã tải đủ expansion 500 ảnh/5.313 box trên E:, kiểm tra decode/geometry và exact
+overlap đạt. Đã xem 22 near-hash candidates, đều khác cảnh. Gallery 30 ảnh annotation
+đã tạo, chờ review; joint data gate vẫn đóng, chưa có training mới. Xem
 [assessment](projects/indoor-detection/docs/CROWDHUMAN_ASSESSMENT.md).
 Benchmark Pi 4 và camera thật chờ phần cứng.
 

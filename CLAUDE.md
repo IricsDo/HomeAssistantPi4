@@ -57,8 +57,11 @@ Do not begin implementation until the current task and ownership are clear.
   complete: 49 accepted/11 excluded, vbox clipped chosen, 49 images/507 boxes
   converted on E:. Near-hash screen's only train candidate is visually unrelated;
   zero holdout candidates, with crop/mirror/session limitations. No whole-source
-  approval. Next: frozen 500-ID head-overlap-filtered expansion (seed 43), 30
-  frozen visual spot-checks (seed 44), overlap/joint audit before training.
+  approval. Frozen 500-ID expansion is acquired/paired (5,313 boxes), all images
+  decode, visible geometry has no flagged issues, exact overlap is zero against
+  current corpus plus accepted pilot. All 22 near-hash candidates adjudicated as
+  unrelated scenes; crop/mirror/session limitations remain. Next: review the 30
+  frozen annotation galleries (seed 44), then scoped conversion/joint audit.
   See docs/CROWDHUMAN_ASSESSMENT.md for exact paths/hashes/commands.
 
 Read the newest entry in `CHANGES.log` for exact uncommitted files, dataset paths,

@@ -28,7 +28,9 @@ Wide IMX708 ~12 MP, autofocus. Vị trí lắp chưa xác định; xem
 shortlist và ảnh hưởng của góc rộng. CrowdHuman pilot đã review đủ 60 ảnh:
 49 ACCEPT/11 EXCLUDE, chọn vbox clipped và chuyển 49 ảnh/507 box sang YOLO person=2.
 Exact/near duplicate screening không xác nhận overlap; dHash có giới hạn crop/mirror.
-Đã freeze bounded intake 500 IDs và 30 spot-check IDs, chưa acquire hoặc duyệt training.
+Đã acquire đủ bounded intake 500 ảnh/5.313 box; decode/geometry và exact overlap đạt.
+22 near-hash candidates đã review, đều khác cảnh. Gallery 30 spot-check IDs chờ
+review annotation; chưa chuyển expansion sang YOLO, ghép joint hoặc duyệt training.
 Xem [assessment](docs/CROWDHUMAN_ASSESSMENT.md).
 
 - [x] Baseline smoke-only và checkpoint tham chiếu đã được khóa.

@@ -129,10 +129,17 @@ No signed redirect URLs are persisted. No new dependencies are needed.
   --review-output E:/HomeAssistantPi4/reports/crowdhuman-pilot-box-review-v1
 ```
 
-The CLI requires a fresh output directory and validates the frozen annotation
-hash and pilot IDs before creating it. On interruption, keep the partial output
-and receipts; this version does not resume automatically. Use a fresh directory
-for a retry. It never extracts arbitrary ZIP paths or modifies source labels.
+The CLI defaults to a fresh output directory and validates the frozen annotation
+hash and IDs before creating it. `--workers 1..8` uses independent ZIP/HTTP readers;
+the default remains one worker. On interruption, preserve partial images/receipts.
+Use `--resume` explicitly for an incomplete directory: existing images must have
+paired receipts, matching remote member metadata, byte count, CRC and SHA-256.
+The frozen plan/annotation/revision binding must match. Legacy partial directories
+without a binding are admitted only after those per-member checks. Unpaired or
+changed files are rejected and preserved, not overwritten or silently skipped.
+Completed acquisitions are rejected by resume. Transfer counts in a resumed report
+describe that invocation, not earlier partial transfers; archive rows are per worker.
+It never extracts arbitrary ZIP paths or modifies source labels.
 The gallery displays visible boxes on the left and full-body boxes on the right,
 numbered consistently. Boxes are clipped for display only; bounds excursions
 and empty intersections are counted separately in `bundle.json`. Amodal boxes
@@ -243,6 +250,14 @@ Programmatic utilities: `audit_near_overlap(acquisition, corpus_registry, NEW_re
 `freeze_expansion_plan(annotations, annotation_audit, pilot_review, NEW_plan)`.
 Fresh output protects existing artifacts. Tests 134/134 and Ruff PASS; no new packages.
 
+For expansion preparation, `audit_acquired_annotations(acquisition, NEW_report)`
+decodes and verifies all images and checks visible-box syntax, clipping, empty
+intersections, repeated clipped boxes and body-ignore. It does not prove label
+completeness or semantic correctness. `render_review(acquisition, NEW_directory,
+image_ids=IDs)` renders only the frozen spot-check IDs plus audit flags, preserving
+their full acquisition numbers and explicitly marking subset coverage. Neither
+utility approves training or claims that every image was visually reviewed.
+
 | New artifact | SHA-256 |
 |---|---|
 | review-final-v1.json | 62da8e22f017db5517f5a8bc500c4a4860973230467d6f062c10cacc197bba3a |
@@ -250,3 +265,59 @@ Fresh output protects existing artifacts. Tests 134/134 and Ruff PASS; no new pa
 | near-adjudication-v1.json | 7c9efde3dc7603e0d29b1ce9d449ffd5516585ed293095b56f37eff4a1c04a13 |
 | converted manifest.json | 652235b771029afeaa2d09903691609fd0944a839eefe402e166ab94ccadddf1 |
 | expansion-plan-500-v1.json | 40c186386b12ba58b0d846640ad0be2124d6ddb3daa82703246dfd3f42dec48a |
+
+## Expansion acquisition and overlap milestone (2026-10-05)
+
+All 500 frozen IDs are now acquired/paired at
+`E:/HomeAssistantPi4/raw/CrowdHuman-expansion-500-v1`; **5,313 person boxes**,
+280,735,838 image bytes. The initial sequential attempt was deliberately stopped
+after eight paired images; explicit resume with eight workers revalidated/reused
+those files. The successful invocation transferred 283,362,229 Range bytes,
+excluding bytes from the earlier attempt. No full archive or candidate val/test
+download. Archive transfer rows are per worker, not unique archive totals.
+
+Reports: `E:/HomeAssistantPi4/reports/crowdhuman-expansion-500-review-v1`.
+All 500 images decode and their hashes match; visible-body checks find zero
+invalid/empty/repeated clipped boxes or body-ignore flags. There are 360 vboxes
+extending outside the image; normal clipping is expected and this count alone
+does not indicate an annotation error. Syntax/geometry PASS does not prove that
+all visible people are labelled correctly.
+
+The comparison registry includes the current 23,498-image corpus plus the 49
+accepted pilot derivatives: **23,547 images**. Exact raw-file overlap: zero
+internal and zero corpus/pilot matches. Near dHash <=5: zero internal candidates,
+22 corpus candidates affecting four expansion IDs (15 train, four val, three
+test). All 22 paired galleries actually inspected: unrelated scenes, no confirmed
+overlap. Reports/ledger: `near-overlap.json`, `near-review-queue.json` (original
+pending queue retained), `near-adjudication-v1.json` (authoritative final decisions).
+Holdout images were viewed only for duplicate adjudication; no predictions,
+metrics or model/threshold selection. Crop/mirror/edit/session limitations remain.
+All corpus SHA-256 hashes were reverified by the near audit; dataset YAML and
+train/val/test index hashes still match the frozen registry.
+
+`gallery/bundle.json` contains only the 30 frozen visual annotation spot-checks,
+with original acquisition numbers. **These 30 annotation galleries have not yet
+been reviewed.** No new geometry flags required extra galleries. Next: review
+these 30, inspect original-resolution crops where needed, record a source decision
+with the plan's stop condition, then convert approved expansion into person-only
+YOLO data and compose/audit a new scoped joint derivative with hazard rehearsal.
+Do not imply that the other 470 images were visually inspected. No expansion
+conversion, joint index changes, model training or export in this milestone.
+
+The completed acquisition needs no retry. For a future interrupted intake only,
+append `--resume --workers 8` to its original command. Unexpected/unpaired/changed
+files are preserved and rejected; inspect them before choosing a recovery action.
+Tests **141/141**, Ruff PASS. No new dependencies, secret access or background jobs.
+
+| Expansion artifact | SHA-256 |
+|---|---|
+| acquisition.json | 5ac9bd4ba2b7dde85e55c86ecb01c02a8d43c4eb139f485a38578dc6d9adcfce |
+| pilot-annotations.json | 1035192647bbe8bb1ef870470204d2d74484b4bb6a0092711782e62eedb5c007 |
+| corpus-plus-pilot-registry.json | 4827502064f6879e2205623164de7ff3a3409481bee67803ba10ad26f645c902 |
+| annotation-audit.json | 518009ae483028dc72c25832822743e563425b2c90114c56dc2dee7196a07b8f |
+| exact-overlap.json | 0caddafb8e6b5234775222cce18fadd8e561eeef464987add6ecfcb285ad6e5f |
+| near-overlap.json | 4144a1b80a87739866e5cb659752e5e533864f23a66ade06df2f60e6c13b3803 |
+| near-review-queue.json | 902a184f26f88aa58a2be5da7a28744229495ebdb77f9095840063a98ff99e6c |
+| near-adjudication-v1.json | 9151cb4fa3dbaf4920a4f3783f262666698078925ed7cdf9edbda368826a7d04 |
+| gallery/bundle.json | ee395774d044a87daf5d9ea2ef747adbaec7b630441c83bfc3716a438070cedd |
+| split-preservation.json | d390a8d7aee0a85ba4eee09bfa4ae10cd397174dd68cbae86bd858a53b13ee1f |

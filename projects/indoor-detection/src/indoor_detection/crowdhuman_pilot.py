@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import binascii
 import hashlib
 import io
 import json
@@ -119,17 +120,47 @@ def load_pilot(plan_path: Path, annotations: Path) -> tuple[dict[str, Any], dict
     return plan, rows
 
 
-def acquire(plan_path: Path, annotations: Path, output: Path) -> dict[str, Any]:
-    """Write a fresh acquisition directory; incomplete directories are preserved."""
+def acquire(
+    plan_path: Path, annotations: Path, output: Path, *, resume: bool = False, workers: int = 1
+) -> dict[str, Any]:
+    """Acquire bounded members; explicit resume verifies receipts against remote metadata."""
     plan, rows = load_pilot(plan_path, annotations)
-    output.mkdir(parents=True, exist_ok=False)
+    if not 1 <= workers <= 8:
+        raise ValueError("Acquisition workers must be between 1 and 8")
+    if resume:
+        if not output.is_dir() or (output / "acquisition.json").exists():
+            raise DatasetValidationError("Resume requires an incomplete acquisition directory")
+        expected = {f"receipt-{i}.json" for i in rows} | {
+            "images", "resume-plan.json", "pilot-annotations.json"}
+        if any(path.name not in expected for path in output.iterdir()):
+            raise DatasetValidationError("Unexpected files in resume directory")
+    else:
+        output.mkdir(parents=True, exist_ok=False)
+    selected_annotations = [rows[i] for i in plan["image_ids"]]
+    selected_path = output / "pilot-annotations.json"
+    if (selected_path.exists()
+            and json.loads(selected_path.read_text(encoding="utf-8")) != selected_annotations):
+        raise DatasetValidationError("Existing selected annotations changed")
     image_dir = output / "images"
-    image_dir.mkdir()
+    image_dir.mkdir(exist_ok=resume)
+    if any(path.name not in {f"{i}.jpg" for i in rows} for path in image_dir.iterdir()):
+        raise DatasetValidationError("Unexpected images in acquisition directory")
+    binding = {"plan_sha256": sha256_file(plan_path),
+               "annotation_sha256": sha256_file(annotations), "revision": REVISION}
+    marker = output / "resume-plan.json"
+    if marker.exists():
+        if json.loads(marker.read_text(encoding="utf-8")) != binding:
+            raise DatasetValidationError("Resume plan binding changed")
+    else:
+        with marker.open("x", encoding="utf-8") as stream:
+            stream.write(json.dumps(binding, indent=2) + "\n")
     records = {}
     archives = []
-    for part in range(1, 4):
-        archive = f"CrowdHuman_train{part:02d}.zip"
+
+    def acquire_chunk(archive: str, ids: list[str]) -> tuple[dict[str, Any], dict[str, Any]]:
         url = f"{BASE}/{archive}"
+        acquired = {}
+        reused = 0
         with RangeReader(url) as remote, zipfile.ZipFile(remote) as source:
             entries = source.infolist()
             by_name = {}
@@ -142,51 +173,88 @@ def acquire(plan_path: Path, annotations: Path, output: Path) -> dict[str, Any]:
                 if name in by_name:
                     raise DatasetValidationError("Duplicate ZIP image name")
                 by_name[name] = entry
-            for image_id in plan["image_ids"]:
+            for image_id in ids:
                 entry = by_name.get(f"{image_id}.jpg")
                 if entry is None:
                     continue
-                if image_id in records:
-                    raise DatasetValidationError("Pilot image found in multiple archives")
                 if entry.file_size > MAX_READ or entry.compress_size > MAX_READ:
                     raise DatasetValidationError("Image exceeds acquisition bound")
-                data = source.read(entry)  # zipfile checks CRC before returning.
                 image_path = image_dir / f"{image_id}.jpg"
+                receipt_path = output / f"receipt-{image_id}.json"
+                metadata = {"image_id": image_id, "archive": archive,
+                            "member": entry.filename, "archive_size": remote.size,
+                            "crc32": f"{entry.CRC:08x}", "bytes": entry.file_size,
+                            "image_path": str(image_path.resolve()), "source_url": url}
+                if image_path.exists() or receipt_path.exists():
+                    if not resume or not image_path.is_file() or not receipt_path.is_file():
+                        raise DatasetValidationError(
+                            "Unpaired existing image/receipt; preserve for review")
+                    record = json.loads(receipt_path.read_text(encoding="utf-8"))
+                    if (any(record.get(key) != value for key, value in metadata.items())
+                            or image_path.stat().st_size != entry.file_size
+                            or binascii.crc32(image_path.read_bytes()) != entry.CRC
+                            or sha256_file(image_path) != record.get("sha256")):
+                        raise DatasetValidationError(
+                            "Resume receipt/image does not match pinned member")
+                    acquired[image_id] = record
+                    reused += 1
+                    continue
+                data = source.read(entry)  # zipfile checks CRC before returning.
                 with image_path.open("xb") as stream:
                     stream.write(data)
-                record = {"image_id": image_id, "archive": archive,
-                          "member": entry.filename, "archive_size": remote.size,
-                          "crc32": f"{entry.CRC:08x}", "bytes": len(data),
-                          "sha256": hashlib.sha256(data).hexdigest(),
-                          "image_path": str(image_path.resolve()), "source_url": url}
-                records[image_id] = record
-                (output / f"receipt-{image_id}.json").write_text(
-                    json.dumps(record, indent=2) + "\n", encoding="utf-8")
-            archives.append({"archive": archive, "size": remote.size,
-                             "downloaded_bytes": remote.downloaded})
+                record = {**metadata, "sha256": hashlib.sha256(data).hexdigest()}
+                acquired[image_id] = record
+                with receipt_path.open("x", encoding="utf-8") as stream:
+                    stream.write(json.dumps(record, indent=2) + "\n")
+                print(f"{archive}: saved {image_id}", flush=True)
+            return acquired, {"archive": archive, "size": remote.size,
+                              "downloaded_bytes": remote.downloaded, "reused_images": reused}
+
+    for part in range(1, 4):
+        archive = f"CrowdHuman_train{part:02d}.zip"
+        chunks = [plan["image_ids"][i::workers] for i in range(workers)]
+        with ThreadPoolExecutor(max_workers=workers) as pool:
+            results = list(pool.map(
+                lambda ids, archive=archive: acquire_chunk(archive, ids), chunks))
+        for acquired, transfer in results:
+            if records.keys() & acquired.keys():
+                raise DatasetValidationError("Pilot image found in multiple archives")
+            records.update(acquired)
+            archives.append(transfer)
             print(f"{archive}: {len(records)}/{len(rows)} images acquired", flush=True)
     if set(records) != set(rows):
         raise DatasetValidationError("Pilot image members missing from train archives")
     report = {"schema_version": 1, "revision": REVISION,
+              "workers": workers, "resumed": resume,
               "plan_sha256": sha256_file(plan_path),
               "annotation_sha256": plan["annotation_sha256"],
               "training_allowed": False, "status": "ACQUIRED_AWAITING_BOX_REVIEW",
               "archives": archives, "records": [records[i] for i in plan["image_ids"]]}
-    (output / "acquisition.json").write_text(json.dumps(report, indent=2) + "\n",
-                                            encoding="utf-8")
-    (output / "pilot-annotations.json").write_text(
-        json.dumps([rows[i] for i in plan["image_ids"]], indent=2) + "\n", encoding="utf-8")
+    if not selected_path.exists():
+        with selected_path.open("x", encoding="utf-8") as stream:
+            stream.write(json.dumps(selected_annotations, indent=2) + "\n")
+    with (output / "acquisition.json").open("x", encoding="utf-8") as stream:
+        stream.write(json.dumps(report, indent=2) + "\n")
     return report
 
 
-def render_review(acquisition: Path, output: Path) -> dict[str, Any]:
+def render_review(
+    acquisition: Path, output: Path, *, image_ids: list[str] | None = None
+) -> dict[str, Any]:
     """Render both conventions without editing or approving source annotations."""
     report = json.loads((acquisition / "acquisition.json").read_text(encoding="utf-8"))
     rows = json.loads((acquisition / "pilot-annotations.json").read_text(encoding="utf-8"))
     by_id = {row["ID"]: row for row in rows}
+    selected = set(image_ids) if image_ids is not None else None
+    acquired_ids = {row["image_id"] for row in report["records"]}
+    if selected is not None and (not selected or len(selected) != len(image_ids)
+                                 or not selected <= acquired_ids):
+        raise DatasetValidationError("Invalid review subset IDs")
     output.mkdir(parents=True, exist_ok=False)
     records = []
     for number, receipt in enumerate(report["records"], 1):
+        if selected is not None and receipt["image_id"] not in selected:
+            continue
         path = Path(receipt["image_path"])
         if sha256_file(path) != receipt["sha256"]:
             raise DatasetValidationError("Pilot image hash changed")
@@ -230,6 +298,8 @@ def render_review(acquisition: Path, output: Path) -> dict[str, Any]:
     bundle = {"training_allowed": False, "status": "AWAITING_VISUAL_REVIEW",
               "acquisition_sha256": sha256_file(acquisition / "acquisition.json"),
               "annotations_sha256": sha256_file(acquisition / "pilot-annotations.json"),
+              "acquired_images": len(report["records"]), "review_images": len(records),
+              "coverage": "subset" if selected is not None else "all acquired images",
               "display": "Left visible body; right inferred full body; clipped for display only",
               "records": records}
     (output / "bundle.json").write_text(json.dumps(bundle, indent=2) + "\n", encoding="utf-8")
@@ -266,6 +336,64 @@ def audit_exact_overlap(acquisition: Path, registry: Path, output: Path) -> dict
               "acquisition_sha256": sha256_file(acquisition / "acquisition.json"),
               "limitations": ["Raw file SHA-256 only; recompressed/cropped copies are not detected",
                               "Near-duplicate and visual annotation gates remain pending"]}
+    with output.open("x", encoding="utf-8") as stream:
+        stream.write(json.dumps(report, indent=2) + "\n")
+    return report
+
+
+def audit_acquired_annotations(acquisition: Path, output: Path) -> dict[str, Any]:
+    """Decode and check all acquired visible boxes; flag issues without editing labels."""
+    if output.exists():
+        raise FileExistsError(output)
+    acquired = json.loads((acquisition / "acquisition.json").read_text(encoding="utf-8"))
+    rows = json.loads((acquisition / "pilot-annotations.json").read_text(encoding="utf-8"))
+    annotations = {row["ID"]: row for row in rows}
+    ids = [row["image_id"] for row in acquired["records"]]
+    if (len(ids) != len(set(ids)) or len(rows) != len(annotations)
+            or set(ids) != set(annotations)):
+        raise DatasetValidationError("Acquisition/annotation IDs do not match uniquely")
+    records = []
+    for receipt in acquired["records"]:
+        image_id = receipt["image_id"]
+        path = Path(receipt["image_path"])
+        if sha256_file(path) != receipt["sha256"]:
+            raise DatasetValidationError("Acquired image hash changed")
+        with Image.open(path) as image:
+            image.load()
+            width, height = image.size
+        issues = []
+        outside = 0
+        clipped = set()
+        boxes = annotations[image_id]["gtboxes"]
+        if not boxes:
+            issues.append("No person annotations")
+        for number, box in enumerate(boxes, 1):
+            if box["tag"] != "person" or box.get("extra", {}).get("ignore", 0):
+                issues.append(f"Box {number}: body-ignore or non-person")
+            if not _valid_box(box.get("vbox")):
+                issues.append(f"Box {number}: invalid vbox")
+                continue
+            x, y, w, h = box["vbox"]
+            outside += int(x < 0 or y < 0 or x + w > width or y + h > height)
+            bounds = (max(0, x), max(0, y), min(width, x + w), min(height, y + h))
+            if bounds[2] <= bounds[0] or bounds[3] <= bounds[1]:
+                issues.append(f"Box {number}: empty vbox after clipping")
+            elif bounds in clipped:
+                issues.append(f"Box {number}: repeated clipped vbox")
+            clipped.add(bounds)
+        records.append({"image_id": image_id, "width": width, "height": height,
+                        "person_boxes": len(boxes), "outside_vboxes": outside,
+                        "issues": issues})
+    report = {"training_allowed": False, "images": len(records),
+              "person_boxes": sum(row["person_boxes"] for row in records),
+              "outside_vboxes": sum(row["outside_vboxes"] for row in records),
+              "flagged_image_ids": [row["image_id"] for row in records if row["issues"]],
+              "records": records,
+              "acquisition_sha256": sha256_file(acquisition / "acquisition.json"),
+              "annotations_sha256": sha256_file(acquisition / "pilot-annotations.json"),
+              "limitations": ["Geometry checks do not prove semantic correctness or completeness",
+                              "Bounds excursions alone are not annotation errors",
+                              "Visual spot-check and duplicate/joint gates remain required"]}
     with output.open("x", encoding="utf-8") as stream:
         stream.write(json.dumps(report, indent=2) + "\n")
     return report
@@ -459,8 +587,10 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--annotations", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--review-output", type=Path)
+    parser.add_argument("--resume", action="store_true")
+    parser.add_argument("--workers", type=int, default=1)
     args = parser.parse_args(argv)
-    acquire(args.plan, args.annotations, args.output)
+    acquire(args.plan, args.annotations, args.output, resume=args.resume, workers=args.workers)
     if args.review_output:
         render_review(args.output, args.review_output)
     return 0

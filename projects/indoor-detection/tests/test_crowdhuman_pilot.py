@@ -9,6 +9,7 @@ from indoor_detection.crowdhuman_pilot import (
     MAX_READ,
     RangeReader,
     acquire,
+    audit_acquired_annotations,
     audit_exact_overlap,
     audit_near_overlap,
     convert_reviewed_pilot,
@@ -116,10 +117,31 @@ def test_acquisition_and_review(tmp_path, monkeypatch):
     assert not (tmp_path / "not-selected.jpg").exists()
     with pytest.raises(FileExistsError):
         acquire(plan, annotations, output)
+    with pytest.raises(DatasetValidationError, match="incomplete"):
+        acquire(plan, annotations, output, resume=True)
+    (output / "acquisition.json").unlink()
+    (output / "pilot-annotations.json").unlink()
+    resumed = acquire(plan, annotations, output, resume=True, workers=2)
+    assert resumed["records"] == result["records"]
+    assert sum(part["reused_images"] for part in resumed["archives"]) == 1
+    assert result["records"][0]["sha256"] == sha256_file(output / "images/abc.jpg")
     review = render_review(output, tmp_path / "review")
+    subset = render_review(output, tmp_path / "subset", image_ids=["abc"])
+    assert subset["coverage"] == "subset" and subset["review_images"] == 1
+    assert subset["records"][0]["number"] == 1
+    with pytest.raises(DatasetValidationError, match="subset"):
+        render_review(output, tmp_path / "bad-subset", image_ids=["missing"])
+    assert not (tmp_path / "bad-subset").exists()
     assert review["training_allowed"] is False
     assert review["records"][0]["geometry"]["fbox"]["outside_image"] == 1
     assert review["records"][0]["geometry"]["fbox"]["empty_after_clipping"] == 0
+    annotation_check = audit_acquired_annotations(output, tmp_path / "annotations-check.json")
+    assert annotation_check["person_boxes"] == 1
+    assert annotation_check["outside_vboxes"] == 1
+    assert annotation_check["flagged_image_ids"] == []
+    assert annotation_check["training_allowed"] is False
+    with pytest.raises(FileExistsError):
+        audit_acquired_annotations(output, tmp_path / "annotations-check.json")
     registry = tmp_path / "hashes.json"
     registry.write_text(json.dumps({"records": [{"sha256": result["records"][0]["sha256"],
                                                 "split": "val", "path": "existing.jpg"}]}))
@@ -155,12 +177,65 @@ def test_acquisition_and_review(tmp_path, monkeypatch):
     (output / "images/abc.jpg").write_bytes(b"changed")
     with pytest.raises(DatasetValidationError, match="hash changed"):
         render_review(output, tmp_path / "review-changed")
+    (output / "acquisition.json").unlink()
+    (output / "pilot-annotations.json").unlink()
+    with pytest.raises(DatasetValidationError, match="does not match"):
+        acquire(plan, annotations, output, resume=True)
+
+
+def test_acquisition_worker_bound(tmp_path):
+    annotations = tmp_path / "train.odgt"
+    annotations.write_text(json.dumps({"ID": "abc", "gtboxes": []}))
+    plan = tmp_path / "plan.json"
+    plan.write_text(json.dumps({"image_ids": ["abc"], "sample_size": 1,
+                                "annotation_sha256": sha256_file(annotations)}))
+    with pytest.raises(ValueError, match="workers"):
+        acquire(plan, annotations, tmp_path / "acquired", workers=9)
+    assert not (tmp_path / "acquired").exists()
+
+
+def test_resume_rejects_changed_plan_before_network(tmp_path, monkeypatch):
+    annotations = tmp_path / "train.odgt"
+    annotations.write_text(json.dumps({"ID": "abc", "gtboxes": []}))
+    plan = tmp_path / "plan.json"
+    plan.write_text(json.dumps({"image_ids": ["abc"], "sample_size": 1,
+                                "annotation_sha256": sha256_file(annotations)}))
+    output = tmp_path / "partial"
+    (output / "images").mkdir(parents=True)
+    marker = output / "resume-plan.json"
+    marker.write_text(json.dumps({"plan_sha256": "different"}))
+
+    def no_network(*args, **kwargs):
+        pytest.fail("Changed frozen plan must be rejected before network access")
+
+    monkeypatch.setattr("urllib.request.urlopen", no_network)
+    with pytest.raises(DatasetValidationError, match="plan binding"):
+        acquire(plan, annotations, output, resume=True)
+    assert json.loads(marker.read_text()) == {"plan_sha256": "different"}
 
 
 def test_near_invalid_distance(tmp_path):
     with pytest.raises(ValueError, match="Hamming"):
         audit_near_overlap(tmp_path, tmp_path / "registry.json", tmp_path / "out.json",
                            max_distance=65)
+
+
+@pytest.mark.parametrize("boxes, expected", [
+    ([], "No person"),
+    ([{"tag": "person", "vbox": [0, 0, 0, 2]}], "invalid vbox"),
+    ([{"tag": "person", "vbox": [30, 0, 2, 2]}], "empty vbox"),
+    ([{"tag": "person", "vbox": [0, 0, 2, 2]}] * 2, "repeated clipped"),
+    ([{"tag": "person", "extra": {"ignore": 1}, "vbox": [0, 0, 2, 2]}], "body-ignore"),
+])
+def test_acquired_annotation_flags(tmp_path, boxes, expected):
+    image = tmp_path / "a.jpg"
+    Image.new("RGB", (20, 20), "white").save(image)
+    (tmp_path / "acquisition.json").write_text(json.dumps({"records": [
+        {"image_id": "a", "image_path": str(image), "sha256": sha256_file(image)}]}))
+    (tmp_path / "pilot-annotations.json").write_text(json.dumps([{"ID": "a", "gtboxes": boxes}]))
+    report = audit_acquired_annotations(tmp_path, tmp_path / "report.json")
+    assert report["flagged_image_ids"] == ["a"]
+    assert expected in report["records"][0]["issues"][0]
 
 
 def test_expansion_filter_and_seed(tmp_path):
