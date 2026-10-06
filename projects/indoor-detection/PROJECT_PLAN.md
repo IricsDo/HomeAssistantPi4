@@ -3,10 +3,11 @@
 Ngày cập nhật: **2026-10-06**. Agent cập nhật: **OpenAI Codex**.
 Owner hiện tại: **OpenAI Codex**. **Resolution/baseline stage1 COMPLETED; P1c IN_PROGRESS**. P1b preparation hoàn tất; **v6 training/evaluation COMPLETED; person512 FAIL, person768 PASS**.
 V5 đã train đủ 12 epoch và đánh giá validation. Person vẫn FAIL; test/export đóng.
-V6, sáu cấu hình đánh giá và exact hazard calibration đã hoàn tất; không còn job.
+V6, sáu cấu hình đánh giá và exact hazard calibration đã hoàn tất. Một lượt test
+cuối cố định đang chạy theo protocol đã khóa; không train mới hoặc export.
 Ứng viên validation768 đạt ba class: smoke/fireR .900932/.900158;personF1/R
-.652182/.621743. Tiếp theo chuẩn bị protocol test cuối và smoke regression cùng
-slice; chưa mở test/export, lịch60 epoch tạm hoãn. P1b đã audit pool, freeze/tải 60 ảnh/1.430 box, trong đó
+.652182/.621743. Readiness/protocol test cuối và smoke regression cùng slice đã
+PASS/freeze; xem V6_FINAL_TEST.md, lịch60 epoch tạm hoãn. P1b đã audit pool, freeze/tải 60 ảnh/1.430 box, trong đó
 615 box nhỏ (43,01%). Review/duplicate đã xong: 30 ACCEPT/30 EXCLUDE, phần nhận
 có 189/397 box nhỏ (47,61%). CrowdHuman expansion hoãn; pilot COCO train chưa
 dùng đã tải/review: 60 ảnh/415 box,342 nhỏ; nhận24/loại36, accepted127/156 nhỏ
@@ -54,7 +55,7 @@ rồi cập nhật kế hoạch này theo bằng chứng. Không sửa lịch s�
 | P0 | Stack, downloader, chuẩn hóa và baseline | COMPLETED | Có scoped corpus đã audit và báo cáo v1–v4 |
 | P1 | Đánh giá nguồn bổ sung, review box và chốt can thiệp | COMPLETED | Joint v3 data gate PASS_WITH_LIMITATIONS, đã khóa evidence |
 | P2 | Fine-tune có kiểm soát | COMPLETED | V6 đủ12 epoch, best10; chưa có run tiếp theo |
-| P3 | Calibration, quality gate và khóa ứng viên | IN_PROGRESS | V6 person F1/recall0.6375/0.5618 FAIL; chưa khóa ứng viên, test/export đóng |
+| P3 | Calibration, quality gate và khóa ứng viên | IN_PROGRESS | Validation768 PASS; ứng viên/ngưỡng đã khóa, một lượt test cuối đang chạy; export đóng |
 | P4 | Export NCNN và kiểm tra tương đương | PLANNED | Artifact, preprocessing, output và chất lượng sau export được kiểm tra |
 | P5 | Benchmark và camera trên Pi thật | BLOCKED | Có phần cứng, đo performance/latency/soak và kiểm tra miền thật |
 | P6 | Đóng gói vận hành và nghiệm thu | PLANNED | Hướng dẫn tái lập, cấu hình phát hành và bàn giao đầy đủ |
@@ -243,9 +244,13 @@ Không ghi đè v1–v4; không tự mở hàng loạt thử nghiệm khi một 
   hai metric khác dataset và tuyên bố gate đạt.
 - [x] Nếu chưa đạt: ghi failure, quay về P1/P2 theo bằng chứng; không hạ gate
   hoặc đổi kiến trúc chỉ để có artifact phát hành.
-- [ ] Khi validation đạt, khóa checkpoint hash, thresholds, resolution và preprocessing
+- [x] Khi validation đạt, khóa checkpoint hash, thresholds, resolution và preprocessing
   trước đánh giá test cuối. Test v2 đã dùng trước đây: công khai lịch sử đó, không
   gọi nó là holdout hoàn toàn chưa từng thấy; không mở lại để chọn epoch/threshold.
+- [x] Readiness:1.798 smoke test khớp ảnh/nhãn test baseline, không overlap hash
+  với train/val baseline;2 negative cũ ngoài membership hiện tại đã ghi rõ.
+- [x] Freeze test protocol trước kết quả; mở một lượt test cố định theo yêu cầu
+  tiếp tục của người dùng. Xem [Final test](docs/V6_FINAL_TEST.md); không launch lại.
 - [ ] Đánh giá test theo protocol đã khóa và ghi quyết định release/no-release.
   Nếu kết quả buộc thiết kế lại, đóng ứng viên và lập protocol holdout cho vòng mới.
 

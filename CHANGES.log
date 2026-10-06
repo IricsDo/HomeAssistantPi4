@@ -3115,3 +3115,54 @@ validation state.
   prediction-check bug; correctedv2 reuses immutable smoke extraction as documented.
   Keep E:artifacts and C:venv,one-detector contract,secrets untouched. Continue
   P3protocol preparation,not another data expansion or blind longer training run.
+
+## [2026-10-06 22:12] - Handover from OpenAI Codex
+
+- **Current Task:** User-authorized P3 locked test and same-slice smoke regression
+- **Status:** IN_PROGRESS
+- **Completed in this session:**
+  - Read AGENTS/CLAUDE/latestlog/README/plan,main5a55c47; preserved untracked
+    source_box_review.py. No secrets accessed. User asked to continue approved plan.
+  - Baseline checkpoint SHA1104f90ee0723e0877a4797c71cd88ebc7b43a5841396d153010f59781ea3d04,
+    bytes5365829,names{0:item} fromsingle_cls. Original smoke-only dataset and snapshot
+    bind index0smoke semantics. No names/head/label mutation.
+  - Readiness PASS: every current smoke test imagehash/normalizedsmokeGT multiset
+    belongs to original baseline test;1798current vs1800old. Excludedoldnegatives
+    test_1240.jpg/test_696.jpg disclosed; no current image excluded for thiscomparison.
+    Baseline train7883/val1790 exact imagehash overlaps0. No newnear/session audit claim.
+  - Full current test4297images;scopes smoke/fire1798each,GT968/1146;
+    person2499images/5442GT. Candidate and baseline scored on identical current
+    smoke membership/labels/preprocessing. Baseline historicalthreshold.43043043043043044
+    retained,remeasuredat768;not comparing different oldaggregate scores.
+  - Frozenprotocol/readiness atE:/HomeAssistantPi4/reports/indoor-v6-768-test-preparation-v1;
+    protocolSHA2a866525bb99459e2d42e23608b9335ad02ee65047605c2d81ec8e341a168cfa.
+    Candidate v6/thresholds unchanged,768square,candidateconf.001/maxdet100/IoU.5,
+    authoritativebatch16,warmup1. ScopedAPbatch20workers0, no test calibration call.
+  - Conservative test floors declared before results:smoke/fireR>=.90,personF1>=.65
+    andR>=.60;smoke delta>=-.03 aggregate AND eachsource. Person acceptance originally
+    validation; test floors are thiscandidate's predeclared release decision.
+    Priorv2test use disclosed; no untouchedholdoutclaim or threshold/epoch tuning.
+  - One fixed test started22:12:36Vietnam,actualPID33228/launcher6792;
+    rootE:/HomeAssistantPi4/reports/indoor-v6-768-final-test-v1. Logs inpreparationroot
+    test.stdout.log/test.stderr.log. Do notlaunchagain; no newtraining/export.
+- **Unfinished / Next Steps (CRITICAL):**
+  - [ ] Monitor existing test through scopedAP/3classmatching/baselinesmoke;
+    validatebindings/smokemembership, inspectwarnings and quality/regressiondecision.
+  - [ ] Finalize report/manifest, update plan/docs, run tests/lint, commit/push.
+    If qualityfails,closecandidate forrelease; no tuning or retry onthis test.
+- **Known Blocks / Issues:** Test pending; Pi/hardware/real indoor coverage absent.
+  Test previouslyused atv2; currentfixedcandidate evaluation notindependentnewholdout.
+- **Validation:** Tests188PASS6.78s; initialRuff8 line-length errors introduced by
+  newscripts fixed withscopedformat/stringwrap, currentRuffPASS. BuildNOTAPPLICABLE,
+  TypecheckNOTCONFIGURED. Repeat finaltests/lint at completion.
+- **Git State:** main5a55c47;DIRTY newtestprotocolmodule/scripts/tests/docs;
+  untrackedsource_box_review.py preserved/excluded.
+- **Active Files:** test_protocol.py,prepare_v6_final_test.py,run_v6_final_test.py,
+  test_test_protocol.py,V6_FINAL_TEST.md,CLAUDE/PROJECT_PLAN/CHANGES.
+- **Notes for Next Agent:** OpenAI Codexowns task. Receipt/log/process authoritative;
+  test cannot be reopened for selection. Exactimagehash/GT comparison is metadata
+  preparation,not testthresholdselection. All largeartifactsonE;venvC.
+
+Preparation milestone final validation: Tests188/188PASS6.91s fromproject,
+pytest -p no:cacheprovider --basetemp C:/Users/Public/Documents/indoor-final-test-20261006b;
+RuffPASS; no build/export;typechecknotconfigured. Test workflow remainsrunning.

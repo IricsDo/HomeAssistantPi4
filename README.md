@@ -17,12 +17,13 @@ hướng tới triển khai tiết kiệm tài nguyên trên Raspberry Pi 4 4 GB
 **Đánh giá resolution/baseline COMPLETED**, đủ sáu cấu hình square 512/640/768.
 V6-768 sau exact hazard calibration đạt ba gate validation: smoke/fire recall
 .900932/.900158; person F1/recall .652182/.621743.
-Baseline person tốt hơn v6; chưa train mới và không còn job đánh giá.
+Baseline person tốt hơn v6; chưa train mới. Một lượt test cuối cố định đang chạy.
 Xem [Protocol và checklist](projects/indoor-detection/docs/RESOLUTION_BASELINE_EVALUATION.md); log/status trên E:
 `reports/indoor-resolution-baseline-square-v2`. Kết quả/ngưỡng mới tại
 [Exact calibration](projects/indoor-detection/docs/V6_EXACT_HAZARD_CALIBRATION.md).
-Tiếp theo chuẩn bị protocol test cuối/smoke regression cùng slice; lịch60 epoch
-vẫn hoãn, test/export đóng, chưa phát hành. Camera dự kiến cao~4m trở lên;
+Protocol/readiness test cuối đã khóa; xem [Final test](projects/indoor-detection/docs/V6_FINAL_TEST.md).
+Đang đánh giá smoke regression cùng slice; lịch60 epoch vẫn hoãn, export đóng,
+chưa phát hành. Camera dự kiến cao~4m trở lên;
 ưu tiên người trong phòng/khu vực cửa, chưa chốt minimum size/ROI/góc chúc xuống.
 
 
