@@ -1,9 +1,9 @@
 # Kế hoạch hoàn thành Indoor Detection
 
 Ngày cập nhật: **2026-10-06**. Agent cập nhật: **OpenAI Codex**.
-Owner hiện tại: **OpenAI Codex**. P1b preparation hoàn tất; **v6 training IN_PROGRESS**.
+Owner hiện tại: **OpenAI Codex**. P1b preparation hoàn tất; **v6 training/evaluation COMPLETED; person FAIL**.
 V5 đã train đủ 12 epoch và đánh giá validation. Person vẫn FAIL; test/export đóng.
-V6 đã khởi chạy theo quyền mới của người dùng. P1b đã audit pool, freeze/tải 60 ảnh/1.430 box, trong đó
+V6 đã hoàn tất; không còn job. Lịch60 epoch/patience15 mới chỉ là đề xuất. P1b đã audit pool, freeze/tải 60 ảnh/1.430 box, trong đó
 615 box nhỏ (43,01%). Review/duplicate đã xong: 30 ACCEPT/30 EXCLUDE, phần nhận
 có 189/397 box nhỏ (47,61%). CrowdHuman expansion hoãn; pilot COCO train chưa
 dùng đã tải/review: 60 ảnh/415 box,342 nhỏ; nhận24/loại36, accepted127/156 nhỏ
@@ -50,8 +50,8 @@ rồi cập nhật kế hoạch này theo bằng chứng. Không sửa lịch s�
 |---|---|---|---|
 | P0 | Stack, downloader, chuẩn hóa và baseline | COMPLETED | Có scoped corpus đã audit và báo cáo v1–v4 |
 | P1 | Đánh giá nguồn bổ sung, review box và chốt can thiệp | COMPLETED | Joint v3 data gate PASS_WITH_LIMITATIONS, đã khóa evidence |
-| P2 | Fine-tune có kiểm soát | IN_PROGRESS | V5 hoàn tất; v6 đang chạy, max12 epoch/patience5, batch18/workers2 |
-| P3 | Calibration, quality gate và khóa ứng viên | IN_PROGRESS | V5 đã đánh giá, person FAIL; chưa khóa ứng viên, test/export đóng |
+| P2 | Fine-tune có kiểm soát | COMPLETED | V6 đủ12 epoch, best10; chưa có run tiếp theo |
+| P3 | Calibration, quality gate và khóa ứng viên | IN_PROGRESS | V6 person F1/recall0.6375/0.5618 FAIL; chưa khóa ứng viên, test/export đóng |
 | P4 | Export NCNN và kiểm tra tương đương | PLANNED | Artifact, preprocessing, output và chất lượng sau export được kiểm tra |
 | P5 | Benchmark và camera trên Pi thật | BLOCKED | Có phần cứng, đo performance/latency/soak và kiểm tra miền thật |
 | P6 | Đóng gói vận hành và nghiệm thu | PLANNED | Hướng dẫn tái lập, cấu hình phát hành và bàn giao đầy đủ |
@@ -63,6 +63,14 @@ P5 bị chặn bởi phần cứng. Có thể chuẩn bị tài liệu P6 trư�
 deployment đầy đủ nếu P5 chưa có kết quả.
 
 ### Bằng chứng hiện tại
+
+- V6 đã hoàn tất12 epoch, best10; joint v4 gồm24.100 ảnh. Scoped square512
+  person F1/recall0.6375/0.5618 FAIL; small recall0.2729,negative alarms12.56%.
+  Smoke/fire recall0.9138/0.9049 PASS. Test/export đóng; không còn job.
+  Xem [V6 decision](docs/V6_EVALUATION_DECISION.md). Next: chuẩn bị một đề xuất
+  lịch60 epoch/patience15 trên cùngjoint v4,khởi tạo v2; chưa config/run/launch.
+
+**Bằng chứng v5 và các vòng trước (lịch sử):**
 
 - Dataset mới: `E:\HomeAssistantPi4\processed\indoor-partial-joint-v3\dataset.yaml`.
   15.448 train / 4.301 validation / 4.297 test; tổng 24.046 ảnh, thêm 548 ảnh
@@ -150,7 +158,7 @@ box-review/reweighting/sampler cũ dưới đây không áp dụng cho v5, khôn
 **Đầu ra:** quyết định nguồn và can thiệp; review box/sampling nếu áp dụng,
 manifest can thiệp và báo cáo data gate trên E:; config/code và quyết định trong Git.
 
-### P1b — Vòng tiếp theo sau v5 (READY_FOR_REVIEW; v6 prep xong, chưa train)
+### P1b — Vòng tiếp theo sau v5 (READY_FOR_REVIEW; v6 train/evaluation xong)
 
 - [x] Audit annotation pool còn lại theo kích thước box, mật độ và scope; ưu tiên
   dữ liệu đã gắn nhãn small/occluded person, không lấy error ảnh holdout vào train.
@@ -174,11 +182,11 @@ manifest can thiệp và báo cáo data gate trên E:; config/code và quyết �
 - [x] Tạo derivative mới, giữ rehearsal hazard và holdout; joint v4 automated,
   conversion parity và inherited/new visual data gate PASS_WITH_LIMITATIONS.
 - [x] Chốt run v6 với initialization/retention rationale, resource config và
-  read-only readiness PASS. Người dùng đã cho phép; v6 IN_PROGRESS.
+  read-only readiness PASS. Người dùng đã cho phép; v6 đã hoàn tất.
   Không auto nhiều retry hoặc hạ gate. Xem V5 decision cho coverage census:
   bộ bổ sung chỉ có 701/5,810 box nhỏ (<1% diện tích), COCO có 10,846/23,611.
 
-### P2 — Fine-tune và theo dõi run mới (v5 COMPLETED, v6 IN_PROGRESS)
+### P2 — Fine-tune và theo dõi run mới (v5/v6 COMPLETED)
 
 - [x] Chọn checkpoint khởi tạo có lý do từ control/validation hiện có; v2/v4
   đều chưa được duyệt deployment. Không mặc định đổi initialization là đủ sửa gate.
@@ -186,8 +194,10 @@ manifest can thiệp và báo cáo data gate trên E:; config/code và quyết �
    sampler version nếu dùng, dataset/manifest hash và checkpoint đầu vào.
 - [x] Xác minh data gate P1 và môi trường GPU trước khi chạy.
 - [x] Chạy một thí nghiệm có giới hạn; giữ class masking và tắt augmentation trộn ảnh.
-- [ ] V6: theo dõi log/lỗi và kết quả inline/final validator đến khi hoàn tất.
-- [ ] V6: lưu checkpoint/hash, thời gian và trạng thái hoàn tất/dừng; không retry tự động.
+- [x] V6: đã kiểm tra log/lỗi và inline/final validator; đủ12 epoch,exit0.
+- [x] V6: đã lưu checkpoint/hash/thời gian và quyết định NO_RELEASE.
+- [ ] Vòng tiếp: freeze đề xuất max60 epoch/patience15, cùngjoint v4/v2 init,
+  resource budget/readiness; chưa tự khởi chạy hoặc resume v6.
 
 **Đầu ra:** run/checkpoint riêng trên E:, config và báo cáo quyết định trong Git.
 Không ghi đè v1–v4; không tự mở hàng loạt thử nghiệm khi một run thất bại.
@@ -274,9 +284,10 @@ Không đánh dấu PASS bằng benchmark CPU Windows hay thời gian GPU traini
    đã xong; expansion tự động đều đóng. COCO nhận24, CrowdHuman nhận30;
    cross-pilot/data gate đã đạt, derivative54/joint v4 đã tạo. Config/preflight v6
    đã PASS trước khi người dùng cho phép khởi chạy ngày2026-10-06.
-   V6 IN_PROGRESS: đọc v6-execution-status.json và log tại report root trên E:.
-   Không launch lần nữa; kiểm tra PID34596 và run directory trước mọi hành động.
-   Sau khi run hoàn tất, đánh giá validation square512 và ghi quyết định quality.
+   V6 COMPLETED: validation square512 person FAIL. Đọc V6_EVALUATION_DECISION.md
+   và reports/indoor-yolo26n-v6-evaluation trên E:. Không còn job.
+   Tiếp theo chuẩn bị đề xuất60 epoch/patience15; chưa có config/run/launch.
+   Không resume/relaunch v6 hoặc tự mở series retry.
    Không lặp acquisition đã hoàn tất. Không resume run hoàn tất, không
    chạy lại config v5 hoặc verifier pre-run để bỏ qua target đã tồn tại. Không test
    hoặc export khi person gate chưa đạt. Không lặp intake artifact đã hoàn tất.

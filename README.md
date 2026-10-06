@@ -19,7 +19,7 @@ Kế hoạch tổng thể và checklist cho agent tiếp theo:
 
 V5 đã train đủ 12 epoch và đánh giá validation ở 512 px. **Person vẫn FAIL**:
 explicit F1/recall 0,6415/0,5717; smoke/fire recall 0,9172/0,9073 đạt mục tiêu.
-Test/export vẫn đóng; v6 hiện đang chạy theo quyền khởi chạy mới.
+Test/export vẫn đóng; v6 đã hoàn tất và đánh giá validation, person vẫn FAIL.
 Vòng bổ sung dữ liệu ưu tiên người nhỏ đã hoàn tất. Joint v3 trước đó có
 24.046 ảnh, data gate PASS_WITH_LIMITATIONS. Xem
 [V5 decision](projects/indoor-detection/docs/V5_EVALUATION_DECISION.md).
@@ -34,11 +34,15 @@ exact/near screening không có match/candidate. Không mở expansion tự đ�
 screening không có match/candidate. Đã chuyển54 ảnh/553 box và tạo joint v4:
 24.100 ảnh, data gate PASS_WITH_LIMITATIONS, giữ nguyên holdout và rehearsal.
 Config/preflight v6 đã đạt; người dùng cho phép khởi chạy ngày 2026-10-06.
-**V6 IN_PROGRESS**, bắt đầu 19:13 giờ Việt Nam, tối đa12 epoch/patience5.
+**V6 đã hoàn tất 12 epoch**, 19:13–19:51 giờ Việt Nam; best epoch10.
 Xem [V6 preparation](projects/indoor-detection/docs/V6_TRAINING_PREPARATION.md).
 Trạng thái/log: `E:/HomeAssistantPi4/reports/indoor-partial-joint-v4-audit/`
 `v6-execution-status.json`, `v6-training.stdout.log`, `v6-training.stderr.log`.
-Không khởi chạy lại; sau khi hoàn tất, đánh giá validation square512 trước test/export.
+Không khởi chạy lại. Validation square512 đã xong: person F1/recall **0,6375/0,5618 FAIL**;
+smoke/fire recall **0,9138/0,9049 PASS**. Không còn job; test/export đóng.
+Báo cáo: `E:/HomeAssistantPi4/reports/indoor-yolo26n-v6-evaluation`.
+Xem [V6 decision](projects/indoor-detection/docs/V6_EVALUATION_DECISION.md). Bước tiếp: chuẩn bị đề xuất lịch60 epoch/patience15
+trên joint v4; chưa khởi chạy thử nghiệm mới.
 Camera mục tiêu là Raspberry Pi Camera Module 3 Wide IMX708;
 xem [chiến lược dữ liệu](projects/indoor-detection/docs/PERSON_DATA_STRATEGY.md).
 

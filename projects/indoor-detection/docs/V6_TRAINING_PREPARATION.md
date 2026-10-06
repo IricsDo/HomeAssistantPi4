@@ -1,6 +1,6 @@
 # V6 reviewed small-person training preparation
 
-Owner: OpenAI Codex. Preparation completed; execution: **IN_PROGRESS**.
+Owner: OpenAI Codex. Preparation completed; execution: **COMPLETED (12 epochs, exit0)**.
 Preparation originally stopped before training. On 2026-10-06 the user explicitly
 authorized continuation; the frozen configuration was launched once after fresh
 read-only readiness and GPU checks. Historical preparation receipts remain unchanged.
@@ -126,3 +126,6 @@ declared schedule if validation evidence justifies them; do not silently extend
 this frozen run. Inspect validation curves before deciding on that intervention.
 After completion, calibrate/evaluate square512 validation and compare person,
 small-person recall, smoke/fire and negatives. Test and NCNN remain closed.
+
+Training finished2026-10-06 12:51:51 UTC; best epoch10. Follow
+[V6 evaluation](V6_EVALUATION_DECISION.md) for current quality decision.

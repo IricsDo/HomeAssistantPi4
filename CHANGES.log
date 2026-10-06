@@ -2763,3 +2763,79 @@ validation state.
   - Keep laptop awake while job runs. Terminal wrapper status records completion
     or failure; interruption/power loss may leave IN_PROGRESS and needs inspection.
     All data/runs/reports remain E; venv remains C. No test/export started.
+
+
+## [2026-10-06 20:06] - Handover from OpenAI Codex
+
+- **Current Task:** V6 validation calibration, quality decision and next intervention
+- **Status:** READY_FOR_REVIEW
+- **Completed in this session:**
+  - Read instructions/current checklist/Git; main ba95db3. Preserved untracked
+    src/indoor_detection/source_box_review.py untouched/excluded. No secrets read.
+  - Verified v6 terminal COMPLETED/exit0,12 epochs,19:13:11–19:51:51 Vietnam
+    time; wall38m40s,CSV2255.33s. No job remains. Inline best epoch10.
+  - Locked best SHA103b45ab6a61f2431b462ee2bc4402f6ddaa7b982e872afd50515e3c6ef28729;
+    last SHAb402f97023770b05272a3a3d61edee688f8d9876d146084790681d0e606f76db.
+  - Reused v5 evaluate/analyze_errors APIs and declared same protocol before
+    standalone results:val only,calibration512/GPU0/batch20/workers0 rectangular;
+    smoke/fire target recall.90,person maxF1. At chosen thresholds,square512
+    explicit matching,batch16,candidate.001,maxdet100,IoU.50,one warmup.
+  - Completed all3 calibration/all3 scoped matching workflows on E. No traceback
+    or NMS timeout. Calibration personF1/R.6354/.5554 FAIL; smoke/fire target met.
+    Thresholds smoke.148148/fire.347347/person.327327.
+  - Authoritative square512:smokeP/R/F1.8091/.9138/.8582 PASS;fire
+    .9013/.9049/.9031 PASS;person.7369/.5618/.6375 FAIL. TP/FP/FN smoke784/185/74,
+    fire1142/125/120,person2997/1070/2338. Person gates remainF1>=.65 AND R>=.60.
+  - Negative alarms smoke22/990,fire7/616,person145/1154 (12.56%). Personsmall
+    recall616/2257=.2729 vs v5 .2880;small1641/2338 misses (70.2%). V6 does not
+    improve target metrics over v5 (F1/R.6415/.5717); loader/history differs,
+    no causal claim that54 images made performance worse.
+  - Viewed person miss/negative-alarm contact sheets,original-resolution overlays
+    001_000000388846 and007_000000505573 (tiny beach people,dog false alarm.87).
+    Selected errors include animals/toys/statues; no labels changed.
+  - Viewed training curves:train loss decreases;last5 aggregate mAP50-95
+    .54382–.54526,no strong monotonic gain. Does not establish person convergence.
+    Proposed one max60/patience15 schedule on samejoint v4/fromv2 before more
+    intake. PLANNED_NOT_AUTHORIZED_TO_LAUNCH;no newconfig/readiness/run created.
+    Same512/resources/optimizer/LR/seed/masking/mixing;longerLRdecay is part
+    of intervention,not exact resume or guarantee. No automatic retries.
+  - Rechecked all21 preparation bindings before/after evaluation PASS.
+    Updated CLAUDE,bothREADMEs,plan,V6 preparation;added V6_EVALUATION_DECISION.
+    AGENTS unchanged because architecture/workflow rules remain applicable.
+- **Unfinished / Next Steps (CRITICAL):**
+  - [ ] Prepare/freeze proposed max60 epoch/patience15 schedule,resource estimate,
+    unusedrun and readiness/data lock checks;record execution decision first.
+    Do not resume/relaunch completed v6 or alter its frozen config.
+  - [ ] Next authorized run must retain all scopes/rehearsal/holdouts and gates.
+    Test/NCNN remain closed;historicalv2test and unverified smoke regression persist.
+- **Known Blocks / Issues:** Personquality FAIL;projectP3 notcomplete. HardwareP5
+  unavailable. Mixed-domain,COCO-onlypersonholdout,annotation/rights/nearhash
+  limits persist;54reviewed rows do not remove470oldauto-screened expansion limits.
+- **Validation:**
+  - Build: NOT APPLICABLE (evaluation/documentation;no export)
+  - Tests: PASS162/162,7.49s;.venv/Scripts/python.exe -m pytest -p no:cacheprovider
+    --basetemp C:/Users/Public/Documents/indoor-v6-eval-20261006a
+  - Typecheck: NOT CONFIGURED
+  - Lint: PASS (.venv/Scripts/python.exe -m ruff check . --no-cache)
+  - Evaluation: COMPLETED;quality NO_RELEASE;preparation integrity PASS21/21.
+    git diff --check PASS. No implementation/dependency changes.
+- **Git State:** Branchmain;LastCommitba95db3;DIRTY scoped documentation milestone
+  pending commit/push. Untrackedsource_box_review.py excluded.
+- **Uncommitted Changes / Active Files:** CHANGES.log,CLAUDE.md,README.md;
+  projectREADME,PROJECT_PLAN,docs/V6_TRAINING_PREPARATION.md,
+  docs/V6_EVALUATION_DECISION.md.
+- **Notes for Next Agent:**
+  - Run E:/HomeAssistantPi4/runs/indoor-detection/
+    indoor_partial_joint_yolo26n_v6_reviewed_small_512 immutable;no job remains.
+    Reportroot E:/HomeAssistantPi4/reports/indoor-yolo26n-v6-evaluation.
+    evaluation-workflow.py refuses existing summary/calibration/error targets;
+    do not rerun into same outputs. Summary finalized with controls/review/proposal.
+  - Artifactmanifest36 selectedreports/scripts/CSV/PNG/logs SHA
+    f8a2cce43625a20b7d6350276fcc2599b7ee5ef2fa5b2eccf8a3f76b7b5bc27b;
+    evaluation-summary SHA
+    416226173e9aa60f7e2eeb6036bc4166117d249d0ef92df12fcb7e6cd4eab4ed.
+    Trainingreceipt,curves,integrity,3calibrations,3squareanalysisdirectories,
+    controlcomparison,galleries andlogs remain E. No weights/data inGit.
+  - Original prep readiness execution_authorized=false is historical;do not
+    rewrite hashes. All21 original bindings unchanged. No fresh full image/label
+    rehash claimed. Venv C;data/reports E;no test/export or newtrain launched.

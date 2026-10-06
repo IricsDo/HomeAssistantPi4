@@ -34,10 +34,10 @@ Exact/near duplicate screening không xác nhận overlap; dHash có giới hạ
 Joint v3 gồm 15.448 train/4.301 val/4.297 test; data gate PASS_WITH_LIMITATIONS.
 V5 đã train đủ 12 epoch và đánh giá validation 512 px. **Person FAIL**: explicit
 F1/recall 0,6415/0,5717; smoke/fire recall 0,9172/0,9073 PASS. Test/export đóng;
-V6 hiện đang chạy sau khi hoàn tất labelled small-person intake theo P1b. Xem
+V6 đã hoàn tất sau khi bổ sung labelled small-person intake theo P1b. Xem
 [V5 decision](docs/V5_EVALUATION_DECISION.md).
 P1b đã audit/freeze/tải pilot 60 ảnh, 615/1.430 box nhỏ (43,01%), geometry PASS.
-Gallery/duplicate review đã hoàn tất; derivative đã chuyển và v6 đang chạy. Xem
+Gallery/duplicate review đã hoàn tất; derivative đã chuyển và v6 đã train xong. Xem
 [Small-person intake](docs/SMALL_PERSON_INTAKE.md).
 Review đã xong60 gallery/21 crop: nhận30/loại30, accepted small189/397=47,61%.
 Exact/near screening24.046 ảnh không có match/candidate. Hoãn expansion do
@@ -49,10 +49,14 @@ review (COCO24+CrowdHuman30), đã freeze với cross-pilot screening không có
 match/candidate. Đã chốt derivative riêng54 ảnh/553 box và compose joint v4:
 15.502 train/4.301 val/4.297 test, giữ mọi rehearsal/scope, holdout byte-identical.
 Full data gate PASS_WITH_LIMITATIONS. Người dùng đã cho phép khởi chạy:
-**V6 IN_PROGRESS**, bắt đầu 2026-10-06 19:13 giờ Việt Nam, tối đa12 epoch/patience5. Xem [V6 preparation](docs/V6_TRAINING_PREPARATION.md).
+**V6 đã hoàn tất 12 epoch**, 2026-10-06 19:13–19:51; best epoch10. Xem [V6 preparation](docs/V6_TRAINING_PREPARATION.md).
 Trạng thái/log: `E:/HomeAssistantPi4/reports/indoor-partial-joint-v4-audit/`
 `v6-execution-status.json`, `v6-training.stdout.log`, `v6-training.stderr.log`.
-Không khởi chạy lại; sau khi hoàn tất, đánh giá validation square512 trước test/export.
+Không khởi chạy lại. Validation square512 đã xong: person F1/recall **0,6375/0,5618 FAIL**;
+smoke/fire recall **0,9138/0,9049 PASS**. Không còn job; test/export đóng.
+Báo cáo: `E:/HomeAssistantPi4/reports/indoor-yolo26n-v6-evaluation`.
+Xem [V6 decision](docs/V6_EVALUATION_DECISION.md). Bước tiếp: chuẩn bị đề xuất lịch60 epoch/patience15
+trên joint v4; chưa khởi chạy thử nghiệm mới.
 Nguồn/joint cũ được giữ nguyên; không mở expansion tự động.
 Xem [assessment](docs/CROWDHUMAN_ASSESSMENT.md).
 

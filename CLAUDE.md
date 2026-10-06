@@ -23,9 +23,10 @@ Do not begin implementation until the current task and ownership are clear.
 
 ## 1.1 Current authorized execution (2026-10-06)
 
-- Owner OpenAI Codex; P1b preparation complete; v6 training IN_PROGRESS.
+- Owner OpenAI Codex; P1b preparation complete; v6 training COMPLETED (12 epochs); validation completed, person FAIL; no running job.
 - User explicitly authorized continuation on 2026-10-06; v6 started at 12:13:11 UTC.
-  Actual Python PID34596 (launcher39912). Check execution receipt before acting.
+  Finished12:51:51 UTC,exit0; no training job. Best inline epoch10.
+  Training PID34596 is historical; do not relaunch.
 - Joint v4 now24,100 images:15,502 train/4,301 val/4,297 test. Reviewed-only54
   added (COCO24/CrowdHuman30),553 boxes including316 small. Full automated audit,
   conversion parity and inherited/new visual data gate PASS_WITH_LIMITATIONS.
@@ -37,8 +38,12 @@ Do not begin implementation until the current task and ownership are clear.
 - Read-only readiness verification PASS before the single authorized launch.
   Execution status/logs: E:/HomeAssistantPi4/reports/indoor-partial-joint-v4-audit/
   v6-execution-status.json and v6-training.stdout.log / v6-training.stderr.log.
-  Do not relaunch, resume, overwrite or retry automatically. After completion,
-  evaluate square512 validation; test/export stay closed pending quality gate.
+  Do not relaunch, resume, overwrite or retry automatically.
+  Evaluation report root E:/HomeAssistantPi4/reports/indoor-yolo26n-v6-evaluation.
+  Follow docs/V6_EVALUATION_DECISION.md; person F1/recall0.6375/0.5618 FAIL,
+  smoke/fire recall0.9138/0.9049 PASS. Test/export stay closed.
+  Next proposed experiment: max60/patience15 on joint v4; preparation only,
+  no automatic launch/retry. No new training configuration/run yet.
   Read docs/V6_TRAINING_PREPARATION.md and latest CHANGES.
 - Existing v5 person quality FAIL; NCNN/test gates stay closed. Hardware unavailable.
 
