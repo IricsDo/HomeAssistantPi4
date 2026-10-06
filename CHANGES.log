@@ -3377,3 +3377,80 @@ RuffPASS; no build/export;typechecknotconfigured. Test workflow remainsrunning.
   two-video FURG format/overlap pilot; do not rerun completed metadata acquisition
   into existing receipt root or call current metadata gate holdout PASS.
   Keep one unified detector, E: artifacts/C: venv, no projects/.env exposure.
+
+## [2026-10-07 00:57] - Handover from OpenAI Codex
+
+- **Current Task:** Apply recent-source priority and audit a recent holdout candidate
+- **Status:** COMPLETED (recency review/Zenodo pilot; P3 and holdout intake IN_PROGRESS)
+- **Completed in this session:**
+  - User2026-10-07 prioritizes datasets/reference code/docs/frameworks in rolling
+    last5years. Recorded in AGENTS/CLAUDE/plan/READMEs; exact current window
+    2021-10-07 to2026-10-07. Separate release, capture and mirror/access dates;
+    older exceptions need useful-value/alternative rationale. No automatic upgrades.
+  - FURG2015-2017 deprioritized, no video pilot downloaded. Preserve original
+    HOLDOUT_SOURCE_ASSESSMENT.md and E:v1 receipts/history; verified35 old artifact
+    bindings and its documentation hash unchanged. Current decision supersedes priority.
+  - New RECENT_HOLDOUT_SOURCE_REVIEW.md assesses Zenodo2025, Detectium2025,
+    FASDD2024/2025, Boreal2025/2022collection, MmodalFire2026, MMPTRACK2023/2021
+    and SCOUT2025 using creator/paper sources. MmodalFire labels binary fire/nonfire,
+    not ready box GT. MMPTRACK requires signed terms/email; neither performed.
+    Recent publication alone does not prove current/independent original footage.
+  - Detectium creator metadata pinned ef4a092c2109c086435ba117a342efe1bce70c66:
+    7,549 caption entries;318 original IoT tags (187Detectium/131Dubai),5,940web,
+    FIRE433/Forest373/FireNET485. No bbox fields in this metadata, session/capture
+    dates unknown. No image/model/API-key use or provider code executed.
+  - Bounded Zenodo record15826133 archive acquired only onE,200,547,120bytes;
+    MD5 matches086fbc3b874139276097f4057bc45a3c, SHA
+    f5e4b452bc0e74508366b4ce3f62d7479d1a790a7438a1f0ebee145a216d7b6a.
+    PathE:/HomeAssistantPi4/raw/holdout-candidates/zenodo-15826133-v1/Indoor Fire Smoke.zip.
+    No extraction or joint/train/validation modifications. Ignore __MACOSX forks:
+    actual5,000images/5,000labels,all decoded;class0boxes3,592/class1boxes3,343;
+    pairing/5-field labels PASS, not full geometry/completeness gate. Numeric-only
+    class names; seed48 12-image visualprobe supports0fire/1smoke only provisionally.
+  - Original export points to Roboflow object-detection-7qn6l/indoor-fire-smoke/1.
+    Compared with existing rawIFireSmoke5,000: no identical basenames/bytehashes/
+    decodedpixelhashes; dHash<=3 gives945pairs involving455newimages. Eight
+    deterministic lowest-distance pairs visually confirmed shared scenes/content;
+    other937pairs not adjudicated. Not all945 are declared duplicates. No full
+    all-corpus audit; do not claim remaining4,545images independent.
+    Decision NOT_ADMITTED as independent holdout; recent record contains reused
+    scenes. Prioritize Detectium original IoT access next, not more Zenodo versions.
+  - First API download appeared stalled; Ctrl-C wrapper returnedexit1 but child
+    subsequently completed and generated checksum receipt. Historical interruption
+    intent note preserved; final status corrects it. Direct curl fallback exited28
+    low-speed bound,zero payload. No acquisition process remains; keep empty parts.
+  - EvidenceE:/HomeAssistantPi4/reports/indoor-holdout-recency-review-v1:
+    originalmetadata/retrieval,protocol/acquisition/final-status,archive inventory,
+    identity/near hash audits/fingerprints,two galleries and visualreview,decision.
+    Manifest21bindings SHA
+    f63a7e878e4c39a93d77f2837296fc5c5aef5e62100115c96ff5484ab29594e4.
+    Initial archive metadata display tried decoding __MACOSX resource fork and
+    failedUTF-8; corrected read skips forks, original data preserved.
+- **Unfinished / Next Steps (CRITICAL):**
+  - [ ] Confirm public image+bbox access and original session/capture provenance for
+    Detectium2025 IoT subset; captions not GT. No external contact/signature/private
+    credentials. If usable, acquire bounded original pairs onE for blinded annotation
+    and old-corpus overlap audit; reserve for evaluation only, no training intake.
+  - [ ] Resolve recent smoke/person/indoor coverage, group independence and existing
+    planning targets; no holdout admitted. Freeze groups/scopes/hash/evaluation policy
+    before v7 readiness/training/inference. No reused old test tuning/retry.
+  - [ ] Keep v7 PLANNED, v6NO_RELEASE, exportclosed; no automatic60epoch run or
+    dependency/architecture switch. Pi4/camera unavailable; one unified detector.
+- **Known Blocks / Issues:** No independent holdout; Zenodo reused scenes confirmed;
+  IoT images/boxes/session IDs unverified; smoke/person domain/negative coverage lacks
+  evidence. Recency preference does not remove these gates. No running job.
+- **Validation:**
+  - Build: NOT APPLICABLE (source/metadata/image audit; no model export)
+  - Tests: PASS192/192,10.87s; project .venv/Scripts/python.exe -m pytest
+    -p no:cacheprovider --basetemp C:/Users/Public/Documents/indoor-recency-20261007
+  - Typecheck: NOT CONFIGURED
+  - Lint: PASS (.venv/Scripts/python.exe -m ruff check . --no-cache)
+  - Git diff --check: PASS
+- **Git State:** main; LastCommit07ffa96; DIRTY scoped policy/recencydocs awaitingcommit/push.
+- **Uncommitted Changes / Active Files:** AGENTS.md,CLAUDE.md,CHANGES.log,READMEs,
+  PROJECT_PLAN.md,INDEPENDENT_HOLDOUT_PLAN.md,RECENT_HOLDOUT_SOURCE_REVIEW.md.
+  Unrelated untracked source_box_review.py preserved/excluded. No projects/.env read.
+- **Notes for Next Agent:** OwnerOpenAI Codex. Read recent-source decision, not old
+  FURG nextstep. Preserve old source assessment/doc hashes and all failed/successful
+  acquisition receipts. Do not call recent packaging new original data or zero
+  bytehash overlap independent scenes. Large artifactsE:, venvC: unchanged.

@@ -49,8 +49,9 @@ Already inspected old test can remain a historical regression report, never be
 renamed as new independent test. A publicly available source does not guarantee
 absence from pretrained model data; record known/unknown exposure separately.
 
-Source assessment completed: see [HOLDOUT_SOURCE_ASSESSMENT.md](HOLDOUT_SOURCE_ASSESSMENT.md).
-FURG selected for a two-video metadata/annotation pilot; no holdout admitted.
-Public metadata and XMLs retrieved on E:, no videos acquired or model predictions.
-Next action: pinned positive/negative video pilot, alignment/completeness/overlap audit;
-smoke/person coverage unresolved. No new training authorized by this intake decision.
+Current sourcing priority (user2026-10-07): recent sources from the rolling last
+five years; see RECENT_HOLDOUT_SOURCE_REVIEW.md and AGENTS.md. Original FURG
+selection is historical/deprioritized; its reports and source assessment remain
+immutable. Zenodo2025 archive pilot completed but NOT_ADMITTED (shared scenes);
+next verify Detectium2025 IoT image/box/session access. Keep acquisition date/ancestry checks separate from
+recent publication date. No model predictions or new training authorized by intake.

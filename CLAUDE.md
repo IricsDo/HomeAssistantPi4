@@ -69,11 +69,15 @@ Do not begin implementation until the current task and ownership are clear.
   Fire train/validation diagnosis COMPLETED; read docs/FIRE_RECOVERY_PLAN.md.
   Fire val recall FS .839465 vs home .919003; threshold reduction breaches prior
   precision/negative-alarm guardrails. V7 aligned768 max12 epochs is PLANNED only.
-  Source assessment COMPLETED; docs/HOLDOUT_SOURCE_ASSESSMENT.md selects FURG
-  for a two-video pilot. All23 XMLs parsed; metadata only, not holdout admission.
-  Next: pinned video alignment/completeness/overlap pilot, resolve smoke/person
-  coverage, then holdout/data/resource readiness before launch. No holdout admitted,
-  no training/evaluation job. Old test remains closed; no automatic 60-epoch run.
+  Source assessment v1 is historical. User 2026-10-07 prioritizes rolling last-five-
+  year sources (datasets/code/docs/frameworks); see AGENTS and
+  docs/RECENT_HOLDOUT_SOURCE_REVIEW.md. FURG2015-2017 pilot deprioritized, no videos
+  downloaded. Preserve original v1 decision/doc/hash receipts; do not rewrite them.
+  Zenodo2025 archive pilot COMPLETED but NOT_ADMITTED: shared IFireSmoke scenes
+  confirmed despite zero byte/pixel hashes; Detectium2025 original IoT metadata
+  assessed (318 entries, no box fields). Next: confirm IoT image+box/session access.
+  No holdout admitted, no train/inference/download job.
+  V7 requires independent holdout/data/resource readiness; old test remains closed.
   User scope: room/doorway; distant people outside window not required. No numeric
   minimum or ROI selected; labels/full metrics/gates unchanged. Planned height~4m
   or higher; exact tilt/distance await deployment. Max60 training deferred.

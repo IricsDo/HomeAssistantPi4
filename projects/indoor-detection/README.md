@@ -32,9 +32,10 @@ Chẩn đoán fire trên train/validation đã hoàn tất: recall theo nguồn 
 [Fire recovery](docs/FIRE_RECOVERY_PLAN.md). Đề xuất v7 ở 768, tối đa 12 epoch,
 chưa chạy. Tiếp theo đánh giá nguồn cho
 [holdout độc lập](docs/INDEPENDENT_HOLDOUT_PLAN.md) và readiness;
-[Source assessment](docs/HOLDOUT_SOURCE_ASSESSMENT.md) đã xong:
-chọn pilot FURG, chưa có holdout admission; tiếp theo kiểm tra video/nhãn/trùng.
-Smoke/person coverage còn thiếu. Lịch 60 epoch vẫn hoãn, export đóng,
+[Recent-source review](docs/RECENT_HOLDOUT_SOURCE_REVIEW.md): ưu tiên nguồn
+trong 5 năm; hoãn FURG cũ. Zenodo2025 pilot không được nhận do cảnh trùng;
+tiếp theo xác minh ảnh/box và session của IoT Detectium2025.
+Chưa có holdout admission; smoke/person và independence gate còn thiếu. Lịch 60 epoch vẫn hoãn, export đóng,
 chưa phát hành. Camera dự kiến cao~4m trở lên;
 ưu tiên người trong phòng/khu vực cửa, chưa chốt minimum size/ROI/góc chúc xuống.
 

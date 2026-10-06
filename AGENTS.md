@@ -48,6 +48,14 @@ The purpose of this document is to maintain project consistency, prevent agents 
   is selected yet. Preserve full validation metrics, labels and existing gates.
 - Never print or commit `projects/.env`; it contains the Roboflow API key and is
   already covered by `.gitignore`.
+- Prioritize datasets, reference code, documentation and frameworks released or
+  substantively updated within the rolling last five years (user, 2026-10-07).
+  Check original release/data age separately from mirror upload/access dates;
+  a new paper or packaging does not make old data new. Older sources require a
+  documented reason that they remain useful and no suitable recent alternative
+  was found. This preference does not authorize unrelated dependency upgrades or
+  invalidate existing audited datasets/checkpoints. Reassess FURG before intake;
+  its 2015-2017 material is a legacy fallback, not the default pilot.
 
 Agents MUST use the existing project stack and conventions. Do not introduce alternative frameworks, package managers, or architectural patterns without explicit authorization.
 

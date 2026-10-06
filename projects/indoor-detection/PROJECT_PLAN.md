@@ -1,13 +1,15 @@
 # Kế hoạch hoàn thành Indoor Detection
 
-Ngày cập nhật: **2026-10-06**. Agent cập nhật: **OpenAI Codex**.
+Ngày cập nhật: **2026-10-07**. Agent cập nhật: **OpenAI Codex**.
 Owner hiện tại: **OpenAI Codex**. **Resolution/baseline stage1 COMPLETED; P1c IN_PROGRESS**. P1b preparation hoàn tất; **v6 training/evaluation COMPLETED; person512 FAIL, person768 PASS**.
 V5 đã train đủ 12 epoch và đánh giá validation. Person vẫn FAIL; test/export đóng.
 V6, sáu cấu hình đánh giá, exact hazard calibration và test cuối đã hoàn tất.
 Test:smoke/person PASS,fireR .849913 FAIL → NO_RELEASE;regression smoke PASS.
 Không còn job, không train mới hoặc export. Fire diagnosis COMPLETED; v7 ở 768
-tối đa 12 epoch mới PLANNED. Source assessment COMPLETED; tiếp theo pilot FURG
-video/annotation/overlap, rồi holdout admission và readiness;
+tối đa 12 epoch mới PLANNED. Ưu tiên nguồn trong 5 năm gần nhất (user 2026-10-07);
+FURG hoãn. Zenodo2025 pilot NOT_ADMITTED do cảnh trùng IFireSmoke đã xác nhận.
+Tiếp theo xác minh image+box/session access cho IoT Detectium2025,
+rồi holdout admission và readiness;
 xem [Fire recovery](docs/FIRE_RECOVERY_PLAN.md).
 Ứng viên validation768 đạt ba class: smoke/fireR .900932/.900158;personF1/R
 .652182/.621743. Readiness/protocol test cuối và smoke regression cùng slice đã
@@ -41,6 +43,8 @@ rồi cập nhật kế hoạch này theo bằng chứng. Không sửa lịch s�
 - Có thể ghép nhiều nguồn partial-label vào **một model** bằng class-masked
   training/validation. Mỗi ảnh phải có scope rõ; class ngoài scope là chưa biết,
   không phải negative. Giữ augmentation trộn ảnh bằng 0.
+- Ưu tiên nguồn/code/docs/framework trong 5 năm gần nhất; tách ngày release,
+  ngày thu thập và ngày mirror. Nguồn cũ cần lý do cụ thể; không tự nâng dependencies.
 - Ưu tiên dataset đã có nhãn phù hợp. Ghi provenance, license hoặc tình trạng
   thiếu thông tin; không cần đợi một dataset “hoàn hảo”. Không suy ra quyền sử
   dụng đã xác nhận nếu metadata còn thiếu.
@@ -272,7 +276,12 @@ Không ghi đè v1–v4; không tự mở hàng loạt thử nghiệm khi một 
   để chọn thresholds/epoch. V7 draft PLANNED, chưa mở train/export.
 - [x] Đánh giá nguồn có nhãn: HOLDOUT_SOURCE_ASSESSMENT.md; FURG pilot được chọn,
   23 XML audit metadata hoàn tất. Chưa có holdout admission hoặc video download.
-- [ ] Pilot hai video FURG pinned: decode/frame alignment/completeness/overlap.
+- [x] Áp dụng ưu tiên nguồn trong 5 năm: RECENT_HOLDOUT_SOURCE_REVIEW.md.
+  FURG pilot hoãn; giữ evidence lịch sử. Không coi ngày mirror là tuổi dữ liệu mới.
+- [x] Zenodo2025 pilot: checksum/5,000 decode/pairing và overlap probe hoàn tất;
+  NOT_ADMITTED do reused scenes. Detectium IoT metadata318 entries đã audit.
+- [ ] Xác minh Detectium2025 original IoT image+box access và session/group IDs;
+  chưa admit holdout. Không suy ra independence từ ngày publication/mirror.
 - [ ] Chốt smoke/person coverage; tạo/audit/freeze holdout độc lập theo protocol.
 - [ ] Kiểm tra data/checkpoint/environment/resource readiness trước một launch v7.
 - [ ] Chạy/đánh giá ứng viên mới chỉ sau prerequisites; khóa trước holdout inference.
@@ -345,7 +354,7 @@ Không đánh dấu PASS bằng benchmark CPU Windows hay thời gian GPU traini
    Test cuối đã COMPLETED:NO_RELEASE dofireR .849913;smoke/person vàsmoke regression PASS.
    Fire diagnosis COMPLETED; đọc FIRE_RECOVERY_PLAN.md và INDEPENDENT_HOLDOUT_PLAN.md.
    Source assessment đã xong; đọc HOLDOUT_SOURCE_ASSESSMENT.md. Tiếp theo pilot
-   hai video FURG, smoke/person coverage còn thiếu; chưa acquire video/train. Không launch draft
+   nguồn mới theo RECENT_HOLDOUT_SOURCE_REVIEW.md; FURG hoãn, chưa train. Không launch draft
    YAML trước holdout/data/resource readiness. Không tuning/relaunch trên test cũ.
    Đọc V6_FINAL_TEST.md.
    Đọc V6_EXACT_HAZARD_CALIBRATION.md; không rerun calibration hoặc train mới.
