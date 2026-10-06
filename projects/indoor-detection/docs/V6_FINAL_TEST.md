@@ -1,6 +1,7 @@
 # V6-768 locked final test and smoke regression
 
-Owner: OpenAI Codex. Status: IN_PROGRESS. User requested continuation on2026-10-06.
+Owner: OpenAI Codex. Status: COMPLETED — **NO_RELEASE**.
+User requested continuation on2026-10-06.
 This opens one fixed test evaluation after validation gates passed. No training,
 test threshold selection, retry series or export is authorized by this workflow.
 
@@ -11,6 +12,7 @@ Protocol SHA `2a866525bb99459e2d42e23608b9335ad02ee65047605c2d81ec8e341a168cfa`.
 Test output: `E:/HomeAssistantPi4/reports/indoor-v6-768-final-test-v1`.
 Stdout/stderr are in the preparation root (`test.stdout.log`, `test.stderr.log`).
 Hidden launcherPID6792; actual Python PID/times appear in test execution-status.json.
+ActualPID33228; completed22:12:36–22:21:58 Vietnam,exit0. No job remains.
 Do not relaunch into existing output. Confirm receipt/log/process for live state.
 
 - Frozen v6 best SHA `103b45ab6a61f2431b462ee2bc4402f6ddaa7b982e872afd50515e3c6ef28729`.
@@ -60,3 +62,56 @@ Failed quality records NO_RELEASE, not a threshold adjustment on this test.
 
 Pi performance, target indoor coverage at planned height~4m+, camera geometry,
 backend parity and final deployment resolution remain unverified even if test passes.
+
+## Results and decision
+
+Fixed thresholds, all targets retained:
+
+| Class | Precision | Recall | F1 | mAP50 | mAP50-95 | Test floor |
+|---|---:|---:|---:|---:|---:|---|
+| smoke | .752790 | .905992 | .822316 | .910742 | .577998 | PASS |
+| fire | .876688 | .849913 | .863093 | .890892 | .540941 | FAIL |
+| person | .721178 | .634509 | .675073 | .683875 | .436934 | PASS |
+
+Counts: smokeTP877/FP288/FN91; fire974/137/172; person3453/1335/1989.
+AP is diagnostic; the P/R/F1 columns are explicit fixed-threshold matching.
+
+Smoke baseline on the identical1,798 images:TP872/FP63/FN96,
+P.932620/R.900826/F1.916448. Same-slice recall regression PASS:
+
+| Slice | v6 recall | Baseline recall | Delta |
+|---|---:|---:|---:|
+| Aggregate | .905992 | .900826 | +.005165 |
+| indoor-fs-v2 | .992832 | .989247 | +.003584 |
+| indoor-home-fire-v2 | .870827 | .865022 | +.005806 |
+
+This passes the recall regression requirement; it does not imply overall smoke
+quality equals baseline. Smoke precision is substantially lower; negative alarms
+are53/901 (5.88%) versus baseline8/901 (.89%). Fire negatives12/727 (1.65%);
+person177/1,153 (15.35%). These are image-level benchmark rates, not camera alert
+frequency. Overall smoke recall also does not prove each source achieves .90.
+
+Fire fails on both source slices: indoor-fs .828685, home-fire .855866.
+Of172 missed fire boxes,112 classified below confidence,57 localization/no overlap,
+3 no candidate. Selected false-negative gallery reviewed: mixed indoor/staged/
+synthetic scenes and small/fragmented flame targets appear. Examples are diagnostic,
+not prevalence or proof that labels are wrong. No test labels/scopes were changed.
+
+**NO_RELEASE:** fire recall .849913 misses the predeclared .90 test floor.
+`candidate-decision.json` closes this candidate for release; original validation
+PASS remains recorded separately. No threshold adjustment, retraining, retry,
+test rerun or NCNN export. Person improved and passes; replacing its architecture
+is not justified by these test results alone.
+
+Next: diagnose fire on **training/validation** and review a bounded proposal for
+better generalization/calibration robustness. Define an independent holdout before
+evaluating a redesigned candidate; the already inspected test cannot become a
+fresh selection set. Do not immediately run60 epochs or acquire more sources
+without a written intervention/holdout protocol. Hardware/camera checks remain pending.
+
+Integrity PASS:22,002 frozen file bindings reverified after test, scoped image/GT
+counts equal readiness, candidate/baseline smoke image/GT identity confirmed;
+no workflow traceback/NMS timeout. Final manifest binds181 artifacts including
+galleries, AP plots, preparation protocol/readiness and logs; SHA
+`b1a387b6d1cc375cfecc0f0b46573b3cc82f6e3f39851694e16f7762f7d3abef`.
+Build not applicable; typecheck not configured; tests/lint results in CHANGES.

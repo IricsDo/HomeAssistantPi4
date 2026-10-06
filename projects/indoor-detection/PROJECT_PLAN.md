@@ -3,8 +3,10 @@
 Ngày cập nhật: **2026-10-06**. Agent cập nhật: **OpenAI Codex**.
 Owner hiện tại: **OpenAI Codex**. **Resolution/baseline stage1 COMPLETED; P1c IN_PROGRESS**. P1b preparation hoàn tất; **v6 training/evaluation COMPLETED; person512 FAIL, person768 PASS**.
 V5 đã train đủ 12 epoch và đánh giá validation. Person vẫn FAIL; test/export đóng.
-V6, sáu cấu hình đánh giá và exact hazard calibration đã hoàn tất. Một lượt test
-cuối cố định đang chạy theo protocol đã khóa; không train mới hoặc export.
+V6, sáu cấu hình đánh giá, exact hazard calibration và test cuối đã hoàn tất.
+Test:smoke/person PASS,fireR .849913 FAIL → NO_RELEASE;regression smoke PASS.
+Không còn job, không train mới hoặc export. Tiếp theo diagnosis fire trên train/val
+và protocol holdout độc lập trước khi thiết kế ứng viên mới.
 Ứng viên validation768 đạt ba class: smoke/fireR .900932/.900158;personF1/R
 .652182/.621743. Readiness/protocol test cuối và smoke regression cùng slice đã
 PASS/freeze; xem V6_FINAL_TEST.md, lịch60 epoch tạm hoãn. P1b đã audit pool, freeze/tải 60 ảnh/1.430 box, trong đó
@@ -55,18 +57,26 @@ rồi cập nhật kế hoạch này theo bằng chứng. Không sửa lịch s�
 | P0 | Stack, downloader, chuẩn hóa và baseline | COMPLETED | Có scoped corpus đã audit và báo cáo v1–v4 |
 | P1 | Đánh giá nguồn bổ sung, review box và chốt can thiệp | COMPLETED | Joint v3 data gate PASS_WITH_LIMITATIONS, đã khóa evidence |
 | P2 | Fine-tune có kiểm soát | COMPLETED | V6 đủ12 epoch, best10; chưa có run tiếp theo |
-| P3 | Calibration, quality gate và khóa ứng viên | IN_PROGRESS | Validation768 PASS; ứng viên/ngưỡng đã khóa, một lượt test cuối đang chạy; export đóng |
+| P3 | Calibration, quality gate và khóa ứng viên | IN_PROGRESS | Validation768 PASS; test hoàn tất, fireR .849913 FAIL; NO_RELEASE, export đóng |
 | P4 | Export NCNN và kiểm tra tương đương | PLANNED | Artifact, preprocessing, output và chất lượng sau export được kiểm tra |
 | P5 | Benchmark và camera trên Pi thật | BLOCKED | Có phần cứng, đo performance/latency/soak và kiểm tra miền thật |
 | P6 | Đóng gói vận hành và nghiệm thu | PLANNED | Hướng dẫn tái lập, cấu hình phát hành và bàn giao đầy đủ |
 
-**Còn 4 công đoạn đích P3–P6**, cùng vòng can thiệp person quay lại P1/P2.
-P1/P2 đã hoàn tất cho v5 nhưng P3 chưa đạt. Các vòng train không có số lần cố định
+**Còn 4 công đoạn đích P3–P6**, cần đề xuất can thiệp fire sau test v6 NO_RELEASE.
+P1/P2 đã hoàn tất cho v6 nhưng P3 chưa đạt toàn bộ quality gate. Các vòng train không có số lần cố định
 hay phần trăm hoàn thành đảm bảo trước khi đạt quality gate.
 P5 bị chặn bởi phần cứng. Có thể chuẩn bị tài liệu P6 trước, nhưng chưa nghiệm thu
 deployment đầy đủ nếu P5 chưa có kết quả.
 
 ### Bằng chứng hiện tại
+
+- Test v6-768 đã hoàn tất, không thay thresholds:smokeR .905992 PASS;
+  personF1/R .675073/.634509 PASS;fireR .849913 FAIL. Regression smoke cùng slice
+  PASS aggregate và hai source; precision/negative alarms smoke vẫn kém baseline.
+  Xem [Final test](docs/V6_FINAL_TEST.md); NO_RELEASE, không còn job.
+  Lịch60 epoch vẫn hoãn; tiếp theo fire diagnosis train/val và holdout độc lập.
+
+**V6 trước can thiệp resolution/calibration (lịch sử):**
 
 - V6 đã hoàn tất12 epoch, best10; joint v4 gồm24.100 ảnh. Scoped square512
   person F1/recall0.6375/0.5618 FAIL; small recall0.2729,negative alarms12.56%.
@@ -239,7 +249,7 @@ Không ghi đè v1–v4; không tự mở hàng loạt thử nghiệm khi một 
   **và** recall >= 0,60 ở đúng resolution. Báo cáo calibration và explicit matching
   riêng, ghi protocol quyết định; không chọn con số thuận lợi giữa các protocol.
   V6-768 sau calibration empirical đã PASS; chưa chứng minh test/camera/Pi.
-- [ ] Kiểm tra smoke không giảm recall quá 0,03 so với baseline trên **cùng** test
+- [x] Kiểm tra smoke không giảm recall quá 0,03 so với baseline trên **cùng** test
   slice/protocol. Nếu không có slice tương đương, ghi chưa thể xác minh; không so
   hai metric khác dataset và tuyên bố gate đạt.
 - [x] Nếu chưa đạt: ghi failure, quay về P1/P2 theo bằng chứng; không hạ gate
@@ -251,8 +261,10 @@ Không ghi đè v1–v4; không tự mở hàng loạt thử nghiệm khi một 
   với train/val baseline;2 negative cũ ngoài membership hiện tại đã ghi rõ.
 - [x] Freeze test protocol trước kết quả; mở một lượt test cố định theo yêu cầu
   tiếp tục của người dùng. Xem [Final test](docs/V6_FINAL_TEST.md); không launch lại.
-- [ ] Đánh giá test theo protocol đã khóa và ghi quyết định release/no-release.
+- [x] Đánh giá test theo protocol đã khóa và ghi quyết định release/no-release.
   Nếu kết quả buộc thiết kế lại, đóng ứng viên và lập protocol holdout cho vòng mới.
+- [ ] Diagnosis fire trên train/validation, đề xuất can thiệp và holdout độc lập;
+  test đã xem không dùng để chọn thresholds/epoch. Chưa mở train/export.
 
 **Đầu ra:** model selection decision, checkpoint/threshold lock và quality reports.
 NCNN cuối chỉ được mở khi quality gate đạt, không vì train đã chạy xong.
@@ -319,8 +331,9 @@ Không đánh dấu PASS bằng benchmark CPU Windows hay thời gian GPU traini
    Không còn job, không launch lại. Đọc RESOLUTION_BASELINE_EVALUATION.md và manifest.
    V6-768 person PASS nhưng smoke/fire FAIL; baseline person tốt hơn ở cả ba input.
    Exact hazard calibration v2 đã COMPLETED; validation-only candidate768 đạt ba class.
-   Bước tiếp theo: chuẩn bị protocol test cuối/smoke regression cùng slice, giữ
-   checkpoint/thresholds/preprocessing trong validation-candidate.json. Chưa chạy test.
+   Test cuối đã COMPLETED:NO_RELEASE dofireR .849913;smoke/person vàsmoke regression PASS.
+   Bước tiếp theo: diagnosis fire train/val và protocol holdout độc lập; không
+   tuning/relaunch ứng viên này trên test cũ. Đọc V6_FINAL_TEST.md.
    Đọc V6_EXACT_HAZARD_CALIBRATION.md; không rerun calibration hoặc train mới.
    Không resume/relaunch v6 hoặc tự mở series retry.
    Không lặp acquisition đã hoàn tất. Không resume run hoàn tất, không

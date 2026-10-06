@@ -58,11 +58,16 @@ Do not begin implementation until the current task and ownership are clear.
   Smoke/fireR .900932/.900158 PASS; person unchanged PASS. Validation gates PASS,
   not release. Candidate/manifest frozen onE; prepare final test/same-slice smoke
   regression protocol next. No test inference/export/new training in this milestone.
-  Latest task: user-authorized continuation opened one fixed v6-768 final test.
+  Latest task: fixed v6-768 final test COMPLETED22:21:58 local,exit0; no job remains.
   Read docs/V6_FINAL_TEST.md. Preparation/readiness PASS; test root onE:
   reports/indoor-v6-768-final-test-v1; logs in indoor-v6-768-test-preparation-v1.
   ProtocolSHA2a866525bb99459e2d42e23608b9335ad02ee65047605c2d81ec8e341a168cfa.
-  Do not relaunch or select test thresholds. Export/new training remain closed.
+  SmokeR .905992 PASS,personF1/R .675073/.634509 PASS;fireR .849913 FAIL.
+  Same-slice smoke recall regression PASS aggregate and both sources, but smoke
+  precision/negative alarms worse than baseline. Final decision NO_RELEASE.
+  Do not relaunch or tune thresholds on this test. Export/new training remain closed.
+  Next: bounded fire diagnosis ontrain/val and independent holdout/intervention
+  proposal before any redesigned candidate. Do not immediately open60epoch training.
   User scope: room/doorway; distant people outside window not required. No numeric
   minimum or ROI selected; labels/full metrics/gates unchanged. Planned height~4m
   or higher; exact tilt/distance await deployment. Max60 training deferred.

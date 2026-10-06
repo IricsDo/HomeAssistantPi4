@@ -3166,3 +3166,70 @@ validation state.
 Preparation milestone final validation: Tests188/188PASS6.91s fromproject,
 pytest -p no:cacheprovider --basetemp C:/Users/Public/Documents/indoor-final-test-20261006b;
 RuffPASS; no build/export;typechecknotconfigured. Test workflow remainsrunning.
+
+## [2026-10-06 22:26] - Handover from OpenAI Codex
+
+- **Current Task:** Complete locked v6-768 test and smoke regression decision
+- **Status:** COMPLETED (test milestone; P3/project still IN_PROGRESS, NO_RELEASE)
+- **Completed in this session:**
+  - Singlefixed test completed22:21:58Vietnam,exit0; actualPID33228/launcher6792
+    absent. No training/evaluation job remains. Thresholds/checkpoint unchanged.
+  - Explicit fixed-threshold smokeTP877/FP288/FN91,P.752790/R.905992/F1.822316 PASS;
+    fire974/137/172,P.876688/R.849913/F1.863093 FAIL;
+    person3453/1335/1989,P.721178/R.634509/F1.675073 PASS. AlltinyGT retained.
+  - Scoped square AP mAP50/mAP50-95:smoke.910742/.577998,fire.890892/.540941,
+    person.683875/.436934;aggregate.828503/.518624. No test operating-point selected;
+    AP/defaultvalidator P/R are diagnostics,not substituted for authoritativecounts.
+  - Baselinesmoke onidentical1798images/968GT:TP872/FP63/FN96,P.932620/R.900826.
+    Same-slice smoke regression PASS:delta+.005165 aggregate,+.003584indoor-fs,
+    +.005806home-fire. Differenthistoricalaggregate scores notused in decision.
+  - Smoke precision/negative alarms remain worse thanbaseline despite recallPASS:
+    negative53/901=5.88% vsbaseline8/901=.89%;smokeFP288 vs63. Fire12/727=1.65%,
+    person177/1153=15.35%. Image-levelbenchmarkrates,not livecameraalertfrequency.
+  - Fire fails bothsources:indoor-fsR.828685,home-fireR.855866. FN172 reasons:
+    belowconfidence112,localization/nooverlap57,nocandidate3. SelectedFN gallery
+    inspected: mixedindoor/staged/synthetic scenes,small/fragmentedflame targets.
+    This doesnotestablish labelerrorprevalence; no test annotation/scope modified.
+  - FinaldecisionNO_RELEASE:fireR.849913<predeclared.90testfloor. Closedcandidate
+    forrelease in candidate-decision.json. ValidationPASS remains separatehistory;
+    no thresholds changed/retrain/retry/test rerun/export. Person isnowPASS ontest;
+    these results do not justify automaticallysplitting its architecture.
+  - Testroot E:/HomeAssistantPi4/reports/indoor-v6-768-final-test-v1; summary.json,
+    ap-metrics.json,candidate-decision.json,integrity.json,artifact-manifest.json.
+    IntegrityPASS:22002frozenbindings reverifiedaftertest;scope counts equalreadiness,
+    exactcandidate/baselinesmokemembership/GT identity;no traceback/NMStimeout.
+    Manifest181bindings inclJPEG/APplots/preparation/logs,SHA
+    b1a387b6d1cc375cfecc0f0b46573b3cc82f6e3f39851694e16f7762f7d3abef.
+    Originalcalibration/validation-candidate.json preserved; its historicalflags
+    are notcurrentreleaseauthority. Read finaltestdecision instead.
+  - Updated CLAUDE/bothREADMEs/PROJECT_PLAN/V6_FINAL_TEST. No dependencies/data/secrets
+    changed; untrackedsource_box_review.py stillpreserved/excluded.
+- **Unfinished / Next Steps (CRITICAL):**
+  - [ ] Diagnose fire using training/validation; propose one bounded intervention
+    withstopcondition,calibrationrobustness/precision and annotation/domain assessment.
+    Plan independentholdout before scoring redesignedcandidate. Do not use already
+    inspectedtest fornewthreshold/epoch/source-selection or repeatit untilPASS.
+  - [ ] Noautomatic60epochtrain,sourceexpansion orNCNNexport. P3qualitygate remains
+    unmet. Existingmodel/reports retained forhistory/research,not release.
+  - [ ] Pi/backend/camera gates pendinghardware; plannedheight~4m+ androom/doorway
+    coverage donotdefine cutoff/ROI yet. Keepone3classdetector andE:artifacts/C:venv.
+- **Known Blocks / Issues:** FiretestrecallFAIL. SmokehighFP/personnegatives,
+  mixed-domains/COCO-onlypersonholdout andpriorv2testuse persist. Noindependentnew
+  holdoutclaim,PiFPS/RAMclaim orrealcameraqualityclaim.
+- **Validation:**
+  - Build: NOT APPLICABLE (evaluation;no export)
+  - Tests: PASS188/188,6.72s;fromproject .venv/Scripts/python.exe -m pytest
+    -p no:cacheprovider --basetemp C:/Users/Public/Documents/indoor-final-test-20261006c
+  - Typecheck: NOT CONFIGURED
+  - Lint: PASS (.venv/Scripts/python.exe -m ruff check . --no-cache)
+  - Git diff --check: PASS
+- **Git State:** main;LastCommit89ee204 (preparationmilestonepushed);DIRTY only
+  scopedcompletiondocs awaitingcommit/push plusunrelateduntrackedsource_box_review.py.
+- **Uncommitted Changes / Active Files:** CHANGES.log,CLAUDE.md,README.md,
+  projects/indoor-detection/README.md,PROJECT_PLAN.md,docs/V6_FINAL_TEST.md.
+  Relevantcodealreadycommitted: test_protocol.py,prepare_v6_final_test.py,
+  run_v6_final_test.py,test_test_protocol.py.
+- **Notes for Next Agent:** Nojobtoresume/relaunch. Read NO_RELEASE decision and
+  nextproposal requirement. Frozenprep protocolSHA2a866525bb99459e2d42e23608b9335ad02ee65047605c2d81ec8e341a168cfa;
+  logs inE:/HomeAssistantPi4/reports/indoor-v6-768-test-preparation-v1.
+  Do notdelete/checkpointoverwrite orhide failed test byrefreshingoldhashes.
