@@ -2839,3 +2839,68 @@ validation state.
   - Original prep readiness execution_authorized=false is historical;do not
     rewrite hashes. All21 original bindings unchanged. No fresh full image/label
     rehash claimed. Venv C;data/reports E;no test/export or newtrain launched.
+
+
+## [2026-10-06 20:43] - Handover from OpenAI Codex
+
+- **Current Task:** User-approved resolution/pretrained-person comparison stage1
+- **Status:** IN_PROGRESS
+- **Completed in this session:**
+  - Read AGENTS/CLAUDE/latestCHANGES/README/plan,Gitmain7af6627. Preserved
+    unrelated untrackedsource_box_review.py;no secrets accessed. Userapproved
+    four-stage plan supersedes immediate60-epoch preparation.
+  - Locked5 new configurations:v6-640/768,pretrained-512/640/768;reuse existing
+    v6-512. Dataset/scopes/labels/gates unchanged;no newtrain/test/export.
+  - Original pretrainedE:/HomeAssistantPi4/models/pretrained/yolo26n.pt SHA
+    9b09cc8bf347f0fc8a5f7657480587f25db09b34bf33b0652110fb03a8ad4fef,80classes
+    person0. V6bestSHA103b45ab6a61f2431b462ee2bc4402f6ddaa7b982e872afd50515e3c6ef28729.
+    Prior v6artifactmanifest36 bindings verified PASS before launch.
+  - Added evaluation-only pretrainedperson0->canonical2 projection validator
+    andanalyzer option;unchanged model/groundtruth/scope. Raw80-classNMS retained,
+    nonperson outputs removed after decoding. Other classes can occupy output cap.
+    Baseline hazardmetrics not used. OriginalCOCO familiarity not independently
+    audited;baseline comparison diagnostic,not independent generalization proof.
+  - evaluate API can select all3 operating points from a single scoped validation
+    pass. Added projected-size diagnostics:native andfixed512 height bands and
+    both/shortside<=12;no eligibilityfiltering or new operationalminimum.
+  - Frozen protocol before results:rectangular scopedcalibrationbatch20workers0,
+    personmaxF1,hazardsR.90;authoritativesquarematchingbatch16,IoU.50,candidate.001,
+    maxdet100,onewarmup. Same4,301val and2,501personscope membership.
+    Batch1 WindowsGPUbenchmark frozenimage,warmup5/30iterations,syncGPU;sampled
+    whole-configRSS/CUDApeak notdeploymentserviceRSS or Pi performance.
+  - Startedhidden durablecomparison workflow21:39:13 Vietnamtime;actualPID18728,
+    launcher29816. v6-640calibration observed186/216batches;statusIN_PROGRESS.
+    No retries;receipt recordscompletedconfigs/failure.
+  - Updatedplan/CLAUDE/bothREADMEs andaddedRESOLUTION_BASELINE_EVALUATION.md.
+- **Unfinished / Next Steps (CRITICAL):**
+  - [ ] Monitor existingcomparison workflow to completion;do not launchintoexisting
+    reportroot. Check execution-status/logs/process;FAILED needs diagnosis first.
+  - [ ] Compare5 newconfigurations plusreusedv6-512;fullperson/hazard/negative
+    metrics,fixed512/nativeheightgroups and Windowsresources. Verifybindings.
+  - [ ] Define operationalcoverage only with needs/camera geometry;currentlyunknown.
+    Keepfullmetrics;no deletingtinylabels or changinggate merelytopass.
+  - [ ] Chooseone justifiedintervention aftercomparison;60epoch proposaldeferred.
+    Hardwarebenchmarkconditional;test/NCNN/architecturechange remainclosed.
+- **Known Blocks / Issues:** V6-512personFAIL;newresults pending. Hardware/mounting
+  unknown,COCO-onlypersonholdout,mixeddomain andhistorictest limitationspersist.
+- **Validation:**
+  - Build: NOT APPLICABLE (evaluation;no export)
+  - Tests: PASS167/167,7.53s;.venv/Scripts/python.exe -m pytest -p no:cacheprovider
+    --basetemp C:/Users/Public/Documents/indoor-resolution-20261006b
+  - Typecheck: NOT CONFIGURED
+  - Lint: PASS (.venv/Scripts/python.exe -m ruff check . --no-cache)
+- **Git State:** main;LastCommit7af6627;DIRTY scopedmilestone pendingcommit/push.
+  Untrackedsource_box_review.py excluded.
+- **Uncommitted Changes / Active Files:** CHANGES.log,CLAUDE,READMEs,PROJECT_PLAN;
+  docs/RESOLUTION_BASELINE_EVALUATION.md;src/indoor_detection/evaluate.py,
+  error_analysis.py,pretrained_person_validation.py,size_diagnostics.py;
+  tests/test_resolution_diagnostics.py. No dependencies changed.
+- **Notes for Next Agent:**
+  - RootE:/HomeAssistantPi4/reports/indoor-resolution-baseline-v1. Filesprotocol.json,
+    comparison-workflow.py,execution-status.json,comparison.stdout/stderr.log;
+    per-configfolders/calibrations/errors/results thencomparison-summary.json.
+    FrozenprotocolSHA6a01c93df51c32f9520b257e6250b4dffa583f84ccba122361a1b79320be887e.
+    VenvC;data/models/reportsE. Workflowrefusesexistingstatus/configfolders.
+  - Newprojection is evaluation-only and requiresoriginalCOCO80person0 plus
+    canonical scoped labels. Doesnot change production one-detector contract.
+    No inputminimum or operationalignore introduced. Keep laptopawake.

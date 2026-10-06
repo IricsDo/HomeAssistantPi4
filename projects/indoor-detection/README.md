@@ -18,6 +18,12 @@ nhiệt đạt chuẩn.
 
 ## Trạng thái
 
+**Đánh giá resolution/baseline IN_PROGRESS**, người dùng đã duyệt kế hoạch mới.
+V6-640/768 và pretrained person-512/640/768; reuse v6-512. Chưa train mới.
+Xem [Protocol và checklist](docs/RESOLUTION_BASELINE_EVALUATION.md); log/status trên E:
+`reports/indoor-resolution-baseline-v1`. Đề xuất60 epoch tạm hoãn để chờ kết quả.
+
+
 Theo dõi công việc đến nghiệm thu tại [PROJECT_PLAN.md](PROJECT_PLAN.md).
 Kế hoạch ghi trạng thái, dependency, điều kiện hoàn thành và bước tiếp theo cho agent.
 
@@ -55,8 +61,7 @@ Trạng thái/log: `E:/HomeAssistantPi4/reports/indoor-partial-joint-v4-audit/`
 Không khởi chạy lại. Validation square512 đã xong: person F1/recall **0,6375/0,5618 FAIL**;
 smoke/fire recall **0,9138/0,9049 PASS**. Không còn job; test/export đóng.
 Báo cáo: `E:/HomeAssistantPi4/reports/indoor-yolo26n-v6-evaluation`.
-Xem [V6 decision](docs/V6_EVALUATION_DECISION.md). Bước tiếp: chuẩn bị đề xuất lịch60 epoch/patience15
-trên joint v4; chưa khởi chạy thử nghiệm mới.
+Xem [V6 decision](docs/V6_EVALUATION_DECISION.md). Lịch60 epoch/patience15 là đề xuất lịch sử; ưu tiên đánh giá resolution/baseline.
 Nguồn/joint cũ được giữ nguyên; không mở expansion tự động.
 Xem [assessment](docs/CROWDHUMAN_ASSESSMENT.md).
 

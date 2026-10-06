@@ -14,6 +14,12 @@ hướng tới triển khai tiết kiệm tài nguyên trên Raspberry Pi 4 4 GB
 
 ## Trạng thái hiện tại
 
+**Đánh giá resolution/baseline IN_PROGRESS**, người dùng đã duyệt kế hoạch mới.
+V6-640/768 và pretrained person-512/640/768; reuse v6-512. Chưa train mới.
+Xem [Protocol và checklist](projects/indoor-detection/docs/RESOLUTION_BASELINE_EVALUATION.md); log/status trên E:
+`reports/indoor-resolution-baseline-v1`. Đề xuất60 epoch tạm hoãn để chờ kết quả.
+
+
 Kế hoạch tổng thể và checklist cho agent tiếp theo:
 [PROJECT_PLAN.md](projects/indoor-detection/PROJECT_PLAN.md).
 
@@ -41,8 +47,7 @@ Trạng thái/log: `E:/HomeAssistantPi4/reports/indoor-partial-joint-v4-audit/`
 Không khởi chạy lại. Validation square512 đã xong: person F1/recall **0,6375/0,5618 FAIL**;
 smoke/fire recall **0,9138/0,9049 PASS**. Không còn job; test/export đóng.
 Báo cáo: `E:/HomeAssistantPi4/reports/indoor-yolo26n-v6-evaluation`.
-Xem [V6 decision](projects/indoor-detection/docs/V6_EVALUATION_DECISION.md). Bước tiếp: chuẩn bị đề xuất lịch60 epoch/patience15
-trên joint v4; chưa khởi chạy thử nghiệm mới.
+Xem [V6 decision](projects/indoor-detection/docs/V6_EVALUATION_DECISION.md). Lịch60 epoch/patience15 là đề xuất lịch sử; ưu tiên đánh giá resolution/baseline.
 Camera mục tiêu là Raspberry Pi Camera Module 3 Wide IMX708;
 xem [chiến lược dữ liệu](projects/indoor-detection/docs/PERSON_DATA_STRATEGY.md).
 

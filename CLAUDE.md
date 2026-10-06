@@ -42,8 +42,11 @@ Do not begin implementation until the current task and ownership are clear.
   Evaluation report root E:/HomeAssistantPi4/reports/indoor-yolo26n-v6-evaluation.
   Follow docs/V6_EVALUATION_DECISION.md; person F1/recall0.6375/0.5618 FAIL,
   smoke/fire recall0.9138/0.9049 PASS. Test/export stay closed.
-  Next proposed experiment: max60/patience15 on joint v4; preparation only,
-  no automatic launch/retry. No new training configuration/run yet.
+  Current task: user-authorized resolution/pretrained baseline evaluation IN_PROGRESS.
+  Root E:/HomeAssistantPi4/reports/indoor-resolution-baseline-v1; PID18728 at launch.
+  Five configurations: v6-640/768 and pretrained-512/640/768; v6-512 reused.
+  Read docs/RESOLUTION_BASELINE_EVALUATION.md and live execution receipt.
+  Do not relaunch. Max60 training deferred until comparison; gate/test/export unchanged.
   Read docs/V6_TRAINING_PREPARATION.md and latest CHANGES.
 - Existing v5 person quality FAIL; NCNN/test gates stay closed. Hardware unavailable.
 

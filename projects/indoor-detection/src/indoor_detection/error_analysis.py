@@ -463,6 +463,7 @@ def analyze_errors(
     max_det: int,
     gallery_size: int,
     output_dir: Path,
+    pretrained_person: bool = False,
 ) -> dict[str, Any]:
     if not 0 <= candidate_confidence <= operating_confidence <= 1:
         raise ValueError("Expected 0 <= candidate confidence <= operating confidence <= 1")
@@ -492,6 +493,14 @@ def analyze_errors(
     if not image_paths:
         raise ValueError(f"No images have annotation scope for class: {class_name}")
     model = YOLO(str(model_path.resolve()))
+    prediction_class_id = class_id
+    if pretrained_person:
+        if class_name != "person" or class_id != 2 or not class_scoped_analysis:
+            raise ValueError("Pretrained person projection requires canonical scoped person labels")
+        from indoor_detection.pretrained_person_validation import validate_pretrained_person_names
+
+        validate_pretrained_person_names(model.names)
+        prediction_class_id = 0
     # Initialize lazy CUDA/NMS operations before scoring a batch: a cold NMS
     # timeout can otherwise leave later images in that batch unprocessed.
     model.predict(
@@ -525,7 +534,7 @@ def analyze_errors(
             Detection(
                 tuple(float(value) for value in xyxy),
                 float(confidence),
-                int(predicted_class),
+                class_id,
             )
             for xyxy, confidence, predicted_class in zip(
                 result.boxes.xyxy.cpu().tolist(),
@@ -533,7 +542,7 @@ def analyze_errors(
                 result.boxes.cls.cpu().tolist(),
                 strict=True,
             )
-            if int(predicted_class) == class_id
+            if int(predicted_class) == prediction_class_id
         ]
         predictions = [
             prediction
@@ -601,6 +610,7 @@ def analyze_errors(
         "class_name": class_name,
         "class_id": class_id,
         "class_scoped_analysis": class_scoped_analysis,
+        "pretrained_person_projection": pretrained_person,
         "excluded_out_of_scope_images": excluded_out_of_scope,
         "settings": {
             "imgsz": imgsz,

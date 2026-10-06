@@ -190,6 +190,7 @@ def evaluate(
     operating_threshold: float | None = None,
     maximize_f1: bool = False,
     class_name: str = "smoke",
+    pretrained_person: bool = False,
 ) -> dict[str, Any]:
     if not model_path.is_file():
         raise FileNotFoundError(f"Model checkpoint not found: {model_path}")
@@ -206,6 +207,12 @@ def evaluate(
         from indoor_detection.partial_label_training import ClassScopedDetectionValidator
 
         validation_options["validator"] = ClassScopedDetectionValidator
+    if pretrained_person:
+        if class_name != "person" or not uses_class_scopes:
+            raise ValueError("Pretrained person projection requires scoped person evaluation")
+        from indoor_detection.pretrained_person_validation import PretrainedPersonScopedValidator
+
+        validation_options["validator"] = PretrainedPersonScopedValidator
     metrics = model.val(
         data=str(data_path.resolve()),
         split=split,
@@ -232,6 +239,7 @@ def evaluate(
         "batch": batch,
         "workers": workers,
         "class_scoped_validation": uses_class_scopes,
+        "pretrained_person_projection": pretrained_person,
         "metrics": _json_value(metrics.results_dict),
         "per_class_metrics": _per_class_metrics(metrics),
         "speed_ms_per_image": _json_value(metrics.speed),
@@ -244,6 +252,16 @@ def evaluate(
         ),
         "operating_point_class": {"id": class_id, "name": class_name},
     }
+    if uses_class_scopes and not pretrained_person:
+        report["operating_points"] = {
+            name: _select_operating_point(
+                metrics.curves_results,
+                target_recall=0.90 if name != "person" else None,
+                maximize_f1=name == "person",
+                class_index=_dataset_class_id(data_path, name),
+            )
+            for name in ("smoke", "fire", "person")
+        }
     report_path.parent.mkdir(parents=True, exist_ok=True)
     report_path.write_text(
         json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"

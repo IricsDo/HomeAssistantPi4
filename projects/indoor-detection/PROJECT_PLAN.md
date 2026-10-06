@@ -1,9 +1,9 @@
 # Kế hoạch hoàn thành Indoor Detection
 
 Ngày cập nhật: **2026-10-06**. Agent cập nhật: **OpenAI Codex**.
-Owner hiện tại: **OpenAI Codex**. P1b preparation hoàn tất; **v6 training/evaluation COMPLETED; person FAIL**.
+Owner hiện tại: **OpenAI Codex**. **Resolution/baseline evaluation IN_PROGRESS**. P1b preparation hoàn tất; **v6 training/evaluation COMPLETED; person FAIL**.
 V5 đã train đủ 12 epoch và đánh giá validation. Person vẫn FAIL; test/export đóng.
-V6 đã hoàn tất; không còn job. Lịch60 epoch/patience15 mới chỉ là đề xuất. P1b đã audit pool, freeze/tải 60 ảnh/1.430 box, trong đó
+V6 đã hoàn tất; không còn job. Đánh giá resolution/baseline đã được người dùng duyệt và đang chạy; lịch60 epoch tạm hoãn. P1b đã audit pool, freeze/tải 60 ảnh/1.430 box, trong đó
 615 box nhỏ (43,01%). Review/duplicate đã xong: 30 ACCEPT/30 EXCLUDE, phần nhận
 có 189/397 box nhỏ (47,61%). CrowdHuman expansion hoãn; pilot COCO train chưa
 dùng đã tải/review: 60 ảnh/415 box,342 nhỏ; nhận24/loại36, accepted127/156 nhỏ
@@ -186,6 +186,19 @@ manifest can thiệp và báo cáo data gate trên E:; config/code và quyết �
   Không auto nhiều retry hoặc hạ gate. Xem V5 decision cho coverage census:
   bộ bổ sung chỉ có 701/5,810 box nhỏ (<1% diện tích), COCO có 10,846/23,611.
 
+### P1c — Resolution, baseline và phạm vi person (IN_PROGRESS)
+
+- [x] Khóa protocol và hash v6/pretrained/dataset; giữ gate/scope/holdout.
+- [x] Ánh xạ pretrained person0->canonical2 chỉ cho đánh giá; tests đạt.
+- [x] Khởi chạy một chuỗi5 cấu hình mới; reuse v6-512 đã khóa.
+- [ ] Hoàn tất v6-640/768 và pretrained-512/640/768, kiểm tra log/hashes.
+- [ ] So sánh full metrics, fixed512/native height bins, tiny/negative/hazard và
+  Windows batch1/resource reports; không tuyên bố Pi performance.
+- [ ] Chốt phạm vi person theo nhu cầu camera/ROI/khoảng cách; mounting còn unknown.
+  Chưa bỏ tiny labels hoặc đổi gate để đạt metric.
+- [ ] Chọn một can thiệp theo kết quả trước mọi training/architecture change.
+  Test/export vẫn đóng. Xem [Resolution protocol](docs/RESOLUTION_BASELINE_EVALUATION.md).
+
 ### P2 — Fine-tune và theo dõi run mới (v5/v6 COMPLETED)
 
 - [x] Chọn checkpoint khởi tạo có lý do từ control/validation hiện có; v2/v4
@@ -196,8 +209,8 @@ manifest can thiệp và báo cáo data gate trên E:; config/code và quyết �
 - [x] Chạy một thí nghiệm có giới hạn; giữ class masking và tắt augmentation trộn ảnh.
 - [x] V6: đã kiểm tra log/lỗi và inline/final validator; đủ12 epoch,exit0.
 - [x] V6: đã lưu checkpoint/hash/thời gian và quyết định NO_RELEASE.
-- [ ] Vòng tiếp: freeze đề xuất max60 epoch/patience15, cùngjoint v4/v2 init,
-  resource budget/readiness; chưa tự khởi chạy hoặc resume v6.
+- [ ] Vòng tiếp: chỉ chọn lịch/resolution fine-tune sau P1c; đề xuất60 epoch
+  tạm hoãn. Chưa tự khởi chạy hoặc resume v6.
 
 **Đầu ra:** run/checkpoint riêng trên E:, config và báo cáo quyết định trong Git.
 Không ghi đè v1–v4; không tự mở hàng loạt thử nghiệm khi một run thất bại.
@@ -286,7 +299,8 @@ Không đánh dấu PASS bằng benchmark CPU Windows hay thời gian GPU traini
    đã PASS trước khi người dùng cho phép khởi chạy ngày2026-10-06.
    V6 COMPLETED: validation square512 person FAIL. Đọc V6_EVALUATION_DECISION.md
    và reports/indoor-yolo26n-v6-evaluation trên E:. Không còn job.
-   Tiếp theo chuẩn bị đề xuất60 epoch/patience15; chưa có config/run/launch.
+   Tiếp tục P1c: theo dõi reports/indoor-resolution-baseline-v1 trên E:.
+   Chuỗi5 cấu hình đánh giá đang chạy; không launch lại. Đọc RESOLUTION_BASELINE_EVALUATION.md.
    Không resume/relaunch v6 hoặc tự mở series retry.
    Không lặp acquisition đã hoàn tất. Không resume run hoàn tất, không
    chạy lại config v5 hoặc verifier pre-run để bỏ qua target đã tồn tại. Không test
