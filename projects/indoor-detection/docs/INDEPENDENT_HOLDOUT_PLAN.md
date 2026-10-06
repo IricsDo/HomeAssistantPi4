@@ -53,5 +53,7 @@ Current sourcing priority (user2026-10-07): recent sources from the rolling last
 five years; see RECENT_HOLDOUT_SOURCE_REVIEW.md and AGENTS.md. Original FURG
 selection is historical/deprioritized; its reports and source assessment remain
 immutable. Zenodo2025 archive pilot completed but NOT_ADMITTED (shared scenes);
-next verify Detectium2025 IoT image/box/session access. Keep acquisition date/ancestry checks separate from
+Detectium2025 IoT public image/label access and12-pair pilot are complete
+(see DETECTIUM_IOT_PILOT.md); NOT_ADMITTED. Next resolve class IDs, session
+evidence and recent smoke/person coverage. Keep acquisition date/ancestry checks separate from
 recent publication date. No model predictions or new training authorized by intake.

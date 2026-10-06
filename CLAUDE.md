@@ -75,7 +75,13 @@ Do not begin implementation until the current task and ownership are clear.
   downloaded. Preserve original v1 decision/doc/hash receipts; do not rewrite them.
   Zenodo2025 archive pilot COMPLETED but NOT_ADMITTED: shared IFireSmoke scenes
   confirmed despite zero byte/pixel hashes; Detectium2025 original IoT metadata
-  assessed (318 entries, no box fields). Next: confirm IoT image+box/session access.
+  assessed (318 entries, no box fields). Public Kaggle version6 paired access
+  confirmed;12 original pairs acquired/audited. Read docs/DETECTIUM_IOT_PILOT.md:
+  zero exact/near corpus candidates across33,849 images, one internal related
+  scene pair. NOT_ADMITTED: source IDs0/1 both enclose flames, semantics/session
+  dates/completeness unresolved; lighter demos and repeated industrial context.
+  Next verify source class definitions/session evidence and recent smoke/person
+  coverage. Do not repeat completed access/download pilot.
   No holdout admitted, no train/inference/download job.
   V7 requires independent holdout/data/resource readiness; old test remains closed.
   User scope: room/doorway; distant people outside window not required. No numeric

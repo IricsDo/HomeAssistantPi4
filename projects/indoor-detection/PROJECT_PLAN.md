@@ -8,7 +8,8 @@ Test:smoke/person PASS,fireR .849913 FAIL → NO_RELEASE;regression smoke PASS.
 Không còn job, không train mới hoặc export. Fire diagnosis COMPLETED; v7 ở 768
 tối đa 12 epoch mới PLANNED. Ưu tiên nguồn trong 5 năm gần nhất (user 2026-10-07);
 FURG hoãn. Zenodo2025 pilot NOT_ADMITTED do cảnh trùng IFireSmoke đã xác nhận.
-Tiếp theo xác minh image+box/session access cho IoT Detectium2025,
+Detectium IoT pilot12 cặp đã tải/audit, chưa admit holdout.
+Tiếp theo xác minh class ID/session và smoke/person coverage,
 rồi holdout admission và readiness;
 xem [Fire recovery](docs/FIRE_RECOVERY_PLAN.md).
 Ứng viên validation768 đạt ba class: smoke/fireR .900932/.900158;personF1/R
@@ -280,8 +281,10 @@ Không ghi đè v1–v4; không tự mở hàng loạt thử nghiệm khi một 
   FURG pilot hoãn; giữ evidence lịch sử. Không coi ngày mirror là tuổi dữ liệu mới.
 - [x] Zenodo2025 pilot: checksum/5,000 decode/pairing và overlap probe hoàn tất;
   NOT_ADMITTED do reused scenes. Detectium IoT metadata318 entries đã audit.
-- [ ] Xác minh Detectium2025 original IoT image+box access và session/group IDs;
-  chưa admit holdout. Không suy ra independence từ ngày publication/mirror.
+- [x] Xác minh Detectium2025 public paired access; pilot12 cặp decode/geometry
+  và overlap audit33,849 ảnh hoàn tất. Xem docs/DETECTIUM_IOT_PILOT.md.
+- [ ] Xác minh source class ID0/1, session/group IDs và annotation completeness;
+  pilot NOT_ADMITTED. Không suy ra independence từ ngày publication/mirror.
 - [ ] Chốt smoke/person coverage; tạo/audit/freeze holdout độc lập theo protocol.
 - [ ] Kiểm tra data/checkpoint/environment/resource readiness trước một launch v7.
 - [ ] Chạy/đánh giá ứng viên mới chỉ sau prerequisites; khóa trước holdout inference.

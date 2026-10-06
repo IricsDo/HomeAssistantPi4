@@ -3454,3 +3454,70 @@ RuffPASS; no build/export;typechecknotconfigured. Test workflow remainsrunning.
   FURG nextstep. Preserve old source assessment/doc hashes and all failed/successful
   acquisition receipts. Do not call recent packaging new original data or zero
   bytehash overlap independent scenes. Large artifactsE:, venvC: unchanged.
+
+## [2026-10-07 01:29] - Handover from OpenAI Codex
+
+- **Current Task:** Detectium2025 IoT public access and bounded paired-data pilot
+- **Status:** COMPLETED (access/pilot); independent holdout intake IN_PROGRESS
+- **Completed in this session:**
+  - Confirmed anonymous public Kaggle yimengfuyao/detectiumfire version6 access,
+    updated2025-10-22. View total102,868,503,861bytes vs search102,564,334,853;
+    no full >100GB archive download. Real paired paths are nested
+    real_images/real_images/real_fire/images and labels. Short path probes404;
+    correct original pairs200. No private credentials/.env/provider code used.
+  - Partial public listing11,800 entries (58 follow-ups, requested1000 capped200).
+    Not full census or proof all318 IoT candidates have labels. Original capture
+    dates/session IDs absent. Kaggle CC-BY-NC-ND vs paper IoT CC-BY-NC-SA differs;
+    recorded discrepancy, no unsupported release-rights assertion.
+  - Froze seed48 pilot before retrieval:6 Detectium +6 Dubai,5MB/file/60MB total.
+    Downloaded24 original files543,043bytes,12 paired/decode PASS,12 YOLO boxes,
+    zero nonfinite/nonpositive/out-of-bounds geometry. Original classes1Detectium,
+    0Dubai both visually enclose flames; no canonical mapping or conversion.
+  - All12 GT overlays visually reviewed: lighter demos/visible people and repeated
+    industrial context. No source-wide completeness, negative scopes or session
+    count certified. Public access/valid boxes do not establish an independent gate.
+  - Screened33,849 corpus images (joint-v4 24,100 + rawv32 9,749): exact0 corpus
+    matches/0 internal duplicates; dHash64 BILINEAR distance<=5:0 corpus candidates,
+    1 internal pair IDs0/3 distance4. Visually same room/lighter context with changed
+    hand/flame position; related scene content, not identical pixels. Other repeated
+    industrial contexts exceed hash threshold; zero candidates not independence proof.
+    Joint train/val/test index hashes unchanged; no predictions/test scores used.
+  - Decision NOT_ADMITTED. No training, joint edits, holdout acceptance or export.
+    Scope does not exhaust unused COCO/CrowdHuman/pretraining/web/crop/session ancestry.
+    Read docs/DETECTIUM_IOT_PILOT.md; current instructions/READMEs/plan updated.
+  - Original pairs E:/HomeAssistantPi4/raw/holdout-candidates/detectium-iot-pilot-v1.
+    Reports E:/HomeAssistantPi4/reports/indoor-detectium-iot-access-v1 include public
+    retrieval,partial listing,frozen protocol,acquisition,annotation/gallery review,
+    corpus registry,exact/near audit,decision. Manifest103 bindings SHA
+    56ca16681d7c37dc4e3454f36ee2314c188da002a2c5a53030ecfd241ea30ecc.
+    All downloaded-file hashes reverified; prior21/35 manifest bindings unchanged,
+    including frozen prior source-review docs. Preserve those historical decisions.
+- **Unfinished / Next Steps (CRITICAL):**
+  - [ ] Resolve provider class definitions/aliases and original session/capture
+    evidence for remaining318 IoT candidates with bounded public metadata queries;
+    do not automatically map IDs or download all. If independence unavailable,
+    retain controlled pilot as diagnostic only, not main acceptance holdout.
+  - [ ] Continue recent smoke/person/indoor source coverage and group/annotation
+    audit; retain planning targets. Freeze admitted groups/scopes/hashes/protocol
+    before v7 resource readiness or model predictions. No holdout admitted yet.
+  - [ ] Keep v6 NO_RELEASE, v7 PLANNED, old test closed and NCNN export closed.
+    No automatic longer training; Pi4/camera hardware still unavailable.
+- **Known Blocks / Issues:** Original group/capture provenance and source taxonomy
+  unresolved; controlled-fire coverage insufficient; no independent holdout.
+  No running acquisition/audit/train job remains. Initial metadata emoji display
+  failed cp1252; retried ASCII-safe JSON successfully, no dependency change.
+- **Validation:**
+  - Build: NOT APPLICABLE (source/data audit; no export)
+  - Tests: PASS192/192,6.03s; project .venv/Scripts/python.exe -m pytest
+    -p no:cacheprovider --basetemp C:/Users/Public/Documents/indoor-detectium-pilot-20261007
+  - Typecheck: NOT CONFIGURED
+  - Lint: PASS (.venv/Scripts/python.exe -m ruff check . --no-cache)
+  - Git diff --check: PASS
+- **Git State:** main; LastCommita38cd45; DIRTY scoped docs awaiting commit/push.
+- **Uncommitted Changes / Active Files:** CHANGES.log,CLAUDE.md,README.md,
+  projects/indoor-detection/README.md,PROJECT_PLAN.md,docs/INDEPENDENT_HOLDOUT_PLAN.md,
+  docs/DETECTIUM_IOT_PILOT.md. Unrelated untracked source_box_review.py preserved
+  and excluded. No projects/.env read, no existing source/data edits.
+- **Notes for Next Agent:** OwnerOpenAI Codex. Continue class/session and recent
+  smoke/person coverage, not the completed public-access pilot or old FURG task.
+  Preserve all original receipts, one unified detector, E: artifacts/C: venv.

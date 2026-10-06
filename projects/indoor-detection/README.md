@@ -34,7 +34,9 @@ chưa chạy. Tiếp theo đánh giá nguồn cho
 [holdout độc lập](docs/INDEPENDENT_HOLDOUT_PLAN.md) và readiness;
 [Recent-source review](docs/RECENT_HOLDOUT_SOURCE_REVIEW.md): ưu tiên nguồn
 trong 5 năm; hoãn FURG cũ. Zenodo2025 pilot không được nhận do cảnh trùng;
-tiếp theo xác minh ảnh/box và session của IoT Detectium2025.
+Detectium IoT đã tải/audit pilot12 cặp, chưa nhận vào holdout.
+Tiếp theo xác minh class ID, phiên quay và bổ sung coverage; xem
+[Detectium pilot](docs/DETECTIUM_IOT_PILOT.md).
 Chưa có holdout admission; smoke/person và independence gate còn thiếu. Lịch 60 epoch vẫn hoãn, export đóng,
 chưa phát hành. Camera dự kiến cao~4m trở lên;
 ưu tiên người trong phòng/khu vực cửa, chưa chốt minimum size/ROI/góc chúc xuống.
