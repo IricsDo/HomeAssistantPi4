@@ -18,10 +18,13 @@ nhiệt đạt chuẩn.
 
 ## Trạng thái
 
-**Đánh giá resolution/baseline IN_PROGRESS**, người dùng đã duyệt kế hoạch mới.
-V6/pretrained person tại512/640/768; calibration và matching đều square. Chưa train mới.
+**Đánh giá resolution/baseline COMPLETED**, đủ sáu cấu hình square 512/640/768.
+V6-768 đạt person (F1 .6522, recall .6217), smoke/fire chưa đạt toàn bộ gate.
+Baseline person tốt hơn v6; chưa train mới và không còn job đánh giá.
 Xem [Protocol và checklist](docs/RESOLUTION_BASELINE_EVALUATION.md); log/status trên E:
-`reports/indoor-resolution-baseline-square-v2`. Đề xuất60 epoch tạm hoãn để chờ kết quả.
+`reports/indoor-resolution-baseline-square-v2`. Tiếp theo: calibration smoke/fire
+theo exact square matching ở 768; đề xuất60 epoch vẫn hoãn, test/export đóng.
+Phạm vi person ưu tiên trong phòng và khu vực cửa; chưa chốt minimum size/ROI.
 
 
 Theo dõi công việc đến nghiệm thu tại [PROJECT_PLAN.md](PROJECT_PLAN.md).

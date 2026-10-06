@@ -1,6 +1,7 @@
 # Resolution and pretrained-person comparison
 
-Owner: OpenAI Codex. Status: **IN_PROGRESS**. User approved this plan on2026-10-06.
+Owner: OpenAI Codex. Stage 1 status: **COMPLETED** on 2026-10-06.
+Remaining stages: **IN_PROGRESS**. User approved this plan on 2026-10-06.
 This supersedes immediate60-epoch preparation; training is conditional on evidence.
 No dataset/label/scope/gate change,training,test inference or NCNN export.
 
@@ -66,9 +67,73 @@ at launch20:57 Vietnam time. Use receipt/process/log together for live state.
 Do not launch again into existing outputs or overwrite partial/old results.
 Workflow stops on exception withFAILED receipt;no automatic retry.
 
-After all six finish,check logs/bindings and compare full metrics,fixed/native
-size recalls,negative alarms,hazard retention and resources. Decide next stage
-with a written rationale;do not infer release from a single favorable metric.
+All six finished at 21:29:40 Vietnam time, exit 0; PID19396 is no longer running.
+Integrity checks PASS: implementation hashes, 21 preparation bindings, identical
+person image membership/ground truth and fixed512 bucket counts; no traceback or
+NMS timeout in workflow logs. `integrity-and-comparison.json`, `comparison.png`
+and `artifact-manifest.json` are finalized. Manifest binds 81 artifacts, SHA
+`568dbfa770fa96d4bb56bfbc8c01ac62418d4f3ecc6d6630301d15c6765996f3`.
+Run `finalize-comparison.py` from repository root (bindings are relative paths).
+Do not rerun into finalized outputs. One attempted invocation from project cwd
+failed on a relative binding path before writing final artifacts; root invocation
+passed. This did not rerun inference or change the frozen protocol.
+
+## Stage 1 results and decision
+
+Authoritative explicit square matching, all 5,335 person boxes retained:
+
+| Model | Input | Person precision | Recall | F1 | Person gate | Negative images with alarms |
+|---|---:|---:|---:|---:|---|---:|
+| v6 | 512 | .746482 | .556888 | .637896 | FAIL | 12.39% |
+| v6 | 640 | .722133 | .591378 | .650247 | FAIL recall | 11.87% |
+| v6 | 768 | .685756 | .621743 | .652182 | PASS | 13.34% |
+| pretrained | 512 | .796166 | .614995 | .693951 | PASS | 2.95% |
+| pretrained | 640 | .813386 | .656045 | .726292 | PASS | 2.69% |
+| pretrained | 768 | .802617 | .678351 | .735270 | PASS | 2.95% |
+
+| v6 input | Smoke recall | Fire recall | All three gates |
+|---:|---:|---:|---|
+| 512 | .899767 FAIL | .900158 PASS | FAIL |
+| 640 | .900932 PASS | .899366 FAIL | FAIL |
+| 768 | .899767 FAIL | .897781 FAIL | FAIL |
+
+768 improves v6 person recall by 6.49 percentage points versus 512; it passes
+person without ignoring small objects. At fixed512 geometry, height <16 recall
+rises from 3.52% to 14.06%; height 16–32 from 18.98% to 38.21%. These objects
+remain difficult. Recall for height >=128 decreases from 85.97% to 82.68% at
+the separately selected thresholds: increased resolution is not uniformly better.
+Pretrained person exceeds v6 overall and has fewer alarms at every input.
+This supports investigating transfer/head retention, not concluding YOLO fails
+or immediately replacing the architecture. No causal attribution is established.
+
+Inspected diagnostic contact sheets: v6-768 negative alarms include animals,
+furniture and other objects; pretrained-640 misses include tiny/dense people.
+These selected examples do not estimate error prevalence; counts above do.
+
+Windows GPU batch1 mean milliseconds: v6 512/640/768 = 14.85/18.84/17.79;
+pretrained = 14.48/12.80/17.24. Single-image short measurements are noisy and
+not monotonic; do not choose Pi resolution from them. Whole-configuration peak
+RSS spans about 1.91–2.22 GiB; CUDA reserved peak about .60–1.34 GiB. Neither
+is deployment service memory or proof that Pi targets pass.
+
+**Next chosen intervention:** refine smoke/fire threshold calibration for v6-768
+against the exact square matcher before considering new training. At current
+thresholds smoke needs one additional TP (773/858) and fire three (1136/1262)
+to reach .90. Interpolated calibration target attainment did not guarantee these
+explicit counts. Freeze a separate protocol/output, keep person threshold and
+checkpoint fixed, choose the highest threshold meeting empirical recall >=.90,
+report precision/negative alarms and preserve this comparison. If no acceptable
+operating point exists, stop and document the trade-off. Do not lower gates,
+silently replace prior reports or open test/export. 60-epoch training remains
+deferred; no deployment resolution or release candidate is locked.
+
+## Confirmed person coverage
+
+User confirmed: prioritize the room and doorway; very distant people outside
+the window are not required. Camera mounting, maximum distance, numeric minimum
+size and ROI remain unknown/unlocked. Preserve full validation results and labels.
+This scope alone does not justify a 12px cutoff: small/occluded people inside
+the room or doorway can matter. Measure actual camera coverage before filtering.
 
 ## Limitations
 

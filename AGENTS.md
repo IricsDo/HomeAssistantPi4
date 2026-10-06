@@ -42,6 +42,9 @@ The purpose of this document is to maintain project consistency, prevent agents 
 - Target camera is Raspberry Pi Camera Module 3 Wide (IMX708, ~12 MP, autofocus).
   Mounting geometry and accessible hardware are not yet confirmed. Outdoor person
   data is eligible after assessment; follow projects/indoor-detection/docs/PERSON_DATA_STRATEGY.md.
+- User-confirmed person coverage prioritizes the room and doorway; very distant
+  people outside the window are not required. No numeric minimum box size or ROI
+  is selected yet. Preserve full validation metrics, labels and existing gates.
 - Never print or commit `projects/.env`; it contains the Roboflow API key and is
   already covered by `.gitignore`.
 

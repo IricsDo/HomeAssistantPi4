@@ -2937,3 +2937,73 @@ validation state.
   protocolSHAeb3598294a551029ab05ea84e794e08545b9883799f524691828325668412cb2.
   Checkexecution-status.json andcomparison.stdout/stderr.log. Do notoverwrite
   oldprotocol orrefreshhashes tohide drift. Source/data/checkpoints immutable.
+
+## [2026-10-06 21:32] - Handover from OpenAI Codex
+
+- **Current Task:** Resolution/baseline stage1 completion; prepare exact square hazard calibration
+- **Status:** IN_PROGRESS (stage1 COMPLETED; remaining P1c and project unfinished)
+- **Completed in this session:**
+  - All six aligned square configurations completed at21:29:40 Vietnam, exit0.
+    PID19396 absent after completion; no evaluation/training job remains.
+  - Explicit person F1/recall: v6-512 .637896/.556888 FAIL;
+    v6-640 .650247/.591378 FAIL recall; v6-768 .652182/.621743 PASS.
+    Original pretrained512 .693951/.614995 PASS;640 .726292/.656045 PASS;
+    768 .735270/.678351 PASS. No tiny labels removed or gate changed.
+  - v6 smoke/fire recalls:512 .899767/.900158;640 .900932/.899366;
+    768 .899767/.897781. No configuration passes all three class gates.
+    Interpolated calibration target attainment did not guarantee explicit matching
+    recall; misses remain FAIL, not rounded to PASS. Historical rectangular512
+    thresholds/results remain separate from this aligned square comparison.
+  - Person negative-image alarm rate v6 512/640/768=12.39/11.87/13.34%;
+    pretrained=2.95/2.69/2.95%. Inspected diagnostic v6-768 negative alarm and
+    pretrained-640 false-negative contact sheets; examples are selected, not prevalence.
+  - Fixed512 groups preserve membership; v6 height<16 recall .035156->.140625
+    at512->768,16-32 .189843->.382104,>=128 .859659->.826776. Resolution helps
+    small people but not uniformly every group at separately selected thresholds.
+  - Integrity PASS: implementation hashes,21 preparation manifest bindings,
+    exact person image/ground-truth identity across6 configs,fixed512 bucket counts,
+    no workflow traceback/NMS timeout. Finalized integrity-and-comparison.json,
+    comparison.png and artifact-manifest.json (81 JSON/PY/CSV/PNG/log bindings;
+    JPEG diagnostic galleries not covered by this manifest).
+    ManifestSHA568dbfa770fa96d4bb56bfbc8c01ac62418d4f3ecc6d6630301d15c6765996f3.
+    Root E:/HomeAssistantPi4/reports/indoor-resolution-baseline-square-v2.
+  - Finalizer first invocation from project cwd failed on relative implementation
+    path before writing artifacts; reran from repository root, PASS. No inference
+    rerun, protocol rewrite or hash refresh. Finalization stdout stored separately.
+  - Recorded user coverage: people in room/doorway prioritized; very distant
+    people outside window not required. Minimum size/ROI/mounting remain unlocked.
+    Updated AGENTS/CLAUDE/both READMEs/PROJECT_PLAN and person/protocol docs.
+- **Unfinished / Next Steps (CRITICAL):**
+  - [ ] Freeze separate exact square smoke/fire calibration protocol/output for
+    v6-768; keep checkpoint/person threshold .34934934934934936 fixed. Select
+    highest hazard threshold meeting empirical recall>=.90 and report precision/
+    negative alarms. Smoke requires773/858 TP (one more);fire1136/1262 (three more).
+    Stop/document if no acceptable operating point; preserve prior artifacts/gates.
+  - [ ] Inspect transfer/head-retention path before a longer train schedule if
+    calibration is insufficient. Baseline is diagnostic,not causal proof of forgetting.
+    One production detector remains the architecture;60epoch proposal deferred.
+  - [ ] Measure operational numeric minimum/ROI and final resolution on real camera/
+    Pi when hardware exists. Keep full-corpus metrics alongside any future scope.
+    Test/NCNN export remain closed; no new training launched.
+- **Known Blocks / Issues:** No unified quality PASS; mixed-domain hazards,
+  COCO-only person holdout and unaudited pretrainedCOCO familiarity remain.
+  Windows single-image GPU benchmark is noisy/nonmonotonic,not Pi performance;
+  whole-config RSS/CUDA peaks include evaluation/plots,not deployment memory.
+  Hardware/mounting absent; historical test/rehearsal limitations unchanged.
+- **Validation:**
+  - Build: NOT APPLICABLE (evaluation; no export)
+  - Tests: PASS168/168,8.88s; from project .venv/Scripts/python.exe -m pytest
+    -p no:cacheprovider --basetemp C:/Users/Public/Documents/indoor-square-resolution-20261006b
+  - Typecheck: NOT CONFIGURED
+  - Lint: PASS (.venv/Scripts/python.exe -m ruff check . --no-cache)
+  - Git diff --check: PASS
+- **Git State:** main;Last Commit3f67398 before this documentation milestone;
+  working tree DIRTY with listed scoped documentation awaiting commit/push.
+- **Uncommitted Changes / Active Files:** AGENTS.md,CLAUDE.md,README.md,CHANGES.log,
+  projects/indoor-detection/README.md,PROJECT_PLAN.md,
+  docs/PERSON_DATA_STRATEGY.md,docs/RESOLUTION_BASELINE_EVALUATION.md.
+  Unrelated untracked src/indoor_detection/source_box_review.py preserved/excluded.
+- **Notes for Next Agent:** Read latest plan/decision; no job to monitor/relaunch.
+  Terminal execution-status.json COMPLETED at square-v2; oldv1 receipt is stale,
+  protocol-correction.json remains its terminal authority. Venv in C:, large
+  artifacts in E:. No secrets accessed, dependencies changed or dataset modified.

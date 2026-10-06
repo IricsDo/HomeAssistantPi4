@@ -1,6 +1,16 @@
 # Person data strategy for Camera Module 3 Wide
 
-Updated: 2026-10-05. Owner: OpenAI Codex. Status: IN_PROGRESS.
+Updated: 2026-10-06. Owner: OpenAI Codex. Status: IN_PROGRESS.
+
+## Confirmed operational coverage (2026-10-06)
+
+The user prioritizes people inside the room and around the doorway. Very distant
+people outside the window are not required operational coverage. Mounting height,
+tilt and maximum room/doorway distance remain unknown. No numeric minimum box
+size, crop or ROI has been selected; small nearby/partly occluded people may still
+matter. Preserve full validation metrics, labels, class scopes and quality gates.
+Future camera coverage/ROI must also preserve smoke/fire coverage and be measured
+with actual frames. This requirement does not authorize deleting tiny labels.
 
 ## Decision and scope
 
@@ -10,10 +20,11 @@ a required choice. Prioritize new-source assessment before committing to a
 sampling intervention. Sampling remains optional and cannot add missing scenes.
 Keep one YOLO26n detector, canonical smoke=0/fire=1/person=2, class scopes,
 the current frozen validation/test membership, and the existing quality gates.
-No new source has passed the training data gate. CrowdHuman train annotations
-and ten domain previews have now been acquired for assessment; original archive
-images and a labelled pilot remain pending. See
-[CROWDHUMAN_ASSESSMENT.md](CROWDHUMAN_ASSESSMENT.md).
+The source-assessment notes below are historical. Reviewed CrowdHuman/COCO pilots
+have since passed the joint-v4 data gate and were used in completed v6 training.
+Follow [PROJECT_PLAN.md](../PROJECT_PLAN.md) and
+[the resolution comparison](RESOLUTION_BASELINE_EVALUATION.md) for current work;
+[CROWDHUMAN_ASSESSMENT.md](CROWDHUMAN_ASSESSMENT.md) preserves intake history.
 
 Outdoor person images are eligible training data. Indoor/outdoor is a context
 attribute, not a different output class. Similar body appearance can transfer,

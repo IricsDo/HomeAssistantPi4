@@ -42,11 +42,16 @@ Do not begin implementation until the current task and ownership are clear.
   Evaluation report root E:/HomeAssistantPi4/reports/indoor-yolo26n-v6-evaluation.
   Follow docs/V6_EVALUATION_DECISION.md; person F1/recall0.6375/0.5618 FAIL,
   smoke/fire recall0.9138/0.9049 PASS. Test/export stay closed.
-  Current task: user-authorized resolution/pretrained baseline evaluation IN_PROGRESS.
-  Root E:/HomeAssistantPi4/reports/indoor-resolution-baseline-square-v2; PID19396 at launch.
+  Resolution/pretrained baseline stage1 COMPLETED, six configs, exit0 at21:29:40 local.
+  Root E:/HomeAssistantPi4/reports/indoor-resolution-baseline-square-v2; no running job.
   Six square configurations: v6/pretrained at512/640/768; historical512 separate.
-  Read docs/RESOLUTION_BASELINE_EVALUATION.md and live execution receipt.
-  Do not relaunch. Max60 training deferred until comparison; gate/test/export unchanged.
+  Read docs/RESOLUTION_BASELINE_EVALUATION.md and finalized integrity/manifest.
+  V6-768 personF1/R .652182/.621743 PASS; smoke/fireR .899767/.897781 FAIL.
+  Pretrained person exceeds v6 at all resolutions; this is diagnostic, not a causal proof.
+  Next task: separate exact square smoke/fire calibration at768, checkpoint/person
+  threshold fixed; preserve all existing reports, report negative alarms. No relaunch.
+  User scope: room/doorway; distant people outside window not required. No numeric
+  minimum or ROI selected; labels/full metrics/gates unchanged. Max60 training deferred.
   Read docs/V6_TRAINING_PREPARATION.md and latest CHANGES.
 - Existing v5 person quality FAIL; NCNN/test gates stay closed. Hardware unavailable.
 

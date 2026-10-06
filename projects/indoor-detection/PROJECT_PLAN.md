@@ -1,9 +1,9 @@
 # Kế hoạch hoàn thành Indoor Detection
 
 Ngày cập nhật: **2026-10-06**. Agent cập nhật: **OpenAI Codex**.
-Owner hiện tại: **OpenAI Codex**. **Resolution/baseline evaluation IN_PROGRESS**. P1b preparation hoàn tất; **v6 training/evaluation COMPLETED; person FAIL**.
+Owner hiện tại: **OpenAI Codex**. **Resolution/baseline stage1 COMPLETED; P1c IN_PROGRESS**. P1b preparation hoàn tất; **v6 training/evaluation COMPLETED; person512 FAIL, person768 PASS**.
 V5 đã train đủ 12 epoch và đánh giá validation. Person vẫn FAIL; test/export đóng.
-V6 đã hoàn tất; không còn job. Đánh giá resolution/baseline đã được người dùng duyệt và đang chạy; lịch60 epoch tạm hoãn. P1b đã audit pool, freeze/tải 60 ảnh/1.430 box, trong đó
+V6 và sáu cấu hình đánh giá đã hoàn tất; không còn job. Tiếp theo calibration smoke/fire bằng exact square matcher ở768; chưa đủ gate cả ba class, lịch60 epoch tạm hoãn. P1b đã audit pool, freeze/tải 60 ảnh/1.430 box, trong đó
 615 box nhỏ (43,01%). Review/duplicate đã xong: 30 ACCEPT/30 EXCLUDE, phần nhận
 có 189/397 box nhỏ (47,61%). CrowdHuman expansion hoãn; pilot COCO train chưa
 dùng đã tải/review: 60 ảnh/415 box,342 nhỏ; nhận24/loại36, accepted127/156 nhỏ
@@ -191,12 +191,15 @@ manifest can thiệp và báo cáo data gate trên E:; config/code và quyết �
 - [x] Khóa protocol và hash v6/pretrained/dataset; giữ gate/scope/holdout.
 - [x] Ánh xạ pretrained person0->canonical2 chỉ cho đánh giá; tests đạt.
 - [x] Khởi chạy chuỗi6 cấu hình square; revalidate512 để thống nhất calibration.
-- [ ] Hoàn tất v6/pretrained tại512/640/768, kiểm tra log/hashes.
-- [ ] So sánh full metrics, fixed512/native height bins, tiny/negative/hazard và
+- [x] Hoàn tất v6/pretrained tại512/640/768, kiểm tra log/hashes (81 artifact bindings).
+- [x] So sánh full metrics, fixed512/native height bins, tiny/negative/hazard và
   Windows batch1/resource reports; không tuyên bố Pi performance.
-- [ ] Chốt phạm vi person theo nhu cầu camera/ROI/khoảng cách; mounting còn unknown.
+- [x] Người dùng chốt ưu tiên người trong phòng/khu vực cửa; không cần rất xa ngoài cửa sổ.
+- [ ] Chốt numeric minimum/ROI/khoảng cách bằng camera thật; mounting còn unknown.
   Chưa bỏ tiny labels hoặc đổi gate để đạt metric.
-- [ ] Chọn một can thiệp theo kết quả trước mọi training/architecture change.
+- [x] Chọn can thiệp tiếp theo: calibration smoke/fire exact square ở768 trước train mới.
+- [ ] Freeze protocol/output riêng; giữ checkpoint/person threshold, tìm highest
+  threshold đạt empirical recall >=.90, báo precision/negative alarms; không hạ gate.
   Test/export vẫn đóng. Xem [Resolution protocol](docs/RESOLUTION_BASELINE_EVALUATION.md).
 
 ### P2 — Fine-tune và theo dõi run mới (v5/v6 COMPLETED)
@@ -299,8 +302,11 @@ Không đánh dấu PASS bằng benchmark CPU Windows hay thời gian GPU traini
    đã PASS trước khi người dùng cho phép khởi chạy ngày2026-10-06.
    V6 COMPLETED: validation square512 person FAIL. Đọc V6_EVALUATION_DECISION.md
    và reports/indoor-yolo26n-v6-evaluation trên E:. Không còn job.
-   Tiếp tục P1c: theo dõi reports/indoor-resolution-baseline-square-v2 trên E:.
-   Chuỗi6 cấu hình square đang chạy; không launch lại. Đọc RESOLUTION_BASELINE_EVALUATION.md.
+   Tiếp tục P1c: reports/indoor-resolution-baseline-square-v2 trên E: đã COMPLETED.
+   Không còn job, không launch lại. Đọc RESOLUTION_BASELINE_EVALUATION.md và manifest.
+   V6-768 person PASS nhưng smoke/fire FAIL; baseline person tốt hơn ở cả ba input.
+   Bước tiếp theo: protocol calibration hazard bằng exact square ở768, output mới,
+   checkpoint/person threshold cố định, không hạ gate hoặc dùng test để chọn threshold.
    Không resume/relaunch v6 hoặc tự mở series retry.
    Không lặp acquisition đã hoàn tất. Không resume run hoàn tất, không
    chạy lại config v5 hoặc verifier pre-run để bỏ qua target đã tồn tại. Không test
