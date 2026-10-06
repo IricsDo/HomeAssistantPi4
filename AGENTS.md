@@ -40,7 +40,8 @@ The purpose of this document is to maintain project consistency, prevent agents 
 - Camera integration and real Pi benchmarking remain out of scope until the user
   provides the hardware.
 - Target camera is Raspberry Pi Camera Module 3 Wide (IMX708, ~12 MP, autofocus).
-  Mounting geometry and accessible hardware are not yet confirmed. Outdoor person
+  Planned mounting height is approximately 4 m or higher (user, 2026-10-06);
+  exact height, tilt, distance, ROI and accessible hardware remain unconfirmed. Outdoor person
   data is eligible after assessment; follow projects/indoor-detection/docs/PERSON_DATA_STRATEGY.md.
 - User-confirmed person coverage prioritizes the room and doorway; very distant
   people outside the window are not required. No numeric minimum box size or ROI

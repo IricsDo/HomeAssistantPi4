@@ -5,8 +5,9 @@ Updated: 2026-10-06. Owner: OpenAI Codex. Status: IN_PROGRESS.
 ## Confirmed operational coverage (2026-10-06)
 
 The user prioritizes people inside the room and around the doorway. Very distant
-people outside the window are not required operational coverage. Mounting height,
-tilt and maximum room/doorway distance remain unknown. No numeric minimum box
+people outside the window are not required operational coverage. Planned mounting
+height is approximately 4 m or higher (user, 2026-10-06); exact geometry, tilt and
+maximum room/doorway distance will be determined at deployment. No numeric minimum box
 size, crop or ROI has been selected; small nearby/partly occluded people may still
 matter. Preserve full validation metrics, labels, class scopes and quality gates.
 Future camera coverage/ROI must also preserve smoke/fire coverage and be measured
@@ -63,7 +64,10 @@ Engineering implications to check, not measured results:
 - Autofocus/HDR do not prove detection quality or latency. Capture mode, focus
   behavior, exposure and preprocessing require later hardware validation.
 
-The user confirms installation height/tilt and distance are not yet determined.
+The user plans installation approximately 4 m or higher; exact height/tilt and
+distance are not yet determined. Check elevated views, occlusion and frame edges
+with actual room/doorway images. Height alone does not determine projected box
+size or justify switching body labels to head/face labels.
 Day/night illumination and exact camera variant also remain unspecified.
 These do not block source research; do not assume mounting geometry.
 P5 remains blocked until hardware is available for actual integration/benchmarking.

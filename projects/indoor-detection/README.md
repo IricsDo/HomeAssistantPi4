@@ -19,12 +19,15 @@ nhiệt đạt chuẩn.
 ## Trạng thái
 
 **Đánh giá resolution/baseline COMPLETED**, đủ sáu cấu hình square 512/640/768.
-V6-768 đạt person (F1 .6522, recall .6217), smoke/fire chưa đạt toàn bộ gate.
+V6-768 sau exact hazard calibration đạt ba gate validation: smoke/fire recall
+.900932/.900158; person F1/recall .652182/.621743.
 Baseline person tốt hơn v6; chưa train mới và không còn job đánh giá.
 Xem [Protocol và checklist](docs/RESOLUTION_BASELINE_EVALUATION.md); log/status trên E:
-`reports/indoor-resolution-baseline-square-v2`. Tiếp theo: calibration smoke/fire
-theo exact square matching ở 768; đề xuất60 epoch vẫn hoãn, test/export đóng.
-Phạm vi person ưu tiên trong phòng và khu vực cửa; chưa chốt minimum size/ROI.
+`reports/indoor-resolution-baseline-square-v2`. Kết quả/ngưỡng mới tại
+[Exact calibration](docs/V6_EXACT_HAZARD_CALIBRATION.md).
+Tiếp theo chuẩn bị protocol test cuối/smoke regression cùng slice; lịch60 epoch
+vẫn hoãn, test/export đóng, chưa phát hành. Camera dự kiến cao~4m trở lên;
+ưu tiên người trong phòng/khu vực cửa, chưa chốt minimum size/ROI/góc chúc xuống.
 
 
 Theo dõi công việc đến nghiệm thu tại [PROJECT_PLAN.md](PROJECT_PLAN.md).

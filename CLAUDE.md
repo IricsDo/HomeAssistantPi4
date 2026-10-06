@@ -48,10 +48,19 @@ Do not begin implementation until the current task and ownership are clear.
   Read docs/RESOLUTION_BASELINE_EVALUATION.md and finalized integrity/manifest.
   V6-768 personF1/R .652182/.621743 PASS; smoke/fireR .899767/.897781 FAIL.
   Pretrained person exceeds v6 at all resolutions; this is diagnostic, not a causal proof.
-  Next task: separate exact square smoke/fire calibration at768, checkpoint/person
-  threshold fixed; preserve all existing reports, report negative alarms. No relaunch.
+  Exact square smoke/fire calibration at768 COMPLETED, checkpoint/person threshold
+  fixed; root E:/HomeAssistantPi4/reports/indoor-v6-768-exact-hazard-calibration-v2.
+  V1 failed on a new overly strict check of zero-width clipped predictions; corrected
+  to retain them asFP consistent with matcher. Reuse frozen smoke extraction, no
+  dataset change or automatic model retry. Preserve reports; do not relaunch.
+  Follow docs/V6_EXACT_HAZARD_CALIBRATION.md and execution receipt/logs.
+  No job remains; final thresholds smoke.1860014796257019/fire.42607951164245605.
+  Smoke/fireR .900932/.900158 PASS; person unchanged PASS. Validation gates PASS,
+  not release. Candidate/manifest frozen onE; prepare final test/same-slice smoke
+  regression protocol next. No test inference/export/new training in this milestone.
   User scope: room/doorway; distant people outside window not required. No numeric
-  minimum or ROI selected; labels/full metrics/gates unchanged. Max60 training deferred.
+  minimum or ROI selected; labels/full metrics/gates unchanged. Planned height~4m
+  or higher; exact tilt/distance await deployment. Max60 training deferred.
   Read docs/V6_TRAINING_PREPARATION.md and latest CHANGES.
 - Existing v5 person quality FAIL; NCNN/test gates stay closed. Hardware unavailable.
 

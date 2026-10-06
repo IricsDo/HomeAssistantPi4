@@ -3,7 +3,10 @@
 Ngày cập nhật: **2026-10-06**. Agent cập nhật: **OpenAI Codex**.
 Owner hiện tại: **OpenAI Codex**. **Resolution/baseline stage1 COMPLETED; P1c IN_PROGRESS**. P1b preparation hoàn tất; **v6 training/evaluation COMPLETED; person512 FAIL, person768 PASS**.
 V5 đã train đủ 12 epoch và đánh giá validation. Person vẫn FAIL; test/export đóng.
-V6 và sáu cấu hình đánh giá đã hoàn tất; không còn job. Tiếp theo calibration smoke/fire bằng exact square matcher ở768; chưa đủ gate cả ba class, lịch60 epoch tạm hoãn. P1b đã audit pool, freeze/tải 60 ảnh/1.430 box, trong đó
+V6, sáu cấu hình đánh giá và exact hazard calibration đã hoàn tất; không còn job.
+Ứng viên validation768 đạt ba class: smoke/fireR .900932/.900158;personF1/R
+.652182/.621743. Tiếp theo chuẩn bị protocol test cuối và smoke regression cùng
+slice; chưa mở test/export, lịch60 epoch tạm hoãn. P1b đã audit pool, freeze/tải 60 ảnh/1.430 box, trong đó
 615 box nhỏ (43,01%). Review/duplicate đã xong: 30 ACCEPT/30 EXCLUDE, phần nhận
 có 189/397 box nhỏ (47,61%). CrowdHuman expansion hoãn; pilot COCO train chưa
 dùng đã tải/review: 60 ảnh/415 box,342 nhỏ; nhận24/loại36, accepted127/156 nhỏ
@@ -195,12 +198,16 @@ manifest can thiệp và báo cáo data gate trên E:; config/code và quyết �
 - [x] So sánh full metrics, fixed512/native height bins, tiny/negative/hazard và
   Windows batch1/resource reports; không tuyên bố Pi performance.
 - [x] Người dùng chốt ưu tiên người trong phòng/khu vực cửa; không cần rất xa ngoài cửa sổ.
-- [ ] Chốt numeric minimum/ROI/khoảng cách bằng camera thật; mounting còn unknown.
+- [ ] Chốt numeric minimum/ROI/khoảng cách bằng camera thật; dự kiến lắp cao~4m
+  trở lên, exact height/tilt/distance chờ triển khai thực tế.
   Chưa bỏ tiny labels hoặc đổi gate để đạt metric.
 - [x] Chọn can thiệp tiếp theo: calibration smoke/fire exact square ở768 trước train mới.
-- [ ] Freeze protocol/output riêng; giữ checkpoint/person threshold, tìm highest
+- [x] Freeze protocol/output riêng; giữ checkpoint/person threshold, tìm highest
   threshold đạt empirical recall >=.90, báo precision/negative alarms; không hạ gate.
+- [x] Hoàn tất calibration/confirmation tại reports/indoor-v6-768-exact-hazard-calibration-v2;
+  v1 lỗi check zero-width predictions đã được chẩn đoán, giữ cached smoke và báo cáo cũ.
   Test/export vẫn đóng. Xem [Resolution protocol](docs/RESOLUTION_BASELINE_EVALUATION.md).
+  Kết quả: validation gates PASS; xem [Exact calibration](docs/V6_EXACT_HAZARD_CALIBRATION.md).
 
 ### P2 — Fine-tune và theo dõi run mới (v5/v6 COMPLETED)
 
@@ -226,10 +233,11 @@ Không ghi đè v1–v4; không tự mở hàng loạt thử nghiệm khi một 
 - [x] Báo cáo per-class P/R/F1, mAP50/mAP50-95, confusion, small-person recall,
   negative-image false alarms và source/domain slices có giới hạn rõ.
 - [x] Kiểm tra cả smoke/fire khi cải thiện person; không chọn bằng aggregate mAP alone.
-- [ ] Đạt các ngưỡng hiện hành trong [Acceptance criteria](docs/ACCEPTANCE_CRITERIA.md):
+- [x] Đạt các ngưỡng validation hiện hành trong [Acceptance criteria](docs/ACCEPTANCE_CRITERIA.md):
   smoke recall >= 0,90; fire recall >= 0,90; person validation F1 >= 0,65
   **và** recall >= 0,60 ở đúng resolution. Báo cáo calibration và explicit matching
   riêng, ghi protocol quyết định; không chọn con số thuận lợi giữa các protocol.
+  V6-768 sau calibration empirical đã PASS; chưa chứng minh test/camera/Pi.
 - [ ] Kiểm tra smoke không giảm recall quá 0,03 so với baseline trên **cùng** test
   slice/protocol. Nếu không có slice tương đương, ghi chưa thể xác minh; không so
   hai metric khác dataset và tuyên bố gate đạt.
@@ -305,8 +313,10 @@ Không đánh dấu PASS bằng benchmark CPU Windows hay thời gian GPU traini
    Tiếp tục P1c: reports/indoor-resolution-baseline-square-v2 trên E: đã COMPLETED.
    Không còn job, không launch lại. Đọc RESOLUTION_BASELINE_EVALUATION.md và manifest.
    V6-768 person PASS nhưng smoke/fire FAIL; baseline person tốt hơn ở cả ba input.
-   Bước tiếp theo: protocol calibration hazard bằng exact square ở768, output mới,
-   checkpoint/person threshold cố định, không hạ gate hoặc dùng test để chọn threshold.
+   Exact hazard calibration v2 đã COMPLETED; validation-only candidate768 đạt ba class.
+   Bước tiếp theo: chuẩn bị protocol test cuối/smoke regression cùng slice, giữ
+   checkpoint/thresholds/preprocessing trong validation-candidate.json. Chưa chạy test.
+   Đọc V6_EXACT_HAZARD_CALIBRATION.md; không rerun calibration hoặc train mới.
    Không resume/relaunch v6 hoặc tự mở series retry.
    Không lặp acquisition đã hoàn tất. Không resume run hoàn tất, không
    chạy lại config v5 hoặc verifier pre-run để bỏ qua target đã tồn tại. Không test

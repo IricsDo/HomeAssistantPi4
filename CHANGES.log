@@ -3007,3 +3007,111 @@ validation state.
   Terminal execution-status.json COMPLETED at square-v2; oldv1 receipt is stale,
   protocol-correction.json remains its terminal authority. Venv in C:, large
   artifacts in E:. No secrets accessed, dependencies changed or dataset modified.
+
+## [2026-10-06 21:48] - Handover from OpenAI Codex
+
+- **Current Task:** User-approved v6-768 exact hazard calibration
+- **Status:** IN_PROGRESS
+- **Completed in this session:**
+  - Read startup instructions/README/latestlog, checked mainf847bbc and preserved
+    untracked source_box_review.py; no secrets accessed. User confirmed planned
+    camera height approximately4m or higher; exact geometry awaits deployment.
+  - Added threshold_calibration.py and scripts/calibrate_exact_hazards.py. Fixed
+    candidates/NMS/maxdet; confidence-descending exact curve, inclusive ties,
+    highest threshold with empiricalR>=.90; independent rematch/inference confirmation.
+    Person checkpoint/threshold unchanged; no training/test/export or label filter.
+  - Froze conservative intervention guardrails before results: precision drop<=.01,
+    negative-image alarm rate increase<=.01 vs original768. Not new release gates.
+  - V1 started21:44:51,PID5588/launcher39596,FAILED21:46:39. New overly strict
+    positive-area check rejected5 zero-width clipped smoke predictions,conf.00102-.00226;
+    groundtruth positive. Diagnosed compatibility bug: existing matcher IoU0/FP.
+    Corrected to retain zero-area predictions asFP; regression PASS. Original data/
+    matcher unchanged. Preserve v1receipt/protocol/candidates, no automatic retry.
+  - V2 started21:48:34,actualPID3068/launcher24340. Binds/reuses v1smoke extraction
+    SHA fda4a8ba09136b5678a65f0e3c55e8599830aae8bb425afa9cf443114f73346a.
+    ProtocolSHAe9d4ddb897a57f8d7ca59f49fa0bad3594b86327fb81d1b60c11f2aceeed1943.
+    Root E:/HomeAssistantPi4/reports/indoor-v6-768-exact-hazard-calibration-v2.
+    Smoke selectedthreshold.1860014796257019,TP773/858,R.900932; confirmation running.
+- **Unfinished / Next Steps (CRITICAL):**
+  - [ ] Monitor existingv2 through smoke confirmation/fire extraction/confirmation;
+    verify unchanged hashes/membership/old counts, inspect warnings/guardrails, finalize.
+  - [ ] Update docs/plan with actual outcome, run tests/lint, commit/push milestone.
+    Do not relaunch into existing root or open test/export automatically.
+- **Known Blocks / Issues:** v1 failed implementation check, preserved; v2 pending.
+  Pi/hardware unavailable;4m plan does not define numeric minimum/ROI or indoor proof.
+- **Validation:** BuildNOTAPPLICABLE;TypecheckNOTCONFIGURED;RuffPASS;
+  full tests180PASS9.49s before correction; correction tests13PASS.18s;
+  full post-correction suite running. Record final result in completion entry.
+- **Git State:** mainf847bbc;DIRTY scoped newmodule/script/tests/docs;untracked
+  source_box_review.py untouched/excluded. VenvC;large reportsE.
+- **Active Files:** threshold_calibration.py,calibrate_exact_hazards.py,
+  test_threshold_calibration.py,AGENTS/CLAUDE/CHANGES/PROJECT_PLAN,
+  PERSON_DATA_STRATEGY/RESOLUTION_BASELINE_EVALUATION/V6_EXACT_HAZARD_CALIBRATION docs.
+- **Notes for Next Agent:** CurrentownerOpenAI Codex; receipt/log/process forv2
+  authoritative. V1codehash differs after diagnosedfix; do not rewrite its frozen
+  hashes/status. Existing comparison81bindings/preparation21 checked before/afterv2.
+
+## [2026-10-06 21:55] - Handover from OpenAI Codex
+
+- **Current Task:** Complete empirical v6-768 hazard calibration and record camera plan
+- **Status:** COMPLETED (calibration milestone; project/P1c still IN_PROGRESS)
+- **Completed in this session:**
+  - V2 COMPLETED21:53:42 Vietnam,exit0; actualPID3068/launcher24340 absent. No
+    training/evaluation job remains. Preserved failedv1 and all previous comparisons.
+  - Smoke threshold.1860014796257019:TP773/FP211/FN85,P.785569,R.900932,F1.839305.
+    Reference772/211/86,P.785351,R.899767. Fire threshold.42607951164245605:
+    TP1136/FP146/FN126,P.886115,R.900158,F1.893082;reference1133/142/129,
+    P.888627,R.897781. Person unchanged threshold.34934934934934936,
+    P.685756/R.621743/F1.652182 PASS. All three validation class gates PASS.
+  - Smoke negative alarms31/990,fire13/616 unchanged. Fire adds4FP on positive
+    images,precision drops.002512 (0.2512percentagepoints); both conservative
+    intervention guardrails PASS. Person negative alarm rate remains13.34% onCOCO;
+    neither validation gate nor this calibration proves real indoor alert quality.
+  - Selected points independently rematched and confirmed with fresh inference;
+    exact counts/negative alarms reproduce curves and reference operating counts.
+    Membership/groundtruth unchanged. Implementation/model/data/reference hashes,
+    comparison81bindings and preparation21bindings PASS before/after. No workflow
+    traceback/NMS timeout. No labels/scopes/holdout/gates or dependencies changed.
+  - Root E:/HomeAssistantPi4/reports/indoor-v6-768-exact-hazard-calibration-v2:
+    summary.json,integrity.json,validation-candidate.json,artifact-manifest.json.
+    Manifest96 bindings includingJPEG galleries/reusedv1smoke candidate;SHA
+    26dd7725f3d394951cc9c227d1fa779b7f72e060b1c0de462d5b209000b9674c.
+    Validation candidateSHA87330384727fd673031a383b9cdad38848bb126e06962989659bb9fb5252e4bb.
+    V6checkpointSHA103b45ab6a61f2431b462ee2bc4402f6ddaa7b982e872afd50515e3c6ef28729.
+    Candidate is768square,one3class model; test/regression/Pi/release flags false.
+  - Camera planned approximately4m or above; exact tilt/height/distance/ROI deferred
+    until deployment. Prioritize room/doorway; no numeric size cutoff or label removal.
+    Updated AGENTS/CLAUDE/bothREADMEs/PROJECT_PLAN/person/comparison/calibration docs.
+- **Unfinished / Next Steps (CRITICAL):**
+  - [ ] Prepare final test protocol/readiness with frozen validation candidate;
+    verify compatible smoke baseline checkpoint/same test membership/preprocessing,
+    planned regression<=.03,scope/class projection and threshold lock before inference.
+    Read docs/SMOKE_BASELINE_SNAPSHOT.md; do not compare unrelated historical metrics.
+    Disclose priorv2test use; never choose thresholds/epochs fromtest.
+  - [ ] Test inference/export remain unopened in this milestone. Final release
+    requires test/regression and backend/Pi gates; 768 not locked deployment resolution.
+    No automatic calibration rerun or training;60epoch proposal still deferred.
+  - [ ] Actual camera/Pi checks await hardware; verify elevated views/occlusion/edges
+    and negatives,determine minimum/ROI/latency/RAM from measurements.
+- **Known Blocks / Issues:** Margins over gates are narrow measured estimates,not
+  confidence bounds. COCO-only person holdout/pretrained familiarity,mixed-domain
+  hazards,highperson negatives andhistoricaltest limitations persist. Original
+  interpolated operating reports remain unchanged; new empirical protocol declared.
+- **Validation:**
+  - Build: NOT APPLICABLE (calibration;no export)
+  - Tests: PASS181/181,9.94s;from project .venv/Scripts/python.exe -m pytest
+    -p no:cacheprovider --basetemp C:/Users/Public/Documents/indoor-threshold-20261006e
+  - Typecheck: NOT CONFIGURED
+  - Lint: PASS (.venv/Scripts/python.exe -m ruff check . --no-cache)
+  - Git diff --check: PASS
+- **Git State:** main;LastCommitf847bbc before this milestone;DIRTY scoped changes
+  awaiting commit/push. Untrackedsource_box_review.py preserved/excluded.
+- **Uncommitted Changes / Active Files:** AGENTS.md,CLAUDE.md,CHANGES.log,README.md;
+  projects/indoor-detection/README.md,PROJECT_PLAN.md;docs/PERSON_DATA_STRATEGY.md,
+  RESOLUTION_BASELINE_EVALUATION.md,V6_EXACT_HAZARD_CALIBRATION.md;
+  src/indoor_detection/threshold_calibration.py,scripts/calibrate_exact_hazards.py,
+  tests/test_threshold_calibration.py.
+- **Notes for Next Agent:** No jobs to resume. V1FAILED is diagnosed zero-width
+  prediction-check bug; correctedv2 reuses immutable smoke extraction as documented.
+  Keep E:artifacts and C:venv,one-detector contract,secrets untouched. Continue
+  P3protocol preparation,not another data expansion or blind longer training run.

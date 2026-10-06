@@ -127,11 +127,19 @@ operating point exists, stop and document the trade-off. Do not lower gates,
 silently replace prior reports or open test/export. 60-epoch training remains
 deferred; no deployment resolution or release candidate is locked.
 
+The subsequent user-approved empirical calibration is now COMPLETED: smoke/fire
+recall .900932/.900158, independent inference confirmed, negative alarms unchanged.
+Person remains PASS. A validation-only candidate is frozen at768; release/test/
+same-slice smoke regression/Pi gates remain open work. See
+[V6_EXACT_HAZARD_CALIBRATION.md](V6_EXACT_HAZARD_CALIBRATION.md). Original comparison
+rows above remain unchanged; new thresholds belong to the separate protocol.
+
 ## Confirmed person coverage
 
 User confirmed: prioritize the room and doorway; very distant people outside
-the window are not required. Camera mounting, maximum distance, numeric minimum
-size and ROI remain unknown/unlocked. Preserve full validation results and labels.
+the window are not required. Planned camera height is approximately 4 m or higher
+(user, 2026-10-06); exact height/tilt/distance will be determined on deployment.
+Numeric minimum size and ROI remain unlocked. Preserve full validation results and labels.
 This scope alone does not justify a 12px cutoff: small/occluded people inside
 the room or doorway can matter. Measure actual camera coverage before filtering.
 
