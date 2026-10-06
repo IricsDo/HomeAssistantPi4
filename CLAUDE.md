@@ -69,8 +69,10 @@ Do not begin implementation until the current task and ownership are clear.
   Fire train/validation diagnosis COMPLETED; read docs/FIRE_RECOVERY_PLAN.md.
   Fire val recall FS .839465 vs home .919003; threshold reduction breaches prior
   precision/negative-alarm guardrails. V7 aligned768 max12 epochs is PLANNED only.
-  Next: assess concrete sources under docs/INDEPENDENT_HOLDOUT_PLAN.md, then
-  holdout/data/resource readiness before any launch. No new holdout acquired,
+  Source assessment COMPLETED; docs/HOLDOUT_SOURCE_ASSESSMENT.md selects FURG
+  for a two-video pilot. All23 XMLs parsed; metadata only, not holdout admission.
+  Next: pinned video alignment/completeness/overlap pilot, resolve smoke/person
+  coverage, then holdout/data/resource readiness before launch. No holdout admitted,
   no training/evaluation job. Old test remains closed; no automatic 60-epoch run.
   User scope: room/doorway; distant people outside window not required. No numeric
   minimum or ROI selected; labels/full metrics/gates unchanged. Planned height~4m

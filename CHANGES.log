@@ -3305,3 +3305,75 @@ RuffPASS; no build/export;typechecknotconfigured. Test workflow remainsrunning.
   Keep E: artifacts/C: venv, one detector; preserve original reports/data/history.
   Never rerun diagnose_fire_v6.py into its existing output directory or refresh
   immutable hashes to conceal drift. Prior test/protocol remain untouched.
+
+## [2026-10-06 23:53] - Handover from OpenAI Codex
+
+- **Current Task:** Assess concrete labeled sources for independent v7 holdout
+- **Status:** COMPLETED (source assessment; holdout acquisition/admission IN_PROGRESS)
+- **Completed in this session:**
+  - Read instructions/latest handover/Git; main b4362cd. Preserved untracked
+    source_box_review.py untouched. No projects/.env access, training or inference.
+  - Assessed nine concrete candidates using creator/organizer sources; recorded
+    labels, original groups, domain, access/license, overlap/exposure uncertainty.
+    Decision in projects/indoor-detection/docs/HOLDOUT_SOURCE_ASSESSMENT.md.
+  - Selected original FURG for a bounded positive/negative video pilot, evaluation
+    reservation only. Pinned revision 6aff09d7baa27425f31d1df685284c26cbffe7af.
+    Retrieved repository tree, README/license and all23 original XMLs, not videos.
+    Verified23 MP4/XML pairs ignoring case; Car2/Car3 casing needs explicit mapping.
+    Parsed28,049 frame entries/17,936 fire boxes/13,636 empty annotation frames;
+    17 videos positive/6 no-box. Zero invalid geometry or within-XML duplicate IDs.
+    These are adjacent/correlated frames, not independent scene counts. Video decode,
+    completeness/annotation review and exact/near scene overlap gates NOT_RUN.
+  - XML declared dimensions/fps/frame indexes need actual decoding verification.
+    Empty fire labels are candidate negatives only; smoke/person remain unknown.
+    Related house/car/case2 clips must be grouped by event, not assumed independent.
+    Entire video inventory619,080,679 bytes per Git tree; no video download yet.
+  - Smoke backups Boreal subsetA/HPWREN and person WILDTRACK remain unadmitted:
+    outdoor domain and few scene groups cannot establish room/doorway coverage.
+    D-Fire backup needs ancestry/access audit; Zenodo5kIndoor source deferred pending
+    identity/overlap (different archive bytes do not prove independent scenes).
+    EPFL-RLC incomplete frame annotations, ONFIRE ignition-index labels and UniData
+    paid full-source/limited preview deferred for direct boxed holdout. No purchase
+    or external contact. License metadata gaps alone do not reject a research source.
+  - Home-fire original source URL list retrieved: literal candidate names absent;
+    weak text check does not exclude reused YouTube content. Pretraining exposure
+    unknown; all old corpora including rejected/inspected Roboflowv32 need screening.
+  - Evidence root E:/HomeAssistantPi4/reports/indoor-independent-holdout-source-assessment-v1:
+    retrieval.json, all-annotation-retrieval.json, furg-annotation-inventory.json,
+    decision.json, original metadata/XMLs and artifact-manifest.json (35 bindings),
+    SHA9b1e7fb17c08a5c10432a81f0083eb19bf3b902dbd73e5cd6c10d9bdeb5ce044.
+    Initial metadata retrieval succeeded; subsequent console display failed due to
+    cp1252 decoding of Home source list. Explicit UTF-8 rerun succeeded; receipt kept.
+  - Updated plan, CLAUDE, both READMEs and INDEPENDENT_HOLDOUT_PLAN.md. No source
+    images/labels changed; no new dependency. V6 NO_RELEASE and v7 PLANNED unchanged.
+- **Unfinished / Next Steps (CRITICAL):**
+  - [ ] Bind pinned FURG video URLs; acquire case2_house.mp4 and
+    non_fire_patrolbot_onboard.mp4 only onE with corresponding pinned XMLs.
+    Decode/verify actual dimensions/frame count/index alignment; audit previews
+    at deterministic1-second spacing with timestamps, no model predictions.
+  - [ ] Review label completeness/box convention/event families and exact/near
+    overlap against all old raw/processed/inspected corpora; adjudicate reuse.
+    Pilot is not accepted holdout membership or model-selection data.
+  - [ ] Resolve smoke/person and indoor coverage; planning targets30groups,
+    300fire/300smoke/500person/200negatives per class NOT_MET. Do not count views
+    or adjacent frames as independent groups. Reserve evaluation-only sources;
+    freeze groups/scopes/hashes and gates before v7 training/holdout inference.
+  - [ ] Data/checkpoint/environment/resource readiness required before any v7 launch.
+    No direct draft-YAML launch, automatic60epoch run/retry/export. Pi/camera pending.
+- **Known Blocks / Issues:** No holdout admitted; overlap/annotation/video alignment
+  unverified, smoke/person/indoor coverage incomplete; pretrained exposure unknown.
+  Fire v6 testFAIL remains. No training/inference/background retrieval job remains.
+- **Validation:**
+  - Build: NOT APPLICABLE (metadata assessment; no model export)
+  - Tests: PASS192/192,5.48s; project .venv/Scripts/python.exe -m pytest
+    -p no:cacheprovider --basetemp C:/Users/Public/Documents/indoor-holdout-assessment-20261006
+  - Typecheck: NOT CONFIGURED
+  - Lint: PASS (.venv/Scripts/python.exe -m ruff check . --no-cache)
+- **Git State:** Branchmain; LastCommitb4362cd; DIRTY scoped docs awaiting commit/push.
+- **Uncommitted Changes / Active Files:** CHANGES.log,CLAUDE.md,README.md,
+  projects/indoor-detection/README.md,PROJECT_PLAN.md,docs/INDEPENDENT_HOLDOUT_PLAN.md,
+  docs/HOLDOUT_SOURCE_ASSESSMENT.md. Unrelated source_box_review.py preserved/excluded.
+- **Notes for Next Agent:** OpenAI Codex owns continuation. Immediate action is
+  two-video FURG format/overlap pilot; do not rerun completed metadata acquisition
+  into existing receipt root or call current metadata gate holdout PASS.
+  Keep one unified detector, E: artifacts/C: venv, no projects/.env exposure.

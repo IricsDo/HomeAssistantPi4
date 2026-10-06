@@ -6,7 +6,8 @@ V5 đã train đủ 12 epoch và đánh giá validation. Person vẫn FAIL; test
 V6, sáu cấu hình đánh giá, exact hazard calibration và test cuối đã hoàn tất.
 Test:smoke/person PASS,fireR .849913 FAIL → NO_RELEASE;regression smoke PASS.
 Không còn job, không train mới hoặc export. Fire diagnosis COMPLETED; v7 ở 768
-tối đa 12 epoch mới PLANNED. Tiếp theo đánh giá nguồn holdout độc lập và readiness;
+tối đa 12 epoch mới PLANNED. Source assessment COMPLETED; tiếp theo pilot FURG
+video/annotation/overlap, rồi holdout admission và readiness;
 xem [Fire recovery](docs/FIRE_RECOVERY_PLAN.md).
 Ứng viên validation768 đạt ba class: smoke/fireR .900932/.900158;personF1/R
 .652182/.621743. Readiness/protocol test cuối và smoke regression cùng slice đã
@@ -269,7 +270,10 @@ Không ghi đè v1–v4; không tự mở hàng loạt thử nghiệm khi một 
 - [x] Diagnosis fire trên train/validation, đề xuất can thiệp và protocol holdout độc lập.
   Xem FIRE_RECOVERY_PLAN.md và INDEPENDENT_HOLDOUT_PLAN.md; không dùng test cũ
   để chọn thresholds/epoch. V7 draft PLANNED, chưa mở train/export.
-- [ ] Đánh giá nguồn có nhãn, tạo/audit/freeze holdout độc lập theo protocol.
+- [x] Đánh giá nguồn có nhãn: HOLDOUT_SOURCE_ASSESSMENT.md; FURG pilot được chọn,
+  23 XML audit metadata hoàn tất. Chưa có holdout admission hoặc video download.
+- [ ] Pilot hai video FURG pinned: decode/frame alignment/completeness/overlap.
+- [ ] Chốt smoke/person coverage; tạo/audit/freeze holdout độc lập theo protocol.
 - [ ] Kiểm tra data/checkpoint/environment/resource readiness trước một launch v7.
 - [ ] Chạy/đánh giá ứng viên mới chỉ sau prerequisites; khóa trước holdout inference.
 
@@ -340,7 +344,8 @@ Không đánh dấu PASS bằng benchmark CPU Windows hay thời gian GPU traini
    Exact hazard calibration v2 đã COMPLETED; validation-only candidate768 đạt ba class.
    Test cuối đã COMPLETED:NO_RELEASE dofireR .849913;smoke/person vàsmoke regression PASS.
    Fire diagnosis COMPLETED; đọc FIRE_RECOVERY_PLAN.md và INDEPENDENT_HOLDOUT_PLAN.md.
-   Tiếp theo đánh giá nguồn holdout có nhãn; chưa acquire/train. Không launch draft
+   Source assessment đã xong; đọc HOLDOUT_SOURCE_ASSESSMENT.md. Tiếp theo pilot
+   hai video FURG, smoke/person coverage còn thiếu; chưa acquire video/train. Không launch draft
    YAML trước holdout/data/resource readiness. Không tuning/relaunch trên test cũ.
    Đọc V6_FINAL_TEST.md.
    Đọc V6_EXACT_HAZARD_CALIBRATION.md; không rerun calibration hoặc train mới.

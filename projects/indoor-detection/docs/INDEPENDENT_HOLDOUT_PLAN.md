@@ -49,5 +49,8 @@ Already inspected old test can remain a historical regression report, never be
 renamed as new independent test. A publicly available source does not guarantee
 absence from pretrained model data; record known/unknown exposure separately.
 
-Next action: identify and assess concrete source candidates against this protocol.
-No specific source is approved, no download started, and no new training authorized.
+Source assessment completed: see [HOLDOUT_SOURCE_ASSESSMENT.md](HOLDOUT_SOURCE_ASSESSMENT.md).
+FURG selected for a two-video metadata/annotation pilot; no holdout admitted.
+Public metadata and XMLs retrieved on E:, no videos acquired or model predictions.
+Next action: pinned positive/negative video pilot, alignment/completeness/overlap audit;
+smoke/person coverage unresolved. No new training authorized by this intake decision.
