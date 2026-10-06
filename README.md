@@ -23,8 +23,12 @@ Xem [Protocol và checklist](projects/indoor-detection/docs/RESOLUTION_BASELINE_
 `reports/indoor-resolution-baseline-square-v2`. Kết quả/ngưỡng mới tại
 [Exact calibration](projects/indoor-detection/docs/V6_EXACT_HAZARD_CALIBRATION.md).
 Protocol/readiness test cuối đã khóa; xem [Final test](projects/indoor-detection/docs/V6_FINAL_TEST.md).
-Tiếp theo phân tích fire trên train/validation và lập protocol holdout độc lập;
-lịch60 epoch vẫn hoãn, export đóng,
+Chẩn đoán fire trên train/validation đã hoàn tất: recall theo nguồn 83,95% và
+91,90%; giảm threshold làm tăng đáng kể false positives. Xem
+[Fire recovery](projects/indoor-detection/docs/FIRE_RECOVERY_PLAN.md). Đề xuất v7 ở 768, tối đa 12 epoch,
+chưa chạy. Tiếp theo đánh giá nguồn cho
+[holdout độc lập](projects/indoor-detection/docs/INDEPENDENT_HOLDOUT_PLAN.md) và readiness;
+lịch 60 epoch vẫn hoãn, export đóng,
 chưa phát hành. Camera dự kiến cao~4m trở lên;
 ưu tiên người trong phòng/khu vực cửa, chưa chốt minimum size/ROI/góc chúc xuống.
 

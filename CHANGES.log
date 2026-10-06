@@ -3233,3 +3233,75 @@ RuffPASS; no build/export;typechecknotconfigured. Test workflow remainsrunning.
   nextproposal requirement. Frozenprep protocolSHA2a866525bb99459e2d42e23608b9335ad02ee65047605c2d81ec8e341a168cfa;
   logs inE:/HomeAssistantPi4/reports/indoor-v6-768-test-preparation-v1.
   Do notdelete/checkpointoverwrite orhide failed test byrefreshingoldhashes.
+
+## [2026-10-06 23:38] - Handover from OpenAI Codex
+
+- **Current Task:** Fire diagnosis on train/validation and bounded recovery/holdout proposal
+- **Status:** COMPLETED (diagnosis milestone; P3/project IN_PROGRESS, v7 PLANNED)
+- **Completed in this session:**
+  - Reused frozen fire validation predictions only; no test access/inference, GPU
+    training, export, downloads or threshold/candidate selection. Data unchanged.
+  - Fire validation recall at frozen shared threshold: indoor-fs .839465 (299 GT)
+    vs home-fire .919003 (963 GT). Aggregate .900158 hides weaker FS source;
+    home contributes 76.31% of GT. This is not a causal domain diagnosis.
+  - Train fire census: 7,900 scoped images/5,549 GT. Small area <1%: FS 326/2,571,
+    home 1,443/2,978. Projected short side <=12: 170 train/55 val, retained.
+    FS val only 7/299 small boxes; tiny objects alone do not explain its failure.
+    Pair IoU>=.5: 1 train/0 val; containment>=90%: 8 train/2 val. Annotation
+    completeness/correctness remains unproven; geometry does not establish it.
+  - Diagnostic val recall .92/.95 would lower threshold to .293594/.037299,
+    precision .841419/.565299 and negative alarms 3.41%/13.31%, breaching prior
+    1 percentage point guardrails. No new operating point selected.
+  - Added fire_diagnostics.py, 4 focused tests and diagnose_fire_v6.py.
+    Report E:/HomeAssistantPi4/reports/indoor-v6-fire-diagnosis-v1;
+    diagnosis.json SHA fd40f8ed61b1cfcba4e1c84d92617df80800a17da4c2b6bda844d62bd44d6f57;
+    protocol.json SHA 96108627d2ff2be4790570517d7d6936d16f4f5959904e90b16874cabb72170d;
+    artifact-manifest.json SHA 2e201452400e2df878fb0a00253079cc192b9a339470199cce6f57a18264870d.
+    Verified 2 report files, 10 protocol bindings and original calibration 96 files.
+    Train census is point-in-time: individual train images/labels are not hash-bound
+    by this report; indexes/scope/code/cached validation inputs are bound.
+    stdout E:/HomeAssistantPi4/reports/v6-fire-diagnosis.stdout.txt; exit0.
+  - Draft one bounded v7 continuation at768 from v6 best: max12/patience5,
+    provisional batch8/workers2; existing LR/optimizer/mixing/data/scope policy.
+    Config comparison against v6 PASS: only model init, resolution, batch, run name
+    differ. No launch: training-resolution hypothesis unproven, not causal ablation.
+  - Predeclared proposal validation checks in FIRE_RECOVERY_PLAN.md: shared class
+    thresholds, fire R>=.90 aggregate and each source, smoke/person gates retained;
+    precision/negative-alarm guardrails vs frozen v6 validation, stop if unmet.
+  - INDEPENDENT_HOLDOUT_PLAN.md specifies new source/scene-group reservation,
+    per-image/class scope, blinded annotation review, exact/near provenance audit,
+    frozen hashes before prediction and single evaluation after candidate lock.
+    Intake counts are planning targets, not statistical assurance or release gates.
+  - Updated CLAUDE.md, both READMEs and PROJECT_PLAN.md. AGENTS.md unchanged:
+    architecture/storage/secrets/hardware constraints still apply. No secret read.
+- **Unfinished / Next Steps (CRITICAL):**
+  - [ ] Assess concrete labeled public sources for independent holdout; record
+    original group IDs, labels/completeness, existing corpus/pretrained exposure,
+    known/unknown provenance/license. No source selected or download started.
+  - [ ] Acquire/audit/freeze admitted holdout groups without detector-guided selection;
+    predeclare evaluation gates and limitations. Old v2/v6 test stays closed for tuning.
+  - [ ] Pass data/checkpoint/environment/scope/resource readiness before one v7 launch;
+    do not launch proposal YAML directly or auto-open 60 epochs/retry/source expansion.
+  - [ ] P4 export remains closed; P5 needs actual Pi/camera hardware. No numeric
+    person cutoff/ROI; planned camera height ~4m+, room/doorway coverage retained.
+- **Known Blocks / Issues:** V6 final NO_RELEASE (fire test recall .849913);
+  no independent holdout acquired; mixed domains, smoke FP/person negative alarms,
+  pretrained exposure uncertainties and hardware absence remain. No running job.
+- **Validation:**
+  - Build: NOT APPLICABLE (diagnosis/proposal; no export)
+  - Tests: PASS 192/192, 7.19s; project .venv/Scripts/python.exe -m pytest
+    --basetemp C:/Users/Public/Documents/indoor-fire-diagnosis-20261006b
+  - Typecheck: NOT CONFIGURED
+  - Lint: PASS (.venv/Scripts/python.exe -m ruff check .)
+  - Config parity / artifact bindings: PASS as described above
+- **Git State:** main; Last Commit e8a2c45 (prior milestone pushed); DIRTY scoped
+  diagnosis/proposal/docs awaiting commit/push. Preserve/exclude unrelated untracked
+  projects/indoor-detection/src/indoor_detection/source_box_review.py.
+- **Uncommitted Changes / Active Files:** CHANGES.log, CLAUDE.md, both READMEs,
+  PROJECT_PLAN.md, fire_diagnostics.py, test_fire_diagnostics.py, diagnose_fire_v6.py,
+  train_indoor_v7_768_proposal.yaml, FIRE_RECOVERY_PLAN.md, INDEPENDENT_HOLDOUT_PLAN.md.
+- **Notes for Next Agent:** Owner OpenAI Codex. Start with concrete holdout source
+  assessment, not training. V7 config is a proposal, batch8 requires resource check.
+  Keep E: artifacts/C: venv, one detector; preserve original reports/data/history.
+  Never rerun diagnose_fire_v6.py into its existing output directory or refresh
+  immutable hashes to conceal drift. Prior test/protocol remain untouched.

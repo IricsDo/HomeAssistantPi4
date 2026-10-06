@@ -66,8 +66,12 @@ Do not begin implementation until the current task and ownership are clear.
   Same-slice smoke recall regression PASS aggregate and both sources, but smoke
   precision/negative alarms worse than baseline. Final decision NO_RELEASE.
   Do not relaunch or tune thresholds on this test. Export/new training remain closed.
-  Next: bounded fire diagnosis ontrain/val and independent holdout/intervention
-  proposal before any redesigned candidate. Do not immediately open60epoch training.
+  Fire train/validation diagnosis COMPLETED; read docs/FIRE_RECOVERY_PLAN.md.
+  Fire val recall FS .839465 vs home .919003; threshold reduction breaches prior
+  precision/negative-alarm guardrails. V7 aligned768 max12 epochs is PLANNED only.
+  Next: assess concrete sources under docs/INDEPENDENT_HOLDOUT_PLAN.md, then
+  holdout/data/resource readiness before any launch. No new holdout acquired,
+  no training/evaluation job. Old test remains closed; no automatic 60-epoch run.
   User scope: room/doorway; distant people outside window not required. No numeric
   minimum or ROI selected; labels/full metrics/gates unchanged. Planned height~4m
   or higher; exact tilt/distance await deployment. Max60 training deferred.

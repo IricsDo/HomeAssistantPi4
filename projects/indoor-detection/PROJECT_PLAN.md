@@ -5,8 +5,9 @@ Owner hiện tại: **OpenAI Codex**. **Resolution/baseline stage1 COMPLETED; P1
 V5 đã train đủ 12 epoch và đánh giá validation. Person vẫn FAIL; test/export đóng.
 V6, sáu cấu hình đánh giá, exact hazard calibration và test cuối đã hoàn tất.
 Test:smoke/person PASS,fireR .849913 FAIL → NO_RELEASE;regression smoke PASS.
-Không còn job, không train mới hoặc export. Tiếp theo diagnosis fire trên train/val
-và protocol holdout độc lập trước khi thiết kế ứng viên mới.
+Không còn job, không train mới hoặc export. Fire diagnosis COMPLETED; v7 ở 768
+tối đa 12 epoch mới PLANNED. Tiếp theo đánh giá nguồn holdout độc lập và readiness;
+xem [Fire recovery](docs/FIRE_RECOVERY_PLAN.md).
 Ứng viên validation768 đạt ba class: smoke/fireR .900932/.900158;personF1/R
 .652182/.621743. Readiness/protocol test cuối và smoke regression cùng slice đã
 PASS/freeze; xem V6_FINAL_TEST.md, lịch60 epoch tạm hoãn. P1b đã audit pool, freeze/tải 60 ảnh/1.430 box, trong đó
@@ -62,7 +63,7 @@ rồi cập nhật kế hoạch này theo bằng chứng. Không sửa lịch s�
 | P5 | Benchmark và camera trên Pi thật | BLOCKED | Có phần cứng, đo performance/latency/soak và kiểm tra miền thật |
 | P6 | Đóng gói vận hành và nghiệm thu | PLANNED | Hướng dẫn tái lập, cấu hình phát hành và bàn giao đầy đủ |
 
-**Còn 4 công đoạn đích P3–P6**, cần đề xuất can thiệp fire sau test v6 NO_RELEASE.
+**Còn 4 công đoạn đích P3–P6**; đề xuất phục hồi fire đã có, chưa khởi chạy.
 P1/P2 đã hoàn tất cho v6 nhưng P3 chưa đạt toàn bộ quality gate. Các vòng train không có số lần cố định
 hay phần trăm hoàn thành đảm bảo trước khi đạt quality gate.
 P5 bị chặn bởi phần cứng. Có thể chuẩn bị tài liệu P6 trước, nhưng chưa nghiệm thu
@@ -74,7 +75,9 @@ deployment đầy đủ nếu P5 chưa có kết quả.
   personF1/R .675073/.634509 PASS;fireR .849913 FAIL. Regression smoke cùng slice
   PASS aggregate và hai source; precision/negative alarms smoke vẫn kém baseline.
   Xem [Final test](docs/V6_FINAL_TEST.md); NO_RELEASE, không còn job.
-  Lịch60 epoch vẫn hoãn; tiếp theo fire diagnosis train/val và holdout độc lập.
+  Fire diagnosis đã hoàn tất: FS val recall .839465 vs home .919003.
+  V7 ở 768 PLANNED; tiếp theo source assessment cho holdout độc lập,
+  rồi data/resource readiness. Lịch 60 epoch vẫn hoãn.
 
 **V6 trước can thiệp resolution/calibration (lịch sử):**
 
@@ -263,8 +266,12 @@ Không ghi đè v1–v4; không tự mở hàng loạt thử nghiệm khi một 
   tiếp tục của người dùng. Xem [Final test](docs/V6_FINAL_TEST.md); không launch lại.
 - [x] Đánh giá test theo protocol đã khóa và ghi quyết định release/no-release.
   Nếu kết quả buộc thiết kế lại, đóng ứng viên và lập protocol holdout cho vòng mới.
-- [ ] Diagnosis fire trên train/validation, đề xuất can thiệp và holdout độc lập;
-  test đã xem không dùng để chọn thresholds/epoch. Chưa mở train/export.
+- [x] Diagnosis fire trên train/validation, đề xuất can thiệp và protocol holdout độc lập.
+  Xem FIRE_RECOVERY_PLAN.md và INDEPENDENT_HOLDOUT_PLAN.md; không dùng test cũ
+  để chọn thresholds/epoch. V7 draft PLANNED, chưa mở train/export.
+- [ ] Đánh giá nguồn có nhãn, tạo/audit/freeze holdout độc lập theo protocol.
+- [ ] Kiểm tra data/checkpoint/environment/resource readiness trước một launch v7.
+- [ ] Chạy/đánh giá ứng viên mới chỉ sau prerequisites; khóa trước holdout inference.
 
 **Đầu ra:** model selection decision, checkpoint/threshold lock và quality reports.
 NCNN cuối chỉ được mở khi quality gate đạt, không vì train đã chạy xong.
@@ -332,8 +339,10 @@ Không đánh dấu PASS bằng benchmark CPU Windows hay thời gian GPU traini
    V6-768 person PASS nhưng smoke/fire FAIL; baseline person tốt hơn ở cả ba input.
    Exact hazard calibration v2 đã COMPLETED; validation-only candidate768 đạt ba class.
    Test cuối đã COMPLETED:NO_RELEASE dofireR .849913;smoke/person vàsmoke regression PASS.
-   Bước tiếp theo: diagnosis fire train/val và protocol holdout độc lập; không
-   tuning/relaunch ứng viên này trên test cũ. Đọc V6_FINAL_TEST.md.
+   Fire diagnosis COMPLETED; đọc FIRE_RECOVERY_PLAN.md và INDEPENDENT_HOLDOUT_PLAN.md.
+   Tiếp theo đánh giá nguồn holdout có nhãn; chưa acquire/train. Không launch draft
+   YAML trước holdout/data/resource readiness. Không tuning/relaunch trên test cũ.
+   Đọc V6_FINAL_TEST.md.
    Đọc V6_EXACT_HAZARD_CALIBRATION.md; không rerun calibration hoặc train mới.
    Không resume/relaunch v6 hoặc tự mở series retry.
    Không lặp acquisition đã hoàn tất. Không resume run hoàn tất, không
