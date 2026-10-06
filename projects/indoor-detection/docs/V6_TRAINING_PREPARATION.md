@@ -1,8 +1,9 @@
 # V6 reviewed small-person training preparation
 
-Owner: OpenAI Codex. Status: **READY_FOR_REVIEW / READY_STOPPED_BEFORE_TRAIN**.
-No training started; user requested stop at the preparation boundary. Data
-approval permits a bounded experiment only after explicit execution authorization.
+Owner: OpenAI Codex. Preparation completed; execution: **IN_PROGRESS**.
+Preparation originally stopped before training. On 2026-10-06 the user explicitly
+authorized continuation; the frozen configuration was launched once after fresh
+read-only readiness and GPU checks. Historical preparation receipts remain unchanged.
 V5 remains NO RELEASE: person F1/recall0.6415/0.5717 below0.65/0.60.
 
 ## Data decision and compatibility
@@ -105,3 +106,23 @@ both preservation paths and reject head boxes/missing review. No dependency chan
 
 Artifact manifest21 SHA `c8ab223b06d5ef45ff30ad4b52b6fa7e233d9b500d8cbb9f1d9caf9e6c1ceeec`
 binds preparation evidence,conversion galleries,config/composer/tests.
+
+## Authorized execution and epoch rationale (2026-10-06)
+
+Started12:13:11 UTC /19:13 Vietnam time; Python PID34596 (launcher39912).
+Run: `E:/HomeAssistantPi4/runs/indoor-detection/indoor_partial_joint_yolo26n_v6_reviewed_small_512`.
+Receipt and stdout/stderr: report root above, `v6-execution-status.json`,
+`v6-training.stdout.log`, `v6-training.stderr.log`. Hidden durable Python wrapper
+`run-v6-authorized.py` records success/failure on exit; it does not retry. Check
+receipt plus process/log/run artifacts; do not infer completion from process absence.
+
+Max12 epochs is a bounded experiment budget, not a demonstrated optimum or a
+universal YOLO limit. Initialization is the v2 checkpoint trained40 epochs; all
+15,502 training images participate, not only the54 additions. V5 selected best
+checkpoint at epoch7 by trainer fitness; that does not prove longer training
+cannot improve person quality. Patience5 follows validation fitness, not the
+product's per-class acceptance gate. 100/200 epochs are possible in a separately
+declared schedule if validation evidence justifies them; do not silently extend
+this frozen run. Inspect validation curves before deciding on that intervention.
+After completion, calibrate/evaluate square512 validation and compare person,
+small-person recall, smoke/fire and negatives. Test and NCNN remain closed.

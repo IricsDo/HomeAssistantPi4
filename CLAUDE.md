@@ -21,9 +21,11 @@ At the beginning of every session:
 
 Do not begin implementation until the current task and ownership are clear.
 
-## 1.1 Current preparation boundary (2026-10-06)
+## 1.1 Current authorized execution (2026-10-06)
 
-- Owner OpenAI Codex; P1b/v6 preparation READY_FOR_REVIEW, stopped before train.
+- Owner OpenAI Codex; P1b preparation complete; v6 training IN_PROGRESS.
+- User explicitly authorized continuation on 2026-10-06; v6 started at 12:13:11 UTC.
+  Actual Python PID34596 (launcher39912). Check execution receipt before acting.
 - Joint v4 now24,100 images:15,502 train/4,301 val/4,297 test. Reviewed-only54
   added (COCO24/CrowdHuman30),553 boxes including316 small. Full automated audit,
   conversion parity and inherited/new visual data gate PASS_WITH_LIMITATIONS.
@@ -32,9 +34,12 @@ Do not begin implementation until the current task and ownership are clear.
 - Config configs/train_indoor_v6_512.yaml: v2 init,512px/max12 epochs,AdamW,
   LR0.00015,seed42,batch18/workers2,all mixing augmentations0. Fixed resources
   follow v5 recovery; no guarantee of person improvement from this modest subset.
-- Read-only readiness verification PASS. No train/prediction/test/export started.
-  Stop at the user's preparation boundary; a generic continuation is not a reason
-  to launch training. Read docs/V6_TRAINING_PREPARATION.md and latest CHANGES.
+- Read-only readiness verification PASS before the single authorized launch.
+  Execution status/logs: E:/HomeAssistantPi4/reports/indoor-partial-joint-v4-audit/
+  v6-execution-status.json and v6-training.stdout.log / v6-training.stderr.log.
+  Do not relaunch, resume, overwrite or retry automatically. After completion,
+  evaluate square512 validation; test/export stay closed pending quality gate.
+  Read docs/V6_TRAINING_PREPARATION.md and latest CHANGES.
 - Existing v5 person quality FAIL; NCNN/test gates stay closed. Hardware unavailable.
 
 ### Previous milestone history (2026-10-06)

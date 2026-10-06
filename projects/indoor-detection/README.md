@@ -34,22 +34,25 @@ Exact/near duplicate screening không xác nhận overlap; dHash có giới hạ
 Joint v3 gồm 15.448 train/4.301 val/4.297 test; data gate PASS_WITH_LIMITATIONS.
 V5 đã train đủ 12 epoch và đánh giá validation 512 px. **Person FAIL**: explicit
 F1/recall 0,6415/0,5717; smoke/fire recall 0,9172/0,9073 PASS. Test/export đóng;
-không còn job chạy. Bước tiếp theo: labelled small-person intake theo P1b. Xem
+V6 hiện đang chạy sau khi hoàn tất labelled small-person intake theo P1b. Xem
 [V5 decision](docs/V5_EVALUATION_DECISION.md).
 P1b đã audit/freeze/tải pilot 60 ảnh, 615/1.430 box nhỏ (43,01%), geometry PASS.
-Gallery/duplicate review đã hoàn tất; chưa convert/train. Tiếp tục tại
+Gallery/duplicate review đã hoàn tất; derivative đã chuyển và v6 đang chạy. Xem
 [Small-person intake](docs/SMALL_PERSON_INTAKE.md).
 Review đã xong60 gallery/21 crop: nhận30/loại30, accepted small189/397=47,61%.
 Exact/near screening24.046 ảnh không có match/candidate. Hoãn expansion do
 assignment dày còn mơ hồ. COCO pilot60 đã acquire/audit/review60 gallery/25 crop:
 nhận24/loại36, accepted127/156 box nhỏ (81,41%); exact/near screening không có
 match/candidate với24.046 ảnh. Không mở expansion tự động vì label/completeness
-và representation còn vấn đề. Tiếp theo: đánh giá proposal chỉ dùng54 ảnh đã
+và representation còn vấn đề. Đã đánh giá proposal chỉ dùng54 ảnh đã
 review (COCO24+CrowdHuman30), đã freeze với cross-pilot screening không có
 match/candidate. Đã chốt derivative riêng54 ảnh/553 box và compose joint v4:
 15.502 train/4.301 val/4.297 test, giữ mọi rehearsal/scope, holdout byte-identical.
-Full data gate PASS_WITH_LIMITATIONS. Config/preflight v6 đã xong; **dừng trước
-train theo yêu cầu**, không có job. Xem [V6 preparation](docs/V6_TRAINING_PREPARATION.md).
+Full data gate PASS_WITH_LIMITATIONS. Người dùng đã cho phép khởi chạy:
+**V6 IN_PROGRESS**, bắt đầu 2026-10-06 19:13 giờ Việt Nam, tối đa12 epoch/patience5. Xem [V6 preparation](docs/V6_TRAINING_PREPARATION.md).
+Trạng thái/log: `E:/HomeAssistantPi4/reports/indoor-partial-joint-v4-audit/`
+`v6-execution-status.json`, `v6-training.stdout.log`, `v6-training.stderr.log`.
+Không khởi chạy lại; sau khi hoàn tất, đánh giá validation square512 trước test/export.
 Nguồn/joint cũ được giữ nguyên; không mở expansion tự động.
 Xem [assessment](docs/CROWDHUMAN_ASSESSMENT.md).
 

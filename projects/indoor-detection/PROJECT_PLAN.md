@@ -1,9 +1,9 @@
 # Kế hoạch hoàn thành Indoor Detection
 
 Ngày cập nhật: **2026-10-06**. Agent cập nhật: **OpenAI Codex**.
-Owner hiện tại: **OpenAI Codex**. P1b/v6 preparation: **READY_FOR_REVIEW**.
+Owner hiện tại: **OpenAI Codex**. P1b preparation hoàn tất; **v6 training IN_PROGRESS**.
 V5 đã train đủ 12 epoch và đánh giá validation. Person vẫn FAIL; test/export đóng.
-Không còn job chạy. P1b đã audit pool, freeze/tải 60 ảnh/1.430 box, trong đó
+V6 đã khởi chạy theo quyền mới của người dùng. P1b đã audit pool, freeze/tải 60 ảnh/1.430 box, trong đó
 615 box nhỏ (43,01%). Review/duplicate đã xong: 30 ACCEPT/30 EXCLUDE, phần nhận
 có 189/397 box nhỏ (47,61%). CrowdHuman expansion hoãn; pilot COCO train chưa
 dùng đã tải/review: 60 ảnh/415 box,342 nhỏ; nhận24/loại36, accepted127/156 nhỏ
@@ -12,7 +12,7 @@ dùng đã tải/review: 60 ảnh/415 box,342 nhỏ; nhận24/loại36, accepted
 reviewed-only proposal54 ảnh (COCO24+CrowdHuman30) đã freeze, cross-pilot duplicate
 không có match/candidate. Đã chốt policy, chuyển54 ảnh/553 box và tạo joint v4
 24.100 ảnh; full data gate PASS_WITH_LIMITATIONS. Config/preflight v6 đã xong;
-**dừng trước train theo yêu cầu**. Xem [V6 preparation](docs/V6_TRAINING_PREPARATION.md).
+**đã được người dùng cho phép và khởi chạy lúc19:13 ngày2026-10-06**. Xem [V6 preparation](docs/V6_TRAINING_PREPARATION.md).
 Xem [Small-person intake](docs/SMALL_PERSON_INTAKE.md) và [V5 decision](docs/V5_EVALUATION_DECISION.md).
 
 Đây là checklist tổng thể để các agent tiếp tục project. `AGENTS.md` quy định
@@ -50,7 +50,7 @@ rồi cập nhật kế hoạch này theo bằng chứng. Không sửa lịch s�
 |---|---|---|---|
 | P0 | Stack, downloader, chuẩn hóa và baseline | COMPLETED | Có scoped corpus đã audit và báo cáo v1–v4 |
 | P1 | Đánh giá nguồn bổ sung, review box và chốt can thiệp | COMPLETED | Joint v3 data gate PASS_WITH_LIMITATIONS, đã khóa evidence |
-| P2 | Fine-tune có kiểm soát | COMPLETED | V5 đủ 12 epoch, best epoch 7; resume workers 2 sau RAM pressure |
+| P2 | Fine-tune có kiểm soát | IN_PROGRESS | V5 hoàn tất; v6 đang chạy, max12 epoch/patience5, batch18/workers2 |
 | P3 | Calibration, quality gate và khóa ứng viên | IN_PROGRESS | V5 đã đánh giá, person FAIL; chưa khóa ứng viên, test/export đóng |
 | P4 | Export NCNN và kiểm tra tương đương | PLANNED | Artifact, preprocessing, output và chất lượng sau export được kiểm tra |
 | P5 | Benchmark và camera trên Pi thật | BLOCKED | Có phần cứng, đo performance/latency/soak và kiểm tra miền thật |
@@ -174,11 +174,11 @@ manifest can thiệp và báo cáo data gate trên E:; config/code và quyết �
 - [x] Tạo derivative mới, giữ rehearsal hazard và holdout; joint v4 automated,
   conversion parity và inherited/new visual data gate PASS_WITH_LIMITATIONS.
 - [x] Chốt run v6 với initialization/retention rationale, resource config và
-  read-only readiness PASS. Chưa train; dừng ở boundary người dùng yêu cầu.
+  read-only readiness PASS. Người dùng đã cho phép; v6 IN_PROGRESS.
   Không auto nhiều retry hoặc hạ gate. Xem V5 decision cho coverage census:
   bộ bổ sung chỉ có 701/5,810 box nhỏ (<1% diện tích), COCO có 10,846/23,611.
 
-### P2 — Fine-tune và theo dõi run mới (v5 COMPLETED)
+### P2 — Fine-tune và theo dõi run mới (v5 COMPLETED, v6 IN_PROGRESS)
 
 - [x] Chọn checkpoint khởi tạo có lý do từ control/validation hiện có; v2/v4
   đều chưa được duyệt deployment. Không mặc định đổi initialization là đủ sửa gate.
@@ -186,8 +186,8 @@ manifest can thiệp và báo cáo data gate trên E:; config/code và quyết �
    sampler version nếu dùng, dataset/manifest hash và checkpoint đầu vào.
 - [x] Xác minh data gate P1 và môi trường GPU trước khi chạy.
 - [x] Chạy một thí nghiệm có giới hạn; giữ class masking và tắt augmentation trộn ảnh.
-- [x] Ghi log đầy đủ, kiểm tra lỗi/NMS warnings và kết quả inline/final validator.
-- [x] Lưu checkpoint/hash và báo cáo thời gian, trạng thái hoàn tất/dừng.
+- [ ] V6: theo dõi log/lỗi và kết quả inline/final validator đến khi hoàn tất.
+- [ ] V6: lưu checkpoint/hash, thời gian và trạng thái hoàn tất/dừng; không retry tự động.
 
 **Đầu ra:** run/checkpoint riêng trên E:, config và báo cáo quyết định trong Git.
 Không ghi đè v1–v4; không tự mở hàng loạt thử nghiệm khi một run thất bại.
@@ -273,8 +273,10 @@ Không đánh dấu PASS bằng benchmark CPU Windows hay thời gian GPU traini
    reviewed-only proposal tại SMALL_PERSON_INTAKE.md. CrowdHuman/COCO pilot review
    đã xong; expansion tự động đều đóng. COCO nhận24, CrowdHuman nhận30;
    cross-pilot/data gate đã đạt, derivative54/joint v4 đã tạo. Config/preflight v6
-   READY_STOPPED_BEFORE_TRAIN. Chỉ kiểm tra bàn giao; không launch vì một yêu cầu
-   tiếp tục chung. Đợi người dùng yêu cầu khởi chạy training rõ ràng.
+   đã PASS trước khi người dùng cho phép khởi chạy ngày2026-10-06.
+   V6 IN_PROGRESS: đọc v6-execution-status.json và log tại report root trên E:.
+   Không launch lần nữa; kiểm tra PID34596 và run directory trước mọi hành động.
+   Sau khi run hoàn tất, đánh giá validation square512 và ghi quyết định quality.
    Không lặp acquisition đã hoàn tất. Không resume run hoàn tất, không
    chạy lại config v5 hoặc verifier pre-run để bỏ qua target đã tồn tại. Không test
    hoặc export khi person gate chưa đạt. Không lặp intake artifact đã hoàn tất.

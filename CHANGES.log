@@ -2707,3 +2707,59 @@ validation state.
     output targets, not resume commands. Old ledgers/no-conversion snapshots are
     historical; new separate derivative/data decisions authoritative. Source files
     never relabeled; no prediction/test/export job launched.
+
+
+## [2026-10-06 19:19] - Handover from OpenAI Codex
+
+- **Current Task:** Authorized v6 reviewed-small-person fine-tuning and monitoring
+- **Status:** IN_PROGRESS
+- **Completed in this session:**
+  - Read repository instructions/current preparation evidence and checked Git.
+    User explicitly authorized continuation after the stop-before-train milestone.
+    Preserved unrelated untracked source_box_review.py; no secrets accessed.
+  - Rechecked frozen readiness PASS, CUDA/RTX5070Laptop available and no prior
+    training job. Launched frozen v6 config once; no schedule/config changes.
+  - Started12:13:11 UTC /19:13 Vietnam time; actual Python PID34596, launcher39912.
+    Hidden durable wrapper on E records final exit/status and has no retry.
+    Observed epoch1 training progress824/862 batches; completion not yet claimed.
+  - Updated CLAUDE/both READMEs/PROJECT_PLAN/V6 preparation with live execution
+    boundary, receipt paths and epoch-budget rationale. AGENTS rules unchanged.
+    Max12 is an experiment budget, not proven optimum. V2 initialization had40
+    epochs; all15,502 train images are used. V5 best7 was trainer fitness selection,
+    not proof that100/200 cannot help. Patience5 is not the per-class quality gate.
+- **Unfinished / Next Steps (CRITICAL):**
+  - [ ] Monitor existing v6 job/logs/receipt until terminal status. Do not relaunch,
+    resume, overwrite or retry automatically; preserve original preparation receipts.
+  - [ ] After completion, lock best checkpoint hash; calibrate/scoped evaluate
+    square512 validation, compare person/small-person/hazards/negative false alarms.
+    PersonF1>=.65 AND recall>=.60; smoke/fire recall>=.90. No gate lowering.
+  - [ ] Inspect validation curves before proposing a separately declared longer
+    schedule. Do not change frozen max12 in response to the user's question.
+    Test and NCNN remain closed until quality approval.
+- **Known Blocks / Issues:** V5 person quality FAIL; v6 quality unknown. Hardware
+  P5 unavailable; mixed-domain/completeness/license/near-hash limits unchanged.
+- **Validation:**
+  - Build: NOT APPLICABLE (training launch/documentation)
+  - Tests: PASS162/162,7.97s; .venv/Scripts/python.exe -m pytest -p no:cacheprovider
+    --basetemp C:/Users/Public/Documents/indoor-v6-launch-20261006b
+  - Typecheck: NOT CONFIGURED
+  - Lint: PASS (.venv/Scripts/python.exe -m ruff check . --no-cache)
+  - Read-only readiness: PASS immediately before launch; training IN_PROGRESS.
+- **Git State:** Branch main; Last Commit5f3d966; scoped documentation commit
+  pending. Working tree DIRTY; untracked source_box_review.py excluded.
+- **Uncommitted Changes / Active Files:** CHANGES.log,CLAUDE.md,README.md,
+  projects/indoor-detection/README.md,PROJECT_PLAN.md,docs/V6_TRAINING_PREPARATION.md.
+- **Notes for Next Agent:**
+  - E:/HomeAssistantPi4/reports/indoor-partial-joint-v4-audit/ contains
+    v6-execution-status.json, v6-training.stdout.log, v6-training.stderr.log,
+    run-v6-authorized.py. Read receipt plus process/log/artifacts for live state.
+  - Run E:/HomeAssistantPi4/runs/indoor-detection/
+    indoor_partial_joint_yolo26n_v6_reviewed_small_512; datajoint v4.
+    Config configs/train_indoor_v6_512.yaml SHA
+    1ceeec8adbc7ae4d299d789c64b51b9af9a5e6b53e5420af6e7a2bd148317a02.
+    Max12/patience5,batch18/workers2,512px,v2init,masked trainer,mixing0.
+    Preparation artifact execution_authorized=false is historical; new explicit
+    permission is recorded separately in execution receipt. Do not rewrite hashes.
+  - Keep laptop awake while job runs. Terminal wrapper status records completion
+    or failure; interruption/power loss may leave IN_PROGRESS and needs inspection.
+    All data/runs/reports remain E; venv remains C. No test/export started.
