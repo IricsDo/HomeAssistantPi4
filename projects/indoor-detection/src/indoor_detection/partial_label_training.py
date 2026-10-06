@@ -173,6 +173,8 @@ def filter_predictions_to_known_classes(
 class ClassScopedDetectionValidator(DetectionValidator):
     """Detection validator that ignores predictions for unannotated classes."""
 
+    square_validation = False
+
     def build_dataset(
         self, img_path: str, mode: str = "val", batch: int | None = None
     ) -> ClassScopedYOLODataset:
@@ -184,7 +186,7 @@ class ClassScopedDetectionValidator(DetectionValidator):
             batch_size=batch,
             augment=False,
             hyp=self.args,
-            rect=True,
+            rect=not self.square_validation,
             cache=self.args.cache or None,
             single_cls=self.args.single_cls or False,
             stride=self.stride,
@@ -213,6 +215,12 @@ class ClassScopedDetectionValidator(DetectionValidator):
         super().update_metrics(
             filter_predictions_to_known_classes(predictions, known_classes), batch
         )
+
+
+class SquareClassScopedDetectionValidator(ClassScopedDetectionValidator):
+    """Scoped validation with fixed square preprocessing for deployment comparisons."""
+
+    square_validation = True
 
 
 class ClassScopedDetectionTrainer(DetectionTrainer):

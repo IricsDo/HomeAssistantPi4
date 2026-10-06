@@ -191,6 +191,7 @@ def evaluate(
     maximize_f1: bool = False,
     class_name: str = "smoke",
     pretrained_person: bool = False,
+    square: bool = False,
 ) -> dict[str, Any]:
     if not model_path.is_file():
         raise FileNotFoundError(f"Model checkpoint not found: {model_path}")
@@ -213,6 +214,19 @@ def evaluate(
         from indoor_detection.pretrained_person_validation import PretrainedPersonScopedValidator
 
         validation_options["validator"] = PretrainedPersonScopedValidator
+    if square:
+        if not uses_class_scopes:
+            raise ValueError("Square comparison requires a scoped dataset")
+        from indoor_detection.partial_label_training import SquareClassScopedDetectionValidator
+        from indoor_detection.pretrained_person_validation import (
+            SquarePretrainedPersonScopedValidator,
+        )
+
+        validation_options["validator"] = (
+            SquarePretrainedPersonScopedValidator
+            if pretrained_person else SquareClassScopedDetectionValidator
+        )
+        validation_options["rect"] = False
     metrics = model.val(
         data=str(data_path.resolve()),
         split=split,
@@ -240,6 +254,7 @@ def evaluate(
         "workers": workers,
         "class_scoped_validation": uses_class_scopes,
         "pretrained_person_projection": pretrained_person,
+        "square_calibration": square,
         "metrics": _json_value(metrics.results_dict),
         "per_class_metrics": _per_class_metrics(metrics),
         "speed_ms_per_image": _json_value(metrics.speed),

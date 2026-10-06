@@ -2904,3 +2904,36 @@ validation state.
   - Newprojection is evaluation-only and requiresoriginalCOCO80person0 plus
     canonical scoped labels. Doesnot change production one-detector contract.
     No inputminimum or operationalignore introduced. Keep laptopawake.
+
+
+## [2026-10-06 20:57] - Handover from OpenAI Codex
+
+- **Current Task:** Correct comparison to user-required square calibration/matching
+- **Status:** IN_PROGRESS
+- **Completed:** Detected v1 inherited rectangularcalibration contrary to approved
+  squarecomparison. Stopped verifiedownPID18728 only;process absenceconfirmed.
+  Preservedallv1outputs;protocol-correction.json records STOPPED_FOR_PROTOCOL_CORRECTION.
+  V6-640completed supplementary:F1/R.649891/.588191,smokeR.899767,fireR.903328;
+  v6-768interrupted duringpersonmatching. Do not use them as alignedcomparison.
+  Timestamp correction:prior launch13:39UTC=20:39Vietnam,not21:39 inoldhandover.
+  Added explicit square scopedvalidator and square pretrainedprojection subclass;
+  default historicalrectangular behavior unchanged. Both datasetrect andmodel.val
+  rectFalse,not justpredictionflag. RegressiondefaultrectTrue/squareFalse PASS.
+  Startednewimmutable squarev2 at20:57:01,actualPID19396/launcher13700.
+  Six configs:pretrained512,v6-512/640/768,pretrained640/768;newv6-512 aligns
+  calibration acrosscomparison insteadofreusing rectangularthreshold.
+- **Next Steps:** Monitorexisting squarev2;complete6 configurations,verifycode/data/
+  membership hashes,comparemetrics/sizes/resources,updateplan/decision.
+  No newtraining/test/export/operationalminimum or automaticrelaunch.
+- **Known Issues:** Oldv1executionreceipt remainsIN_PROGRESS afterstop;terminal
+  correctionreceipt authoritative. BaselineCOCOfamiliarity/hardwarelimits unchanged.
+- **Validation:** TestsPASS168/168,7.79s;pytest -p no:cacheprovider --basetemp
+  C:/Users/Public/Documents/indoor-square-resolution-20261006a;RuffPASS.
+  BuildNOTAPPLICABLE;TypecheckNOTCONFIGURED.
+- **Git State:** mainf72027b;scopedcorrectiondirty;untrackedsource_box_review preserved.
+- **Active Files:** partial_label_training.py,evaluate.py,pretrained_person_validation.py,
+  tests/test_resolution_diagnostics.py,protocoldocs/plan/CLAUDE/READMEs/CHANGES.
+- **Notes:** RootE:/HomeAssistantPi4/reports/indoor-resolution-baseline-square-v2,
+  protocolSHAeb3598294a551029ab05ea84e794e08545b9883799f524691828325668412cb2.
+  Checkexecution-status.json andcomparison.stdout/stderr.log. Do notoverwrite
+  oldprotocol orrefreshhashes tohide drift. Source/data/checkpoints immutable.

@@ -43,8 +43,8 @@ Do not begin implementation until the current task and ownership are clear.
   Follow docs/V6_EVALUATION_DECISION.md; person F1/recall0.6375/0.5618 FAIL,
   smoke/fire recall0.9138/0.9049 PASS. Test/export stay closed.
   Current task: user-authorized resolution/pretrained baseline evaluation IN_PROGRESS.
-  Root E:/HomeAssistantPi4/reports/indoor-resolution-baseline-v1; PID18728 at launch.
-  Five configurations: v6-640/768 and pretrained-512/640/768; v6-512 reused.
+  Root E:/HomeAssistantPi4/reports/indoor-resolution-baseline-square-v2; PID19396 at launch.
+  Six square configurations: v6/pretrained at512/640/768; historical512 separate.
   Read docs/RESOLUTION_BASELINE_EVALUATION.md and live execution receipt.
   Do not relaunch. Max60 training deferred until comparison; gate/test/export unchanged.
   Read docs/V6_TRAINING_PREPARATION.md and latest CHANGES.

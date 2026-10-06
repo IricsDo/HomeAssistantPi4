@@ -15,9 +15,9 @@ hướng tới triển khai tiết kiệm tài nguyên trên Raspberry Pi 4 4 GB
 ## Trạng thái hiện tại
 
 **Đánh giá resolution/baseline IN_PROGRESS**, người dùng đã duyệt kế hoạch mới.
-V6-640/768 và pretrained person-512/640/768; reuse v6-512. Chưa train mới.
+V6/pretrained person tại512/640/768; calibration và matching đều square. Chưa train mới.
 Xem [Protocol và checklist](projects/indoor-detection/docs/RESOLUTION_BASELINE_EVALUATION.md); log/status trên E:
-`reports/indoor-resolution-baseline-v1`. Đề xuất60 epoch tạm hoãn để chờ kết quả.
+`reports/indoor-resolution-baseline-square-v2`. Đề xuất60 epoch tạm hoãn để chờ kết quả.
 
 
 Kế hoạch tổng thể và checklist cho agent tiếp theo:

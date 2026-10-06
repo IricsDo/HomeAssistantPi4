@@ -48,3 +48,25 @@ def test_fixed_groups_are_stable_when_native_size_changes():
 def test_size_diagnostics_rejects_invalid_resolution():
     with pytest.raises(ValueError):
         projected_size_report([], 0)
+
+
+def test_square_validator_builds_square_dataset_without_changing_default(monkeypatch):
+    from types import SimpleNamespace
+
+    import indoor_detection.partial_label_training as scoped
+
+    monkeypatch.setattr(scoped, "ClassScopedYOLODataset", lambda **kwargs: kwargs)
+    args = SimpleNamespace(
+        fraction=1.0, split="val", imgsz=640, cache=False, single_cls=False,
+        task="detect", classes=None,
+    )
+    for cls, rectangular in (
+        (scoped.ClassScopedDetectionValidator, True),
+        (scoped.SquareClassScopedDetectionValidator, False),
+    ):
+        validator = object.__new__(cls)
+        validator.args = args
+        validator.stride = 32
+        validator.data = {}
+        dataset = validator.build_dataset("unused", batch=20)
+        assert dataset["rect"] is rectangular

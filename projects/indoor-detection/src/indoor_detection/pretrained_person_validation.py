@@ -43,3 +43,9 @@ class PretrainedPersonScopedValidator(ClassScopedDetectionValidator):
     def postprocess(self, preds: torch.Tensor) -> list[dict[str, torch.Tensor]]:
         # Detect NMS infers the original channel count (nc=0); projection follows NMS.
         return project_person_predictions(super().postprocess(preds))
+
+
+class SquarePretrainedPersonScopedValidator(PretrainedPersonScopedValidator):
+    """Use the same square image geometry as explicit error matching."""
+
+    square_validation = True

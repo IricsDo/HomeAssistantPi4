@@ -190,8 +190,8 @@ manifest can thiệp và báo cáo data gate trên E:; config/code và quyết �
 
 - [x] Khóa protocol và hash v6/pretrained/dataset; giữ gate/scope/holdout.
 - [x] Ánh xạ pretrained person0->canonical2 chỉ cho đánh giá; tests đạt.
-- [x] Khởi chạy một chuỗi5 cấu hình mới; reuse v6-512 đã khóa.
-- [ ] Hoàn tất v6-640/768 và pretrained-512/640/768, kiểm tra log/hashes.
+- [x] Khởi chạy chuỗi6 cấu hình square; revalidate512 để thống nhất calibration.
+- [ ] Hoàn tất v6/pretrained tại512/640/768, kiểm tra log/hashes.
 - [ ] So sánh full metrics, fixed512/native height bins, tiny/negative/hazard và
   Windows batch1/resource reports; không tuyên bố Pi performance.
 - [ ] Chốt phạm vi person theo nhu cầu camera/ROI/khoảng cách; mounting còn unknown.
@@ -299,8 +299,8 @@ Không đánh dấu PASS bằng benchmark CPU Windows hay thời gian GPU traini
    đã PASS trước khi người dùng cho phép khởi chạy ngày2026-10-06.
    V6 COMPLETED: validation square512 person FAIL. Đọc V6_EVALUATION_DECISION.md
    và reports/indoor-yolo26n-v6-evaluation trên E:. Không còn job.
-   Tiếp tục P1c: theo dõi reports/indoor-resolution-baseline-v1 trên E:.
-   Chuỗi5 cấu hình đánh giá đang chạy; không launch lại. Đọc RESOLUTION_BASELINE_EVALUATION.md.
+   Tiếp tục P1c: theo dõi reports/indoor-resolution-baseline-square-v2 trên E:.
+   Chuỗi6 cấu hình square đang chạy; không launch lại. Đọc RESOLUTION_BASELINE_EVALUATION.md.
    Không resume/relaunch v6 hoặc tự mở series retry.
    Không lặp acquisition đã hoàn tất. Không resume run hoàn tất, không
    chạy lại config v5 hoặc verifier pre-run để bỏ qua target đã tồn tại. Không test

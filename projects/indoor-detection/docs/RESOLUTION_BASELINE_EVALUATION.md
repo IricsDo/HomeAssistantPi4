@@ -7,7 +7,7 @@ No dataset/label/scope/gate change,training,test inference or NCNN export.
 ## Four stages
 
 1. Evaluate v6 at640/768 and original pretrained YOLO26n person at512/640/768.
-   Reuse locked v6-512 results. Five new configurations,zero training runs.
+   Revalidate v6-512 with aligned square calibration. Six configurations,zero training runs.
 2. Define operational person coverage using ROI,distance and projected sizes.
    Camera geometry remains unknown; do not select a minimum merely to pass gates.
    Keep full-corpus metrics alongside exploratory size reports.
@@ -24,13 +24,14 @@ No dataset/label/scope/gate change,training,test inference or NCNN export.
   `103b45ab6a61f2431b462ee2bc4402f6ddaa7b982e872afd50515e3c6ef28729`.
 - Original pretrained model:E:/HomeAssistantPi4/models/pretrained/yolo26n.pt,
   SHA `9b09cc8bf347f0fc8a5f7657480587f25db09b34bf33b0652110fb03a8ad4fef`.
-- Reuse existing class-scoped rectangular calibration,batch20/workers0,GPU0.
+- Class-scoped square calibration,batch20/workers0,GPU0,rect=False in
+  both validator dataset construction and model.val.
   Person max interpolated F1;smoke/fire highest confidence with recall>=.90.
   One validation pass provides all three class curves per v6 resolution.
 - Authoritative matching:square input,rect=False,batch16,IoU.50,
   candidate confidence.001,maxdet100,one unscored warmup.
   All models/resolutions follow same person image membership and matching.
-  Thresholds calibrated separately; rectangular calibration reported separately.
+  Thresholds calibrated separately with the same square geometry as matching.
 - Pretrained model stays80-class;postprocessing/NMS retains original outputs,
   then evaluation-only projection person0->canonical2 drops other classes.
   Labels/class scopes stay unchanged. Other pretrained classes can occupy the
@@ -56,16 +57,16 @@ and pre/postprocessing. No camera capture or Pi claim.
 
 ## Evidence and continuation
 
-Root:E:/HomeAssistantPi4/reports/indoor-resolution-baseline-v1.
+Root:E:/HomeAssistantPi4/reports/indoor-resolution-baseline-square-v2.
 Frozen protocol SHA
-`6a01c93df51c32f9520b257e6250b4dffa583f84ccba122361a1b79320be887e`.
+`eb3598294a551029ab05ea84e794e08545b9883799f524691828325668412cb2`.
 Contains protocol.json,comparison-workflow.py,execution-status.json,stdout/stderr
-and separate per-configuration directories. Actual PythonPID18728,launcher29816
-at launch21:39 Vietnam time. Use receipt/process/log together for live state.
+and separate per-configuration directories. Actual PythonPID19396,launcher13700
+at launch20:57 Vietnam time. Use receipt/process/log together for live state.
 Do not launch again into existing outputs or overwrite partial/old results.
 Workflow stops on exception withFAILED receipt;no automatic retry.
 
-After all five finish,check logs/bindings and compare full metrics,fixed/native
+After all six finish,check logs/bindings and compare full metrics,fixed/native
 size recalls,negative alarms,hazard retention and resources. Decide next stage
 with a written rationale;do not infer release from a single favorable metric.
 
@@ -77,3 +78,23 @@ that fine-tuning caused a difference. Mixed-domain hazards,COCO-onlyperson
 holdout,historicv2test use and unverified smoke same-test regression persist.
 Pi hardware and mounting geometry unavailable; operational min size uncommitted.
 Architecture remains one unified detector pending a separate supported decision.
+
+## Protocol correction (before square comparison results)
+
+The first launched workflow inherited rectangular calibration despite the new
+plan requiring square consistency. Stopped only its verifiedownedPID18728;
+process absence verified. Oldroot E:/HomeAssistantPi4/reports/
+indoor-resolution-baseline-v1 remains untouched,with protocol-correction.json.
+V6-640 completed there;v6-768 was interrupted during person matching. Those
+results are supplementary diagnostics only,not the aligned comparison.
+Original execution receipt stayedIN_PROGRESS after forcedstop;the correction
+receipt recordsterminal decision. No automatic failure retry or source changes.
+
+The square successor revalidates512 instead of mixing historical rectangular
+thresholds into comparison. Default historical validator remains rectangular;
+new explicit square subclass changes datasetgeometry as well as model.val flag.
+Unit regression confirms defaultrect=True and square=False. Tests168PASS7.79s,
+RuffPASS before launch. Current code hashes bound in squareprotocol.
+
+Timestamp correction:initial launch was13:39UTC=20:39Vietnam,not21:39 stated
+in the prior launch handover. That historical entry is preserved.
