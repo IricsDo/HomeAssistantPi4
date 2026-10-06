@@ -2616,3 +2616,94 @@ validation state.
     proposal-workflow.py are E evidence and refuse existing outputs; not resume
     commands. Read original labels/receipts; source key projects/.env never accessed.
   - Venv C, large artifacts E. All jobs finished; no train launched this session.
+
+## [2026-10-06 18:18 +07:00] - Handover from OpenAI Codex
+
+- **Current Task:** P1b reviewed-only54 derivatives/joint v4 and v6 preparation.
+- **Status:** READY_FOR_REVIEW (READY_STOPPED_BEFORE_TRAIN; user boundary reached)
+- **Current Owner:** OpenAI Codex
+- **Completed in this session:**
+  - Read AGENTS/CLAUDE/latest CHANGES/root README/plan and existing utilities;
+    Git main4bba0e4. Preserved unrelated untracked source_box_review.py.
+  - Verified proposal54, all prior COCO/CrowdHuman manifests, original source/image/
+    review hashes, base gate bindings and split locks. No secrets accessed.
+  - Separate derivative decision accepts reviewed-only COCO24 +CrowdHuman30,
+    preserving original COCO clipped bbox and CrowdHuman clipped visible vbox.
+    Same source conventions as existing corpus; not identical amodal extent.
+    Automatic expansion remains closed; no whole-source approval/rights claim.
+  - Composer now explicitly allows reviewed COCO bbox as well as clipped vbox,
+    retains source convention in manifest; rejects head boxes/missing review.
+    Added regression tests for both conventions and mixed-source joint retention.
+  - Created immutable separate derivatives on E:COCO24/156boxes and CrowdHuman30/
+    397boxes. All54 images/553 boxes exact conversion parity PASS; image bytes/
+    hashes unchanged. Actually viewed6 converted overlays (COCO09/16/22,
+    CrowdHuman01/08/29); source eligibility reviews cover all54 previously.
+  - Composed fresh joint v4:24,100 images=15,502train/4,301val/4,297test.
+    All24,046 base rows/scopes/hazard rehearsal retained; train prefix unchanged;
+    validation/test byte-identical. Fresh full automated audit PASS,zero errors,
+    zero exact duplicates/scope conflict. Train boxes smoke4,124/fire5,549/person29,974.
+    Only train person increases553; hazard/holdout counts identical to v3.
+  - Existing raw pilot-v3 and cross-pilot exact/near screens apply to identical
+    derivative image hashes; zero candidates. Crop/mirror/edit/session limits remain.
+  - Visual base gate inherited with unchanged limits (incl470 prior expansion
+    images not individually inspected), new54 eligibility/conversion evidence
+    bound. Full data gate PASS_WITH_LIMITATIONS for a bounded masked experiment;
+    training_allowed=true refers to data approval, execution_authorized=false.
+  - Prepared config train_indoor_v6_512.yaml: same v2 initialization as v5,512px,
+    max12epochs/patience5,AdamW/LR0.00015,seed42,fixedbatch18/workers2,uniform
+    unique rows,all mixing0. Resource choice follows v5 recovery; not bit-identical
+    to v5 early epochs or a guarantee of improvement from only54 additional images.
+  - CPU checkpoint load canonical3classes; RTX5070Laptop8.52GB GPU availability
+    confirmed,torch2.14.0+cu130/Ultralytics8.4.163. No inference/train method called.
+    Frozen readiness/read-only verifier PASS; target run does not exist.
+  - Updated CLAUDE,bothREADMEs,plan,SMALL_PERSON_INTAKE; added V6 preparation.
+- **Unfinished / Next Steps (CRITICAL):**
+  - [ ] STOP here: do not launch v6 on generic continuation. User explicitly requested
+    preparation boundary. Only after explicit training instruction recheck Git,
+    readiness and GPU, then run declared config once; no resume/overwrite/retries.
+  - [ ] After future v6, calibrate/scoped evaluate validation at square512,compare
+    hazards/person/negatives/tiny recall; personF1>=.65 AND R>=.60,smoke/fireR>=.90.
+    Keep test/NCNN closed until quality approval; retain historic v2 test disclosure.
+- **Known Blocks / Issues:** v5 person quality FAIL; project/P3 not completed.
+  Hardware P5 unavailable. Modest54-image uniform addition may not close person gap.
+  Mixed-domain/source extent/completeness/near-hash/license limits explicit; no
+  actual Camera Module3Wide benchmark. Optional42/56 source review/sampling untouched.
+- **Validation:**
+  - Build: NOT APPLICABLE (dataset preparation)
+  - Tests: PASS162/162,6.84s; project .venv/Scripts/python.exe -m pytest
+    -p no:cacheprovider --basetemp C:/Users/Public/Documents/indoor-reviewed54-20261006b
+  - Typecheck: NOT CONFIGURED
+  - Lint: PASS (.venv/Scripts/python.exe -m ruff check . --no-cache)
+  - Full joint/geometry/parity/retention audit PASS; safe read-only preflight PASS.
+    git diff --check PASS. Initial validation161 passed17.50s; final mixed test
+    added and full162 suite rerun. Workflow35846 completeexit0; no train started.
+- **Git State:** Branch main; Last Commit4bba0e4; DIRTY scoped milestone pending
+  atomic commit/push. Unrelated untracked source_box_review.py excluded.
+- **Uncommitted Changes / Active Files:** CHANGES.log,CLAUDE.md,README.md;
+  projectREADME,PROJECT_PLAN,docs/SMALL_PERSON_INTAKE.md,docs/V6_TRAINING_PREPARATION.md,
+  configs/train_indoor_v6_512.yaml,src/indoor_detection/crowdhuman_intake.py,
+  tests/test_crowdhuman_intake.py. No dependencies changed.
+- **Notes for Next Agent:**
+  - All datasets/reports remain E:/HomeAssistantPi4; venv remains C project.
+    Derivatives processed/coco-reviewed-small-pilot-v1 and
+    processed/crowdhuman-reviewed-small-pilot-v1. Joint processed/indoor-partial-joint-v4.
+    Reports reports/indoor-partial-joint-v4-audit (under E root).
+  - data-gate SHA7392fe22921ef72b70917f7a0a38e740d0fdc10e9d199469c2acbc467ba805f2;
+    readiness SHA2cd75ed5c24cbc4a8924de5f2b408a365ee65d5ce10dd13a3687755882a3bc6a;
+    audit SHAcc2fcd34899575bd9f0b5a73eb0f2af9284f7c024984f8ae897e5a7482a636e0;
+    conversion SHA0270d29e64c54ca7a2fdcea0df29bd83d84e655e0a71d120b6e519c9d3952bd5.
+    dataset YAML SHA641b95aa44e238c4699c7a25732272d4c43987b14f0684ceb67dd2705617d6c1;
+    scope SHA0dfb1efae7300c51d0c4bce83eb7c7d510bf6ed8503def4ba7166f9bbeea6a60.
+    Full table incltrain/holdout/config hashes in V6_TRAINING_PREPARATION.md.
+  - Fresh registry-integrity check rehashed all24,046 base images:all match frozen
+    near-screen registry. Artifact manifest21 SHA
+    c8ab223b06d5ef45ff30ad4b52b6fa7e233d9b500d8cbb9f1d9caf9e6c1ceeec.
+  - Safe next check: from project .venv/Scripts/python.exe -m
+    indoor_detection.crowdhuman_intake --readiness
+    E:/HomeAssistantPi4/reports/indoor-partial-joint-v4-audit/train-readiness.json
+    Returns training_started=false/execution_authorized=false. Never refresh hashes
+    just to bypass drift; investigate changed files and re-audit before future run.
+  - prepare-workflow.py/finalize-workflow.py stored in report root; refuse existing
+    output targets, not resume commands. Old ledgers/no-conversion snapshots are
+    historical; new separate derivative/data decisions authoritative. Source files
+    never relabeled; no prediction/test/export job launched.

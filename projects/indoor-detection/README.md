@@ -46,8 +46,11 @@ nhận24/loại36, accepted127/156 box nhỏ (81,41%); exact/near screening khô
 match/candidate với24.046 ảnh. Không mở expansion tự động vì label/completeness
 và representation còn vấn đề. Tiếp theo: đánh giá proposal chỉ dùng54 ảnh đã
 review (COCO24+CrowdHuman30), đã freeze với cross-pilot screening không có
-match/candidate; chốt policy và full joint gates trước train.
-Chưa convert, chưa thay dataset/scope/index hiện có.
+match/candidate. Đã chốt derivative riêng54 ảnh/553 box và compose joint v4:
+15.502 train/4.301 val/4.297 test, giữ mọi rehearsal/scope, holdout byte-identical.
+Full data gate PASS_WITH_LIMITATIONS. Config/preflight v6 đã xong; **dừng trước
+train theo yêu cầu**, không có job. Xem [V6 preparation](docs/V6_TRAINING_PREPARATION.md).
+Nguồn/joint cũ được giữ nguyên; không mở expansion tự động.
 Xem [assessment](docs/CROWDHUMAN_ASSESSMENT.md).
 
 - [x] Baseline smoke-only và checkpoint tham chiếu đã được khóa.

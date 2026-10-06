@@ -1,4 +1,4 @@
-"""Extend a frozen scoped corpus with hash-verified train-only CrowdHuman derivatives."""
+"""Extend a frozen scoped corpus with hash-verified reviewed person derivatives."""
 
 from __future__ import annotations
 
@@ -15,6 +15,8 @@ from indoor_detection.compose_dataset import SPLITS, TARGET_NAMES, _resolve_spli
 from indoor_detection.dataset import DatasetValidationError, parse_yolo_label, sha256_file
 from indoor_detection.joint_dataset import _label_for_image
 from indoor_detection.partial_label_training import load_class_scopes, resolve_scope_manifest
+
+REVIEWED_PERSON_CONVENTIONS = {"vbox clipped to image", "COCO bbox clipped to image"}
 
 
 def extend_scoped_dataset(
@@ -64,9 +66,9 @@ def extend_scoped_dataset(
     for manifest_path in derivative_manifests:
         manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
         if (manifest.get("class_id") != 2
-                or manifest.get("box_convention") != "vbox clipped to image"
+                or manifest.get("box_convention") not in REVIEWED_PERSON_CONVENTIONS
                 or not manifest.get("review_sha256")):
-            raise DatasetValidationError("Expected reviewed visible-body person derivative")
+            raise DatasetValidationError("Expected reviewed person derivative with supported boxes")
         records = manifest.get("records", [])
         if not records:
             raise DatasetValidationError("Empty person derivative")
@@ -90,7 +92,8 @@ def extend_scoped_dataset(
             added.append(image)
             scopes[image.as_posix()] = ["person"]
         sources.append({"manifest": str(manifest_path.resolve()),
-                        "sha256": sha256_file(manifest_path), "images": len(records)})
+                        "sha256": sha256_file(manifest_path), "images": len(records),
+                        "box_convention": manifest["box_convention"]})
     output.mkdir(parents=True, exist_ok=False)
     base_train = indexes["train"].read_bytes()
     separator = b"" if not base_train or base_train.endswith(b"\n") else b"\n"

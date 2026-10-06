@@ -259,3 +259,21 @@ covers accepted24 COCO; existing pilot-internal screens also have zero candidate
 locks5 proposal/registry/cross-audit/workflow files. No annotation modifications,
 conversion or training. Next begins compatibility/provenance decision and separate
 derivatives/full joint gate; do not repeat acquisition or completed visual review.
+
+
+## Reviewed-only54 derivative/joint decision (2026-10-06)
+
+Previous no-conversion entries are historical. A separate derivative decision
+now accepts exactly24 COCO +30 CrowdHuman images, retaining explicit source
+conventions and all original labels. No automatic source expansion. Derivatives
+and joint v4 created on E:;24,100 images/15,502 train,4,301 val,4,297 test.
+All553 boxes conversion parity PASS, six derivative overlays actually reviewed.
+Full structure/label/scope/class/exact audit PASS; hazard rehearsal/base scopes
+and byte-identical holdouts retained. New visual eligibility and unchanged base
+visual gate inherited with documented limits: **PASS_WITH_LIMITATIONS**.
+
+Config/readiness v6 prepared and read-only verification PASS. **STOPPED BEFORE
+TRAIN at the user's boundary**; no training/inference/test/export launched.
+See [V6 preparation](V6_TRAINING_PREPARATION.md) for decision,rationale,paths,
+validation,hashes and safe verification. Do not repeat acquisition/conversion
+or launch training on a generic continuation request.

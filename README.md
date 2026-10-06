@@ -30,8 +30,10 @@ không có match/candidate. Expansion CrowdHuman hoãn do annotation mơ hồ; �
 review pilot COCO train60 ảnh: nhận24/loại36, phần nhận có81,41% box nhỏ;
 exact/near screening không có match/candidate. Không mở expansion tự động.
 Đã freeze đề xuất chỉ dùng54 ảnh đã review (COCO24+CrowdHuman30); cross-pilot
-screening không có match/candidate. Tiếp theo: chốt policy và full joint gates
-trước chuẩn bị train.
+screening không có match/candidate. Đã chuyển54 ảnh/553 box và tạo joint v4:
+24.100 ảnh, data gate PASS_WITH_LIMITATIONS, giữ nguyên holdout và rehearsal.
+Đã chuẩn bị config/preflight v6; **dừng trước train theo yêu cầu**, không còn job.
+Xem [V6 preparation](projects/indoor-detection/docs/V6_TRAINING_PREPARATION.md).
 Camera mục tiêu là Raspberry Pi Camera Module 3 Wide IMX708;
 xem [chiến lược dữ liệu](projects/indoor-detection/docs/PERSON_DATA_STRATEGY.md).
 

@@ -1,7 +1,7 @@
 # Kế hoạch hoàn thành Indoor Detection
 
 Ngày cập nhật: **2026-10-06**. Agent cập nhật: **OpenAI Codex**.
-Owner hiện tại: **OpenAI Codex**. P1b small-person intake: **IN_PROGRESS**.
+Owner hiện tại: **OpenAI Codex**. P1b/v6 preparation: **READY_FOR_REVIEW**.
 V5 đã train đủ 12 epoch và đánh giá validation. Person vẫn FAIL; test/export đóng.
 Không còn job chạy. P1b đã audit pool, freeze/tải 60 ảnh/1.430 box, trong đó
 615 box nhỏ (43,01%). Review/duplicate đã xong: 30 ACCEPT/30 EXCLUDE, phần nhận
@@ -10,7 +10,9 @@ dùng đã tải/review: 60 ảnh/415 box,342 nhỏ; nhận24/loại36, accepted
 (81,41%). Exact/near screening không có match/candidate. Không mở expansion tự
 động do vấn đề annotation/completeness/representation. Bước tiếp theo: đánh giá
 reviewed-only proposal54 ảnh (COCO24+CrowdHuman30) đã freeze, cross-pilot duplicate
-không có match/candidate. Tiếp theo: policy/derivative riêng/full joint gate; chưa train.
+không có match/candidate. Đã chốt policy, chuyển54 ảnh/553 box và tạo joint v4
+24.100 ảnh; full data gate PASS_WITH_LIMITATIONS. Config/preflight v6 đã xong;
+**dừng trước train theo yêu cầu**. Xem [V6 preparation](docs/V6_TRAINING_PREPARATION.md).
 Xem [Small-person intake](docs/SMALL_PERSON_INTAKE.md) và [V5 decision](docs/V5_EVALUATION_DECISION.md).
 
 Đây là checklist tổng thể để các agent tiếp tục project. `AGENTS.md` quy định
@@ -148,7 +150,7 @@ box-review/reweighting/sampler cũ dưới đây không áp dụng cho v5, khôn
 **Đầu ra:** quyết định nguồn và can thiệp; review box/sampling nếu áp dụng,
 manifest can thiệp và báo cáo data gate trên E:; config/code và quyết định trong Git.
 
-### P1b — Vòng tiếp theo sau v5 (IN_PROGRESS, pilot acquired; chưa train mới)
+### P1b — Vòng tiếp theo sau v5 (READY_FOR_REVIEW; v6 prep xong, chưa train)
 
 - [x] Audit annotation pool còn lại theo kích thước box, mật độ và scope; ưu tiên
   dữ liệu đã gắn nhãn small/occluded person, không lấy error ảnh holdout vào train.
@@ -167,10 +169,12 @@ manifest can thiệp và báo cáo data gate trên E:; config/code và quyết �
   Exact/near với24.046 ảnh không có match/candidate; nguồn/joint cũ giữ nguyên.
 - [x] Freeze reviewed-only proposal54 (COCO24+CrowdHuman30); cross-pilot all60COCO
   x30acceptedCrowdHuman exact/near không có match/candidate. Artifact/hash trên E:.
-- [ ] Chốt provenance/annotation policy của proposal trước derivative. Không suy ra
-  full source đạt gate từ subset được nhận; chưa có conversion authorization.
-- [ ] Tạo derivative mới, giữ rehearsal hazard và holdout; qua đủ intake data gate.
-- [ ] Chốt một run mới và initialization/retention rationale trước P2 tiếp theo.
+- [x] Chốt provenance/annotation policy; separate derivative decision cho đúng54
+  ảnh, giữ convention COCO bbox/CrowdHuman vbox. Không duyệt toàn bộ source.
+- [x] Tạo derivative mới, giữ rehearsal hazard và holdout; joint v4 automated,
+  conversion parity và inherited/new visual data gate PASS_WITH_LIMITATIONS.
+- [x] Chốt run v6 với initialization/retention rationale, resource config và
+  read-only readiness PASS. Chưa train; dừng ở boundary người dùng yêu cầu.
   Không auto nhiều retry hoặc hạ gate. Xem V5 decision cho coverage census:
   bộ bổ sung chỉ có 701/5,810 box nhỏ (<1% diện tích), COCO có 10,846/23,611.
 
@@ -268,7 +272,9 @@ Không đánh dấu PASS bằng benchmark CPU Windows hay thời gian GPU traini
 2. **V5 đã hoàn tất, person FAIL.** Đọc V5_EVALUATION_DECISION.md và bắt đầu P1b
    reviewed-only proposal tại SMALL_PERSON_INTAKE.md. CrowdHuman/COCO pilot review
    đã xong; expansion tự động đều đóng. COCO nhận24, CrowdHuman nhận30;
-   cross-pilot screening đã đạt; chốt policy rồi derivative riêng/full joint gates.
+   cross-pilot/data gate đã đạt, derivative54/joint v4 đã tạo. Config/preflight v6
+   READY_STOPPED_BEFORE_TRAIN. Chỉ kiểm tra bàn giao; không launch vì một yêu cầu
+   tiếp tục chung. Đợi người dùng yêu cầu khởi chạy training rõ ràng.
    Không lặp acquisition đã hoàn tất. Không resume run hoàn tất, không
    chạy lại config v5 hoặc verifier pre-run để bỏ qua target đã tồn tại. Không test
    hoặc export khi person gate chưa đạt. Không lặp intake artifact đã hoàn tất.

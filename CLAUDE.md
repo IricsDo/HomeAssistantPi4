@@ -21,7 +21,24 @@ At the beginning of every session:
 
 Do not begin implementation until the current task and ownership are clear.
 
-## 1.1 Current Project Snapshot (2026-10-06)
+## 1.1 Current preparation boundary (2026-10-06)
+
+- Owner OpenAI Codex; P1b/v6 preparation READY_FOR_REVIEW, stopped before train.
+- Joint v4 now24,100 images:15,502 train/4,301 val/4,297 test. Reviewed-only54
+  added (COCO24/CrowdHuman30),553 boxes including316 small. Full automated audit,
+  conversion parity and inherited/new visual data gate PASS_WITH_LIMITATIONS.
+- All base rehearsal/scopes retained, holdout indexes byte-identical. No automatic
+  source expansion; original source/review evidence remains immutable.
+- Config configs/train_indoor_v6_512.yaml: v2 init,512px/max12 epochs,AdamW,
+  LR0.00015,seed42,batch18/workers2,all mixing augmentations0. Fixed resources
+  follow v5 recovery; no guarantee of person improvement from this modest subset.
+- Read-only readiness verification PASS. No train/prediction/test/export started.
+  Stop at the user's preparation boundary; a generic continuation is not a reason
+  to launch training. Read docs/V6_TRAINING_PREPARATION.md and latest CHANGES.
+- Existing v5 person quality FAIL; NCNN/test gates stay closed. Hardware unavailable.
+
+### Previous milestone history (2026-10-06)
+
 
 - Active project: `projects/indoor-detection`.
 - Goal: one YOLO26n detector for indoor `smoke`, `fire`, and `person`, exported

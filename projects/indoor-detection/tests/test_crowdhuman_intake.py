@@ -44,12 +44,17 @@ def fixture_corpus(tmp_path):
     return data, manifest
 
 
-def test_extends_train_preserving_holdout_bytes_and_base_scopes(tmp_path):
+@pytest.mark.parametrize("convention", ["vbox clipped to image", "COCO bbox clipped to image"])
+def test_extends_train_preserving_holdout_bytes_and_base_scopes(tmp_path, convention):
     base, manifest = fixture_corpus(tmp_path)
+    payload = json.loads(manifest.read_text())
+    payload["box_convention"] = convention
+    manifest.write_text(json.dumps(payload))
     out = tmp_path / "joint"
     result = extend_scoped_dataset(base, [manifest], out)
     assert result["splits"] == {"train": 2, "val": 1, "test": 1}
     assert not result["training_allowed"]
+    assert result["sources"][0]["box_convention"] == convention
     for split in ("val", "test"):
         assert (out / f"{split}.txt").read_bytes() == (base.parent / f"{split}.txt").read_bytes()
     assert (out / "train.txt").read_bytes().startswith((base.parent / "train.txt").read_bytes())
@@ -60,7 +65,32 @@ def test_extends_train_preserving_holdout_bytes_and_base_scopes(tmp_path):
         extend_scoped_dataset(base, [manifest], out)
 
 
-@pytest.mark.parametrize("failure", ["hash", "scope", "count", "duplicate", "relative_index"])
+def test_combines_reviewed_coco_and_crowdhuman_with_explicit_conventions(tmp_path):
+    first = tmp_path / "first"
+    second = tmp_path / "second"
+    first.mkdir()
+    second.mkdir()
+    base, crowd_manifest = fixture_corpus(first)
+    _, coco_manifest = fixture_corpus(second)
+    payload = json.loads(coco_manifest.read_text())
+    payload["box_convention"] = "COCO bbox clipped to image"
+    coco_manifest.write_text(json.dumps(payload))
+    output = tmp_path / "joint"
+    report = extend_scoped_dataset(base, [crowd_manifest, coco_manifest], output)
+    assert report["added_train_images"] == 2
+    assert report["splits"] == {"train": 3, "val": 1, "test": 1}
+    assert [source["box_convention"] for source in report["sources"]] == [
+        "vbox clipped to image", "COCO bbox clipped to image",
+    ]
+    assert not report["training_allowed"]
+    for split in ("val", "test"):
+        assert (output / f"{split}.txt").read_bytes() == (
+            base.parent / f"{split}.txt"
+        ).read_bytes()
+
+
+@pytest.mark.parametrize("failure", ["hash", "scope", "count", "duplicate", "relative_index",
+                                     "head_boxes", "unreviewed"])
 def test_rejects_unsafe_derivative_before_creating_output(tmp_path, failure):
     base, manifest = fixture_corpus(tmp_path)
     data = json.loads(manifest.read_text())
@@ -72,6 +102,10 @@ def test_rejects_unsafe_derivative_before_creating_output(tmp_path, failure):
         data["records"][0]["boxes"] = 2
     elif failure == "relative_index":
         (base.parent / "val.txt").write_text("val.jpg\n")
+    elif failure == "head_boxes":
+        data["box_convention"] = "hbox"
+    elif failure == "unreviewed":
+        data.pop("review_sha256")
     manifest.write_text(json.dumps(data))
     manifests = [manifest, manifest] if failure == "duplicate" else [manifest]
     out = tmp_path / "joint"
