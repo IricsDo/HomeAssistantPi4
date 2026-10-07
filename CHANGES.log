@@ -3750,3 +3750,61 @@ RuffPASS; no build/export;typechecknotconfigured. Test workflow remainsrunning.
 - **Notes for Next Agent:** Goal remains active; continue automatically, do not call this
   readiness achieved. New source evidence must use new report folder; v2manifest/doc frozen.
   E:artifacts/C:venv, one detector, smoke blur policy, numeric person cutoff unchanged.
+
+## [2026-10-08 02:38] - Handover from OpenAI Codex
+
+- **Current Task:** Continuous v7 readiness preparation, independent holdout intake
+- **Status:** IN_PROGRESS; paired access milestone completed; v7 NOT_READY
+- **Completed in this session:**
+  - THUD original Zenodo18459791 public RGB-D ZIP20,037,654,766bytes; inventory
+    107642members via16240984network bytes. Real store809records across TWO captures
+    (360/449), not one capture. Seed48six image/JSON pairs,2People boxes; all decode,
+    geometry/dimensions PASS, six embedded/source RGB pixel parity PASS; visual review
+    real store aisle/checkout. Partial labels do not imply absent-class negative.
+  - Smart-factory2024 public creator Drive six frozen seed48inside/outside pairs:
+    15fire/8smoke boxes, decode/geometry PASS. Six overlays reviewed; molten steel
+    ambiguity/unlabelled person/unknown original age and ancestry: NOT_ADMITTED main.
+    Refreshed33849corpusSHA;12pilot images0exact/near candidates, limited probe only.
+  - Frozen THUD/factory65binding manifestSHA903b434b87b5cec6ce1e2e4e5714b8cc9fe5eaeb05365e873e8092d42a8771b4
+    at E:/HomeAssistantPi4/reports/indoor-thud-factory-access-v1.
+  - FURG old-source exception six house videos49028587bytes;899decoded/900XML each,
+    dimensions match/no missing decoded XML. All180previews reviewed: scale models
+    outdoors, NOT_ADMITTED real indoor evidence. No corpus independence claim.
+    E:/HomeAssistantPi4/reports/indoor-furg-house-family-v1 frozen378bindings
+    SHAac1f3086a2a6a41a02d74b5fec694b30a435cbe32e314d39b5571fa3035d23a5.
+  - THUD full census first downloader flat stems collided across Capture1/2.
+    Preserve candidates, recover capture-qualified images/labels by original ZIP CRC.
+    Two short-range failures; new chunk reader bounded3attempts and strict range/CRC.
+    No existing training data modified or admission PASS claimed.
+  - Boreal mirror pinned6ffe9c72bcfac836255c0f4faa0efd5201dd1e62: recovered4954labels,
+    ALL match original Fairdata SHA/bytes. Prior4pilot names match labels,3images
+    original SHA-identical/one resized. Frozen400positive images100per2022event,
+    original image SHA required; downloading. No masks-to-box conversion/predictions.
+  - Added HOLDOUT_THUD_FACTORY_PILOTS.md and updated intake plan/PROJECT_PLAN.
+    Earlier frozen reports unchanged, unrelated source_box_review.py untouched.
+- **Unfinished / Next Steps (CRITICAL):**
+  - [ ] Running THUD recovery session3358, recipe E:/HomeAssistantPi4/reports/
+    indoor-thud-store-census-v1/resume_census_v2.py; preserve partials and verify
+    complete809qualified records/CRC before content/overlap/scopes admission.
+  - [ ] Running Boreal acquisition session5692, recipe E:/HomeAssistantPi4/reports/
+    indoor-boreal-box-mirror-v1/acquire_boxes.py;400frozen originals,2GBcaps.
+  - [ ] Complete independent holdout/protocol feasibility and data/resource readiness;
+    targets unchanged/unmet, no old-test reopening, no v7 train launch.
+- **Known Blocks / Issues:** No admitted holdout. Source semantics/domain/capture
+  ancestry gaps. Flat-name collision and short response explicitly recorded/recovery
+  underway. Download processes only; no model training/inference process. No secrets,
+  dependencies/accounts/contact/terms changes.
+- **Validation:**
+  - Build: NOT APPLICABLE (source intake)
+  - Tests: PASS192/192,7.68s; .venv/Scripts/python.exe -m pytest -p no:cacheprovider
+    --basetemp C:/Users/Public/Documents/indoor-thud-factory-20261008
+  - Typecheck: NOT CONFIGURED
+  - Lint: PASS (.venv/Scripts/python.exe -m ruff check . --no-cache)
+  - git diff --check: PASS
+- **Git State:** Branch main; Last Commitf7c6338; scoped documentation awaiting commit.
+- **Uncommitted Changes:** CHANGES.log, PROJECT_PLAN.md, INDEPENDENT_HOLDOUT_PLAN.md,
+  new HOLDOUT_THUD_FACTORY_PILOTS.md. Unrelated untracked source_box_review.py excluded.
+- **Active Files:** New census/Boreal reports on E:, PROJECT_PLAN/CHANGES.
+- **Notes for Next Agent:** Continue automatically until v7 train-ready; user does
+  not request a pause at this milestone. No training launch. Whole-family reservation,
+  class completeness, hashes and final gates required; do not count frames as events.

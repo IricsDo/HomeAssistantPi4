@@ -422,3 +422,11 @@ Không đánh dấu PASS bằng benchmark CPU Windows hay thời gian GPU traini
   `.venv\Scripts\python.exe -m ruff check .`, kiểm tra diff, commit/push các file
   đúng phạm vi. Windows temp ACL workaround dùng thư mục tạm mới khi cần;
   ghi rõ command/result, không reuse thư mục temp có dữ liệu cần giữ.
+
+### Access milestone2026-10-08: THUD/factory paired pilots
+
+- [x] Complete frozen THUD6/factory6 paired pilots and blinded visual/overlap checks;
+  see docs/HOLDOUT_THUD_FACTORY_PILOTS.md. No main-holdout admission.
+- [x] Assess old FURG six-house family; scale models, NOT_ADMITTED indoor holdout.
+- [ ] Finish THUD809-label capture-qualified recovery/census and Boreal400original
+  image/box acquisition; audit and freeze admission/protocol before v7 readiness.

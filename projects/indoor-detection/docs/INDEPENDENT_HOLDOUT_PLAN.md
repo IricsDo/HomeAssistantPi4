@@ -67,3 +67,7 @@ Latest bounded access milestone: HOLDOUT_READINESS_SOURCING_V2.md.
 MultiNatSmoke/AGHRI paired pilots obtained; FURG case2_house confirmed reused,
 NOT_ADMITTED. Holdout targets unchanged/unmet. Continuous preparation authorized
 until v7 readiness; no training launch. Next original THUD++/smart-factory access.
+
+Latest paired pilots: HOLDOUT_THUD_FACTORY_PILOTS.md. THUD809-label census
+and original-checksum Boreal400-image acquisition ongoing; neither admitted.
+Factory pilot and old FURG model-house family not admitted main holdout.
