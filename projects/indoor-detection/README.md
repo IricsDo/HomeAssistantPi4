@@ -36,8 +36,9 @@ chưa chạy. Tiếp theo đánh giá nguồn cho
 trong 5 năm; hoãn FURG cũ. Zenodo2025 pilot không được nhận do cảnh trùng;
 Detectium IoT đã tải/audit pilot12 cặp, chưa nhận vào holdout.
 Class nguồn đã xác nhận là fire/flame; hoãn Detectium làm holdout chính do
-thiếu phiên quay và coverage. Tiếp theo kiểm tra FASDD CV và SCOUT; xem
-[Provenance decision](docs/DETECTIUM_PROVENANCE_DECISION.md).
+thiếu phiên quay và coverage. FASDD pilot12 bộ đã audit, phát hiện2 cảnh trùng;
+SCOUT timeout, Boreal inventory hoàn tất nhưng đường tải lỗi. Xem
+[Provenance decision](docs/HOLDOUT_ACCESS_PILOTS.md).
 Chưa có holdout admission; smoke/person và independence gate còn thiếu. Lịch 60 epoch vẫn hoãn, export đóng,
 chưa phát hành. Camera dự kiến cao~4m trở lên;
 ưu tiên người trong phòng/khu vực cửa, chưa chốt minimum size/ROI/góc chúc xuống.

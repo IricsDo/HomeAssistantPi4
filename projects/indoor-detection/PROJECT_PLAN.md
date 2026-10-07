@@ -1,7 +1,7 @@
 # Kế hoạch hoàn thành Indoor Detection
 
 Ngày cập nhật: **2026-10-07**. Agent cập nhật: **OpenAI Codex**.
-Owner hiện tại: **OpenAI Codex**. **Resolution/baseline stage1 COMPLETED; P1c IN_PROGRESS**. P1b preparation hoàn tất; **v6 training/evaluation COMPLETED; person512 FAIL, person768 PASS**.
+Owner hiện tại: **OpenAI Codex**. User cho phép tự động tiếp tục checklist, không chờ nhắc tiếp; giữ data/readiness gates. **Resolution/baseline stage1 COMPLETED; P1c IN_PROGRESS**. P1b preparation hoàn tất; **v6 training/evaluation COMPLETED; person512 FAIL, person768 PASS**.
 V5 đã train đủ 12 epoch và đánh giá validation. Person vẫn FAIL; test/export đóng.
 V6, sáu cấu hình đánh giá, exact hazard calibration và test cuối đã hoàn tất.
 Test:smoke/person PASS,fireR .849913 FAIL → NO_RELEASE;regression smoke PASS.
@@ -10,7 +10,8 @@ tối đa 12 epoch mới PLANNED. Ưu tiên nguồn trong 5 năm gần nhất (u
 FURG hoãn. Zenodo2025 pilot NOT_ADMITTED do cảnh trùng IFireSmoke đã xác nhận.
 Detectium IoT pilot12 cặp đã tải/audit, chưa admit holdout.
 Class nguồn0fire/1flame đã xác nhận; hoãn Detectium làm holdout chính.
-Tiếp theo FASDD CV/SCOUT access, ancestry và smoke/person coverage,
+FASDD pilot đã audit:2 cảnh trùng; SCOUT timeout; Boreal inventory xong, tải lỗi.
+Tiếp theo alternate access/nguồn gốc có nhãn và smoke/person coverage,
 rồi holdout admission và readiness;
 xem [Fire recovery](docs/FIRE_RECOVERY_PLAN.md).
 Ứng viên validation768 đạt ba class: smoke/fireR .900932/.900158;personF1/R
@@ -286,8 +287,12 @@ Không ghi đè v1–v4; không tự mở hàng loạt thử nghiệm khi một 
   và overlap audit33,849 ảnh hoàn tất. Xem docs/DETECTIUM_IOT_PILOT.md.
 - [x] Follow-up class/session metadata: source0fire/1flame xác nhận từ YAML;
   session/dates còn thiếu, defer main holdout. Xem DETECTIUM_PROVENANCE_DECISION.md.
-- [ ] Đánh giá FASDD CV/SCOUT access, original groups, box semantics/completeness;
-  chưa admit holdout. Không suy ra independence từ ngày publication/mirror.
+- [x] FASDD original CV access/pilot12 bộ VOC/YOLO audit hoàn tất,2 cảnh trùng:
+  NOT_ADMITTED. SCOUT access probe timeout; JRDB fallback login/old footage.
+- [x] Boreal original2022 event/subsetA metadata inventory hoàn tất; download
+  disabled/legacy500, chưa audit image/label. Xem docs/HOLDOUT_ACCESS_PILOTS.md.
+- [ ] Alternate public access/nguồn gốc có nhãn; chốt groups/completeness/domain.
+  Chưa admit holdout. Không suy ra independence từ ngày publication/mirror.
 - [ ] Chốt smoke/person coverage; tạo/audit/freeze holdout độc lập theo protocol.
 - [ ] Kiểm tra data/checkpoint/environment/resource readiness trước một launch v7.
 - [ ] Chạy/đánh giá ứng viên mới chỉ sau prerequisites; khóa trước holdout inference.

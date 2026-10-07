@@ -3592,3 +3592,92 @@ RuffPASS; no build/export;typechecknotconfigured. Test workflow remainsrunning.
   taxonomy/access pilot. No train/inference/index/label modifications. One unified
   detector, original scopes/gates, recent-source preference, E: artifacts/C: venv;
   hardware unavailable. No projects/.env read or printed.
+
+## [2026-10-08 00:03] - Handover from OpenAI Codex
+
+- **Current Task:** Autonomous next-source access/paired pilots for independent holdout
+- **Status:** COMPLETED (FASDD pilot/SCOUT/Boreal access assessment); intake IN_PROGRESS
+- **Completed in this session:**
+  - User authorizes automatic planned continuation without repeated continue prompts;
+    recorded in CLAUDE/PROJECT_PLAN/current source doc. Gates remain prerequisites.
+    Owner OpenAI Codex, main parentddd4dec; unrelated source_box_review.py untouched.
+  - FASDD DOI redirects to original ScienceDB ce9c9400b44148e1b0a749f5c3eb0bda.
+    Public metadata created2022-07-18/issued2022-08-02/updated2025-09-09/V9,
+    CC BY-SA4.0, total82,125,550,221bytes/six files. CV archive12,326,081,298bytes.
+    No full archive downloaded. Site public filetree/search identified CV original;
+    details endpoint access error not bypassed. Numeric version body rejected,
+    corrected V9/path worked. Public JS read only, no provider code execution.
+  - Archive-preview inventory141,645,083bytes/285,949 files/95,314images acquired
+    under separately frozen150MB metadata cap; initial10MB/60MB attempts cap-failed.
+    SHA4c4e8e03e7df68211f67eaf5e462a9b7efbf0fd45c00e3857061e6d509fcee61.
+    Browser skill attempted, no enabled browser surfaces; public HTTP APIs used.
+  - Frozen seed48 three samples per four filename categories before images. Strict
+    HTTP206/range byte validation, ZipFile CRC checks:36 original files (12images,
+    12VOC,12YOLO)805,002bytes; central/member transfer41,077,872bytes. Raw originals
+    E:/HomeAssistantPi4/raw/holdout-candidates/fasdd-cv-pilot-v1. No conversion.
+    All12 decode,23 boxes16fire/7smoke, class0fire/1smoke confirmed by VOC pair;
+    geometry/XML dimensions/count and coordinate parity PASS,0 flagged. Person
+    labels absent, unknown scope, no person negatives inferred. No source-wide gate.
+  - All12 overlays and smoke10 full-resolution reviewed. Mixed building/field/forest,
+    demo/night, confusing red lantern/car/sky negatives. Smoke10 visible plume,
+    smoke/steam identity uncertain; observed timestamp2017-03-20 shows old content,
+    not independently verified capture date. Metadata recency does not reset originals.
+  - Refreshed all33,849 corpus SHA256 vs frozen fingerprints, joint-v4 train/val/test
+    hashes unchanged. Exact0; near dHash<=5 gives2 candidates,0 internal. Both visual
+    pairs confirm shared rawv32 scenes: pilot0 burning building (distance0),pilot2
+    field/firefighters/watermark (distance2). No joint membership candidate in probe.
+    FASDD NOT_ADMITTED as independent holdout; remaining10/95,302 independence
+    unknown. Preserve diagnostic pilot, no automatic independent remainder/expansion.
+  - SCOUT bounded HTTP/HTTPS/site retries timeout, no paired data acquired. Original
+    UMPN precomputed detections are not GT. JRDB official fallback:2019 footage with
+    newer annotations, download requires login; no account/terms/contact performed.
+  - Continued automatically to Boreal creator DOI/Fairdata original: dataset
+    1dce1023-493a-4d63-a906-f2a44f831898, issued2025-02-28, four original2022 dates
+    05-24/06-28/07-06/08-15, Open/CC BY4.0. Metax public inventory complete:
+    subsetA9,909files/13,069,558,883bytes; Evo931/Heinola906/Karkkila1096/
+    Ruokolahti1765 positive image/label pairs,256 empty pairs plus image_counts.txt.
+    Four events, not4,954 independent groups. Whole125,086,946,035bytes not downloaded.
+    No actual image/label bytes acquired: V3 POST405 body Download is not enabled;
+    legacy Etsin500. Initial wrong-body400/trailing-slash404 recorded separately.
+    No tokens/private keys stored, no credentials/.env read, no signed terms/contact.
+    Boreal NOT_ADMITTED pending paired access/content gate; outdoor smoke supplement.
+  - Added docs/HOLDOUT_ACCESS_PILOTS.md, updated current instructions/READMEs/plan.
+    Prior44/103/21/35 bindings unchanged, including frozen previous docs.
+    FASDD evidence E:/HomeAssistantPi4/reports/indoor-fasdd-scout-access-v1;
+    recipes/protocol/retrieval/inventory/acquisition/audit/galleries/review/decision.
+    Manifest84bindings SHAa0b2bb4974fb2763d48aabaaf4adab8b87f1014852631aa705d77b1f924be832.
+    Boreal evidence E:/HomeAssistantPi4/reports/indoor-boreal-access-v1;
+    creator/DOI/metax metadata/full subsetA inventory/download-error/decision.
+    Manifest24bindings SHAe6eebf513f5a4280f84ef5dc8f5d6a14cdf1ff0e4baf47a6b271b06ca4b962df.
+- **Unfinished / Next Steps (CRITICAL):**
+  - [ ] Continue recent original labelled room/doorway/person and hazard candidates;
+    prefer original event IDs/capture metadata. Do not redo completed FASDD pilot,
+    Detectium taxonomy or Zenodo reused-scene pilot. No independent remainder assumed.
+  - [ ] Boreal bounded retry only after service change/creator-published alternate
+    public endpoint, then event-level original pairs. SCOUT similarly needs usable
+    original image/GT access. Avoid repeated polling, account/terms/contact unauthorised.
+  - [ ] Admission targets still unmet:30groups/>=2sources,300fire/300smoke/500person,
+    200verified negatives/class. If infeasible, prepare evidence-based protocol revision
+    before predictions; do not silently weaken existing gates. Freeze accepted groups,
+    scopes/hashes before v7 resource readiness/launch. V6 NO_RELEASE, v7 PLANNED,
+    old test/NCNN export closed; no automatic longer training.
+- **Known Blocks / Issues:** No admitted independent holdout. Confirmed FASDD reuse,
+  group/domain/age uncertainties; SCOUT timeout, Boreal download disabled/legacy500.
+  Hardware absent. No running acquisition/audit/train job remains. Local JSON first
+  read lacked UTF8 and failed cp1252; retried explicit UTF8 successfully. Public
+  browser inventory empty, no UI action completed; no dependency change.
+- **Validation:**
+  - Build: NOT APPLICABLE (metadata/image audit, no model export)
+  - Tests: PASS192/192,10.24s; .venv/Scripts/python.exe -m pytest
+    -p no:cacheprovider --basetemp C:/Users/Public/Documents/indoor-access-pilots-20261007
+  - Typecheck: NOT CONFIGURED
+  - Lint: PASS (.venv/Scripts/python.exe -m ruff check . --no-cache)
+  - Git diff --check: PASS
+- **Git State:** Branch main; Last Commitddd4dec; Working Tree DIRTY scoped docs awaitingcommit.
+- **Uncommitted Changes:** CHANGES.log,CLAUDE.md,README.md,project README/PROJECT_PLAN,
+  docs/INDEPENDENT_HOLDOUT_PLAN.md,docs/HOLDOUT_ACCESS_PILOTS.md; unrelated untracked
+  src/indoor_detection/source_box_review.py preserved/excluded.
+- **Active Files:** docs/HOLDOUT_ACCESS_PILOTS.md,PROJECT_PLAN.md,CHANGES.log.
+- **Notes for Next Agent:** Automatic continuation authorized. Keep one detector,
+  E: artifacts/C: venv, label scopes/quality gates unchanged. Fresh source packaging,
+  zero byte hashes and valid geometry do not prove independent event coverage.

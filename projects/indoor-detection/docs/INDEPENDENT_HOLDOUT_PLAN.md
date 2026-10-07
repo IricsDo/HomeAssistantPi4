@@ -58,3 +58,7 @@ Detectium2025 IoT public image/label access and12-pair pilot are complete
 session evidence absent, defer as main holdout. Follow DETECTIUM_PROVENANCE_DECISION.md:
 next FASDD CV/SCOUT metadata/access and recent smoke/person coverage. Keep acquisition date/ancestry checks separate from
 recent publication date. No model predictions or new training authorized by intake.
+
+Current access/pilot result: HOLDOUT_ACCESS_PILOTS.md. FASDD12-pair pilot has
+confirmed oldv32 reuse, NOT_ADMITTED; SCOUT timeout; Boreal original2022 event
+metadata complete but download disabled/legacy500. No holdout gate closed.

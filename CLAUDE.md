@@ -84,8 +84,14 @@ Do not begin implementation until the current task and ownership are clear.
   canonical fire=1, no conversion. Original sessions/dates remain unknown; defer
   Detectium as main acceptance holdout, keep controlled diagnostic candidate.
   Read docs/DETECTIUM_PROVENANCE_DECISION.md. Next: FASDD ground-camera/CV
-  metadata/access/ancestry, SCOUT sequence/box/access assessment; official SCOUT
-  probes timed out. Do not repeat completed Detectium public-access pilot.
+  metadata/access/ancestry and SCOUT assessment now COMPLETED. Read
+  docs/HOLDOUT_ACCESS_PILOTS.md: FASDD12 paired VOC/YOLO pilot, geometry/parity
+  PASS,2 confirmed reused rawv32 scenes; NOT_ADMITTED. SCOUT still timeout.
+  Boreal full subsetA metadata inventory complete (four2022 events), but download
+  service disabled/legacy500; no images acquired. Next bounded alternate access
+  or recent original labelled source assessment; do not repeat completed FASDD pilot.
+  User authorizes automatic planned continuation without repeated continue prompts;
+  keep all admission/readiness/training constraints. Do not repeat completed Detectium public-access pilot.
   No holdout admitted, no train/inference/download job.
   V7 requires independent holdout/data/resource readiness; old test remains closed.
   User scope: room/doorway; distant people outside window not required. No numeric
