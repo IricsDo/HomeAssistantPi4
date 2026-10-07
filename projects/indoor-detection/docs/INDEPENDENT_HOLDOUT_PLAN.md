@@ -54,6 +54,7 @@ five years; see RECENT_HOLDOUT_SOURCE_REVIEW.md and AGENTS.md. Original FURG
 selection is historical/deprioritized; its reports and source assessment remain
 immutable. Zenodo2025 archive pilot completed but NOT_ADMITTED (shared scenes);
 Detectium2025 IoT public image/label access and12-pair pilot are complete
-(see DETECTIUM_IOT_PILOT.md); NOT_ADMITTED. Next resolve class IDs, session
-evidence and recent smoke/person coverage. Keep acquisition date/ancestry checks separate from
+(see DETECTIUM_IOT_PILOT.md); NOT_ADMITTED. Original YAML resolves0fire/1flame;
+session evidence absent, defer as main holdout. Follow DETECTIUM_PROVENANCE_DECISION.md:
+next FASDD CV/SCOUT metadata/access and recent smoke/person coverage. Keep acquisition date/ancestry checks separate from
 recent publication date. No model predictions or new training authorized by intake.

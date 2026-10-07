@@ -80,8 +80,12 @@ Do not begin implementation until the current task and ownership are clear.
   zero exact/near corpus candidates across33,849 images, one internal related
   scene pair. NOT_ADMITTED: source IDs0/1 both enclose flames, semantics/session
   dates/completeness unresolved; lighter demos and repeated industrial context.
-  Next verify source class definitions/session evidence and recent smoke/person
-  coverage. Do not repeat completed access/download pilot.
+  Follow-up COMPLETED: original YAML names0fire/1flame; proposed aliases to
+  canonical fire=1, no conversion. Original sessions/dates remain unknown; defer
+  Detectium as main acceptance holdout, keep controlled diagnostic candidate.
+  Read docs/DETECTIUM_PROVENANCE_DECISION.md. Next: FASDD ground-camera/CV
+  metadata/access/ancestry, SCOUT sequence/box/access assessment; official SCOUT
+  probes timed out. Do not repeat completed Detectium public-access pilot.
   No holdout admitted, no train/inference/download job.
   V7 requires independent holdout/data/resource readiness; old test remains closed.
   User scope: room/doorway; distant people outside window not required. No numeric

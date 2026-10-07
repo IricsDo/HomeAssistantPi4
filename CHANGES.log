@@ -3521,3 +3521,74 @@ RuffPASS; no build/export;typechecknotconfigured. Test workflow remainsrunning.
 - **Notes for Next Agent:** OwnerOpenAI Codex. Continue class/session and recent
   smoke/person coverage, not the completed public-access pilot or old FURG task.
   Preserve all original receipts, one unified detector, E: artifacts/C: venv.
+
+## [2026-10-07 23:33] - Handover from OpenAI Codex
+
+- **Current Task:** Resolve Detectium source classes/provenance and advance recent holdout intake
+- **Status:** COMPLETED (bounded metadata follow-up); holdout intake IN_PROGRESS
+- **Completed in this session:**
+  - Read repo instructions/current handover/status; owner OpenAI Codex. No .codegraph
+    directory exists, skip CodeGraph. Preserved unrelated source_box_review.py.
+  - Original public Kaggle version6 nested real_images/real_images/real_fire/data.yaml
+    retrieved200: nc2, names fire/flame. Source0fire/1flame, proposed both aliases to
+    canonical fire=1 based on original definition/paper and prior12 overlays.
+    No conversion/data admission. Relative YAML train/val/test paths do not match
+    observed flat layout; do not train directly on this unnormalized source YAML.
+  - Six definition probes, five404/actual YAML200. Thirty more metadata pages;
+    combined17,620 unique entries still partial. Of318 IoT filenames,67 images/0
+    labels listed; this is not evidence labels absent (prior12 fetched directly).
+    No extra image pairs or full archive downloaded, no secrets/provider code used.
+  - Metadata tags:151 lighter/33 candle/3 matches/131 indoor_fire. Prefixes
+    msg5430551134 spans155, video5994592357331242812 spans96, remaining67 singleton
+    prefixes. Prefixes are family hypotheses, not certified events/capture dates.
+    Paper confirms controlled demos/fire-region annotation, no original sessions
+    established. Smoke/person completeness/negative scopes remain unknown.
+  - DEFERRED_AS_MAIN_ACCEPTANCE_HOLDOUT; retain controlled-fire pilot as diagnostic
+    candidate only. Do not acquire more merely to reach box counts. Public/recent
+    publication and absent hash overlap do not close source/domain independence.
+  - Reviewed creator FASDD/SCOUT metadata. FASDD ground-camera/CV original DOI
+    10.57760/sciencedb.j00104.00103 selected for next bounded access/ancestry review;
+    web DOI inaccessible this session, not a missing-data conclusion. SCOUT toolkit
+    supports outdoor person COCO/individual/MOT boxes with sequence IDs; site and
+    download urllib20s probes timed out, web returned no text. No terms/contact or
+    large dataset access performed; indoor suitability remains unproven.
+    SCOUT commit1acd79513bfcf16aecef1150283af58c8273542e;
+    FASDD commit1419f20b2627d0a3e992cab1a468caffe34f3f36. No packages changed.
+  - Added DETECTIUM_PROVENANCE_DECISION.md and updated plan/CLAUDE/READMEs/current
+    holdout plan. Prior immutable pilot/review docs unchanged; verified all103/21/35
+    artifact bindings. New evidence E:/HomeAssistantPi4/reports/indoor-detectium-provenance-v1:
+    protocol,YAML,retrieval/pages,318-item inventory,paper/source snapshots,decision.
+    Manifest44 bindings SHA
+    da7f69d12b51f1e02ce51febecba43b415a468ab4f2d4473ecf6b7ae6396614f.
+- **Unfinished / Next Steps (CRITICAL):**
+  - [ ] FASDD creator-linked original ground-camera/CV metadata and file access:
+    inspect labels,class names,source families,original capture age/session IDs,
+    archive sizes. Freeze bounded paired pilot only after usable access; do not
+    adopt its conda/MMDetection stack or download entire collection automatically.
+  - [ ] SCOUT official access/sequence annotations and bbox convention; bounded
+    retry after timeout, then paired labelled pilot if usable. Keep all views/
+    frames from same sequence together; outdoor coverage supplements room/doorway.
+  - [ ] Resolve smoke/person/domain/completeness/negative scopes, source overlap
+    and existing intake targets, freeze independent holdout before v7 readiness.
+    No holdout admitted, v6 NO_RELEASE/v7 PLANNED, old test/export closed.
+- **Known Blocks / Issues:** No admitted independent holdout. Detectium original
+  sessions/dates absent, staged-fire coverage insufficient. SCOUT probes timed out;
+  FASDD original file access not established. No running job. Default shell launcher
+  failed AccessDenied; escalated launcher worked. Saved FASDD retrieval succeeded
+  but Unicode console display failed cp1252; ASCII-safe retry displayed metadata.
+- **Validation:**
+  - Build: NOT APPLICABLE (metadata/source review, no export)
+  - Tests: PASS192/192,27.76s; .venv/Scripts/python.exe -m pytest
+    -p no:cacheprovider --basetemp C:/Users/Public/Documents/indoor-provenance-20261007
+  - Typecheck: NOT CONFIGURED
+  - Lint: PASS (.venv/Scripts/python.exe -m ruff check . --no-cache)
+  - Git diff --check: PASS
+- **Git State:** Branch main; Last Commit1911da1; Working Tree DIRTY scoped docs.
+- **Uncommitted Changes:** CHANGES.log,CLAUDE.md,README.md,project README/PROJECT_PLAN,
+  docs/INDEPENDENT_HOLDOUT_PLAN.md,docs/DETECTIUM_PROVENANCE_DECISION.md;
+  unrelated untracked src/indoor_detection/source_box_review.py preserved/excluded.
+- **Active Files:** docs/DETECTIUM_PROVENANCE_DECISION.md,PROJECT_PLAN.md,CHANGES.log.
+- **Notes for Next Agent:** Continue FASDD CV/SCOUT intake, not completed Detectium
+  taxonomy/access pilot. No train/inference/index/label modifications. One unified
+  detector, original scopes/gates, recent-source preference, E: artifacts/C: venv;
+  hardware unavailable. No projects/.env read or printed.
