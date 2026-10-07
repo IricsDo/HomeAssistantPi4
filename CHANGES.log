@@ -3808,3 +3808,92 @@ RuffPASS; no build/export;typechecknotconfigured. Test workflow remainsrunning.
 - **Notes for Next Agent:** Continue automatically until v7 train-ready; user does
   not request a pause at this milestone. No training launch. Whole-family reservation,
   class completeness, hashes and final gates required; do not count frames as events.
+
+## [2026-10-08 03:22] - Handover from OpenAI Codex
+
+- **Current Task:** Continuous v7 preparation through train-ready experimental boundary
+- **Status:** READY_FOR_REVIEW; preparation COMPLETED_WITH_LIMITATIONS, v7 NOT_LAUNCHED
+- **Completed in this session:**
+  - Recovered/audited complete THUD809 capture-qualified pairs; all809 visually reviewed.
+    Derivative808 after one exact duplicate738 dropped;75 unknown person scopes,
+    379 scored person boxes. Source People convention preserved; no synthetic data.
+  - Boreal400 original-image and label-checksum paired access recovered; all400 reviewed.
+    All4954mirror labels match original checksums. Two nested/component-plume cases353/
+    356 excluded from smoke scope, preserving originals:398images/398smoke boxes.
+  - AGHRI100frozen original2024 frames reviewed:188person boxes,29image-boundary clipping
+    flags explicitly converted. Four original annotation hashes/100rows independently verified.
+  - RGBT public pinned3,398,592,512B archive acquired; original2025 class totals agree
+    across11220RGB labels. All8pilot+400fire review images/100enlarged crops inspected.
+    Forest/road fire semantics uncertain: quarantine video2-5/8/9; yard52/62/76 unknown.
+    Keep97night/yard fire boxes under documented source burning-core/tray convention.
+    Capture age/license unresolved; public mirror README conflicts noted, no license clearance.
+  - Fresh33849corpus hashes: THUD/Boreal/AGHRI0exact/5near false; RGBT4000exact/
+    165near candidates ALL visually adjudicated false. Full derivative zero exact
+    and zero cross-source dHash<=5 candidates. Within-family correlation retained.
+    FURG real car/barbecue/NASA all confirmed reused: reject entire three events.
+  - BEFORE model predictions/train, explicitly amended experimental intake under
+    protocol's feasibility clause:7reserved families/4sources,>=90fire/300smoke/
+    500person and200verified negatives/class. Original30-independent-group/300fire
+    target NOT_MET;7families are NOT7proven independent samples. Representative
+    acceptance/deployment remains CLOSED; numerical model quality gates unchanged.
+  - Created E:/HomeAssistantPi4/processed/indoor-v7-experimental-holdout-v1:
+    1403images,398smoke/97fire/567person boxes; negative counts808/808/461.
+    Per-image scopes; no inferred missing-class negatives, no size/blur/model filtering.
+    No added training data. Source byte parity/geometry/structure/scope audit PASS.
+    Independent pixel conversion error max7.11143e-8pixels (<1e-6); raw source immutable.
+  - Holdout evidence frozen3107bindings at reports/indoor-v7-holdout-freeze-v1,
+    manifestSHAaf9065e0abbccabac301d48f0244c8d4ca528928c93ae170b772286af329ff37.
+  - Unchanged joint-v4 fresh24100image/label/scope audit PASS, zero exact conflicts.
+    Historical test integrity only; no old-test inference/selection. Frozen v6 checkpoint
+    SHA103b45ab6a61f2431b462ee2bc4402f6ddaa7b982e872afd50515e3c6ef28729 unchanged;
+    draft configSHA5cccddd70d70aef20f5adf2a5e53eee1b8ac1cf45e616fed475e8b93da0c7466 unchanged.
+  - Read-only final readiness PASS_WITH_LIMITATIONS:33849prior corpus,3107holdout
+    bindings,24100current joint image/label hashes, split/config/checkpoint/scope verified;
+    new run absent. C: local venv Python3.14.7/torch2.14+cu130/Ultralytics8.4.163.
+    No package changes/E: environment. RAM available18.16GB, E: free526.10GB at03:17.
+  - In-memory768/batch8 mixed hazard+dense person342GT resource probe two finite
+    forward/backward passes, allocated moment buffers, peak1,846,358,016B allocated/
+    2,021,654,528B reserved. NO optimizer step/trainer/epoch/checkpoint write/holdout
+    prediction. Initial dict loss-item report serialization failure retained/fixed;
+    successful probes preserved. Actual worker/augmentation/long-run peaks unproven.
+  - Final readiness/evaluation protocol at reports/indoor-v7-readiness-final-v1,
+    manifestSHAbb04c647d955999f653a6efc8ba19571d084a9a5c37bf2a2ddc51f09bc847086.
+    Gates/guardrails/source metrics/one-opening policy frozen before results.
+  - Updated AGENTS/CLAUDE/root+projectREADME/PROJECT_PLAN/holdout plan; new decision
+    docs/V7_EXPERIMENTAL_PREPARATION.md. No training or new holdout inference launched.
+- **Unfinished / Next Steps (CRITICAL):**
+  - [ ] STOP at preparation boundary as requested. Next only a separately requested
+    single v7 launch after read-only revalidation of existing manifests/config/weights,
+    scope/splits, current GPU/RAM/disk and absent run. Do not rewrite frozen receipts.
+  - [ ] If later authorized: unchanged768/batch8/max12/patience5 configuration;
+    validation-only selection/calibration, fire R>=.90 aggregate AND each source,
+    smoke R>=.90/person F1>=.65 R>=.60 plus existing .01 guardrails.
+    Any error/OOM/gate failure stops; no automatic retry/config or gate relaxation.
+  - [ ] Lock candidate hash/global thresholds/square protocol before one experimental
+    external opening. No holdout tuning/epoch/source/min-size/ROI selection.
+    Holdout PASS cannot release: representative independent30-event/300fire coverage
+    and real Pi/camera evidence remain incomplete. Source dates/license/exposure gaps remain.
+- **Known Blocks / Issues:** Experimental coverage limits above; not deployment readiness.
+  No background task remains. Full independent target remains NOT_MET, not silently PASS.
+  No accounts/contact/terms accepted, no secrets accessed. No dependencies changed.
+- **Validation:**
+  - Build: NOT APPLICABLE (data/documentation preparation; no NCNN export)
+  - Tests: PASS192/192,6.50s; .venv/Scripts/python.exe -m pytest -p no:cacheprovider
+    --basetemp C:/Users/Public/Documents/indoor-v7-final-20261008
+  - Typecheck: NOT CONFIGURED
+  - Lint: PASS (.venv/Scripts/python.exe -m ruff check . --no-cache)
+  - Dependency consistency: PASS (.venv/Scripts/python.exe -m pip check)
+  - git diff --check: PASS
+- **Git State:** Branch main; Last Commitca6a504 before this milestone; scoped docs pending
+  atomic commit/push. Prior commits f7c6338/ca6a504 already pushed this session.
+- **Uncommitted Changes:** AGENTS.md, CLAUDE.md, README.md, CHANGES.log,
+  projects/indoor-detection/README.md, PROJECT_PLAN.md,
+  docs/INDEPENDENT_HOLDOUT_PLAN.md, new docs/V7_EXPERIMENTAL_PREPARATION.md.
+  Unrelated untracked src/indoor_detection/source_box_review.py preserved/excluded.
+- **Active Files:** None running; frozen E: holdout/readiness artifacts above and
+  versioned preparation documentation. No frozen historical handover rewritten.
+- **Notes for Next Agent:** User authorized continuous preparation until train-ready;
+  this boundary reached only for bounded experiment, limitations explicit. Do not
+  automatically train on continuation of intake. Read latest decision/receipts first.
+  All large artifacts stay E:/HomeAssistantPi4; local venv stays C:. Never read/print/commit
+  projects/.env. Preserve existing untracked source_box_review.py; do not stage it.

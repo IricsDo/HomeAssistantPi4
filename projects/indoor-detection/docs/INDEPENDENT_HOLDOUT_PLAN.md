@@ -1,6 +1,8 @@
 # Independent holdout intake protocol (before source selection)
 
-Owner: OpenAI Codex. Status: PLANNED, no holdout acquired/approved yet.
+Owner: OpenAI Codex. Original intake proposal below retained. Latest experimental
+amendment/freeze: [V7_EXPERIMENTAL_PREPARATION.md](V7_EXPERIMENTAL_PREPARATION.md).
+Experimental preparation complete; full independent coverage NOT_MET. No predictions.
 The old v2/v6 test is closed for selection. Randomly repartitioning existing
 train/validation/old-test images does not produce an independent holdout.
 
@@ -71,3 +73,18 @@ until v7 readiness; no training launch. Next original THUD++/smart-factory acces
 Latest paired pilots: HOLDOUT_THUD_FACTORY_PILOTS.md. THUD809-label census
 and original-checksum Boreal400-image acquisition ongoing; neither admitted.
 Factory pilot and old FURG model-house family not admitted main holdout.
+
+## Experimental amendment and freeze2026-10-08 (before predictions)
+
+See V7_EXPERIMENTAL_PREPARATION.md for source decisions and evidence. The original
+30-independent-group/300fire target was infeasible with verified accessible sources;
+it remains incomplete full acceptance work. For one bounded experiment only,
+freeze7conservatively reserved families/4sources,90fire/300smoke/500person boxes,
+200verified negatives/class. Actual1403images:97fire/398smoke/567person boxes,
+negatives808fire/808smoke/461person.7reserved families are not7proven independent
+samples. Unknown original capture dates/license/exposure remain unresolved evidence
+gaps; do not infer independence or deployment approval. Whole sources reserved.
+Recall/F1/guardrails unchanged. Model selection remains existing validation only;
+new experimental holdout opened once after candidate lock. Even PASS cannot release.
+Freeze3107bindings at E:/HomeAssistantPi4/reports/indoor-v7-holdout-freeze-v1;
+SHAaf9065e0abbccabac301d48f0244c8d4ca528928c93ae170b772286af329ff37.

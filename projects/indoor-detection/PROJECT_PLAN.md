@@ -1,23 +1,17 @@
 # Kế hoạch hoàn thành Indoor Detection
 
 Ngày cập nhật: **2026-10-08**. Agent cập nhật: **OpenAI Codex**.
-Owner hiện tại: **OpenAI Codex**. User cho phép tự động tiếp tục checklist, không chờ nhắc tiếp; giữ data/readiness gates. **Resolution/baseline stage1 COMPLETED; P1c IN_PROGRESS**. P1b preparation hoàn tất; **v6 training/evaluation COMPLETED; person512 FAIL, person768 PASS**.
-V5 đã train đủ 12 epoch và đánh giá validation. Person vẫn FAIL; test/export đóng.
-V6, sáu cấu hình đánh giá, exact hazard calibration và test cuối đã hoàn tất.
-Test:smoke/person PASS,fireR .849913 FAIL → NO_RELEASE;regression smoke PASS.
-Không còn job, không train mới hoặc export. Fire diagnosis COMPLETED; v7 ở 768
-tối đa 12 epoch mới PLANNED. Ưu tiên nguồn trong 5 năm gần nhất (user 2026-10-07);
-FURG hoãn. Zenodo2025 pilot NOT_ADMITTED do cảnh trùng IFireSmoke đã xác nhận.
-Detectium IoT pilot12 cặp đã tải/audit, chưa admit holdout.
-Class nguồn0fire/1flame đã xác nhận; hoãn Detectium làm holdout chính.
-FASDD pilot đã audit:2 cảnh trùng; SCOUT timeout; Boreal inventory xong, tải lỗi.
-Vòng sourcing v2: MultiNatSmoke8 cặp mask, AGHRI12 ảnh/22box đã audit;
-FURG43 previews có5 cặp cảnh trùng v32, reject case2_house. Chưa admit holdout.
-User yêu cầu tiếp tục liên tục đến khi v7 sẵn sàng train; chưa launch train.
-Xem docs/HOLDOUT_READINESS_SOURCING_V2.md.
-Tiếp theo alternate access/nguồn gốc có nhãn và smoke/person coverage,
-rồi holdout admission và readiness;
-xem [Fire recovery](docs/FIRE_RECOVERY_PLAN.md).
+Owner hiện tại: **OpenAI Codex**. **V7 experimental preparation READY_FOR_REVIEW**.
+Xem [V7 preparation](docs/V7_EXPERIMENTAL_PREPARATION.md): holdout thử nghiệm1.403 ảnh
+đã audit/freeze;398smoke/97fire/567person, negatives808/808/461.
+Intake targets điều chỉnh công khai trước predictions;7 reserved families không phải
+30 sự kiện độc lập. Target độc lập đầy đủ NOT_MET; quality gates giữ nguyên,
+deployment/export CLOSED. 768/batch8 mixed342GT resource probe PASS.
+Không còn job; chưa train v7, chưa predict holdout. Dừng đúng mốc chuẩn bị train.
+Bước tiếp theo: chỉ launch một v7 khi người dùng yêu cầu riêng, sau recheck
+hash/resources/run absence. V6 test NO_RELEASE (fireR .849913), không tuning test cũ.
+
+Lịch sử các milestone trước:
 Ứng viên validation768 đạt ba class: smoke/fireR .900932/.900158;personF1/R
 .652182/.621743. Readiness/protocol test cuối và smoke regression cùng slice đã
 PASS/freeze; xem V6_FINAL_TEST.md, lịch60 epoch tạm hoãn. P1b đã audit pool, freeze/tải 60 ảnh/1.430 box, trong đó
@@ -297,10 +291,12 @@ Không ghi đè v1–v4; không tự mở hàng loạt thử nghiệm khi một 
   disabled/legacy500, chưa audit image/label. Xem docs/HOLDOUT_ACCESS_PILOTS.md.
 - [x] Vòng access v2: MultiNatSmoke/AGHRI/FURG pilot và overlap63x33,849;
   vẫn chưa admission. Xem HOLDOUT_READINESS_SOURCING_V2.md.
-- [ ] Alternate public access/nguồn gốc có nhãn; chốt groups/completeness/domain.
-  Chưa admit holdout. Không suy ra independence từ ngày publication/mirror.
-- [ ] Chốt smoke/person coverage; tạo/audit/freeze holdout độc lập theo protocol.
-- [ ] Kiểm tra data/checkpoint/environment/resource readiness trước một launch v7.
+- [x] Alternate public access/nguồn gốc có nhãn; chốt groups/completeness/domain
+  cho experimental holdout; unresolved gaps và full target NOT_MET ghi rõ.
+- [x] Chốt smoke/person coverage; tạo/audit/freeze experimental holdout theo
+  amendment trước predictions. Full30-independent-group target vẫn chưa đạt.
+- [x] Kiểm tra data/checkpoint/environment/resource readiness cho bounded v7;
+  PASS_WITH_LIMITATIONS. Stop trước launch, recheck khi được yêu cầu train.
 - [ ] Chạy/đánh giá ứng viên mới chỉ sau prerequisites; khóa trước holdout inference.
 
 **Đầu ra:** model selection decision, checkpoint/threshold lock và quality reports.
@@ -428,5 +424,7 @@ Không đánh dấu PASS bằng benchmark CPU Windows hay thời gian GPU traini
 - [x] Complete frozen THUD6/factory6 paired pilots and blinded visual/overlap checks;
   see docs/HOLDOUT_THUD_FACTORY_PILOTS.md. No main-holdout admission.
 - [x] Assess old FURG six-house family; scale models, NOT_ADMITTED indoor holdout.
-- [ ] Finish THUD809-label capture-qualified recovery/census and Boreal400original
-  image/box acquisition; audit and freeze admission/protocol before v7 readiness.
+- [x] Finish THUD809 capture-qualified census/Boreal400 original pairs, full visual/
+  overlap/parity review. AGHRI100/RGBT400 reviewed; experimental freeze hoàn tất.
+- [ ] Full representative independent acceptance target and Pi/camera evidence;
+  experimental holdout PASS không tự mở deployment.

@@ -1,9 +1,10 @@
 # Claude Code Project Instructions
 
-Latest sourcing/readiness milestone (2026-10-08): [HOLDOUT_READINESS_SOURCING_V2.md](projects/indoor-detection/docs/HOLDOUT_READINESS_SOURCING_V2.md).
-MultiNatSmoke8 image/mask pairs and AGHRI12 images/22boxes audited;
-FURG case2_house rejected for confirmed v32 scene reuse. No holdout admission.
-User authorizes continuous preparation until v7 is ready; stop before training.
+Latest milestone (2026-10-08): [V7_EXPERIMENTAL_PREPARATION.md](projects/indoor-detection/docs/V7_EXPERIMENTAL_PREPARATION.md).
+V7 preparation READY_FOR_REVIEW for one bounded experiment with documented limitations;
+1,403-image scoped external set frozen, original30-independent-group/300fire
+coverage NOT_MET. Quality gates unchanged; deployment CLOSED.
+768/batch8 resource probe PASS; no training or holdout prediction. Stop before launch.
 
 
 This file contains Claude Code-specific instructions.
@@ -98,7 +99,9 @@ Do not begin implementation until the current task and ownership are clear.
   or recent original labelled source assessment; do not repeat completed FASDD pilot.
   User authorizes automatic planned continuation without repeated continue prompts;
   keep all admission/readiness/training constraints. Do not repeat completed Detectium public-access pilot.
-  No holdout admitted, no train/inference/download job.
+  Historical access state above superseded by V7_EXPERIMENTAL_PREPARATION.md:
+  experimental holdout frozen1403, readiness PASS_WITH_LIMITATIONS. Full independent
+  coverage/deployment still incomplete. No active train/inference/download job.
   V7 requires independent holdout/data/resource readiness; old test remains closed.
   User scope: room/doorway; distant people outside window not required. No numeric
   minimum or ROI selected; labels/full metrics/gates unchanged. Planned height~4m

@@ -1,9 +1,10 @@
 # HomeAssistantPi4 workspace
 
-Latest sourcing/readiness milestone (2026-10-08): [HOLDOUT_READINESS_SOURCING_V2.md](projects/indoor-detection/docs/HOLDOUT_READINESS_SOURCING_V2.md).
-MultiNatSmoke8 image/mask pairs and AGHRI12 images/22boxes audited;
-FURG case2_house rejected for confirmed v32 scene reuse. No holdout admission.
-User authorizes continuous preparation until v7 is ready; stop before training.
+Latest milestone (2026-10-08): [V7_EXPERIMENTAL_PREPARATION.md](projects/indoor-detection/docs/V7_EXPERIMENTAL_PREPARATION.md).
+V7 preparation READY_FOR_REVIEW for one bounded experiment with documented limitations;
+1,403-image scoped external set frozen, original30-independent-group/300fire
+coverage NOT_MET. Quality gates unchanged; deployment CLOSED.
+768/batch8 resource probe PASS; no training or holdout prediction. Stop before launch.
 
 
 Repository này chứa các project AI chạy tại nhà, phát triển trên Windows 11 và
@@ -32,16 +33,13 @@ Protocol/readiness test cuối đã khóa; xem [Final test](projects/indoor-dete
 Chẩn đoán fire trên train/validation đã hoàn tất: recall theo nguồn 83,95% và
 91,90%; giảm threshold làm tăng đáng kể false positives. Xem
 [Fire recovery](projects/indoor-detection/docs/FIRE_RECOVERY_PLAN.md). Đề xuất v7 ở 768, tối đa 12 epoch,
-chưa chạy. Tiếp theo đánh giá nguồn cho
-[holdout độc lập](projects/indoor-detection/docs/INDEPENDENT_HOLDOUT_PLAN.md) và readiness;
-[Recent-source review](projects/indoor-detection/docs/RECENT_HOLDOUT_SOURCE_REVIEW.md): ưu tiên nguồn
-trong 5 năm; hoãn FURG cũ. Zenodo2025 pilot không được nhận do cảnh trùng;
-Detectium IoT đã tải/audit pilot12 cặp, chưa nhận vào holdout.
-Class nguồn đã xác nhận là fire/flame; hoãn Detectium làm holdout chính do
-thiếu phiên quay và coverage. FASDD pilot12 bộ đã audit, phát hiện2 cảnh trùng;
-SCOUT timeout, Boreal inventory hoàn tất nhưng đường tải lỗi. Xem
-[Provenance decision](projects/indoor-detection/docs/HOLDOUT_ACCESS_PILOTS.md).
-Chưa có holdout admission; smoke/person và independence gate còn thiếu. Lịch 60 epoch vẫn hoãn, export đóng,
+chưa chạy. Chuẩn bị thử nghiệm v7 đã hoàn tất; xem
+[V7 preparation](projects/indoor-detection/docs/V7_EXPERIMENTAL_PREPARATION.md).
+Boreal original-checksum access đã phục hồi; THUD/Boreal/AGHRI/RGBT reviewed-only
+holdout thử nghiệm đã khóa. Mục tiêu thu thập được điều chỉnh công khai trước
+predictions;30 sự kiện độc lập/300fire cho bằng chứng đầy đủ vẫn chưa đạt.
+Tiếp theo chỉ launch một v7 khi được yêu cầu riêng, kiểm tra lại hash/resources;
+không tự train ở milestone chuẩn bị. Lịch60 epoch vẫn hoãn, export đóng,
 chưa phát hành. Camera dự kiến cao~4m trở lên;
 ưu tiên người trong phòng/khu vực cửa, chưa chốt minimum size/ROI/góc chúc xuống.
 
