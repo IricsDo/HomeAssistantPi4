@@ -1,5 +1,11 @@
 # HomeAssistantPi4 workspace
 
+Latest sourcing/readiness milestone (2026-10-08): [HOLDOUT_READINESS_SOURCING_V2.md](projects/indoor-detection/docs/HOLDOUT_READINESS_SOURCING_V2.md).
+MultiNatSmoke8 image/mask pairs and AGHRI12 images/22boxes audited;
+FURG case2_house rejected for confirmed v32 scene reuse. No holdout admission.
+User authorizes continuous preparation until v7 is ready; stop before training.
+
+
 Repository này chứa các project AI chạy tại nhà, phát triển trên Windows 11 và
 hướng tới triển khai tiết kiệm tài nguyên trên Raspberry Pi 4 4 GB.
 

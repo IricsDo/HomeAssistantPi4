@@ -62,3 +62,8 @@ recent publication date. No model predictions or new training authorized by inta
 Current access/pilot result: HOLDOUT_ACCESS_PILOTS.md. FASDD12-pair pilot has
 confirmed oldv32 reuse, NOT_ADMITTED; SCOUT timeout; Boreal original2022 event
 metadata complete but download disabled/legacy500. No holdout gate closed.
+
+Latest bounded access milestone: HOLDOUT_READINESS_SOURCING_V2.md.
+MultiNatSmoke/AGHRI paired pilots obtained; FURG case2_house confirmed reused,
+NOT_ADMITTED. Holdout targets unchanged/unmet. Continuous preparation authorized
+until v7 readiness; no training launch. Next original THUD++/smart-factory access.

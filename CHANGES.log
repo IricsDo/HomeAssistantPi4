@@ -3681,3 +3681,72 @@ RuffPASS; no build/export;typechecknotconfigured. Test workflow remainsrunning.
 - **Notes for Next Agent:** Automatic continuation authorized. Keep one detector,
   E: artifacts/C: venv, label scopes/quality gates unchanged. Fresh source packaging,
   zero byte hashes and valid geometry do not prove independent event coverage.
+
+## [2026-10-08 01:59] - Handover from OpenAI Codex
+
+- **Current Task:** Continuous preparation until v7 can train; independent holdout sourcing
+- **Status:** IN_PROGRESS (bounded access/pilot milestone completed; v7 NOT_READY)
+- **Completed in this session:**
+  - User authorizes uninterrupted planned preparation until ready-to-train v7, no train launch.
+  - MultiNatSmoke pinned5b7a4e0f7a094d7e27381a5154ad71be99f58137 public ZIP43.68GB
+    accessed with strict HTTP206 ranges/CRC; inventory163,565members/28,054,648bytes.
+    Frozen seed48 fourBoreal/fourAuSmoke pairs acquired/decode/mask dimensions PASS.
+    All8 visual review: outdoor wildfire; binary masks1-168components do not define
+    object instances. No mask-to-box conversion, no original Boreal YOLO recovered.
+  - AGHRI original Figshare32982638 CC BY4.0, published2026-08-21/captures2024.
+    Part6 inventory23,304members/4,239,769network bytes; no whole archive.
+    Four seed48 sessions, four complete ZED annotation JSONs,12frozen random images,
+    22person boxes. All decode; creator exporter confirms xywh/numeric identity classes.
+    Three images have source boxes outside bounds; no clipping yet. All12 reviewed:
+    greenhouse floor-level view, supplemental domain only; original capture families
+    need consolidation, no room/doorway claim or source-wide admission.
+  - Frozen documented legacy exception for FURG limited fire pilot after recent
+    reuse/access/session failures. Two pinned MP4s89,414,345bytes. Decode904/341frames
+    versus XML907/342; actual29.97fps versus XML29; sizes match/no decoded missing XML.
+    Review43previews: case2_house building fire from outside; negative moving indoor
+    exhibition with3closing title previews. Negative XMLdate2014/end slate2012 noted;
+    source older than earlier2015-2017 summary, no newer capture-date assumption.
+  - Refreshed33849corpusSHA vs frozen registry, split hashes unchanged. Pilot63images:
+    exact0/near5. All5visual pairs confirmed case2_house scene reuse in inspectedv32.
+    Reject entire event; other FURG clips unproven. AGHRI/MultiNatSmoke pilot0candidates
+    does not establish exhaustive whole-source independence. No predictions performed.
+  - IndoorCrowd2026 HF gated/contact-sharing/card401; WEPDTOF/FRIDA2022 download forms
+    require identity/email. No accounts/terms/contact/bypass. UniData full source paid.
+    GWFP classification/release promise and SmokeBench desmoking not verified box GT.
+    Boreal legacy download with UUIDid again500; no repeating polling planned.
+  - Read-only environment probe: checkpointSHA103b45ab6a61f2431b462ee2bc4402f6ddaa7b982e872afd50515e3c6ef28729,
+    configSHA5cccddd70d70aef20f5adf2a5e53eee1b8ac1cf45e616fed475e8b93da0c7466,
+    run absent; CUDA RTX5070Laptop8GB available/free7.35GB, RAMavailable19.26GB,
+    E:free534.76GB. Availability only, not batch8 training peak readiness.
+  - Evidence/recipes E:/HomeAssistantPi4/reports/indoor-readiness-sourcing-v2;
+    manifest199bindings SHAfa5b606ec9b63e99c7ee33484a96fbae9eab2734d8c00c90ed6e267eb8383bca.
+    Raw holdout-candidates/multinat-pilot-v1,aghri-pilot-v1,furg-video-pilot-v1 on E:.
+    Added HOLDOUT_READINESS_SOURCING_V2.md; current plan/instructions/READMEs updated.
+    Earlier bound reports/docs unchanged, source_box_review.py preserved/excluded.
+- **Unfinished / Next Steps (CRITICAL):**
+  - [ ] Continue original THUD++ public Zenodo18459791 real RGB-D person labels/access;
+    smart-factory2024 original inside/outside VOC data next. Freeze bounded pilots first.
+  - [ ] Complete groups/scopes/overlap/content gate; targets remain30groups/two sources,
+    300fire/300smoke/500person and200verified negatives/class, all unmet.
+  - [ ] Freeze holdout/evaluation then final data/checkpoint/environment/resource readiness;
+    stop before v7 launch. No historical test reopening, silent gate changes or retries.
+- **Known Blocks / Issues:** No admitted independent holdout; source reuse, access and
+  convention/domain gaps. No acquisition/audit/train process currently running. cp1252
+  console failed after Boreal info saved; stdoutUTF8 fixed, empty raw directory verified
+  before retry. Fingerprint hex parsing failed after corpus verification; fixed and reran
+  full refresh successfully. No dependency change or .env access.
+- **Validation:**
+  - Build: NOT APPLICABLE (source intake)
+  - Tests: PASS192/192,6.52s; .venv/Scripts/python.exe -m pytest -p no:cacheprovider
+    --basetemp C:/Users/Public/Documents/indoor-readiness-sourcing-20261008
+  - Typecheck: NOT CONFIGURED
+  - Lint: PASS (.venv/Scripts/python.exe -m ruff check . --no-cache)
+  - git diff --check: PASS
+- **Git State:** Branchmain; Last Commit91a83f7; scoped docs awaiting commit/push.
+- **Uncommitted Changes:** CHANGES.log,CLAUDE.md,README.md,projectREADME/PROJECT_PLAN,
+  docs/INDEPENDENT_HOLDOUT_PLAN.md,docs/HOLDOUT_READINESS_SOURCING_V2.md;
+  unrelated untracked src/indoor_detection/source_box_review.py untouched.
+- **Active Files:** PROJECT_PLAN.md,INDEPENDENT_HOLDOUT_PLAN.md; source evidence on E:.
+- **Notes for Next Agent:** Goal remains active; continue automatically, do not call this
+  readiness achieved. New source evidence must use new report folder; v2manifest/doc frozen.
+  E:artifacts/C:venv, one detector, smoke blur policy, numeric person cutoff unchanged.

@@ -1,6 +1,6 @@
 # Kế hoạch hoàn thành Indoor Detection
 
-Ngày cập nhật: **2026-10-07**. Agent cập nhật: **OpenAI Codex**.
+Ngày cập nhật: **2026-10-08**. Agent cập nhật: **OpenAI Codex**.
 Owner hiện tại: **OpenAI Codex**. User cho phép tự động tiếp tục checklist, không chờ nhắc tiếp; giữ data/readiness gates. **Resolution/baseline stage1 COMPLETED; P1c IN_PROGRESS**. P1b preparation hoàn tất; **v6 training/evaluation COMPLETED; person512 FAIL, person768 PASS**.
 V5 đã train đủ 12 epoch và đánh giá validation. Person vẫn FAIL; test/export đóng.
 V6, sáu cấu hình đánh giá, exact hazard calibration và test cuối đã hoàn tất.
@@ -11,6 +11,10 @@ FURG hoãn. Zenodo2025 pilot NOT_ADMITTED do cảnh trùng IFireSmoke đã xác 
 Detectium IoT pilot12 cặp đã tải/audit, chưa admit holdout.
 Class nguồn0fire/1flame đã xác nhận; hoãn Detectium làm holdout chính.
 FASDD pilot đã audit:2 cảnh trùng; SCOUT timeout; Boreal inventory xong, tải lỗi.
+Vòng sourcing v2: MultiNatSmoke8 cặp mask, AGHRI12 ảnh/22box đã audit;
+FURG43 previews có5 cặp cảnh trùng v32, reject case2_house. Chưa admit holdout.
+User yêu cầu tiếp tục liên tục đến khi v7 sẵn sàng train; chưa launch train.
+Xem docs/HOLDOUT_READINESS_SOURCING_V2.md.
 Tiếp theo alternate access/nguồn gốc có nhãn và smoke/person coverage,
 rồi holdout admission và readiness;
 xem [Fire recovery](docs/FIRE_RECOVERY_PLAN.md).
@@ -291,6 +295,8 @@ Không ghi đè v1–v4; không tự mở hàng loạt thử nghiệm khi một 
   NOT_ADMITTED. SCOUT access probe timeout; JRDB fallback login/old footage.
 - [x] Boreal original2022 event/subsetA metadata inventory hoàn tất; download
   disabled/legacy500, chưa audit image/label. Xem docs/HOLDOUT_ACCESS_PILOTS.md.
+- [x] Vòng access v2: MultiNatSmoke/AGHRI/FURG pilot và overlap63x33,849;
+  vẫn chưa admission. Xem HOLDOUT_READINESS_SOURCING_V2.md.
 - [ ] Alternate public access/nguồn gốc có nhãn; chốt groups/completeness/domain.
   Chưa admit holdout. Không suy ra independence từ ngày publication/mirror.
 - [ ] Chốt smoke/person coverage; tạo/audit/freeze holdout độc lập theo protocol.

@@ -1,5 +1,11 @@
 # Indoor Detection
 
+Latest sourcing/readiness milestone (2026-10-08): [HOLDOUT_READINESS_SOURCING_V2.md](docs/HOLDOUT_READINESS_SOURCING_V2.md).
+MultiNatSmoke8 image/mask pairs and AGHRI12 images/22boxes audited;
+FURG case2_house rejected for confirmed v32 scene reuse. No holdout admission.
+User authorizes continuous preparation until v7 is ready; stop before training.
+
+
 Một detector YOLO26n thống nhất cho ba lớp `smoke`, `fire`, `person` trong môi
 trường trong nhà. Project phát triển trên Windows 11 và export NCNN để chạy một
 lượt inference trên Raspberry Pi 4 4 GB.
