@@ -3897,3 +3897,62 @@ RuffPASS; no build/export;typechecknotconfigured. Test workflow remainsrunning.
   automatically train on continuation of intake. Read latest decision/receipts first.
   All large artifacts stay E:/HomeAssistantPi4; local venv stays C:. Never read/print/commit
   projects/.env. Preserve existing untracked source_box_review.py; do not stage it.
+
+## [2026-10-08 21:39] - Handover from OpenAI Codex
+
+- **Current Task:** One authorized bounded v7 launch and durable training monitoring
+- **Status:** IN_PROGRESS; training RUNNING, no completed epoch/quality claim yet
+- **Completed in this session:**
+  - Read AGENTS/CLAUDE/latestCHANGES/README/PROJECT_PLAN and relevant implementation;
+    mainHEADd190901, only unrelated untracked source_box_review.py preserved.
+    User continuation after train-ready milestone authorizes single unchanged launch.
+  - Read-only launch verification PASS51,324bindings,24100joint records/scopes,
+    frozen holdout/readiness/config/checkpoint/protocol hashes unchanged; new run absent.
+    GPU free7.35GB/RAM available17.26GB/E: free526.10GB before launch.
+    E:/HomeAssistantPi4/reports/indoor-v7-execution-v1/preflight.json
+    SHAb3c61da2c76e62f3787b6be147a0bb38d2e2b809f1582fd19fa1a6fa3e3caafb.
+  - V7 started2026-10-08 21:35:35Asia/Saigon (14:35:35UTC), hidden background supervisor.
+    Supervisor launcher36456/runtime23120; training launcher22964/runtime28328 observed.
+    Startup AMP PASS, effective config matches (GPU0 numeric/string normalized), first
+    batches finite/~1.86GB shown; not finished/quality PASS. No optimizer/scope/data changes.
+  - Exact config768/batch8/workers2/max12/patience5, frozen v6best init, samejoint-v4,
+    class-scoped trainer/masked loss/validator, mixing0. No automatic retries.
+    Process-local offline/external-logging flags, global settings unchanged.
+  - Durable status/logs at reports/indoor-v7-execution-v1; supervisor records child exit,
+    epochCSV/checkpoint hashes/v6-integrity after completion. Do not edit running scripts.
+    No old-test/new-holdout inference, export or deployment. Prior frozen reports preserved.
+  - Updated AGENTS/CLAUDE/root+projectREADME/PROJECT_PLAN; new V7_TRAINING_EXECUTION.md.
+- **Unfinished / Next Steps (CRITICAL):**
+  - [ ] Monitor execution-status.json plus actual process/log identity until exit;
+    do NOT relaunch/resume. Any error/OOM stop, retain logs, no automatic config change.
+  - [ ] After success verify epochs/checkpoints/results then validation-only exact
+    square768 aggregate/source gates per frozen evaluation-protocol.json. FireR>=.90
+    aggregate AND each validation source, smokeR>=.90/personF1>=.65/R>=.60 and .01
+    guardrails vs frozen v6. If failure NO_RELEASE and keep holdout closed.
+  - [ ] Only after validation acceptance lock checkpoint/thresholds/preprocessing before
+    one external opening. Original30events/300fire coverage NOT_MET; no deployment
+    claim even if experimental holdout PASS. Hardware proof still unavailable.
+- **Known Blocks / Issues:** Training active; results unknown. Experimental provenance/
+  family correlation/license/age limitations unchanged. No secret reads, packages or
+  unrelated changes. Read-only observer Unicode console/type issues corrected without
+  touching training (GPU0 int->str normalization); no training error/retry observed.
+- **Validation:**
+  - Build: NOT APPLICABLE (training launch; no export)
+  - Tests: PASS192/192,29.07s; .venv/Scripts/python.exe -m pytest -p no:cacheprovider
+    --basetemp C:/Users/Public/Documents/indoor-v7-launch-20261008
+  - Typecheck: NOT CONFIGURED
+  - Lint: PASS (.venv/Scripts/python.exe -m ruff check . --no-cache)
+  - Dependency consistency: PASS (.venv/Scripts/python.exe -m pip check)
+  - Launch preflight/effective args/AMP: PASS; git diff --check: PASS
+- **Git State:** Branchmain; Last Commitd190901 before launch milestone; docs awaiting
+  atomic commit/push, prior untracked file excluded.
+- **Uncommitted Changes:** AGENTS.md,CLAUDE.md,CHANGES.log,README.md,
+  projects/indoor-detection/README.md,PROJECT_PLAN.md,newdocs/V7_TRAINING_EXECUTION.md.
+  Unrelated src/indoor_detection/source_box_review.py unchanged/excluded,
+  SHA2672f80a9b1fd3fd3fed9b41f8e82967f089d30f9bced9f91f725aadfeae1df6.
+- **Active Files:** E:/HomeAssistantPi4/reports/indoor-v7-execution-v1 status/logs and
+  E:/HomeAssistantPi4/runs/indoor-detection/indoor_partial_joint_yolo26n_v7_aligned_768.
+- **Notes for Next Agent:** A training process is active. Read new execution doc and
+  current receipt/log/process before acting; do not rely on historical preparation
+  'nojob' text. Background job continues after chat returns. Data/reports/weights E:,
+  venv C:. Never read/print/commit projects/.env; preserve prior untracked source file.

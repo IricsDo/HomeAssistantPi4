@@ -1,15 +1,15 @@
 # Kế hoạch hoàn thành Indoor Detection
 
 Ngày cập nhật: **2026-10-08**. Agent cập nhật: **OpenAI Codex**.
-Owner hiện tại: **OpenAI Codex**. **V7 experimental preparation READY_FOR_REVIEW**.
-Xem [V7 preparation](docs/V7_EXPERIMENTAL_PREPARATION.md): holdout thử nghiệm1.403 ảnh
-đã audit/freeze;398smoke/97fire/567person, negatives808/808/461.
-Intake targets điều chỉnh công khai trước predictions;7 reserved families không phải
-30 sự kiện độc lập. Target độc lập đầy đủ NOT_MET; quality gates giữ nguyên,
-deployment/export CLOSED. 768/batch8 mixed342GT resource probe PASS.
-Không còn job; chưa train v7, chưa predict holdout. Dừng đúng mốc chuẩn bị train.
-Bước tiếp theo: chỉ launch một v7 khi người dùng yêu cầu riêng, sau recheck
-hash/resources/run absence. V6 test NO_RELEASE (fireR .849913), không tuning test cũ.
+Owner hiện tại: **OpenAI Codex**. **V7 training IN_PROGRESS**.
+User yêu cầu tiếp tục sau preparation; một run768/batch8/max12/patience5 đã bắt đầu
+21:35:35 ngày2026-10-08 Asia/Saigon. Xem [V7 execution](docs/V7_TRAINING_EXECUTION.md).
+Logs/status: E:/HomeAssistantPi4/reports/indoor-v7-execution-v1. Không duplicate
+launch/resume/retry; không sửa config/running scripts. Startup AMP/args/batches PASS;
+chưa có kết quả quality hay epoch hoàn tất. Tiếp theo theo dõi exit/checkpoints,
+rồi validation-only gates/calibration theo protocol đã khóa. Holdout vẫn đóng.
+Preparation frozen1.403ảnh/7reserved families, không phải30independent events;
+full coverage NOT_MET/deployment CLOSED. Tiny labels và quality gates giữ nguyên.
 
 Lịch sử các milestone trước:
 Ứng viên validation768 đạt ba class: smoke/fireR .900932/.900158;personF1/R
@@ -82,8 +82,8 @@ deployment đầy đủ nếu P5 chưa có kết quả.
   PASS aggregate và hai source; precision/negative alarms smoke vẫn kém baseline.
   Xem [Final test](docs/V6_FINAL_TEST.md); NO_RELEASE, không còn job.
   Fire diagnosis đã hoàn tất: FS val recall .839465 vs home .919003.
-  V7 ở 768 PLANNED; tiếp theo source assessment cho holdout độc lập,
-  rồi data/resource readiness. Lịch 60 epoch vẫn hoãn.
+  V7 ở768 hiện IN_PROGRESS; read-only readiness PASS, exact unchanged bounded launch.
+  Tiếp theo theo dõi rồi validation; lịch60 epoch vẫn hoãn.
 
 **V6 trước can thiệp resolution/calibration (lịch sử):**
 
@@ -297,7 +297,8 @@ Không ghi đè v1–v4; không tự mở hàng loạt thử nghiệm khi một 
   amendment trước predictions. Full30-independent-group target vẫn chưa đạt.
 - [x] Kiểm tra data/checkpoint/environment/resource readiness cho bounded v7;
   PASS_WITH_LIMITATIONS. Stop trước launch, recheck khi được yêu cầu train.
-- [ ] Chạy/đánh giá ứng viên mới chỉ sau prerequisites; khóa trước holdout inference.
+- [ ] V7 đang chạy sau prerequisites PASS và user continuation; hoàn tất/đánh giá
+  validation trước candidate lock/holdout. Không đánh dấu completed khi chỉ startup.
 
 **Đầu ra:** model selection decision, checkpoint/threshold lock và quality reports.
 NCNN cuối chỉ được mở khi quality gate đạt, không vì train đã chạy xong.

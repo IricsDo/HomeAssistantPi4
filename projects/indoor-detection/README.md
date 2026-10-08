@@ -1,10 +1,10 @@
 # Indoor Detection
 
-Latest milestone (2026-10-08): [V7_EXPERIMENTAL_PREPARATION.md](docs/V7_EXPERIMENTAL_PREPARATION.md).
-V7 preparation READY_FOR_REVIEW for one bounded experiment with documented limitations;
-1,403-image scoped external set frozen, original30-independent-group/300fire
-coverage NOT_MET. Quality gates unchanged; deployment CLOSED.
-768/batch8 resource probe PASS; no training or holdout prediction. Stop before launch.
+Latest milestone (2026-10-08): [V7_TRAINING_EXECUTION.md](docs/V7_TRAINING_EXECUTION.md).
+**V7 training IN_PROGRESS**; started21:35:35 Asia/Saigon,768px/batch8/max12epochs.
+One unchanged bounded run authorized by user's continuation after preparation.
+Logs/status on E: at reports/indoor-v7-execution-v1; never duplicate-launch/resume.
+Holdout predictions/export/deployment remain CLOSED; preparation limitations unchanged.
 
 
 Một detector YOLO26n thống nhất cho ba lớp `smoke`, `fire`, `person` trong môi

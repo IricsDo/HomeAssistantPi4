@@ -29,16 +29,17 @@ The purpose of this document is to maintain project consistency, prevent agents 
 - **Lint Command:** `python -m ruff check .` from `projects/indoor-detection`.
 - **Typecheck Command:** Not configured.
 
-### Latest preparation state (2026-10-08)
+### Latest execution state (2026-10-08)
 
-- V7 preparation READY_FOR_REVIEW for one bounded experiment; read
-  `projects/indoor-detection/docs/V7_EXPERIMENTAL_PREPARATION.md` and latest CHANGES.
-- Experimental external set1,403images frozen outside unchanged joint-v4.
-  Intake targets explicitly amended before predictions; original30 independent
-  groups/300fire target NOT_MET. Preserve quality gates and deployment closure.
-- 768/batch8 in-memory resource probe PASS; no optimizer step or training launch.
-  User requested stop at train-ready preparation. Do not launch without a later request.
-- Preserve frozen E: reports/manifests and source bytes; do not regenerate them in place.
+- V7 training IN_PROGRESS; user requested continuation after train-ready milestone.
+  Read `projects/indoor-detection/docs/V7_TRAINING_EXECUTION.md` and latest CHANGES.
+- One unchanged bounded run768/batch8/max12/patience5 started21:35:35 Asia/Saigon.
+  E: reports/indoor-v7-execution-v1 holds durable supervisor status/logs.
+  Never duplicate-launch/resume/retry automatically; stop on error/OOM.
+- Experimental external set1,403images stays frozen outside unchanged joint-v4.
+  Original30 independent groups/300fire target NOT_MET. Quality gates unchanged;
+  holdout inference/export/deployment stay closed until applicable gates pass.
+- Preserve frozen E: reports/manifests/source bytes and running scripts; no regeneration.
 
 ### Current delivery constraints
 

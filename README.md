@@ -1,10 +1,10 @@
 # HomeAssistantPi4 workspace
 
-Latest milestone (2026-10-08): [V7_EXPERIMENTAL_PREPARATION.md](projects/indoor-detection/docs/V7_EXPERIMENTAL_PREPARATION.md).
-V7 preparation READY_FOR_REVIEW for one bounded experiment with documented limitations;
-1,403-image scoped external set frozen, original30-independent-group/300fire
-coverage NOT_MET. Quality gates unchanged; deployment CLOSED.
-768/batch8 resource probe PASS; no training or holdout prediction. Stop before launch.
+Latest milestone (2026-10-08): [V7_TRAINING_EXECUTION.md](projects/indoor-detection/docs/V7_TRAINING_EXECUTION.md).
+**V7 training IN_PROGRESS**; started21:35:35 Asia/Saigon,768px/batch8/max12epochs.
+One unchanged bounded run authorized by user's continuation after preparation.
+Logs/status on E: at reports/indoor-v7-execution-v1; never duplicate-launch/resume.
+Holdout predictions/export/deployment remain CLOSED; preparation limitations unchanged.
 
 
 Repository này chứa các project AI chạy tại nhà, phát triển trên Windows 11 và
@@ -19,7 +19,7 @@ hướng tới triển khai tiết kiệm tài nguyên trên Raspberry Pi 4 4 GB
   trợ lý giọng nói đã lưu trữ; trạng thái tại thời điểm tách project nằm trong
   [PROJECT_STATUS.md](projects/ai-voice-assistant/PROJECT_STATUS.md).
 
-## Trạng thái hiện tại
+## Lịch sử chuẩn bị trước khi train v7
 
 **Đánh giá resolution/baseline COMPLETED**, đủ sáu cấu hình square 512/640/768.
 V6-768 sau exact hazard calibration đạt ba gate validation: smoke/fire recall
