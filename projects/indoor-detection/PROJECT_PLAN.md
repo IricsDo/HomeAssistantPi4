@@ -7,6 +7,9 @@ Xem [V7 validation](docs/V7_VALIDATION_DECISION.md) và [execution](docs/V7_TRAI
 Reports: E:/HomeAssistantPi4/reports/indoor-v7-validation-v1. Fire đạt recall
 theo cả hai nguồn nhưng precision giảm quá guardrail1điểm phần trăm so với v6.
 Không duplicate launch/resume/retry hoặc tự mở vòng train mới. Holdout vẫn đóng.
+Chẩn đoán fire sau v7 COMPLETED; xem [can thiệp tiếp theo](docs/FIRE_RECOVERY_AFTER_V7.md).
+Đã freeze audit160ảnh train +27EXIF (union185), annotation/coordinate repair
+PLANNED. Native review185 ảnh chưa hoàn tất, chưa tạo derivative/config/run mới.
 Preparation frozen1.403ảnh/7reserved families, không phải30independent events;
 full coverage NOT_MET/deployment CLOSED. Tiny labels và quality gates giữ nguyên.
 
@@ -298,8 +301,13 @@ Không ghi đè v1–v4; không tự mở hàng loạt thử nghiệm khi một 
   PASS_WITH_LIMITATIONS. Stop trước launch, recheck khi được yêu cầu train.
 - [x] V7 đủ12epoch/exit0; square validation/calibration, source/negative/size
   diagnostics đã hoàn tất. NO_RELEASE do fire precision guardrail; holdout đóng.
-- [ ] Thiết kế can thiệp tiếp theo từ train/validation sau quyết định v7; không
-  tự chạy lịch dài hơn, đổi gate, tuning trên holdout hoặc mở series retry.
+- [x] Chẩn đoán train7900/val1800; review66entries/57uniqueimages, EXIF census
+  27train/3val; freeze185unique training audit và thiết kế data repair sau v7.
+  Xem FIRE_RECOVERY_AFTER_V7.md; annotation defects và confusers tách bằng review.
+- [ ] Native/blinded audit185train, xác nhận completeness/box convention/EXIF
+  rồi derivative train-only có receipt. Giữ legacy validation/test/holdout nguyên.
+- [ ] Sửa/test EXIF gallery rendering, audit derivative scopes/geometry/distributions;
+  chỉ chuẩn bị một bounded candidate sau data/resource gates. Không auto train.
 
 **Đầu ra:** model selection decision, checkpoint/threshold lock và quality reports.
 NCNN cuối chỉ được mở khi quality gate đạt, không vì train đã chạy xong.
@@ -358,9 +366,11 @@ Không đánh dấu PASS bằng benchmark CPU Windows hay thời gian GPU traini
 2. **V7 đã train/đánh giá xong; NO_RELEASE**. Đọc V7_VALIDATION_DECISION.md và
    `E:/HomeAssistantPi4/reports/indoor-v7-validation-v1/final-decision.json`.
    Smoke/person PASS; fire recall từng nguồn PASS nhưng precision guardrail FAIL.
-   Không còn job, không auto train/retry hoặc mở holdout/export. Bước tiếp theo là
-   thiết kế can thiệp từ train/validation: limiting-source misses, extra boxes ở
-   source còn lại, annotation convention và coverage. Đề xuất bounded run mới
+   Không còn job, không auto train/retry hoặc mở holdout/export. Chẩn đoán/thiết kế
+   đã hoàn tất; đọc FIRE_RECOVERY_AFTER_V7.md và frozen diagnosis-summary.json tại
+   reports/indoor-v7-fire-diagnosis-v1 trên E:. Bước tiếp là native audit185train,
+   xác nhận/sửa annotation và EXIF trong derivative riêng, test gallery orientation.
+   Không dùng prediction tự làm GT, không sửa legacy validation. Đề xuất bounded run mới
    cần data/resource gate và authorization riêng; không đơn thuần hạ threshold.
 
    Lịch sử v5/v6 và intake đã hoàn tất (không làm lại):

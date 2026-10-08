@@ -4029,3 +4029,92 @@ RuffPASS; no build/export;typechecknotconfigured. Test workflow remainsrunning.
   explicit bounded design/data/resource gates/authorization, not resume of v7.
   All large artifacts E:, venv C:. Never read/print/commit projects/.env. Preserve
   untracked src/indoor_detection/source_box_review.py and frozen reports/source bytes.
+
+## [2026-10-08 23:20] - Handover from OpenAI Codex
+
+- **Current Task:** V7 fire train/validation diagnosis and bounded next-intervention design
+- **Status:** READY_FOR_REVIEW; diagnosis COMPLETED, intervention PLANNED_NOT_TRAIN_READY
+- **Completed in this session:**
+  - Read AGENTS/CLAUDE/README/latestCHANGES/PROJECT_PLAN and relevant implementation;
+    mainHEADd79d699. No CodeGraph directory. Used senior-computer-vision skill for
+    error/annotation analysis; existing YOLO26n stack/quality gates take precedence.
+    Preserved unrelated source_box_review.py; no .env or secrets read.
+  - Verified frozen v7 validation manifest160files; reused candidates without fresh
+    validation inference. One successful train extraction23:06:14-23:08:52 local,
+    7900fire-scoped images,exit0;768square/batch8/confFloor.001/maxdet100/IoU.5,
+    unscored warmup. No optimizer/training/new test/holdout inference.
+  - New E:/HomeAssistantPi4/reports/indoor-v7-fire-diagnosis-v1. Rematched existing
+    candidates at previously defined.2048617601/.4659980536; no threshold selected.
+    At higher threshold trainFSR.841696 vs home.959369; valFSR.852843/home.914849.
+    Source gap already on train; no causal claim that longer training cannot help.
+  - Val lowering threshold adds39TP/121FP. Of203FP,191on positive images/12on
+    annotated negatives. Geometry:42duplicate/assignment,58insideGT lowIoU,
+    71partial overlap,20lowoverlap,12negative.171overlap/duplicate cases are not
+    automatically171label errors. Train lower threshold FS2372TP/544FP/199FN,
+    home2900TP/265FP/78FN; source/type/condition breakdowns retained.
+  - Frozen/read all66visual diagnostic entries (57uniqueimages:31train/26val),
+    error-enriched selection plus controls, not prevalence estimate. Per-entry
+    uncertainty recorded, no repair approval. Confirmed visible fire with smoke-only
+    labels in train005/006 and val006; grouped/component box extents and real
+    window/extinguisher/clothing confusers also observed. Never mine allFP as negatives.
+  - EXIF census all7900train/1800val: home27train/3val orientation8, FS0.
+    PILraw720x1280 vs cv2oriented1280x720; current PILgallery ignores orientation.
+    train_522 original-pixel/corner-mapping comparison confirms normalized label
+    coordinate mismatch: rotated raw label covers flame, evaluated label on doorway.
+    Other29flagged cases need native review; no blanket repair/metric change.
+  - Designed training data-quality intervention: verified annotation/scope and image-
+    coordinate repair in new derivative, current uniform sampler/model/loss/input/LR
+    retained initially. Existing validation/test labels/membership and holdout frozen.
+    No derivative/YAML/weights/new run created; design and feasibility gates explicit.
+  - Frozen seed81audit160 unique train IDs: all34putative-negative alarms,
+    64positive-extra-box,30below-confidence,32random-negative controls. Add27EXIF
+    train cases,2overlap, union185unique. PENDING native/blinded repair audit,
+    training_allowed=false.3valEXIF cases diagnostic only, never added to train.
+  - Verified15801train image/label/scope bindings against frozen joint-v4 and unchanged
+    untracked hash. Frozen104-file diagnosis manifestSHA
+    41849078dd6d257671853094be12038636c30bb891cba8b2277c8d145e0532f1.
+    All prior reports and source bytes preserved. No GPU/inference/training job remains.
+  - New docs/FIRE_RECOVERY_AFTER_V7.md; updated AGENTS/CLAUDE/root+projectREADME/
+    PROJECT_PLAN with complete diagnosis, proposed intervention and next commands.
+- **Unfinished / Next Steps (CRITICAL):**
+  - [ ] Native/blinded185-image train audit with all class labels; adjudicate
+    completeness, flame grouping/extent, true confusers and EXIF coordinate intent.
+    Diagnostic overview review does not approve new labels or unknown scopes.
+  - [ ] Fix/test gallery orientation consistently with decoder before repair approval;
+    create reviewed train-only image/label/scope derivative on E:, verify all-class
+    coordinate parity, rehearsal, distributions, duplicates and scope audits.
+  - [ ] Only after data/resource/config gates propose one new bounded continuation
+    from v7best768/batch8/max12/patience5 with unchanged masking/mixing0. Later
+    explicit launch authorization required; no automatic training/retry series.
+  - [ ] Keep legacy validation/test/new holdout unchanged. Any benchmark correction
+    needs an explicitly versioned protocol and paired baselines, not silent edits,
+    difficult-case removal or label tuning against model predictions. Deployment closed.
+- **Known Blocks / Issues:** V7 remains NO_RELEASE; missing annotations, box granularity
+  and confirmed EXIF mismatch need data gate repair. No guarantee repairs recover gates.
+  Few correlated families/source/domain limitations,30independent groups/300fire
+  target and actual Pi/camera evidence still incomplete. No dependency/source changes.
+  Reporting attempts retained: initial constructed label path incorrect (fixed using
+  existing _label_path in separate diagnose_v2 output); premature train-report read
+  before extraction JSON existed. Reporting-only recovery, no model-inference retry.
+- **Validation:**
+  - Build: NOT APPLICABLE (diagnosis/design; no export)
+  - Tests: PASS192/192,6.39s; .venv/Scripts/python.exe -m pytest -p no:cacheprovider
+    --basetemp C:/Users/Public/Documents/indoor-v7-fire-diagnosis-20261008
+  - Typecheck: NOT CONFIGURED
+  - Lint: PASS (.venv/Scripts/python.exe -m ruff check . --no-cache)
+  - Dependency consistency: PASS (.venv/Scripts/python.exe -m pip check)
+  - Runtime inference/reporting,15801input bindings,185audit membership: PASS
+  - git diff --check: PASS
+- **Git State:** Branchmain; Last Commitd79d699 before milestone; scoped docs pending
+  atomic commit/push. Prior unrelated untracked file excluded.
+- **Uncommitted Changes:** AGENTS.md,CLAUDE.md,README.md,CHANGES.log,
+  projects/indoor-detection/README.md,PROJECT_PLAN.md,newdocs/FIRE_RECOVERY_AFTER_V7.md.
+  Untracked src/indoor_detection/source_box_review.py unchangedSHA
+  2672f80a9b1fd3fd3fed9b41f8e82967f089d30f9bced9f91f725aadfeae1df6.
+- **Active Files:** None running. Frozen E: diagnosis root above; pending train audit
+  recipe/manifest, exif-census.json, visual-review.json, diagnosis-summary.json.
+- **Notes for Next Agent:** User requested analysis/design; finished. Continue at185train
+  audit if requested, not repeating inference. Original frozen data/validation/holdout
+  immutable; do not overwrite reports or turn ambiguous flame pixels into negatives.
+  Use oriented native views; old EXIF galleries can mislead. Large artifacts E:,venv C:.
+  Never read/print/commit projects/.env; preserve unrelated untracked source file.

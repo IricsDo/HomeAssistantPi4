@@ -32,8 +32,9 @@ The purpose of this document is to maintain project consistency, prevent agents 
 ### Latest execution state (2026-10-08)
 
 - V7 training COMPLETED12epochs, exit0 at22:33:27 Asia/Saigon; validation
-  decision NO_RELEASE. Read `projects/indoor-detection/docs/V7_VALIDATION_DECISION.md`
-  and latest CHANGES. Fire source-recall requirement exceeds precision guardrail.
+  decision NO_RELEASE. Fire diagnosis/design now COMPLETED; read
+  `projects/indoor-detection/docs/FIRE_RECOVERY_AFTER_V7.md` and latest CHANGES.
+  Training-only annotation/coordinate repair is PLANNED, not train-ready.
 - E: reports/indoor-v7-execution-v1 holds training status/logs;
   reports/indoor-v7-validation-v1 holds square validation/calibration evidence.
   Never duplicate-launch/resume/retry automatically; no new training authorized.
@@ -41,6 +42,10 @@ The purpose of this document is to maintain project consistency, prevent agents 
   Original30 independent groups/300fire target NOT_MET. Quality gates unchanged;
   holdout inference/export/deployment stay closed until applicable gates pass.
 - Preserve frozen E: reports/manifests/source bytes; no regeneration.
+- Diagnosis evidence: reports/indoor-v7-fire-diagnosis-v1. Frozen160-image train
+  audit plus27EXIF addendum =185unique train images, final repair review PENDING.
+  Missing-fire labels/granularity and EXIF8 mismatch observed. Do not automatically
+  treat every FP as a negative, transform unreviewed labels or modify legacy validation.
 
 ### Current delivery constraints
 

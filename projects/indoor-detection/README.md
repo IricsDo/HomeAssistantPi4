@@ -1,6 +1,8 @@
 # Indoor Detection
 
-Latest milestone (2026-10-08): [V7_VALIDATION_DECISION.md](docs/V7_VALIDATION_DECISION.md).
+Latest milestone (2026-10-08): [FIRE_RECOVERY_AFTER_V7.md](docs/FIRE_RECOVERY_AFTER_V7.md).
+Fire train/validation diagnosis COMPLETED; annotation/coordinate repair PLANNED.
+Next: native review185unique train images; no derivative/new training launched.
 **V7 training COMPLETED12epochs; validation NO_RELEASE**. Fire source-recall
 requirement breaches precision guardrail; no automatic new training or retry.
 Reports on E: at reports/indoor-v7-validation-v1; training receipt remains in
