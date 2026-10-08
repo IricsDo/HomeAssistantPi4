@@ -1,6 +1,6 @@
 # V7 bounded training execution
 
-Owner: OpenAI Codex. Status: IN_PROGRESS (RUNNING). Updated2026-10-08.
+Owner: OpenAI Codex. Status: COMPLETED (training only). Updated2026-10-08.
 User requested continuation after the train-ready milestone; this authorizes
 one unchanged bounded v7 launch. Preparation reports stay frozen.
 
@@ -41,7 +41,7 @@ Evaluation protocol SHA `b4de1b89b106b0a389972c9b52883afa659e3ba4fa4377797ca9626
 Unrelated untracked `src/indoor_detection/source_box_review.py` unchanged,
 SHA `2672f80a9b1fd3fd3fed9b41f8e82967f089d30f9bced9f91f725aadfeae1df6`.
 
-## Durable monitoring
+## Durable monitoring (training history)
 
 - `preflight.json`: immutable launch readiness receipt.
 - `effective-args-check.json`: explicit config/runtime process observer.
@@ -52,8 +52,8 @@ SHA `2672f80a9b1fd3fd3fed9b41f8e82967f089d30f9bced9f91f725aadfeae1df6`.
   records exit code, CSV epoch count, checkpoint hashes and unchanged v6 checksum.
 - `training_entry.py`: calls existing project CLI with exact frozen config.
 
-Supervisor is a hidden Windows background process; returning from chat does not
-finish training. Do not modify the running scripts or frozen receipts. If the
+During training the supervisor ran as a hidden Windows background process;
+returning from chat did not finish training. Preserve scripts and frozen receipts. If the
 laptop/process exits, inspect evidence first: no automatic resume/retry.
 On error/OOM stop and retain logs; do not lower batch/resolution or reopen old runs.
 No training-completion or metric claim may be made from startup observations.
@@ -67,6 +67,19 @@ Get-Content E:/HomeAssistantPi4/reports/indoor-v7-execution-v1/training.stderr.l
 ```
 
 ## Next steps after exit
+
+Training finished **2026-10-08 22:33:27 Asia/Saigon**, exit0, all12 epochs.
+Elapsed57m52s. Supervisor receipt confirms v6 checkpoint unchanged and records:
+
+- best.pt SHA `148964125fea8ec42a9620ee0366727d9e814b71e3d9e67490618ad534576158`.
+- last.pt SHA `6a0a86798d10d85467e31accf7a2e5448ad7f152905c75f8bb9d539c1788d50d`.
+- Both checkpoints5,374,277bytes; training/supervisor stderr files empty.
+
+Startup observations and process IDs above are historical. No training process
+remains. Completion does not establish quality acceptance. User requested
+continuation; exact-square validation is recorded separately in
+`E:/HomeAssistantPi4/reports/indoor-v7-validation-v1`. No automatic new training.
+Validation now completed:NO_RELEASE; see [V7 decision](V7_VALIDATION_DECISION.md).
 
 1. Verify exit/status/epoch count and checkpoint hashes; inspect actual results/logs.
    Early stop before12 is allowed by patience5; completion does not imply gate PASS.

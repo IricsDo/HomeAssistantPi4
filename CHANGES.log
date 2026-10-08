@@ -3956,3 +3956,76 @@ RuffPASS; no build/export;typechecknotconfigured. Test workflow remainsrunning.
   current receipt/log/process before acting; do not rely on historical preparation
   'nojob' text. Background job continues after chat returns. Data/reports/weights E:,
   venv C:. Never read/print/commit projects/.env; preserve prior untracked source file.
+
+## [2026-10-08 22:57] - Handover from OpenAI Codex
+
+- **Current Task:** Complete bounded v7 training verification and exact-square validation decision
+- **Status:** READY_FOR_REVIEW; evaluation COMPLETED, candidate NO_RELEASE
+- **Completed in this session:**
+  - Read full AGENTS/CLAUDE/README, latest CHANGES, PROJECT_PLAN, frozen evaluation
+    protocol and existing square validator/calibration/matcher before changes.
+    Branch mainHEAD6e85104; unrelated untracked source_box_review.py preserved.
+  - Verified training COMPLETED12/12epochs, exit0 at22:33:27Asia/Saigon; elapsed57m52s.
+    No training process/errors remain. BestSHA148964125fea8ec42a9620ee0366727d9e814b71e3d9e67490618ad534576158;
+    lastSHA6a0a86798d10d85467e31accf7a2e5448ad7f152905c75f8bb9d539c1788d50d.
+    Both5,374,277bytes; v6 checkpoint unchanged. Training receipts/logs preserved.
+  - Fresh51,501frozen bindings verified before inference; unchanged joint-v4,
+    historical reports/manifests/source/config/weights/scopes. No old-test predictions.
+  - New E:/HomeAssistantPi4/reports/indoor-v7-validation-v1, started22:46:11,
+    completed22:55:29Asia/Saigon, exit0; no evaluation job remains. Existing scoped
+    square validator, empirical recall calibration, explicit matcher and size tools
+    reused.768/rectFalse/batch8/confFloor.001/maxdet100/IoU.5, unscored warmup.
+  - Person max-F1 interpolated threshold then explicit confirmation; hazards highest
+    empirical recall threshold, fire capped by limiting positive-source threshold.
+    One global threshold/class, no source-specific runtime policy or box/blur filter.
+  - Explicit smoke P/R/F1 .854144/.900932/.876914 PASS, threshold.2655713260;
+    person .749418/.603187/.668398 PASS, threshold.3423423423. Person interpolated
+    F1/R .668189/.602528 also PASS; recall margin small and lower than frozen v6.
+  - Fire threshold.2048617601 P/R/F1 .852685/.931062/.890152; source recall
+    FS270/299=.903010, home905/963=.939772. Recall PASS, precision guardrail FAIL:
+    -3.3430percentage points vs frozen v6; allowed1point, minimumP.876115.
+    All observed confidence points below source cap inspected from existing curve;
+    maxP.852685, so confidence-only solution infeasible for fixed current extraction.
+  - Verified negative alarms smoke16/990,fire10/616,person118/1154; all alarm
+    guardrails PASS. Fresh v6 batch8 fixed-point comparison plus original frozen
+    batch16 guardrails both checked; tiny precision differences do not change decision.
+    Person fixed512 height strata/native diagnostics preserve all tiny labels.
+  - Final decision NO_RELEASE; holdout1403 remains unopened, export/deployment closed.
+    No automatic trial, longer schedule, training/config/dependency/data change.
+  - Frozen160-file manifestSHAae5b0cd66f7531ed2bb84bf4d5d73b8e5bf7a0ec13d0f54765b627ea83344587.
+    PolicySHAd336812aa4fb11a193f6ae1dc8c8d15ed322e9bc6d7f2b5383b5f04b95effc69.
+    final-decision.json adds independent rematch/frozen-reference guardrail/feasibility
+    checks; raw summary.json and all prior frozen evidence preserved.
+  - Updated AGENTS/CLAUDE/root+projectREADME/PROJECT_PLAN/V7_TRAINING_EXECUTION;
+    new docs/V7_VALIDATION_DECISION.md. Existing implementation unchanged.
+- **Unfinished / Next Steps (CRITICAL):**
+  - [ ] Design next bounded intervention from training/validation only: assess
+    limiting-source fire misses, extra detections on the other source, annotation
+    conventions and source coverage. No automatic new training/retry series.
+  - [ ] Keep old test/new experimental holdout closed until a future candidate passes
+    unchanged validation gates and checkpoint/threshold/preprocessing lock.
+  - [ ] Full30independent groups/300fire representative acceptance target and actual
+    Pi/camera evidence remain incomplete. Experimental PASS cannot authorize deployment.
+- **Known Blocks / Issues:** V7 fire recall/precision trade-off fails fixed gate.
+  Smoke home-source recall.893031 is descriptive; current validation gate is aggregate,
+  future external positive-source recall gate unchanged. Person recall barely above.60.
+  Correlated-source/domain/provenance/license/age limitations unchanged. No secrets read.
+- **Validation:**
+  - Build: NOT APPLICABLE (validation/documentation, no export)
+  - Tests: PASS192/192,8.03s; .venv/Scripts/python.exe -m pytest -p no:cacheprovider
+    --basetemp C:/Users/Public/Documents/indoor-v7-validation-20261008
+  - Typecheck: NOT CONFIGURED
+  - Lint: PASS (.venv/Scripts/python.exe -m ruff check . --no-cache)
+  - Dependency consistency: PASS (.venv/Scripts/python.exe -m pip check)
+  - Runtime validation/rematching/reference comparison: PASS; model quality fire FAIL
+- **Git State:** Branch main; Last Commit6e85104 before milestone; scoped docs pending
+  atomic commit/push. Previous untracked source file excluded.
+- **Uncommitted Changes:** AGENTS.md,CLAUDE.md,README.md,CHANGES.log,
+  projects/indoor-detection/README.md,PROJECT_PLAN.md,docs/V7_TRAINING_EXECUTION.md,
+  new docs/V7_VALIDATION_DECISION.md. Unrelated source_box_review.py unchanged.
+- **Active Files:** None running. Frozen E: validation/execution roots above.
+- **Notes for Next Agent:** Read final-decision.json and new decision doc first;
+  previous training RUNNING/startup text is historical. Any new experiment requires
+  explicit bounded design/data/resource gates/authorization, not resume of v7.
+  All large artifacts E:, venv C:. Never read/print/commit projects/.env. Preserve
+  untracked src/indoor_detection/source_box_review.py and frozen reports/source bytes.

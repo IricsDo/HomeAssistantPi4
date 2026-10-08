@@ -1,10 +1,10 @@
 # HomeAssistantPi4 workspace
 
-Latest milestone (2026-10-08): [V7_TRAINING_EXECUTION.md](projects/indoor-detection/docs/V7_TRAINING_EXECUTION.md).
-**V7 training IN_PROGRESS**; started21:35:35 Asia/Saigon,768px/batch8/max12epochs.
-One unchanged bounded run authorized by user's continuation after preparation.
-Logs/status on E: at reports/indoor-v7-execution-v1; never duplicate-launch/resume.
-Holdout predictions/export/deployment remain CLOSED; preparation limitations unchanged.
+Latest milestone (2026-10-08): [V7_VALIDATION_DECISION.md](projects/indoor-detection/docs/V7_VALIDATION_DECISION.md).
+**V7 training COMPLETED12epochs; validation NO_RELEASE**. Fire source-recall
+requirement breaches precision guardrail; no automatic new training or retry.
+Reports on E: at reports/indoor-v7-validation-v1; training receipt remains in
+reports/indoor-v7-execution-v1. Holdout/export/deployment remain CLOSED.
 
 
 Repository này chứa các project AI chạy tại nhà, phát triển trên Windows 11 và

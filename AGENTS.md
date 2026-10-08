@@ -31,15 +31,16 @@ The purpose of this document is to maintain project consistency, prevent agents 
 
 ### Latest execution state (2026-10-08)
 
-- V7 training IN_PROGRESS; user requested continuation after train-ready milestone.
-  Read `projects/indoor-detection/docs/V7_TRAINING_EXECUTION.md` and latest CHANGES.
-- One unchanged bounded run768/batch8/max12/patience5 started21:35:35 Asia/Saigon.
-  E: reports/indoor-v7-execution-v1 holds durable supervisor status/logs.
-  Never duplicate-launch/resume/retry automatically; stop on error/OOM.
+- V7 training COMPLETED12epochs, exit0 at22:33:27 Asia/Saigon; validation
+  decision NO_RELEASE. Read `projects/indoor-detection/docs/V7_VALIDATION_DECISION.md`
+  and latest CHANGES. Fire source-recall requirement exceeds precision guardrail.
+- E: reports/indoor-v7-execution-v1 holds training status/logs;
+  reports/indoor-v7-validation-v1 holds square validation/calibration evidence.
+  Never duplicate-launch/resume/retry automatically; no new training authorized.
 - Experimental external set1,403images stays frozen outside unchanged joint-v4.
   Original30 independent groups/300fire target NOT_MET. Quality gates unchanged;
   holdout inference/export/deployment stay closed until applicable gates pass.
-- Preserve frozen E: reports/manifests/source bytes and running scripts; no regeneration.
+- Preserve frozen E: reports/manifests/source bytes; no regeneration.
 
 ### Current delivery constraints
 

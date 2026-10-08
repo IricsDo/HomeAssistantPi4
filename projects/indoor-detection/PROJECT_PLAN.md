@@ -1,13 +1,12 @@
 # Kế hoạch hoàn thành Indoor Detection
 
 Ngày cập nhật: **2026-10-08**. Agent cập nhật: **OpenAI Codex**.
-Owner hiện tại: **OpenAI Codex**. **V7 training IN_PROGRESS**.
-User yêu cầu tiếp tục sau preparation; một run768/batch8/max12/patience5 đã bắt đầu
-21:35:35 ngày2026-10-08 Asia/Saigon. Xem [V7 execution](docs/V7_TRAINING_EXECUTION.md).
-Logs/status: E:/HomeAssistantPi4/reports/indoor-v7-execution-v1. Không duplicate
-launch/resume/retry; không sửa config/running scripts. Startup AMP/args/batches PASS;
-chưa có kết quả quality hay epoch hoàn tất. Tiếp theo theo dõi exit/checkpoints,
-rồi validation-only gates/calibration theo protocol đã khóa. Holdout vẫn đóng.
+Owner hiện tại: **OpenAI Codex**. **V7 training COMPLETED; validation NO_RELEASE**.
+Run768/batch8/max12/patience5 đã hoàn tất12epoch, exit0 lúc22:33:27 ngày2026-10-08.
+Xem [V7 validation](docs/V7_VALIDATION_DECISION.md) và [execution](docs/V7_TRAINING_EXECUTION.md).
+Reports: E:/HomeAssistantPi4/reports/indoor-v7-validation-v1. Fire đạt recall
+theo cả hai nguồn nhưng precision giảm quá guardrail1điểm phần trăm so với v6.
+Không duplicate launch/resume/retry hoặc tự mở vòng train mới. Holdout vẫn đóng.
 Preparation frozen1.403ảnh/7reserved families, không phải30independent events;
 full coverage NOT_MET/deployment CLOSED. Tiny labels và quality gates giữ nguyên.
 
@@ -63,13 +62,13 @@ rồi cập nhật kế hoạch này theo bằng chứng. Không sửa lịch s�
 |---|---|---|---|
 | P0 | Stack, downloader, chuẩn hóa và baseline | COMPLETED | Có scoped corpus đã audit và báo cáo v1–v4 |
 | P1 | Đánh giá nguồn bổ sung, review box và chốt can thiệp | COMPLETED | Joint v3 data gate PASS_WITH_LIMITATIONS, đã khóa evidence |
-| P2 | Fine-tune có kiểm soát | COMPLETED | V6 đủ12 epoch, best10; chưa có run tiếp theo |
-| P3 | Calibration, quality gate và khóa ứng viên | IN_PROGRESS | Validation768 PASS; test hoàn tất, fireR .849913 FAIL; NO_RELEASE, export đóng |
+| P2 | Fine-tune có kiểm soát | COMPLETED | V6/v7 đủ12epoch; v7 exit0, đã ghi nhận checkpoint SHA |
+| P3 | Calibration, quality gate và khóa ứng viên | IN_PROGRESS | V7 validation NO_RELEASE: fire source recall và precision guardrail chưa đồng thời đạt |
 | P4 | Export NCNN và kiểm tra tương đương | PLANNED | Artifact, preprocessing, output và chất lượng sau export được kiểm tra |
 | P5 | Benchmark và camera trên Pi thật | BLOCKED | Có phần cứng, đo performance/latency/soak và kiểm tra miền thật |
 | P6 | Đóng gói vận hành và nghiệm thu | PLANNED | Hướng dẫn tái lập, cấu hình phát hành và bàn giao đầy đủ |
 
-**Còn 4 công đoạn đích P3–P6**; đề xuất phục hồi fire đã có, chưa khởi chạy.
+**Còn 4 công đoạn đích P3–P6**; can thiệp v7 đã chạy/đánh giá, chưa đạt gate.
 P1/P2 đã hoàn tất cho v6 nhưng P3 chưa đạt toàn bộ quality gate. Các vòng train không có số lần cố định
 hay phần trăm hoàn thành đảm bảo trước khi đạt quality gate.
 P5 bị chặn bởi phần cứng. Có thể chuẩn bị tài liệu P6 trước, nhưng chưa nghiệm thu
@@ -82,8 +81,8 @@ deployment đầy đủ nếu P5 chưa có kết quả.
   PASS aggregate và hai source; precision/negative alarms smoke vẫn kém baseline.
   Xem [Final test](docs/V6_FINAL_TEST.md); NO_RELEASE, không còn job.
   Fire diagnosis đã hoàn tất: FS val recall .839465 vs home .919003.
-  V7 ở768 hiện IN_PROGRESS; read-only readiness PASS, exact unchanged bounded launch.
-  Tiếp theo theo dõi rồi validation; lịch60 epoch vẫn hoãn.
+  V7 ở768 đã hoàn tất12epoch; square validation NO_RELEASE do precision fire
+  khi bảo đảm recall từng nguồn. Lịch60epoch vẫn hoãn; không auto retry.
 
 **V6 trước can thiệp resolution/calibration (lịch sử):**
 
@@ -297,8 +296,10 @@ Không ghi đè v1–v4; không tự mở hàng loạt thử nghiệm khi một 
   amendment trước predictions. Full30-independent-group target vẫn chưa đạt.
 - [x] Kiểm tra data/checkpoint/environment/resource readiness cho bounded v7;
   PASS_WITH_LIMITATIONS. Stop trước launch, recheck khi được yêu cầu train.
-- [ ] V7 đang chạy sau prerequisites PASS và user continuation; hoàn tất/đánh giá
-  validation trước candidate lock/holdout. Không đánh dấu completed khi chỉ startup.
+- [x] V7 đủ12epoch/exit0; square validation/calibration, source/negative/size
+  diagnostics đã hoàn tất. NO_RELEASE do fire precision guardrail; holdout đóng.
+- [ ] Thiết kế can thiệp tiếp theo từ train/validation sau quyết định v7; không
+  tự chạy lịch dài hơn, đổi gate, tuning trên holdout hoặc mở series retry.
 
 **Đầu ra:** model selection decision, checkpoint/threshold lock và quality reports.
 NCNN cuối chỉ được mở khi quality gate đạt, không vì train đã chạy xong.
@@ -354,7 +355,16 @@ Không đánh dấu PASS bằng benchmark CPU Windows hay thời gian GPU traini
 
 1. Đọc đầy đủ `AGENTS.md`, `CLAUDE.md`, entry mới nhất `CHANGES.log`, README và
    file này; chạy `git status`/`git log`. Xác định owner, giữ dirty work.
-2. **V5 đã hoàn tất, person FAIL.** Đọc V5_EVALUATION_DECISION.md và bắt đầu P1b
+2. **V7 đã train/đánh giá xong; NO_RELEASE**. Đọc V7_VALIDATION_DECISION.md và
+   `E:/HomeAssistantPi4/reports/indoor-v7-validation-v1/final-decision.json`.
+   Smoke/person PASS; fire recall từng nguồn PASS nhưng precision guardrail FAIL.
+   Không còn job, không auto train/retry hoặc mở holdout/export. Bước tiếp theo là
+   thiết kế can thiệp từ train/validation: limiting-source misses, extra boxes ở
+   source còn lại, annotation convention và coverage. Đề xuất bounded run mới
+   cần data/resource gate và authorization riêng; không đơn thuần hạ threshold.
+
+   Lịch sử v5/v6 và intake đã hoàn tất (không làm lại):
+   **V5 đã hoàn tất, person FAIL.** Đọc V5_EVALUATION_DECISION.md; P1b
    reviewed-only proposal tại SMALL_PERSON_INTAKE.md. CrowdHuman/COCO pilot review
    đã xong; expansion tự động đều đóng. COCO nhận24, CrowdHuman nhận30;
    cross-pilot/data gate đã đạt, derivative54/joint v4 đã tạo. Config/preflight v6

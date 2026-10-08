@@ -1,10 +1,10 @@
 # Indoor Detection
 
-Latest milestone (2026-10-08): [V7_TRAINING_EXECUTION.md](docs/V7_TRAINING_EXECUTION.md).
-**V7 training IN_PROGRESS**; started21:35:35 Asia/Saigon,768px/batch8/max12epochs.
-One unchanged bounded run authorized by user's continuation after preparation.
-Logs/status on E: at reports/indoor-v7-execution-v1; never duplicate-launch/resume.
-Holdout predictions/export/deployment remain CLOSED; preparation limitations unchanged.
+Latest milestone (2026-10-08): [V7_VALIDATION_DECISION.md](docs/V7_VALIDATION_DECISION.md).
+**V7 training COMPLETED12epochs; validation NO_RELEASE**. Fire source-recall
+requirement breaches precision guardrail; no automatic new training or retry.
+Reports on E: at reports/indoor-v7-validation-v1; training receipt remains in
+reports/indoor-v7-execution-v1. Holdout/export/deployment remain CLOSED.
 
 
 Một detector YOLO26n thống nhất cho ba lớp `smoke`, `fire`, `person` trong môi
@@ -23,7 +23,7 @@ lượt inference trên Raspberry Pi 4 4 GB.
 Đây là lớp cảnh báo bổ sung bằng camera, không thay thế đầu báo khói hoặc đầu báo
 nhiệt đạt chuẩn.
 
-## Trạng thái
+## Lịch sử trước đánh giá v7
 
 **Đánh giá resolution/baseline COMPLETED**, đủ sáu cấu hình square 512/640/768.
 V6-768 sau exact hazard calibration đạt ba gate validation: smoke/fire recall
