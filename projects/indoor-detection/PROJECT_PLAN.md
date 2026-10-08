@@ -1,6 +1,6 @@
 # Kế hoạch hoàn thành Indoor Detection
 
-Ngày cập nhật: **2026-10-08**. Agent cập nhật: **OpenAI Codex**.
+Ngày cập nhật: **2026-10-09**. Agent cập nhật: **OpenAI Codex**.
 Owner hiện tại: **OpenAI Codex**. **V7 training COMPLETED; validation NO_RELEASE**.
 Run768/batch8/max12/patience5 đã hoàn tất12epoch, exit0 lúc22:33:27 ngày2026-10-08.
 Xem [V7 validation](docs/V7_VALIDATION_DECISION.md) và [execution](docs/V7_TRAINING_EXECUTION.md).
@@ -8,8 +8,9 @@ Reports: E:/HomeAssistantPi4/reports/indoor-v7-validation-v1. Fire đạt recall
 theo cả hai nguồn nhưng precision giảm quá guardrail1điểm phần trăm so với v6.
 Không duplicate launch/resume/retry hoặc tự mở vòng train mới. Holdout vẫn đóng.
 Chẩn đoán fire sau v7 COMPLETED; xem [can thiệp tiếp theo](docs/FIRE_RECOVERY_AFTER_V7.md).
-Đã freeze audit160ảnh train +27EXIF (union185), annotation/coordinate repair
-PLANNED. Native review185 ảnh chưa hoàn tất, chưa tạo derivative/config/run mới.
+Audit185 ảnh train và derivative joint-v5 đã hoàn tất; data gate
+PASS_WITH_LIMITATIONS, resource probe768/batch8 PASS. Đã chuẩn bị một config v8;
+READY_FOR_REVIEW, dừng trước training. Xem [V8 preparation](docs/V8_FIRE_REPAIR_PREPARATION.md).
 Preparation frozen1.403ảnh/7reserved families, không phải30independent events;
 full coverage NOT_MET/deployment CLOSED. Tiny labels và quality gates giữ nguyên.
 
@@ -304,10 +305,15 @@ Không ghi đè v1–v4; không tự mở hàng loạt thử nghiệm khi một 
 - [x] Chẩn đoán train7900/val1800; review66entries/57uniqueimages, EXIF census
   27train/3val; freeze185unique training audit và thiết kế data repair sau v7.
   Xem FIRE_RECOVERY_AFTER_V7.md; annotation defects và confusers tách bằng review.
-- [ ] Native/blinded audit185train, xác nhận completeness/box convention/EXIF
-  rồi derivative train-only có receipt. Giữ legacy validation/test/holdout nguyên.
-- [ ] Sửa/test EXIF gallery rendering, audit derivative scopes/geometry/distributions;
-  chỉ chuẩn bị một bounded candidate sau data/resource gates. Không auto train.
+- [x] Audit185train:112keep/12manual fire repair/27EXIF/34unknown-fire scopes;
+  derivative joint-v5 có receipt; legacy validation/test/holdout giữ nguyên.
+- [x] Sửa/test EXIF gallery, full scoped/geometry/duplicate/distribution gates;
+  data PASS_WITH_LIMITATIONS, resource PASS; config bounded v8 đã freeze.
+  Xem V8_FIRE_REPAIR_PREPARATION.md;210 tests/Ruff/pip check PASS.
+- [ ] Khi được yêu cầu launch riêng, recheck integrity/resources rồi chạy đúng một
+  v8 tối đa12epoch/patience5. Hiện READY_FOR_REVIEW; chưa train, không auto retry.
+- [ ] Calibration/validation v8 cùng protocol và frozen v6 guardrails; chỉ mở
+  experimental holdout một lần sau khi mọi gate đạt và khóa ứng viên.
 
 **Đầu ra:** model selection decision, checkpoint/threshold lock và quality reports.
 NCNN cuối chỉ được mở khi quality gate đạt, không vì train đã chạy xong.
@@ -368,10 +374,11 @@ Không đánh dấu PASS bằng benchmark CPU Windows hay thời gian GPU traini
    Smoke/person PASS; fire recall từng nguồn PASS nhưng precision guardrail FAIL.
    Không còn job, không auto train/retry hoặc mở holdout/export. Chẩn đoán/thiết kế
    đã hoàn tất; đọc FIRE_RECOVERY_AFTER_V7.md và frozen diagnosis-summary.json tại
-   reports/indoor-v7-fire-diagnosis-v1 trên E:. Bước tiếp là native audit185train,
-   xác nhận/sửa annotation và EXIF trong derivative riêng, test gallery orientation.
-   Không dùng prediction tự làm GT, không sửa legacy validation. Đề xuất bounded run mới
-   cần data/resource gate và authorization riêng; không đơn thuần hạ threshold.
+   reports/indoor-v7-fire-diagnosis-v1 trên E:. Audit185/repair đã hoàn tất;
+   đọc V8_FIRE_REPAIR_PREPARATION.md và reports/indoor-fire-train-repair-audit-v1.
+   Joint-v5 data PASS_WITH_LIMITATIONS, resource PASS, frozen v8 config chuẩn bị xong.
+   Dừng ở train-ready; chỉ launch khi có yêu cầu riêng, sau recheck253artifact hashes,
+   dataset bindings/checkpoint/GPU/run absence. Không sửa legacy validation hoặc gate.
 
    Lịch sử v5/v6 và intake đã hoàn tất (không làm lại):
    **V5 đã hoàn tất, person FAIL.** Đọc V5_EVALUATION_DECISION.md; P1b

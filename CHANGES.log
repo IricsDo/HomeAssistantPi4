@@ -4118,3 +4118,94 @@ RuffPASS; no build/export;typechecknotconfigured. Test workflow remainsrunning.
   immutable; do not overwrite reports or turn ambiguous flame pixels into negatives.
   Use oriented native views; old EXIF galleries can mislead. Large artifacts E:,venv C:.
   Never read/print/commit projects/.env; preserve unrelated untracked source file.
+
+## [2026-10-09 00:02] - Handover from OpenAI Codex
+
+- **Current Task:** Audited training-only fire repair and one bounded v8 preparation.
+- **Status:** READY_FOR_REVIEW (preparation complete; stop before training).
+- **Completed in this session:**
+  - Read required repository instructions/history/plan and checked main/2b8875d.
+    Took the explicitly requested audit/derivative/preparation task; preserved prior
+    untracked source_box_review.py and its SHA. No secret file read or output.
+  - Reviewed185 frozen training IDs:112keep/12manual fire repairs/27confirmed EXIF8
+    coordinate repairs/34unknown-fire scopes. Viewed original overview pages first,
+    then labels; native originals/proposed overlays for12manual repairs, native
+    coordinate comparison crops for all27EXIF. No added model overlays used as GT.
+  - Added hash-bound train_data_repair builder: train-only unique decisions, source
+    binding checks, source bytes preserved, lossless oriented PNGs/all-class corner
+    mapping, existing unknown-class mechanism, before/after receipts, output refusal
+    if directory exists, and original train-index order/benchmark-index byte retention.
+  - New E: processed/indoor-partial-joint-v5-fire-repaired contains24,100 members:
+    15,502train/4,301val/4,297test.73new train image/label pairs, all others reused.
+    Fire boxes5549 ->5504:56masked rows, net11manual additions; smoke4124/person29974
+    unchanged. Val/test pixels/labels/scopes/index bytes and external holdout untouched.
+  - Fixed error-analysis gallery EXIF transpose to match OpenCV coordinates; tests
+    orientations1/3/6/8. No historical metrics/frozen galleries recomputed.
+  - Full scoped structure/duplicate/distribution audit PASS:24,100audited, zero
+    errors/path overlap/exact duplicates.48,465original/frozen bindings verified;
+    original split memberships match v4 bindings. EXIF27pixel parity PASS, maximum
+    roundtrip error4.40e-10pixels; zero decoded-pixel collisions against8,598val/test.
+    Separate final data-gate receipt PASS_WITH_LIMITATIONS; generic visual PENDING
+    field remains unchanged. See documented limits, not a perfect annotation claim.
+  - Prepared configs/train_indoor_v8_fire_repair_proposal.yaml: v7best init,
+    768/batch8/workers2/max12/patience5, existing AdamW/LR/class masking/mixing0,
+    uniform sampling. One future run; no automatic retry or launch authorization.
+  - Fresh two-pass in-memory forward/backward probe with299GT boxes: finite loss/
+    gradients, allocated AdamW-like moments, no optimizer step/trainer/epoch.
+    Peak GPU allocated1,846,307,328B/reserved2,021,654,528B; checkpoint unchanged,
+    proposed run absent. No model training, test/holdout inference or Pi benchmark.
+  - Frozen253files in E: reports/indoor-fire-train-repair-audit-v1 plus derivative.
+    ManifestSHA a55301eff85190d3cf9a164747a3ff0e340333b0bdab6ca15ab9b217142f1eb9.
+    ReviewSHA c8277d9e83d7722f8e9027337a44cdb140f2385fb807e791fe8365733ad4138b.
+    Frozen E: configSHA d2b780459be2538ade69f470280c3e699c8196b91ff5ced0374c42841d8506a7;
+    use its bytes across Git autocrlf checkouts. V7bestSHA
+    148964125fea8ec42a9620ee0366727d9e814b71e3d9e67490618ad534576158.
+  - Updated AGENTS/CLAUDE/root and project README/PROJECT_PLAN, linked historical
+    diagnosis to new docs/V8_FIRE_REPAIR_PREPARATION.md. No dependencies added.
+- **Unfinished / Next Steps (CRITICAL):**
+  - [ ] Wait for later explicit v8 launch request; preparation is complete.
+  - [ ] Before an authorized launch, read-only recheck253artifact hashes, all current
+    dataset bindings, v7checkpoint, frozen E: config, run absence and GPU/free disk.
+    Any fresh resource probe writes to a new E: report directory.
+  - [ ] Run exactly one bounded v8 with existing indoor-train and frozen config;
+    record start/status/logs. Stop on errors/OOM; no automatic retries.
+  - [ ] Square validation/calibration under unchanged protocol/frozen v6 guardrails.
+    Holdout/export remain CLOSED until every gate passes and candidate is locked.
+- **Known Blocks / Issues:**
+  - V7 remains NO_RELEASE; v8 quality is unmeasured. Single-agent error-enriched
+    review is not prevalence estimation; source grouping retained where defensible;
+    baked source highlights/composites preserved.34fire-unknown images retain smoke
+    supervision, not certified fire negatives. Smoke is not exhaustively relabeled.
+    Legacy validation label/EXIF limitations remain; correction needs a new separately
+    authorized benchmark with paired baseline evaluation. External independence/
+    coverage and real camera/Pi limitations remain unchanged.
+  - Gallery assembly initially failed from Windows path separators before intake
+    creation; fixed to as_posix. Verification v1 sorted-helper comparison failed;
+    v2 exposed real training-index reordering of54appended person examples. Fixed
+    builder/index before freeze, added regression; prior index/failure receipts kept.
+    Same resolved audit/probe members, no image/label changes or training retry.
+    Initial scratch lint/import/line issues corrected; only our scratch files moved
+    to E. Documentation encoding read error corrected to explicit UTF-8.
+- **Validation:**
+  - Build: NOT APPLICABLE (no export/application build).
+  - Tests: PASS210/210,6.15s, python -m pytest -o addopts='' -q.
+  - Typecheck: NOT CONFIGURED.
+  - Lint: PASS, python -m ruff check .; pip check PASS.
+  - Data/resource gates: PASS_WITH_LIMITATIONS / PASS; training launch CLOSED.
+- **Git State:**
+  - Branch: main; parent/previous Last Commit:2b8875dfc63d661e14959fc417c9b44ad585d79f.
+  - Working Tree: DIRTY for this atomic milestone and unrelated prior untracked
+    source file. Commit/push authorized by user; inspect git log for resulting hash.
+- **Uncommitted Changes:** AGENTS.md,CLAUDE.md,README.md,CHANGES.log;
+  projects/indoor-detection/README.md,PROJECT_PLAN.md,docs/FIRE_RECOVERY_AFTER_V7.md,
+  newdocs/V8_FIRE_REPAIR_PREPARATION.md,newconfigs/train_indoor_v8_fire_repair_proposal.yaml,
+  src/indoor_detection/error_analysis.py,newsrc/indoor_detection/train_data_repair.py,
+  tests/test_error_analysis.py,tests/test_train.py,newtests/test_train_data_repair.py.
+  Prior untracked source_box_review.py excluded; SHA unchanged
+  2672f80a9b1fd3fd3fed9b41f8e82967f089d30f9bced9f91f725aadfeae1df6.
+- **Active Files:** None running. Frozen report/data/config/checkpoint references above.
+- **Notes for Next Agent:** Read V8_FIRE_REPAIR_PREPARATION.md and readiness/data-gate
+  receipts. Do not regenerate frozen E: artifacts or rerun write-producing recipes
+  there. Continue at explicit launch authorization/integrity recheck, not repeated
+  audit/inference. Preserve full gates, tiny objects, class scopes, one detector,
+  frozen validation/test/holdout. Large data/reports E:,venv C:. Never expose .env.

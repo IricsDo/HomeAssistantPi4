@@ -5,10 +5,12 @@ from collections import Counter
 from pathlib import Path
 
 import pytest
+from PIL import Image
 
 from indoor_detection.error_analysis import (
     Detection,
     _dataset_class_id,
+    _draw_example,
     _filter_images_for_class_scope,
     _metric_row,
     _miss_reason,
@@ -18,6 +20,30 @@ from indoor_detection.error_analysis import (
     box_iou,
     match_detections,
 )
+
+
+@pytest.mark.parametrize("orientation", [1, 3, 6, 8])
+def test_gallery_uses_exif_oriented_prediction_frame(tmp_path: Path, orientation: int) -> None:
+    import cv2
+    import numpy as np
+
+    source = Image.new("RGB", (80, 120), "red")
+    source.paste("blue", (40, 0, 80, 120))
+    metadata = source.getexif()
+    metadata[274] = orientation
+    path = tmp_path / "source.jpg"
+    source.save(path, exif=metadata)
+    destination = tmp_path / "gallery.jpg"
+    _draw_example(
+        {"image_path": str(path), "ground_truth": [], "predictions": []},
+        destination,
+        "EXIF regression",
+    )
+    expected = Image.fromarray(cv2.cvtColor(cv2.imread(str(path)), cv2.COLOR_BGR2RGB))
+    with Image.open(destination) as rendered:
+        assert rendered.size == (expected.width, expected.height + 28)
+        pixels = rendered.crop((0, 28, expected.width, expected.height + 28))
+        assert np.abs(np.asarray(pixels).astype(float) - np.asarray(expected)).mean() < 5
 
 
 @pytest.mark.parametrize("batch", [1, 2])

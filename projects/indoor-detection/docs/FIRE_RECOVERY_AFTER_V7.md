@@ -1,7 +1,9 @@
 # Fire diagnosis after v7 and next intervention design
 
 Owner: OpenAI Codex. Updated2026-10-08.
-Status: **COMPLETED diagnosis; PLANNED intervention, not train-ready**.
+Historical milestone: **COMPLETED diagnosis and intervention design**.
+Follow-up audit/derivative preparation is complete; current state and frozen
+evidence: [V8 preparation](V8_FIRE_REPAIR_PREPARATION.md). Training has not started.
 User requested train/validation error analysis and intervention design.
 V7 remains NO_RELEASE; this task authorizes diagnosis/design, not another run.
 

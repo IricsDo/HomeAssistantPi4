@@ -282,7 +282,9 @@ def _metric_row(counter: Counter[str]) -> dict[str, float | int]:
 
 
 def _draw_example(record: dict[str, Any], destination: Path, title: str) -> Path:
-    image = Image.open(record["image_path"]).convert("RGB")
+    # Prediction/GT coordinates use OpenCV's EXIF-oriented raster.
+    with Image.open(record["image_path"]) as source_image:
+        image = ImageOps.exif_transpose(source_image).convert("RGB")
     draw = ImageDraw.Draw(image)
     font = ImageFont.load_default()
     for box in record["ground_truth"]:

@@ -29,23 +29,26 @@ The purpose of this document is to maintain project consistency, prevent agents 
 - **Lint Command:** `python -m ruff check .` from `projects/indoor-detection`.
 - **Typecheck Command:** Not configured.
 
-### Latest execution state (2026-10-08)
+### Latest execution state (2026-10-09)
 
-- V7 training COMPLETED12epochs, exit0 at22:33:27 Asia/Saigon; validation
-  decision NO_RELEASE. Fire diagnosis/design now COMPLETED; read
-  `projects/indoor-detection/docs/FIRE_RECOVERY_AFTER_V7.md` and latest CHANGES.
-  Training-only annotation/coordinate repair is PLANNED, not train-ready.
+- V7 training COMPLETED12epochs; validation NO_RELEASE. Fire repair preparation
+  now READY_FOR_REVIEW:185 train images reviewed, joint-v5 data gate
+  PASS_WITH_LIMITATIONS, fresh768/batch8 resource probe PASS. Read
+  `projects/indoor-detection/docs/V8_FIRE_REPAIR_PREPARATION.md` and latest CHANGES.
+  One bounded v8 config is prepared; stop before training until a later request.
 - E: reports/indoor-v7-execution-v1 holds training status/logs;
   reports/indoor-v7-validation-v1 holds square validation/calibration evidence.
   Never duplicate-launch/resume/retry automatically; no new training authorized.
-- Experimental external set1,403images stays frozen outside unchanged joint-v4.
+- Experimental external set1,403images stays frozen outside joint-v4/joint-v5.
   Original30 independent groups/300fire target NOT_MET. Quality gates unchanged;
   holdout inference/export/deployment stay closed until applicable gates pass.
 - Preserve frozen E: reports/manifests/source bytes; no regeneration.
-- Diagnosis evidence: reports/indoor-v7-fire-diagnosis-v1. Frozen160-image train
-  audit plus27EXIF addendum =185unique train images, final repair review PENDING.
-  Missing-fire labels/granularity and EXIF8 mismatch observed. Do not automatically
-  treat every FP as a negative, transform unreviewed labels or modify legacy validation.
+- Repair evidence: reports/indoor-fire-train-repair-audit-v1, frozen253 files.
+  Dataset: processed/indoor-partial-joint-v5-fire-repaired;73 changed train pairs:
+  12 manual fire repairs,27 confirmed EXIF8 repairs,34 unknown-fire scopes.
+  Original source bytes and all val/test memberships, labels/scopes are unchanged.
+  No job remains; never rerun report recipes inside frozen evidence directories.
+  Preserve legacy validation concerns and all frozen v6 quality guardrails.
 
 ### Current delivery constraints
 

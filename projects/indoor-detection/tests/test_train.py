@@ -7,6 +7,18 @@ import pytest
 from indoor_detection.train import _load_config, _uses_class_scopes, build_parser
 
 
+def test_v8_is_one_bounded_fire_repair_continuation() -> None:
+    previous = _load_config(Path("configs/train_indoor_v7_768_proposal.yaml"))
+    config = _load_config(Path("configs/train_indoor_v8_fire_repair_proposal.yaml"))
+    changed_keys = {"model", "data", "name"}
+    assert {key: value for key, value in config.items() if key not in changed_keys} == {
+        key: value for key, value in previous.items() if key not in {"model", "data", "name"}
+    }
+    assert config["model"].endswith("indoor_partial_joint_yolo26n_v7_aligned_768/weights/best.pt")
+    assert config["data"].endswith("indoor-partial-joint-v5-fire-repaired/dataset.yaml")
+    assert config["name"] == "indoor_partial_joint_yolo26n_v8_fire_repaired_768"
+
+
 def test_train_parser_accepts_phase3_overrides() -> None:
     args = build_parser().parse_args(
         [

@@ -1,12 +1,12 @@
 # HomeAssistantPi4 workspace
 
-Latest milestone (2026-10-08): [FIRE_RECOVERY_AFTER_V7.md](projects/indoor-detection/docs/FIRE_RECOVERY_AFTER_V7.md).
-Fire train/validation diagnosis COMPLETED; annotation/coordinate repair PLANNED.
-Next: native review185unique train images; no derivative/new training launched.
-**V7 training COMPLETED12epochs; validation NO_RELEASE**. Fire source-recall
-requirement breaches precision guardrail; no automatic new training or retry.
-Reports on E: at reports/indoor-v7-validation-v1; training receipt remains in
-reports/indoor-v7-execution-v1. Holdout/export/deployment remain CLOSED.
+Latest milestone (2026-10-09): [V8_FIRE_REPAIR_PREPARATION.md](projects/indoor-detection/docs/V8_FIRE_REPAIR_PREPARATION.md).
+Audit185train COMPLETED; joint-v5 data PASS_WITH_LIMITATIONS; resource768/batch8 PASS.
+READY_FOR_REVIEW:12manual fire repairs/27EXIF repairs/34unknown-fire scopes,
+112unchanged. Frozen253-file evidence: reports/indoor-fire-train-repair-audit-v1 on E:.
+One bounded v8 config prepared; **stop before training until a later launch request**.
+**V7 remains NO_RELEASE**; source/validation/test/holdout bytes and quality gates retained.
+No job remains. Holdout/export/deployment remain CLOSED.
 
 
 Repository này chứa các project AI chạy tại nhà, phát triển trên Windows 11 và
